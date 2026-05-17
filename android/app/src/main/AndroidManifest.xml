@@ -1,0 +1,89 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
+    
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    
+    <!-- Security: Remove BACKGROUND_LOCATION to pass Play Store review unless explicitly needed -->
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" tools:node="remove" />
+
+    <application
+        android:label="Minaret"
+        android:name="${applicationName}" 
+        android:icon="@mipmap/ic_launcher"
+        android:extractNativeLibs="true"
+        android:usesCleartextTraffic="false">
+        
+        <activity
+            android:name="com.atelier.minaret.MainActivity"
+            android:exported="true"
+            android:launchMode="singleTop"
+            android:theme="@style/LaunchTheme.ColdStart"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+            android:hardwareAccelerated="true"
+            android:windowSoftInputMode="adjustResize">
+            
+            <meta-data
+              android:name="io.flutter.embedding.android.NormalTheme"
+              android:resource="@style/NormalTheme" />
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+
+            <!-- ── SMS verification deep link ── -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data
+                    android:scheme="https"
+                    android:host="minaret.atelier.com"
+                    android:pathPrefix="/verify"/>
+            </intent-filter>
+
+        </activity>
+
+        <meta-data android:name="android.webkit.WebView.EnableSafeBrowsing" android:value="true" />
+        <meta-data android:name="android.webkit.WebView.MixedContentMode" android:value="1" />
+        <meta-data android:name="android.webkit.WebView.DefaultVideoPosterURL" android:value="" />
+        <meta-data android:name="android.webkit.WebView.DefaultZoomScale" android:value="100" />
+        <meta-data android:name="android.webkit.WebView.AllowFileAccess" android:value="false" />
+        <meta-data android:name="android.webkit.WebView.AllowContentAccess" android:value="false" />
+        <meta-data android:name="android.webkit.WebView.AllowFileAccessFromFileURLs" android:value="false" />
+        <meta-data android:name="android.webkit.WebView.AllowUniversalAccessFromFileURLs" android:value="false" />
+
+        <receiver android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver" android:exported="false" />
+        <receiver android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationBootReceiver" android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED"/>
+                <action android:name="android.intent.action.QUICKBOOT_POWERON"/>
+            </intent-filter>
+        </receiver>
+
+        <!-- Google Maps API Key removed (App uses external Map intents) -->
+
+        <!-- AdMob App ID -->
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-5114201381808361~3405377243"/>
+
+        <meta-data
+            android:name="flutterEmbedding"
+            android:value="2" />
+
+        
+    </application>
+</manifest>

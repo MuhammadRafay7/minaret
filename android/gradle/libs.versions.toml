@@ -1,0 +1,11 @@
+[versions]
+kotlin = "2.1.10"
+agp = "8.11.2"
+googleServices = "4.4.2"
+
+[libraries]
+
+[plugins]
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+android-application = { id = "com.android.application", version.ref = "agp" }
+google-services = { id = "com.google.gms.google-services", version.ref = "googleServices" }

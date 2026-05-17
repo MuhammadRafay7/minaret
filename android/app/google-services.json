@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "917799173646",
+    "project_id": "minaret-f3793",
+    "storage_bucket": "minaret-f3793.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:917799173646:android:115a7479420cf070ee465f",
+        "android_client_info": {
+          "package_name": "com.atelier.minaret"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA9vyOaPZdPlOwnXqW79NPLULjkjpw0jtU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:917799173646:android:1438911b7282a4bbee465f",
+        "android_client_info": {
+          "package_name": "com.atelier.minaret"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA9vyOaPZdPlOwnXqW79NPLULjkjpw0jtU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

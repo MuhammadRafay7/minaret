@@ -1,0 +1,38 @@
+{
+  "firestore": {
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  },
+  "functions": [
+    {
+      "source": "functions",
+      "codebase": "default",
+      "ignore": [
+        "node_modules",
+        ".git",
+        "firebase-debug.log",
+        "firebase-hadith.log"
+      ]
+    }
+  ],
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "minaret-f3793",
+          "appId": "1:917799173646:android:115a7479420cf070ee465f",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "minaret-f3793",
+          "configurations": {
+            "android": "1:917799173646:android:115a7479420cf070ee465f",
+            "ios": "1:917799173646:ios:c1eea631e1eb516bee465f"
+          }
+        }
+      }
+    }
+  }
+}

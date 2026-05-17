@@ -1,0 +1,85 @@
+name: minaret
+description: "Minaret | A high-end digital atelier for professional prayer management."
+publish_to: "none"
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.3.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  intl: ^0.20.2
+  cupertino_icons: ^1.0.8
+
+  # Core Firebase Stack (minimal)
+  firebase_core: ^3.10.1
+  firebase_auth: ^5.5.0
+  cloud_firestore: ^5.6.2
+  firebase_messaging: ^15.2.4
+
+  # Essential State Management & Storage
+  provider: ^6.1.1
+  shared_preferences: ^2.2.2
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
+
+  # Core Location
+  geolocator: ^13.0.4
+  geocoding: ^3.0.0
+
+  # Essential UI
+  google_fonts: ^6.2.1
+  flutter_screenutil: ^5.9.3
+  url_launcher: ^6.3.2
+
+  # Core Calculation
+  adhan: ^2.0.0+1
+  hijri: ^3.0.0
+
+  # Environment Variables
+  flutter_dotenv: ^5.1.0
+
+  # Basic Animations (minimal)
+  flutter_animate: ^4.5.0
+
+  # Essential Services
+  http: ^1.2.1
+  path_provider: ^2.1.5
+  crypto: ^3.0.7
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  integration_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+  flutter_launcher_icons: ^0.13.1
+  flutter_native_splash: ^2.4.7
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/app_logo.jpeg"
+  adaptive_icon_background: "#FFFFFF"
+  adaptive_icon_foreground: "assets/images/app_logo.jpeg"
+
+flutter_native_splash:
+  color: "#FFFFFF"
+  image: "assets/images/app_logo.jpeg"
+  android_12:
+    color: "#FFFFFF"
+    image: "assets/images/app_logo.jpeg"
+
+dependency_overrides:
+  flutter_compass_v2: 1.0.3
+
+flutter:
+  uses-material-design: true
+  generate: true
+  assets:
+    - assets/images/
+    - assets/icons/
+    - assets/sounds/
