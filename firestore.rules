@@ -1,0 +1,200 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return request.auth.uid == userId;
+    }
+
+    function isAdmin() {
+      return isAuthenticated() && 
+             get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role in ['super_admin', 'mosque_admin'];
+    }
+
+    function isSuperAdmin() {
+      return isAuthenticated() && 
+             get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'super_admin';
+    }
+
+    function isImam() {
+      return isAuthenticated() && 
+             get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'imam';
+    }
+
+    function isMosqueAdmin(mosqueId) {
+      return isAuthenticated() &&
+             get(/databases/$(database)/documents/mosques/$(mosqueId)).data.adminUid == request.auth.uid;
+    }
+
+    match /users/{userId} {
+      allow read: if isOwner(userId) || isAdmin();
+      allow update: if (isOwner(userId) &&
+                       !request.resource.data.diff(resource.data).affectedKeys().hasAny(['role']))
+                    || isSuperAdmin();
+      allow create: if isAuthenticated() && isOwner(userId);
+      allow delete: if isSuperAdmin();
+    }
+
+match /mosques/{mosqueId} {
+  allow read: if true;
+  allow create: if isAuthenticated();
+  allow update: if isAuthenticated() && (
+    (resource.data.adminUid == request.auth.uid &&
+     !request.resource.data.diff(resource.data).affectedKeys().hasAny(['isVerified', 'verifiedAt'])) ||
+    isSuperAdmin() ||
+    (isMosqueAdmin(mosqueId) &&
+     request.resource.data.diff(resource.data).affectedKeys().hasOnly(['isVerified', 'verifiedAt'])) ||
+    request.resource.data.diff(resource.data).affectedKeys()
+      .hasOnly(['reportCount', 'lastReportAt', 'isVerified', 'followerCount'])
+  );
+  allow delete: if isAuthenticated() && (
+    resource.data.adminUid == request.auth.uid ||  // ← also fixed typo: was request.uid
+    isSuperAdmin()
+  );
+}
+
+   match /reports/{reportId} {
+  allow read: if isAdmin() || 
+                 (isAuthenticated() && resource.data.userId == request.auth.uid);
+  allow list: if isAuthenticated();
+  allow create: if isAuthenticated() &&
+                   request.resource.data.userId == request.auth.uid;
+  allow update: if isAdmin();
+  allow delete: if isSuperAdmin();
+}
+
+    match /notifications/{notificationId} {
+  allow read: if isAuthenticated() && resource.data.userId == request.auth.uid;
+  allow list: if isAuthenticated() && request.query.userId == request.auth.uid;
+  allow create: if isAuthenticated();  // ← CHANGED (was: request.resource.data.userId == request.auth.uid)
+  allow update: if isAuthenticated() &&
+                   resource.data.userId == request.auth.uid &&
+                   request.resource.data.diff(resource.data).affectedKeys().hasOnly(['read']);
+  allow delete: if isAuthenticated() && resource.data.userId == request.auth.uid;
+}
+
+    match /prayer_records/{recordId} {
+      allow read: if isAuthenticated() &&
+                     recordId.matches(request.auth.uid + '_.*');
+      allow list: if isAuthenticated();
+      allow create: if isAuthenticated() &&
+                       recordId.matches(request.auth.uid + '_.*') &&
+                       request.resource.data.userId == request.auth.uid;
+      allow update: if isAuthenticated() &&
+                       recordId.matches(request.auth.uid + '_.*');
+      allow delete: if isAuthenticated() &&
+                       recordId.matches(request.auth.uid + '_.*');
+    }
+
+    match /user_prayer_stats/{userId} {
+      allow get: if isAuthenticated() && (isOwner(userId) || isAdmin());
+      allow list: if isAuthenticated();
+      allow create: if isAuthenticated() && isOwner(userId);
+      allow update: if isAuthenticated() && isOwner(userId);
+      allow delete: if isAuthenticated() && (isOwner(userId) || isSuperAdmin());
+    }
+
+    match /prayer_tracking/{userId} {
+      allow read:   if isAuthenticated() && isOwner(userId);
+      allow create: if isAuthenticated() && isOwner(userId);
+      allow update: if isAuthenticated() && isOwner(userId);
+      allow delete: if isAuthenticated() && isOwner(userId);
+    }
+
+    match /mosque_followers/{mosqueId} {
+      allow read: if true;
+      allow create: if isAuthenticated();
+      allow delete: if isAuthenticated();
+    }
+
+    match /hadith/{hadithId} {
+      allow read:   if true;
+      allow create: if isSuperAdmin();
+      allow update: if isSuperAdmin();
+      allow delete: if isSuperAdmin();
+    }
+
+    match /quran/{quranId} {
+      allow read:   if true;
+      allow create: if isSuperAdmin();
+      allow update: if isSuperAdmin();
+      allow delete: if isSuperAdmin();
+    }
+
+    match /prayer_times/{prayerTimeId} {
+      allow read:   if true;
+      allow create: if isSuperAdmin() || isImam();
+      allow update: if isSuperAdmin() || isImam();
+      allow delete: if isSuperAdmin();
+    }
+
+    match /janaza/{janazaId} {
+      allow read:   if true;
+      allow create: if isSuperAdmin() || isImam();
+      allow update: if isSuperAdmin() || isImam();
+      allow delete: if isSuperAdmin() || isImam();
+    }
+
+    match /eid/{eidId} {
+      allow read:   if true;
+      allow create: if isSuperAdmin() || isImam();
+      allow update: if isSuperAdmin() || isImam();
+      allow delete: if isSuperAdmin() || isImam();
+    }
+
+    match /phone_verifications/{phone} {
+      allow read:   if false;
+      allow write:  if false;
+      allow create: if false;
+    }
+
+    match /app_settings/{document} {
+      allow read:  if true;
+      allow write: if isSuperAdmin();
+    }
+
+    match /user_preferences/{userId} {
+      allow read:   if isAuthenticated() && isOwner(userId);
+      allow create: if isAuthenticated() && isOwner(userId);
+      allow update: if isAuthenticated() && isOwner(userId);
+      allow delete: if isAuthenticated() && isOwner(userId);
+    }
+
+    match /locations/{locationId} {
+      allow read:  if true;
+      allow write: if false;
+    }
+
+    match /content/{contentId} {
+      allow read:   if true;
+      allow create: if isSuperAdmin() || isImam();
+      allow update: if isSuperAdmin() ||
+                      (isImam() && resource.data.authorId == request.auth.uid);
+      allow delete: if isSuperAdmin() ||
+                      (isImam() && resource.data.authorId == request.auth.uid);
+    }
+
+    match /analytics/{analyticsId} {
+      allow read:   if isAdmin();
+      allow create: if false;
+      allow update: if false;
+      allow delete: if isSuperAdmin();
+    }
+
+    match /system_logs/{logId} {
+      allow read:   if isSuperAdmin();
+      allow create: if false;
+      allow update: if false;
+      allow delete: if isSuperAdmin();
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

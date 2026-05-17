@@ -1,0 +1,4 @@
+storePassword=YOUR_KEYSTORE_PASSWORD
+keyPassword=YOUR_KEY_PASSWORD
+keyAlias=minaret
+storeFile=/absolute/path/to/minaret.keystore
