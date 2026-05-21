@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -62,7 +63,7 @@ class _NotificationsView extends StatefulWidget {
 
 class _NotificationsViewState extends State<_NotificationsView> {
   final ScrollController _scrollController = ScrollController();
-  final bool _isDebugMode = true;
+  final bool _isDebugMode = kDebugMode;
 
   @override
   void dispose() {
@@ -73,9 +74,9 @@ class _NotificationsViewState extends State<_NotificationsView> {
   Future<void> _testNotificationsAccess() async {
     final repo = ServiceLocator.get<NotificationRepository>();
     try {
-      debugPrint('Testing notifications access for user: ${widget.uid}');
+      if (kDebugMode) debugPrint('Testing notifications read access');
       final count = await repo.getUnreadCount(widget.uid);
-      debugPrint('Test 1 - Read access: SUCCESS ($count unread)');
+      if (kDebugMode) debugPrint('Test 1 - Read access: SUCCESS ($count unread)');
       await repo.addNotification({
         'userId': widget.uid,
         'type': 'test',
@@ -84,12 +85,13 @@ class _NotificationsViewState extends State<_NotificationsView> {
         'read': false,
         'createdAt': FieldValue.serverTimestamp(),
       });
-      debugPrint('Test 2 - Create access: SUCCESS');
+      if (kDebugMode) debugPrint('Test 2 - Create access: SUCCESS');
     } catch (e) {
-      debugPrint('Test FAILED: $e');
-      if (e is FirebaseException) {
-        debugPrint('Firebase error code: ${e.code}');
-        debugPrint('Firebase error message: ${e.message}');
+      if (kDebugMode) {
+        debugPrint('Test FAILED: $e');
+        if (e is FirebaseException) {
+          debugPrint('Firebase error code: ${e.code}');
+        }
       }
     }
   }
@@ -151,7 +153,7 @@ class _NotificationsViewState extends State<_NotificationsView> {
               Icon(
                 Icons.error_outline,
                 size: 64,
-                color: Colors.red.withOpacity(0.6),
+                color: Colors.red.withValues(alpha: 0.6),
               ),
               const SizedBox(height: 16),
               Text(
@@ -166,9 +168,9 @@ class _NotificationsViewState extends State<_NotificationsView> {
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: Colors.red.withOpacity(0.1),
+                  color: Colors.red.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: Colors.red.withOpacity(0.3)),
+                  border: Border.all(color: Colors.red.withValues(alpha: 0.3)),
                 ),
                 child: Text(
                   'Error: ${n.error}',
@@ -204,14 +206,14 @@ class _NotificationsViewState extends State<_NotificationsView> {
             Icon(
               Icons.notifications_none,
               size: 64,
-              color: MinaretTheme.emerald.withOpacity(0.3),
+              color: MinaretTheme.emerald.withValues(alpha: 0.3),
             ),
             const SizedBox(height: 16),
             Text(
               l10n.noNotificationsYet,
               style: GoogleFonts.lato(
                 fontSize: 18,
-                color: MinaretTheme.emerald.withOpacity(0.6),
+                color: MinaretTheme.emerald.withValues(alpha: 0.6),
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -220,7 +222,7 @@ class _NotificationsViewState extends State<_NotificationsView> {
               l10n.mosqueAlertsHere,
               style: GoogleFonts.lato(
                 fontSize: 14,
-                color: MinaretTheme.emerald.withOpacity(0.4),
+                color: MinaretTheme.emerald.withValues(alpha: 0.4),
               ),
             ),
             if (_isDebugMode) ...[
@@ -248,9 +250,9 @@ class _NotificationsViewState extends State<_NotificationsView> {
         return _buildNotificationCard(
           n: n,
           id: notification.id,
-          title: notification.title ?? 'Notification',
+          title: notification.title,
           message: notification.body ?? '',
-          type: notification.type ?? 'general',
+          type: notification.type,
           isRead: notification.isRead,
           createdAt: notification.createdAt,
           mosqueName: notification.raw['mosqueName'] as String?,
@@ -275,13 +277,13 @@ class _NotificationsViewState extends State<_NotificationsView> {
       margin: const EdgeInsets.only(bottom: 12),
       decoration: BoxDecoration(
         color: isRead
-            ? MinaretTheme.background.withOpacity(0.5)
-            : MinaretTheme.emerald.withOpacity(0.1),
+            ? MinaretTheme.background.withValues(alpha: 0.5)
+            : MinaretTheme.emerald.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
           color: isRead
-              ? MinaretTheme.dividerColor.withOpacity(0.3)
-              : MinaretTheme.emerald.withOpacity(0.3),
+              ? MinaretTheme.dividerColor.withValues(alpha: 0.3)
+              : MinaretTheme.emerald.withValues(alpha: 0.3),
           width: 1,
         ),
       ),
@@ -305,7 +307,7 @@ class _NotificationsViewState extends State<_NotificationsView> {
                     Container(
                       padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
-                        color: _getNotificationColor(type).withOpacity(0.2),
+                        color: _getNotificationColor(type).withValues(alpha: 0.2),
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Icon(
@@ -326,7 +328,7 @@ class _NotificationsViewState extends State<_NotificationsView> {
                               fontSize: 14,
                               fontWeight: FontWeight.w600,
                               color: isRead
-                                  ? MinaretTheme.emerald.withOpacity(0.6)
+                                  ? MinaretTheme.emerald.withValues(alpha: 0.6)
                                   : MinaretTheme.emerald,
                             ),
                             maxLines: 2,
@@ -337,7 +339,7 @@ class _NotificationsViewState extends State<_NotificationsView> {
                               _formatDate(createdAt),
                               style: GoogleFonts.lato(
                                 fontSize: 12,
-                                color: MinaretTheme.slate.withOpacity(0.6),
+                                color: MinaretTheme.slate.withValues(alpha: 0.6),
                               ),
                             ),
                         ],
@@ -360,7 +362,7 @@ class _NotificationsViewState extends State<_NotificationsView> {
                   style: GoogleFonts.lato(
                     fontSize: 14,
                     color: isRead
-                        ? MinaretTheme.onyx.withOpacity(0.6)
+                        ? MinaretTheme.onyx.withValues(alpha: 0.6)
                         : MinaretTheme.onyx,
                     height: 1.4,
                   ),
@@ -373,7 +375,7 @@ class _NotificationsViewState extends State<_NotificationsView> {
                     padding:
                         const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     decoration: BoxDecoration(
-                      color: MinaretTheme.gold.withOpacity(0.1),
+                      color: MinaretTheme.gold.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(6),
                     ),
                     child: Text(

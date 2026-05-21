@@ -315,7 +315,7 @@ class _JanazaEditFormPageState extends State<JanazaEditFormPage> {
                     Container(
                       height: 1,
                       width: 16,
-                      color: MinaretTheme.gold.withOpacity(0.5),
+                      color: MinaretTheme.gold.withValues(alpha: 0.5),
                     ),
                     const SizedBox(width: 8),
                     Text(
@@ -410,7 +410,7 @@ class _JanazaEditFormPageState extends State<JanazaEditFormPage> {
           padding: const EdgeInsets.symmetric(vertical: 14),
           decoration: BoxDecoration(
             color: isSelected
-                ? MinaretTheme.emerald.withOpacity(0.1)
+                ? MinaretTheme.emerald.withValues(alpha: 0.1)
                 : Colors.transparent,
             border: Border.all(
               color: isSelected
@@ -426,7 +426,7 @@ class _JanazaEditFormPageState extends State<JanazaEditFormPage> {
                 size: 16,
                 color: isSelected
                     ? MinaretTheme.emerald
-                    : MinaretTheme.slate.withOpacity(0.4),
+                    : MinaretTheme.slate.withValues(alpha: 0.4),
               ),
               const SizedBox(height: 6),
               Text(
@@ -437,7 +437,7 @@ class _JanazaEditFormPageState extends State<JanazaEditFormPage> {
                   fontWeight: FontWeight.w700,
                   color: isSelected
                       ? MinaretTheme.emerald
-                      : MinaretTheme.slate.withOpacity(0.5),
+                      : MinaretTheme.slate.withValues(alpha: 0.5),
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -510,7 +510,7 @@ class _JanazaEditFormPageState extends State<JanazaEditFormPage> {
         Container(
           height: 1,
           width: 16,
-          color: MinaretTheme.gold.withOpacity(0.5),
+          color: MinaretTheme.gold.withValues(alpha: 0.5),
         ),
         const SizedBox(width: 8),
         Text(
@@ -545,7 +545,7 @@ class _JanazaEditFormPageState extends State<JanazaEditFormPage> {
           floatingLabelBehavior: FloatingLabelBehavior.always,
           hintStyle: GoogleFonts.lato(
             fontSize: 13,
-            color: MinaretTheme.slate.withOpacity(0.35),
+            color: MinaretTheme.slate.withValues(alpha: 0.35),
           ),
         ),
       ),
@@ -565,7 +565,7 @@ class _JanazaEditFormPageState extends State<JanazaEditFormPage> {
         padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 14),
         decoration: BoxDecoration(
           color: isSet
-              ? MinaretTheme.emerald.withOpacity(0.06)
+              ? MinaretTheme.emerald.withValues(alpha: 0.06)
               : Colors.transparent,
           border: Border.all(
             color: isSet ? MinaretTheme.emerald : MinaretTheme.dividerColor,
@@ -580,7 +580,7 @@ class _JanazaEditFormPageState extends State<JanazaEditFormPage> {
               size: 13,
               color: isSet
                   ? MinaretTheme.gold
-                  : MinaretTheme.slate.withOpacity(0.5),
+                  : MinaretTheme.slate.withValues(alpha: 0.5),
             ),
             const SizedBox(width: 8),
             Flexible(
@@ -593,7 +593,7 @@ class _JanazaEditFormPageState extends State<JanazaEditFormPage> {
                   fontWeight: FontWeight.w700,
                   color: isSet
                       ? MinaretTheme.emerald
-                      : MinaretTheme.slate.withOpacity(0.5),
+                      : MinaretTheme.slate.withValues(alpha: 0.5),
                 ),
               ),
             ),

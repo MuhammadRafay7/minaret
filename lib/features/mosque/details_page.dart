@@ -239,17 +239,17 @@ class _DetailsView extends StatelessWidget {
                                 mosqueName: docData['name'] ?? ''),
                           ),
                         ),
-                        Colors.redAccent.withOpacity(0.7),
+                        Colors.redAccent.withValues(alpha: 0.7),
                       ),
                       _actionButton(
                         'SUPPORT MOSQUE',
                         () => _showDonationDialog(context, docData, l10n),
-                        MinaretTheme.gold.withOpacity(0.8),
+                        MinaretTheme.gold.withValues(alpha: 0.8),
                       ),
                       _actionButton(
                         'GET DIRECTIONS',
                         () => _launchGoogleMaps(context, docData),
-                        MinaretTheme.emerald.withOpacity(0.8),
+                        MinaretTheme.emerald.withValues(alpha: 0.8),
                       ),
                       const SizedBox(height: 120),
                     ],
@@ -279,8 +279,8 @@ class _DetailsView extends StatelessWidget {
         Container(
           padding: EdgeInsets.all(20.w),
           decoration: BoxDecoration(
-            color: MinaretTheme.emerald.withOpacity(0.05),
-            border: Border.all(color: MinaretTheme.emerald.withOpacity(0.2)),
+            color: MinaretTheme.emerald.withValues(alpha: 0.05),
+            border: Border.all(color: MinaretTheme.emerald.withValues(alpha: 0.2)),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -352,7 +352,7 @@ class _DetailsView extends StatelessWidget {
         Container(
             height: 1,
             width: 16.w,
-            color: MinaretTheme.gold.withOpacity(0.5)),
+            color: MinaretTheme.gold.withValues(alpha: 0.5)),
         SizedBox(width: 8.w),
         Text(
           title,
@@ -469,7 +469,7 @@ class _DetailsView extends StatelessWidget {
         padding: EdgeInsets.symmetric(vertical: 18.h),
         decoration: BoxDecoration(
             border: Border.all(color: color, width: 0.8),
-            color: color.withOpacity(0.04)),
+            color: color.withValues(alpha: 0.04)),
         child: Center(
             child: Text(label,
                 style: GoogleFonts.montserrat(
@@ -487,13 +487,13 @@ class _DetailsView extends StatelessWidget {
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
         color: isDark
-            ? Colors.white.withOpacity(0.03)
-            : MinaretTheme.onyx.withOpacity(0.03),
+            ? Colors.white.withValues(alpha: 0.03)
+            : MinaretTheme.onyx.withValues(alpha: 0.03),
         borderRadius: BorderRadius.circular(12.r),
         border: Border.all(
           color: isDark
-              ? Colors.white.withOpacity(0.1)
-              : MinaretTheme.onyx.withOpacity(0.1),
+              ? Colors.white.withValues(alpha: 0.1)
+              : MinaretTheme.onyx.withValues(alpha: 0.1),
         ),
       ),
       child: Column(
@@ -504,7 +504,7 @@ class _DetailsView extends StatelessWidget {
                   fontSize: 7.sp,
                   letterSpacing: 2,
                   fontWeight: FontWeight.w700,
-                  color: MinaretTheme.gold.withOpacity(0.8))),
+                  color: MinaretTheme.gold.withValues(alpha: 0.8))),
           SizedBox(height: 6.h),
           Text(value,
               style: GoogleFonts.ibmPlexMono(
@@ -578,10 +578,10 @@ class _DetailsView extends StatelessWidget {
             ),
             borderRadius: BorderRadius.circular(20.r),
             border:
-                Border.all(color: MinaretTheme.gold.withOpacity(0.3), width: 1.5),
+                Border.all(color: MinaretTheme.gold.withValues(alpha: 0.3), width: 1.5),
             boxShadow: [
               BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
+                  color: Colors.black.withValues(alpha: 0.1),
                   blurRadius: 20,
                   offset: const Offset(0, 10))
             ],
@@ -594,19 +594,19 @@ class _DetailsView extends StatelessWidget {
                   padding: EdgeInsets.all(16.w),
                   decoration: BoxDecoration(
                     gradient: LinearGradient(colors: [
-                      MinaretTheme.gold.withOpacity(0.15),
-                      MinaretTheme.gold.withOpacity(0.05),
+                      MinaretTheme.gold.withValues(alpha: 0.15),
+                      MinaretTheme.gold.withValues(alpha: 0.05),
                     ]),
                     borderRadius: BorderRadius.circular(15.r),
                     border: Border.all(
-                        color: MinaretTheme.gold.withOpacity(0.4), width: 1),
+                        color: MinaretTheme.gold.withValues(alpha: 0.4), width: 1),
                   ),
                   child: Row(
                     children: [
                       Container(
                         padding: EdgeInsets.all(8.w),
                         decoration: BoxDecoration(
-                            color: MinaretTheme.gold.withOpacity(0.2),
+                            color: MinaretTheme.gold.withValues(alpha: 0.2),
                             shape: BoxShape.circle),
                         child: Icon(Icons.account_balance_rounded,
                             color: MinaretTheme.gold, size: 20.sp),
@@ -664,8 +664,8 @@ class _DetailsView extends StatelessWidget {
                           padding: EdgeInsets.symmetric(vertical: 14.h),
                           decoration: BoxDecoration(
                             gradient: LinearGradient(colors: [
-                              MinaretTheme.emerald.withOpacity(0.8),
-                              MinaretTheme.emerald.withOpacity(0.6),
+                              MinaretTheme.emerald.withValues(alpha: 0.8),
+                              MinaretTheme.emerald.withValues(alpha: 0.6),
                             ]),
                             borderRadius: BorderRadius.circular(12.r),
                           ),
@@ -687,7 +687,7 @@ class _DetailsView extends StatelessWidget {
                           padding: EdgeInsets.symmetric(vertical: 14.h),
                           decoration: BoxDecoration(
                             border: Border.all(
-                                color: MinaretTheme.gold.withOpacity(0.6),
+                                color: MinaretTheme.gold.withValues(alpha: 0.6),
                                 width: 1.5),
                             borderRadius: BorderRadius.circular(12.r),
                           ),

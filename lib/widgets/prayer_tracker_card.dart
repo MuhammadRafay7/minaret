@@ -150,12 +150,12 @@ class _PrayerTrackerCardState extends State<PrayerTrackerCard>
           borderRadius: BorderRadius.circular(20.r),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(isDark ? 0.3 : 0.07),
+              color: Colors.black.withValues(alpha: isDark ? 0.3 : 0.07),
               blurRadius: 20,
               offset: const Offset(0, 4),
             ),
             BoxShadow(
-              color: Colors.black.withOpacity(isDark ? 0.15 : 0.03),
+              color: Colors.black.withValues(alpha: isDark ? 0.15 : 0.03),
               blurRadius: 6,
               offset: const Offset(0, 1),
             ),
@@ -384,7 +384,7 @@ class _PrayerButton extends StatelessWidget {
               boxShadow: isDone
                   ? [
                       BoxShadow(
-                        color: MinaretTheme.gold.withOpacity(0.3),
+                        color: MinaretTheme.gold.withValues(alpha: 0.3),
                         blurRadius: 12,
                         offset: const Offset(0, 3),
                       ),
@@ -410,7 +410,7 @@ class _PrayerButton extends StatelessWidget {
                     : Icon(
                         Icons.circle_outlined,
                         key: const ValueKey('empty'),
-                        color: labelColor.withOpacity(0.5),
+                        color: labelColor.withValues(alpha: 0.5),
                         size: 18.sp,
                       ),
               ),
@@ -503,7 +503,7 @@ class _ProgressSection extends StatelessWidget {
                 fontSize: 10.sp,
                 fontWeight: FontWeight.w500,
                 color:
-                    allDone ? MinaretTheme.gold : labelColor.withOpacity(0.7),
+                    allDone ? MinaretTheme.gold : labelColor.withValues(alpha: 0.7),
               ),
             ),
           ],

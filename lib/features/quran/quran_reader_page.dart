@@ -4,8 +4,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:minaret/services/offline_cache_service.dart';
 import 'package:minaret/services/quran_download_service.dart';
-import 'package:minaret/l10n/generated/app_localizations.dart';
-
 import 'package:minaret/core/theme.dart';
 import 'package:minaret/core/secure_http_client.dart';
 import 'package:minaret/core/locale_text.dart';
@@ -270,7 +268,7 @@ class _QuranReaderPageState extends State<QuranReaderPage>
             children: [
               Icon(
                 Icons.wifi_off_rounded,
-                color: MinaretTheme.gold.withOpacity(0.35),
+                color: MinaretTheme.gold.withValues(alpha: 0.35),
                 size: 32,
               ),
               const SizedBox(height: 16),
@@ -294,7 +292,7 @@ class _QuranReaderPageState extends State<QuranReaderPage>
                 _loadError!,
                 style: GoogleFonts.lato(
                   fontSize: 11,
-                  color: _textSecondary.withOpacity(0.5),
+                  color: _textSecondary.withValues(alpha: 0.5),
                   height: 1.5,
                 ),
                 textAlign: TextAlign.center,
@@ -339,12 +337,12 @@ class _QuranReaderPageState extends State<QuranReaderPage>
                   ru: 'Поиск суры...',
                 ),
                 hintStyle: GoogleFonts.lato(
-                  color: _textSecondary.withOpacity(0.6),
+                  color: _textSecondary.withValues(alpha: 0.6),
                   fontSize: 13,
                 ),
                 prefixIcon: Icon(
                   Icons.search_rounded,
-                  color: MinaretTheme.gold.withOpacity(0.5),
+                  color: MinaretTheme.gold.withValues(alpha: 0.5),
                   size: 18,
                 ),
                 suffixIcon: _searchController.text.isNotEmpty
@@ -352,7 +350,7 @@ class _QuranReaderPageState extends State<QuranReaderPage>
                         icon: Icon(
                           Icons.clear_rounded,
                           size: 16,
-                          color: _textSecondary.withOpacity(0.5),
+                          color: _textSecondary.withValues(alpha: 0.5),
                         ),
                         onPressed: () {
                           _searchController.clear();
@@ -376,7 +374,7 @@ class _QuranReaderPageState extends State<QuranReaderPage>
               style: GoogleFonts.montserrat(
                 fontSize: 8,
                 letterSpacing: 2,
-                color: _textSecondary.withOpacity(0.55),
+                color: _textSecondary.withValues(alpha: 0.55),
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -395,7 +393,7 @@ class _QuranReaderPageState extends State<QuranReaderPage>
                     ),
                     style: GoogleFonts.montserrat(
                       fontSize: 11,
-                      color: _textSecondary.withOpacity(0.6),
+                      color: _textSecondary.withValues(alpha: 0.6),
                     ),
                   ),
                 )
@@ -449,7 +447,7 @@ class _QuranReaderPageState extends State<QuranReaderPage>
           ),
           child: Container(
             decoration: BoxDecoration(
-              color: _isDark ? Colors.white.withOpacity(0.05) : Colors.white,
+              color: _isDark ? Colors.white.withValues(alpha: 0.05) : Colors.white,
               border: Border.all(color: MinaretTheme.dividerColor),
             ),
             child: Column(
@@ -523,9 +521,9 @@ class _SurahListTile extends StatelessWidget {
               height: 36,
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                color: MinaretTheme.gold.withOpacity(0.07),
+                color: MinaretTheme.gold.withValues(alpha: 0.07),
                 border: Border.all(
-                  color: MinaretTheme.gold.withOpacity(0.2),
+                  color: MinaretTheme.gold.withValues(alpha: 0.2),
                   width: 0.7,
                 ),
               ),

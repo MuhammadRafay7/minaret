@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:minaret/core/constants/app_defaults.dart';
 
 class UserProfile {
   final String uid;
@@ -21,7 +22,7 @@ class UserProfile {
     final data = doc.data() as Map<String, dynamic>? ?? {};
     return UserProfile(
       uid: doc.id,
-      role: data['role'] as String? ?? 'common',
+      role: data['role'] as String? ?? kDefaultRole,
       followedMosques:
           ((data['followedMosques'] as List?) ?? []).cast<String>(),
       notificationsEnabled: data['notificationsEnabled'] as bool? ?? true,

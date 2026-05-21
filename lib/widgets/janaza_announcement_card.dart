@@ -43,7 +43,7 @@ class JanazaAnnouncementCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: const Color(0xFF0D1F17),
         border: Border.all(
-          color: MinaretTheme.gold.withOpacity(0.25),
+          color: MinaretTheme.gold.withValues(alpha: 0.25),
           width: 0.8,
         ),
       ),
@@ -56,7 +56,7 @@ class JanazaAnnouncementCard extends StatelessWidget {
               Icon(
                 Icons.brightness_3_rounded,
                 size: 12,
-                color: MinaretTheme.gold.withOpacity(0.7),
+                color: MinaretTheme.gold.withValues(alpha: 0.7),
               ),
               const SizedBox(width: 8),
               Text(
@@ -75,7 +75,7 @@ class JanazaAnnouncementCard extends StatelessWidget {
                   child: Icon(
                     Icons.edit_outlined,
                     size: 14,
-                    color: MinaretTheme.gold.withOpacity(0.6),
+                    color: MinaretTheme.gold.withValues(alpha: 0.6),
                   ),
                 ),
                 const SizedBox(width: 10),
@@ -86,7 +86,7 @@ class JanazaAnnouncementCard extends StatelessWidget {
                   child: Icon(
                     Icons.close,
                     size: 14,
-                    color: MinaretTheme.slate.withOpacity(0.4),
+                    color: MinaretTheme.slate.withValues(alpha: 0.4),
                   ),
                 ),
             ],
@@ -98,7 +98,7 @@ class JanazaAnnouncementCard extends StatelessWidget {
             'إِنَّا لِلَّهِ وَإِنَّا إِلَيْهِ رَاجِعُونَ',
             style: GoogleFonts.amiri(
               fontSize: 15,
-              color: MinaretTheme.gold.withOpacity(0.6),
+              color: MinaretTheme.gold.withValues(alpha: 0.6),
               fontWeight: FontWeight.w400,
             ),
           ),
@@ -129,17 +129,17 @@ class JanazaAnnouncementCard extends StatelessWidget {
                   ),
                   decoration: BoxDecoration(
                     border: Border.all(
-                      color: MinaretTheme.gold.withOpacity(0.3),
+                      color: MinaretTheme.gold.withValues(alpha: 0.3),
                       width: 0.8,
                     ),
-                    color: MinaretTheme.gold.withOpacity(0.06),
+                    color: MinaretTheme.gold.withValues(alpha: 0.06),
                   ),
                   child: Text(
                     announcement.gender.toUpperCase(),
                     style: GoogleFonts.montserrat(
                       fontSize: 7,
                       letterSpacing: 1.5,
-                      color: MinaretTheme.gold.withOpacity(0.7),
+                      color: MinaretTheme.gold.withValues(alpha: 0.7),
                       fontWeight: FontWeight.w700,
                     ),
                   ),
@@ -156,14 +156,14 @@ class JanazaAnnouncementCard extends StatelessWidget {
               style: GoogleFonts.montserrat(
                 fontSize: 8,
                 letterSpacing: 2,
-                color: MinaretTheme.slate.withOpacity(0.5),
+                color: MinaretTheme.slate.withValues(alpha: 0.5),
                 fontWeight: FontWeight.w600,
               ),
             ),
           ],
 
           const SizedBox(height: 12),
-          Container(height: 0.5, color: MinaretTheme.gold.withOpacity(0.2)),
+          Container(height: 0.5, color: MinaretTheme.gold.withValues(alpha: 0.2)),
           const SizedBox(height: 12),
 
           // ── Time + Date ──────────────────────────────────────────────────
@@ -184,7 +184,7 @@ class JanazaAnnouncementCard extends StatelessWidget {
                 Icon(
                   Icons.location_on_outlined,
                   size: 12,
-                  color: MinaretTheme.gold.withOpacity(0.5),
+                  color: MinaretTheme.gold.withValues(alpha: 0.5),
                 ),
                 const SizedBox(width: 6),
                 Expanded(
@@ -192,7 +192,7 @@ class JanazaAnnouncementCard extends StatelessWidget {
                     announcement.locationNote,
                     style: GoogleFonts.lato(
                       fontSize: 12,
-                      color: MinaretTheme.slate.withOpacity(0.7),
+                      color: MinaretTheme.slate.withValues(alpha: 0.7),
                       height: 1.6,
                     ),
                   ),
@@ -204,14 +204,14 @@ class JanazaAnnouncementCard extends StatelessWidget {
           // ── Family details ────────────────────────────────────────────────
           if (relations.isNotEmpty) ...[
             const SizedBox(height: 14),
-            Container(height: 0.5, color: MinaretTheme.gold.withOpacity(0.12)),
+            Container(height: 0.5, color: MinaretTheme.gold.withValues(alpha: 0.12)),
             const SizedBox(height: 14),
             Text(
               'SURVIVED BY',
               style: GoogleFonts.montserrat(
                 fontSize: 7,
                 letterSpacing: 2.5,
-                color: MinaretTheme.slate.withOpacity(0.45),
+                color: MinaretTheme.slate.withValues(alpha: 0.45),
                 fontWeight: FontWeight.w700,
               ),
             ),
@@ -228,14 +228,14 @@ class JanazaAnnouncementCard extends StatelessWidget {
           // ── Mosque name ───────────────────────────────────────────────────
           if (announcement.mosqueName.isNotEmpty) ...[
             const SizedBox(height: 14),
-            Container(height: 0.5, color: MinaretTheme.gold.withOpacity(0.12)),
+            Container(height: 0.5, color: MinaretTheme.gold.withValues(alpha: 0.12)),
             const SizedBox(height: 10),
             Text(
               announcement.mosqueName.toUpperCase(),
               style: GoogleFonts.montserrat(
                 fontSize: 8,
                 letterSpacing: 2,
-                color: MinaretTheme.emerald.withOpacity(0.8),
+                color: MinaretTheme.emerald.withValues(alpha: 0.8),
                 fontWeight: FontWeight.w700,
               ),
             ),
@@ -254,7 +254,7 @@ class JanazaAnnouncementCard extends StatelessWidget {
           style: GoogleFonts.montserrat(
             fontSize: 7,
             letterSpacing: 2,
-            color: MinaretTheme.slate.withOpacity(0.5),
+            color: MinaretTheme.slate.withValues(alpha: 0.5),
             fontWeight: FontWeight.w700,
           ),
         ),
@@ -280,7 +280,7 @@ class JanazaAnnouncementCard extends StatelessWidget {
           style: GoogleFonts.montserrat(
             fontSize: 6.5,
             letterSpacing: 2,
-            color: MinaretTheme.slate.withOpacity(0.4),
+            color: MinaretTheme.slate.withValues(alpha: 0.4),
             fontWeight: FontWeight.w700,
           ),
         ),
@@ -290,7 +290,7 @@ class JanazaAnnouncementCard extends StatelessWidget {
           style: GoogleFonts.lato(
             fontSize: 13,
             fontWeight: FontWeight.w500,
-            color: Colors.white.withOpacity(0.85),
+            color: Colors.white.withValues(alpha: 0.85),
           ),
         ),
       ],

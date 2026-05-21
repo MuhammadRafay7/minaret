@@ -202,10 +202,10 @@ class _PrayerStatsPageState extends State<PrayerStatsPage> {
     return Container(
       padding: const EdgeInsets.all(AppSpacing.md),
       decoration: BoxDecoration(
-        color: MinaretTheme.background.withOpacity(0.5),
+        color: MinaretTheme.background.withValues(alpha: 0.5),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: color.withOpacity(0.3),
+          color: color.withValues(alpha: 0.3),
           width: 1,
         ),
       ),
@@ -256,10 +256,10 @@ class _PrayerStatsPageState extends State<PrayerStatsPage> {
         Container(
           padding: const EdgeInsets.all(AppSpacing.md),
           decoration: BoxDecoration(
-            color: MinaretTheme.background.withOpacity(0.5),
+            color: MinaretTheme.background.withValues(alpha: 0.5),
             borderRadius: BorderRadius.circular(12),
             border: Border.all(
-              color: MinaretTheme.emerald.withOpacity(0.3),
+              color: MinaretTheme.emerald.withValues(alpha: 0.3),
               width: 1,
             ),
           ),
@@ -355,10 +355,10 @@ class _PrayerStatsPageState extends State<PrayerStatsPage> {
         Container(
           padding: const EdgeInsets.all(AppSpacing.md),
           decoration: BoxDecoration(
-            color: MinaretTheme.background.withOpacity(0.5),
+            color: MinaretTheme.background.withValues(alpha: 0.5),
             borderRadius: BorderRadius.circular(12),
             border: Border.all(
-              color: MinaretTheme.emeraldLight.withOpacity(0.3),
+              color: MinaretTheme.emeraldLight.withValues(alpha: 0.3),
               width: 1,
             ),
           ),
@@ -445,10 +445,10 @@ class _PrayerStatsPageState extends State<PrayerStatsPage> {
         const SizedBox(height: 12),
         Container(
           decoration: BoxDecoration(
-            color: MinaretTheme.background.withOpacity(0.5),
+            color: MinaretTheme.background.withValues(alpha: 0.5),
             borderRadius: BorderRadius.circular(12),
             border: Border.all(
-              color: MinaretTheme.gold.withOpacity(0.3),
+              color: MinaretTheme.gold.withValues(alpha: 0.3),
               width: 1,
             ),
           ),
@@ -462,7 +462,7 @@ class _PrayerStatsPageState extends State<PrayerStatsPage> {
                       width: 40,
                       height: 40,
                       decoration: BoxDecoration(
-                        color: MinaretTheme.gold.withOpacity(0.2),
+                        color: MinaretTheme.gold.withValues(alpha: 0.2),
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Center(

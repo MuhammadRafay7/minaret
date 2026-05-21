@@ -1,4 +1,33 @@
-storePassword=YOUR_KEYSTORE_PASSWORD
-keyPassword=YOUR_KEY_PASSWORD
-keyAlias=minaret
-storeFile=/absolute/path/to/minaret.keystore
+# android/key.properties.example
+#
+# Copy this file to android/key.properties and fill in real values for local
+# builds. key.properties is listed in .gitignore — never commit it.
+#
+# For CI/CD (GitHub Actions / Codemagic / Bitrise), inject these as pipeline
+# secrets instead of using this file:
+#
+#   KEYSTORE_PASSWORD   — storePassword (password for the .keystore file itself)
+#   KEY_PASSWORD        — keyPassword   (password for the specific key entry)
+#   KEY_ALIAS           — keyAlias      (alias used when the keystore was created)
+#   KEYSTORE_PATH       — storeFile     (absolute or project-relative path to the .keystore file)
+#
+# GitHub Actions example (.github/workflows/release.yml):
+#
+#   - name: Decode keystore
+#     run: echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > android/app/release.keystore
+#
+#   - name: Build release APK
+#     env:
+#       KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+#       KEY_PASSWORD:      ${{ secrets.KEY_PASSWORD }}
+#       KEY_ALIAS:         ${{ secrets.KEY_ALIAS }}
+#       KEYSTORE_PATH:     android/app/release.keystore
+#     run: flutter build apk --release
+#
+# Codemagic / Bitrise: use their keystore upload UI, which injects these
+# env var names automatically.
+
+storePassword=
+keyPassword=
+keyAlias=
+storeFile=

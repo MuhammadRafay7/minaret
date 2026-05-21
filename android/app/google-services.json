@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "917799173646",
+    "firebase_url": "https://minaret-f3793-default-rtdb.firebaseio.com",
     "project_id": "minaret-f3793",
     "storage_bucket": "minaret-f3793.firebasestorage.app"
   },
@@ -12,7 +13,28 @@
           "package_name": "com.atelier.minaret"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "917799173646-0brmuro6ou6efs8rmj9dd6s9tdtmeunj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.atelier.minaret",
+            "certificate_hash": "1b25f917784863138faf706fe051cfeaee11431b"
+          }
+        },
+        {
+          "client_id": "917799173646-d52n1mhd0akq4k5jenjj6ffiqq901omp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.atelier.minaret",
+            "certificate_hash": "ae9925c40d013f36d6cf853d0d61d7aa76871153"
+          }
+        },
+        {
+          "client_id": "917799173646-jd6ebo6gsh37pljk08no9u3lm6bnu15n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyA9vyOaPZdPlOwnXqW79NPLULjkjpw0jtU"
@@ -20,7 +42,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "917799173646-jd6ebo6gsh37pljk08no9u3lm6bnu15n.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "917799173646-r9hfrl2jaet4gpl1q2dac1757n90vkpf.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.minaretApp"
+              }
+            }
+          ]
         }
       }
     },
@@ -28,10 +62,15 @@
       "client_info": {
         "mobilesdk_app_id": "1:917799173646:android:1438911b7282a4bbee465f",
         "android_client_info": {
-          "package_name": "com.atelier.minaret"
+          "package_name": "com.example.minaret_app"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "917799173646-jd6ebo6gsh37pljk08no9u3lm6bnu15n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyA9vyOaPZdPlOwnXqW79NPLULjkjpw0jtU"
@@ -39,7 +78,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "917799173646-jd6ebo6gsh37pljk08no9u3lm6bnu15n.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "917799173646-r9hfrl2jaet4gpl1q2dac1757n90vkpf.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.minaretApp"
+              }
+            }
+          ]
         }
       }
     }

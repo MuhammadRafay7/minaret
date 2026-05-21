@@ -1,0 +1,22 @@
+# android/app/key.properties.example
+#
+# Copy this file to android/app/key.properties and fill in real values for
+# local release builds.  key.properties is listed in .gitignore — never commit it.
+#
+# For CI/CD (GitHub Actions / Codemagic / Bitrise) inject the values as
+# pipeline secrets instead of using this file.  The four environment variables
+# that build.gradle.kts reads are listed below.
+#
+# ─────────────────────────────────────────────────────────────────────────────
+# Key                  Env var (CI/CD)     Description
+# ─────────────────────────────────────────────────────────────────────────────
+# storePassword      = KEYSTORE_PASSWORD   Password for the .keystore file itself
+# keyPassword        = KEY_PASSWORD        Password for the specific key entry inside the store
+# keyAlias           = KEY_ALIAS           Alias chosen when the keystore was created
+# storeFile          = KEYSTORE_PATH       Absolute or project-relative path to the .keystore file
+# ─────────────────────────────────────────────────────────────────────────────
+
+storePassword=
+keyPassword=
+keyAlias=
+storeFile=

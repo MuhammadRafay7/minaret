@@ -66,25 +66,6 @@ class _PremiumCardState extends State<PremiumCard>
     super.dispose();
   }
 
-  void _handleTapDown(TapDownDetails details) {
-    if (widget.onTap == null) return;
-    HapticFeedback.lightImpact();
-    setState(() => _isPressed = true);
-    _controller.forward();
-  }
-
-  void _handleTapUp(TapUpDetails details) {
-    if (widget.onTap == null) return;
-    setState(() => _isPressed = false);
-    _controller.reverse();
-    widget.onTap!();
-  }
-
-  void _handleTapCancel() {
-    setState(() => _isPressed = false);
-    _controller.reverse();
-  }
-
   void _handleHover(bool hovering) {
     if (!widget.enableHover) return;
     setState(() => _isHovered = hovering);
@@ -148,15 +129,15 @@ class _PremiumCardState extends State<PremiumCard>
       case CardType.glass:
         return _CardStyle(
           backgroundColor: widget.backgroundColor ?? 
-              (isDark ? Colors.white.withOpacity(0.07) : MinaretTheme.glassSurface),
+              (isDark ? Colors.white.withValues(alpha: 0.07) : MinaretTheme.glassSurface),
           border: Border.all(
-            color: Colors.white.withOpacity(isDark ? 0.12 : 0.5),
+            color: Colors.white.withValues(alpha: isDark ? 0.12 : 0.5),
             width: 0.8,
           ),
           shadow: MinaretTheme.cardShadow,
           glowShadow: [
             BoxShadow(
-              color: MinaretTheme.gold.withOpacity(0.3),
+              color: MinaretTheme.gold.withValues(alpha: 0.3),
               blurRadius: 20,
               spreadRadius: 2,
             ),
@@ -167,13 +148,13 @@ class _PremiumCardState extends State<PremiumCard>
           backgroundColor: widget.backgroundColor ?? 
               (isDark ? const Color(0xFF1A1F2E) : Colors.white),
           border: Border.all(
-            color: MinaretTheme.gold.withOpacity(0.2),
+            color: MinaretTheme.gold.withValues(alpha: 0.2),
             width: 1,
           ),
           shadow: MinaretTheme.cardShadow,
           glowShadow: [
             BoxShadow(
-              color: MinaretTheme.emerald.withOpacity(0.4),
+              color: MinaretTheme.emerald.withValues(alpha: 0.4),
               blurRadius: 24,
               spreadRadius: 1,
             ),
@@ -187,7 +168,7 @@ class _PremiumCardState extends State<PremiumCard>
           shadow: MinaretTheme.cardShadow,
           glowShadow: [
             BoxShadow(
-              color: MinaretTheme.gold.withOpacity(0.4),
+              color: MinaretTheme.gold.withValues(alpha: 0.4),
               blurRadius: 30,
               spreadRadius: 2,
             ),
@@ -259,7 +240,7 @@ class _AnimatedListTileState extends State<AnimatedListTile>
     );
     _colorAnimation = AppAnimations.colorTween(
       null,
-      MinaretTheme.gold.withOpacity(0.1),
+      MinaretTheme.gold.withValues(alpha: 0.1),
     ).animate(_controller);
   }
 
@@ -351,8 +332,8 @@ class _AnimatedListTileState extends State<AnimatedListTile>
             height: 1,
             thickness: 0.5,
             color: isDark 
-                ? Colors.white.withOpacity(0.1)
-                : Colors.black.withOpacity(0.1),
+                ? Colors.white.withValues(alpha: 0.1)
+                : Colors.black.withValues(alpha: 0.1),
           ),
       ],
     );

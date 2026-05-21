@@ -102,7 +102,7 @@ class _SimpleFilterDialogState extends State<SimpleFilterDialog> {
                       });
                     },
                     backgroundColor: isDark ? const Color(0xFF1A1F2E) : Colors.grey[100],
-                    selectedColor: MinaretTheme.gold.withOpacity(0.2),
+                    selectedColor: MinaretTheme.gold.withValues(alpha: 0.2),
                     labelStyle: GoogleFonts.montserrat(
                       fontSize: 10.sp,
                       color: isSelected ? MinaretTheme.gold : (isDark ? Colors.white70 : Colors.black87),
@@ -144,7 +144,7 @@ class _SimpleFilterDialogState extends State<SimpleFilterDialog> {
                     });
                   },
                   backgroundColor: isDark ? const Color(0xFF1A1F2E) : Colors.grey[100],
-                  selectedColor: MinaretTheme.emerald.withOpacity(0.2),
+                  selectedColor: MinaretTheme.emerald.withValues(alpha: 0.2),
                   labelStyle: GoogleFonts.montserrat(
                     fontSize: 10.sp,
                     color: isSelected ? MinaretTheme.emerald : (isDark ? Colors.white70 : Colors.black87),
@@ -226,7 +226,7 @@ class FilterButton extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: hasActiveFilters 
-            ? MinaretTheme.gold.withOpacity(0.1)
+            ? MinaretTheme.gold.withValues(alpha: 0.1)
             : (isDark ? const Color(0xFF1A1F2E) : Colors.grey[100]),
         borderRadius: BorderRadius.circular(8.r),
         border: Border.all(

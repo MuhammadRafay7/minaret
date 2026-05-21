@@ -29,7 +29,7 @@ class HeroContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final bgColor = backgroundColor ?? 
-        (isDark ? Colors.white.withOpacity(0.1) : Colors.white);
+        (isDark ? Colors.white.withValues(alpha: 0.1) : Colors.white);
 
     return Hero(
       tag: tag,
@@ -47,7 +47,7 @@ class HeroContainer extends StatelessWidget {
             shape: shape,
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.1),
+                color: Colors.black.withValues(alpha: 0.1),
                 blurRadius: 10,
                 offset: const Offset(0, 2),
               ),
@@ -71,12 +71,12 @@ class HeroContainer extends StatelessWidget {
             opacity: 0.8 + (0.2 * curvedValue),
             child: Container(
               decoration: BoxDecoration(
-                color: MinaretTheme.gold.withOpacity(0.1),
+                color: MinaretTheme.gold.withValues(alpha: 0.1),
                 borderRadius: borderRadius,
                 shape: shape,
                 boxShadow: [
                   BoxShadow(
-                    color: MinaretTheme.gold.withOpacity(0.3 * curvedValue),
+                    color: MinaretTheme.gold.withValues(alpha: 0.3 * curvedValue),
                     blurRadius: 20 * curvedValue,
                     spreadRadius: 2 * curvedValue,
                   ),
@@ -243,7 +243,7 @@ class _AnimatedBottomSheetState extends State<AnimatedBottomSheet>
         return GestureDetector(
           onTap: _dismiss,
           child: Container(
-            color: Colors.black.withOpacity(0.3 * _fadeAnimation.value),
+            color: Colors.black.withValues(alpha: 0.3 * _fadeAnimation.value),
             child: Stack(
               children: [
                 // Backdrop
@@ -278,7 +278,7 @@ class _AnimatedBottomSheetState extends State<AnimatedBottomSheet>
                           ),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withOpacity(0.2),
+                              color: Colors.black.withValues(alpha: 0.2),
                               blurRadius: 20,
                               offset: const Offset(0, -10),
                             ),
@@ -293,7 +293,7 @@ class _AnimatedBottomSheetState extends State<AnimatedBottomSheet>
                               height: 4.h,
                               margin: EdgeInsets.symmetric(vertical: 12.h),
                               decoration: BoxDecoration(
-                                color: MinaretTheme.gold.withOpacity(0.3),
+                                color: MinaretTheme.gold.withValues(alpha: 0.3),
                                 borderRadius: BorderRadius.circular(2.r),
                               ),
                             ),
@@ -487,7 +487,7 @@ class _PremiumDialogState extends State<PremiumDialog>
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: typeColors.shadowColor.withOpacity(0.3),
+                      color: typeColors.shadowColor.withValues(alpha: 0.3),
                       blurRadius: 30,
                       spreadRadius: 2,
                     ),
@@ -533,7 +533,7 @@ class _PremiumDialogState extends State<PremiumDialog>
                               textAlign: TextAlign.center,
                               style: GoogleFonts.cairo(
                                 fontSize: 14.sp,
-                                color: Colors.white.withOpacity(0.9),
+                                color: Colors.white.withValues(alpha: 0.9),
                               ),
                             ),
                           ],

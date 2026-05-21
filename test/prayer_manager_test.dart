@@ -1,6 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:minaret/services/prayer_manager.dart';
-import 'package:adhan/adhan.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {

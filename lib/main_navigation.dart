@@ -5,7 +5,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:geolocator/geolocator.dart';
@@ -24,8 +23,6 @@ import 'package:minaret/features/quran/quran_language_page.dart';
 import 'package:minaret/features/hadith/hadith_page.dart';
 import 'package:minaret/services/notification_service.dart';
 import 'package:minaret/services/fcm_token_service.dart';
-import 'package:minaret/services/app_content_service.dart';
-import 'package:minaret/core/location_service.dart';
 import 'package:minaret/services/ad_service.dart';
 import 'package:minaret/services/system_config_service.dart';
 
@@ -124,13 +121,6 @@ class _MainNavigationState extends State<MainNavigation>
   void _initAppServices() {
     unawaited(_checkPermissions());
     _initAuthenticationListener();
-  }
-
-  void _initAppServicesWithRole(User? user) {
-     if (user != null) {
-        NotificationService.startForUser();
-        FcmTokenService.init();
-     }
   }
 
   void _initAuthenticationListener() {
@@ -387,8 +377,8 @@ class _NavBarContent extends StatelessWidget {
     final isRtl = langCode == 'ar' || langCode == 'ur';
     final isArabic = langCode == 'ar';
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final navBg = isDark ? const Color(0xFF0F141D).withOpacity(0.92) : const Color(0xFF111111).withOpacity(0.88);
-    final inactive = isDark ? Colors.white.withOpacity(0.55) : Colors.white.withOpacity(0.28);
+    final navBg = isDark ? const Color(0xFF0F141D).withValues(alpha: 0.92) : const Color(0xFF111111).withValues(alpha: 0.88);
+    final inactive = isDark ? Colors.white.withValues(alpha: 0.55) : Colors.white.withValues(alpha: 0.28);
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 0, 16, 32),
@@ -401,7 +391,7 @@ class _NavBarContent extends StatelessWidget {
             decoration: BoxDecoration(
               color: navBg,
               borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: Colors.white.withOpacity(isDark ? 0.14 : 0.08), width: 0.5),
+              border: Border.all(color: Colors.white.withValues(alpha: isDark ? 0.14 : 0.08), width: 0.5),
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,

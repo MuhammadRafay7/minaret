@@ -38,12 +38,12 @@ class MosqueFollowButton extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 16),
         decoration: BoxDecoration(
           color: isFollowing
-              ? MinaretTheme.emerald.withOpacity(0.08)
+              ? MinaretTheme.emerald.withValues(alpha: 0.08)
               : Colors.transparent,
           border: Border.all(
             color: isFollowing
                 ? MinaretTheme.emerald
-                : MinaretTheme.gold.withOpacity(0.35),
+                : MinaretTheme.gold.withValues(alpha: 0.35),
             width: 0.8,
           ),
         ),

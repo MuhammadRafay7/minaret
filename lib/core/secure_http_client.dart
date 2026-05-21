@@ -1,7 +1,11 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
+import 'package:dio/io.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 
+import 'config/app_environment.dart';
 import 'config/certificate_pins.dart';
 
 // ── Exception ──────────────────────────────────────────────────────────────
@@ -24,141 +28,107 @@ class CertificatePinningException implements Exception {
   String toString() => 'CertificatePinningException($host): $message';
 }
 
-// ── Injectable verifier ────────────────────────────────────────────────────
-
-/// Verifies [serverUrl]'s certificate against [allowedPins].
-///
-/// Completes normally on success.
-/// Throws [CertificatePinningException] (or any exception) on failure —
-/// the interceptor wraps all non-[CertificatePinningException] throws.
-///
-/// Injecting a custom verifier makes unit tests hermetic: no network calls,
-/// no native plugin, no Firebase.
-typedef PinVerifier = Future<void> Function({
-  required String serverUrl,
-  required List<String> allowedPins,
-});
-
-/// Production verifier — delegates to the http_certificate_pinning plugin.
-///
-/// The plugin makes a separate TLS probe connection to the host, extracts the
-/// leaf certificate's SHA-256 fingerprint, and compares it against [allowedPins].
-/// [allowedPins] must use colon-separated uppercase hex:  'AA:BB:CC:...'
-///
-/// See scripts/extract_pin.sh to generate these values.
-Future<void> _nativePinVerifier({
-  required String serverUrl,
-  required List<String> allowedPins,
-}) async {
-  // SSL certificate pinning is only available on Android/iOS.
-  // On web and desktop the pinning interceptor is never added (forEnvironment
-  // returns an unpinned client when kIsWeb or pins are empty), so this
-  // function should never be reached on those platforms.
-  throw CertificatePinningException(
-    host: Uri.parse(serverUrl).host,
-    message: 'Certificate pinning is not supported on this platform',
-  );
-}
-
-// ── Verified-host cache ────────────────────────────────────────────────────
-
-/// Caches successful pin verifications per host for [_ttl] to avoid a
-/// separate probe request on every API call. Invalidated on any pin failure.
-class _PinCache {
-  static final Map<String, DateTime> _timestamps = {};
-  static const _ttl = Duration(minutes: 5);
-
-  static bool isValid(String host) {
-    final ts = _timestamps[host];
-    return ts != null && DateTime.now().difference(ts) < _ttl;
-  }
-
-  static void mark(String host) => _timestamps[host] = DateTime.now();
-  static void invalidate(String host) => _timestamps.remove(host);
-  static void clearAll() => _timestamps.clear();
-}
-
 // ── Pinning interceptor ────────────────────────────────────────────────────
 
-class _CertificatePinningInterceptor extends Interceptor {
-  _CertificatePinningInterceptor({
-    required Set<String> pinnedHosts,
-    required List<String> allowedPins,
-    required PinVerifier verifier,
-  })  : _pinnedHosts = pinnedHosts,
-        _allowedPins = allowedPins,
-        _verifier = verifier;
+/// Wires SHA-256 SPKI certificate pinning into a [Dio] instance at the
+/// TLS layer via [HttpClient.badCertificateCallback].
+///
+/// Pin verification delegates to [CertificatePins.containsPin], which
+/// looks up the computed SPKI hash in [pinnedDomains].  A mismatch causes
+/// [badCertificateCallback] to return false, which Dart's TLS stack converts
+/// into a [HandshakeException] — the connection is never established.
+///
+/// Not a [Dio] [Interceptor] subclass: all enforcement happens at the
+/// TLS level, so there is nothing to hook in Dio's request/response chain.
+class _CertificatePinningInterceptor {
+  _CertificatePinningInterceptor({required Set<String> pinnedHosts})
+      : _pinnedHosts = pinnedHosts;
 
   final Set<String> _pinnedHosts;
-  final List<String> _allowedPins;
-  final PinVerifier _verifier;
 
-  @override
-  Future<void> onRequest(
-    RequestOptions options,
-    RequestInterceptorHandler handler,
-  ) async {
-    final host = options.uri.host;
-
-    if (!_pinnedHosts.contains(host)) {
-      handler.next(options);
-      return;
-    }
-
-    if (_PinCache.isValid(host)) {
-      handler.next(options);
-      return;
-    }
-
-    try {
-      await _verifier(
-        serverUrl: '${options.uri.scheme}://$host',
-        allowedPins: _allowedPins,
-      );
-      _PinCache.mark(host);
-      handler.next(options);
-    } on CertificatePinningException catch (e) {
-      _PinCache.invalidate(host);
-      await _log(e);
-      handler.reject(_toDioException(options, e), true);
-    } catch (e, st) {
-      // Plugin threw PlatformException or another unexpected error.
-      _PinCache.invalidate(host);
-      final pinEx = CertificatePinningException(
-        host: host,
-        message: 'Verification error: $e',
-      );
-      await _log(pinEx, stackTrace: st);
-      handler.reject(_toDioException(options, pinEx), true);
-    }
+  /// Hooks TLS-level pin checking into [dio]. Must be called once, immediately
+  /// after the [Dio] instance is created and before any requests are made.
+  ///
+  /// Calls [CertificatePins.debugAssertNoPinPlaceholders] in debug builds.
+  void configureDio(Dio dio) {
+    CertificatePins.debugAssertNoPinPlaceholders();
+    (dio.httpClientAdapter as IOHttpClientAdapter).createHttpClient =
+        _buildPinnedClient;
   }
 
-  static DioException _toDioException(
-    RequestOptions options,
-    CertificatePinningException e,
-  ) =>
-      DioException(
-        requestOptions: options,
-        error: e,
-        message: e.toString(),
-        type: DioExceptionType.unknown,
-      );
+  HttpClient _buildPinnedClient() {
+    // Disable the OS trust store so badCertificateCallback fires for every
+    // certificate — including valid CA-signed ones.  The SPKI pin is our
+    // sole trust anchor; no system roots are consulted.
+    final client = HttpClient(context: SecurityContext(withTrustedRoots: false));
+    client.badCertificateCallback = _verifyPin;
+    return client;
+  }
 
-  static Future<void> _log(
-    CertificatePinningException e, {
-    StackTrace? stackTrace,
-  }) async {
-    debugPrint('🔴 [SSL PIN] ${e.toString()}');
-    try {
-      await FirebaseCrashlytics.instance.recordError(
-        e,
-        stackTrace,
-        reason: 'SSL pin mismatch: ${e.host}',
-        fatal: false,
+  // Returns true to accept the TLS connection, false to reject it.
+  // Called synchronously during the TLS handshake — must not await.
+  bool _verifyPin(X509Certificate cert, String host, int port) {
+    // Hard-fail in every build mode until real pins are in place.
+    // Returning true here with placeholder pins would silently accept any cert,
+    // defeating the entire purpose of pinning.
+    if (!CertificatePins.isConfigured()) {
+      throw StateError(
+        'Certificate pins are not configured. '
+        'Run the following command against your server and paste the output '
+        'into certificate_pins.dart:\n'
+        'openssl s_client -connect YOUR_DOMAIN:443 </dev/null 2>/dev/null '
+        '| openssl x509 -pubkey -noout '
+        '| openssl pkey -pubin -outform der '
+        '| openssl dgst -sha256 -binary '
+        '| base64',
       );
-    } catch (_) {
-      // Crashlytics not initialised (tests, first-launch edge cases).
     }
+    // Assert-level crash for profile/release builds compiled with asserts
+    // enabled (e.g. flutter run --release --enable-asserts).
+    // The if/throw above is the primary guard; this is belt-and-suspenders.
+    assert(
+      CertificatePins.isConfigured(),
+      'Certificate pins are not configured — replace sentinel pin values in '
+      'lib/core/config/certificate_pins.dart before building for release.',
+    );
+
+    if (!_pinnedHosts.contains(host)) return true; // not a pinned host
+
+    final computedPin = CertificatePins.computeSpkiPin(cert);
+    if (computedPin == null) {
+      if (kDebugMode) {
+        debugPrint('🔴 [SSL PIN] $host: could not extract SPKI — rejecting.');
+      }
+      return false;
+    }
+
+    final accepted = CertificatePins.containsPin(host, computedPin);
+
+    if (!accepted) {
+      if (kDebugMode) {
+        debugPrint(
+          '🔴 [SSL PIN] $host: pin mismatch.\n'
+          '  computed : $computedPin\n'
+          '  expected : ${CertificatePins.pinsFor(host).join(' | ')}',
+        );
+      }
+      // Fire-and-forget: badCertificateCallback is synchronous, so we cannot
+      // await Crashlytics.  The rejection is still enforced by returning false.
+      _logRejection(
+        CertificatePinningException(
+          host: host,
+          message: 'Pin mismatch — computed: $computedPin',
+        ),
+      );
+    }
+
+    return accepted;
+  }
+
+  static void _logRejection(CertificatePinningException e) {
+    FirebaseCrashlytics.instance
+        .recordError(e, null, reason: 'SSL pin mismatch: ${e.host}', fatal: false)
+        .catchError((_) {}); // Crashlytics may not be initialised yet.
   }
 }
 
@@ -197,6 +167,14 @@ class _RetryInterceptor extends Interceptor {
   void onError(DioException err, ErrorInterceptorHandler handler) async {
     // Certificate pinning failures must never be retried.
     if (err.error is CertificatePinningException) {
+      handler.next(err);
+      return;
+    }
+
+    // TLS-level pin failures surface as HandshakeException (a TlsException
+    // subclass).  Never retry these — a bad pin is a security signal, not
+    // a transient network hiccup.
+    if (err.error is TlsException) {
       handler.next(err);
       return;
     }
@@ -248,34 +226,28 @@ class SecureHttpClient {
   }
 
   /// Returns a new Dio instance for [CertificatePins.pinnedApiHost]
-  /// (`api.minaret.app`) with certificate pinning enforced.
+  /// (`api.minaret.app`) with TLS-level certificate pinning enforced.
   ///
   /// Pin set is selected by [env]:
-  ///   production  → real pins from [CertificatePins]
+  ///   production  → real pins from [pinnedDomains]
   ///   staging     → staging pins
   ///   development → no pinning (empty pin list)
   ///
-  /// [pinVerifier] is injectable for unit tests. Defaults to the native
-  /// http_certificate_pinning plugin.
-  ///
-  /// Asserts (in non-debug builds) that pin constants are not placeholders.
-  /// If this assertion fires, run:  bash scripts/extract_pin.sh api.minaret.app
-  static Dio forEnvironment(
-    AppEnvironment env, {
-    PinVerifier? pinVerifier,
-  }) {
+  /// Pinning is disabled on web (the dart:io TLS stack is not available).
+  static Dio forEnvironment(AppEnvironment env) {
     final pins = CertificatePins.forEnvironment(env);
 
     // Dart asserts are stripped in release builds — use a real throw instead.
     if (!kDebugMode && CertificatePins.hasPlaceholders(pins)) {
       throw StateError(
         'CertificatePins still contains placeholder values. '
-        'Run  bash scripts/extract_pin.sh api.minaret.app  and update '
-        'lib/core/config/certificate_pins.dart before building for release.',
+        'Extract real pins with:\n'
+        '  openssl s_client -connect api.minaret.app:443 | openssl x509 -pubkey -noout | openssl pkey -pubin -outform der | openssl dgst -sha256 -binary | base64\n'
+        'Then update lib/core/config/certificate_pins.dart before building for release.',
       );
     }
 
-    // Web does not support the http_certificate_pinning plugin.
+    // Web does not support the dart:io TLS stack.
     // Development environments have no pins by design.
     if (pins.isEmpty || kIsWeb) {
       return _build(pinnedInterceptor: null);
@@ -284,8 +256,6 @@ class SecureHttpClient {
     return _build(
       pinnedInterceptor: _CertificatePinningInterceptor(
         pinnedHosts: {CertificatePins.pinnedApiHost},
-        allowedPins: pins,
-        verifier: pinVerifier ?? _nativePinVerifier,
       ),
     );
   }
@@ -302,12 +272,6 @@ class SecureHttpClient {
     _instance = null;
   }
 
-  /// Clears the in-memory pin verification cache.
-  /// Call this in test [setUp] to prevent cross-test cache pollution.
-  @visibleForTesting
-  static void clearPinCacheForTest() => _PinCache.clearAll();
-
-
   static Dio _build({
     required _CertificatePinningInterceptor? pinnedInterceptor,
   }) {
@@ -319,9 +283,10 @@ class SecureHttpClient {
       ),
     );
 
-    if (pinnedInterceptor != null) {
-      dio.interceptors.add(pinnedInterceptor);
-    }
+    // Wire TLS-level pin checking before any interceptors run.
+    // configureDio hooks IOHttpClientAdapter.createHttpClient so that every
+    // connection to a pinned host goes through CertificatePins.containsPin().
+    pinnedInterceptor?.configureDio(dio);
 
     dio.interceptors
       ..add(_SecurityHeadersInterceptor())

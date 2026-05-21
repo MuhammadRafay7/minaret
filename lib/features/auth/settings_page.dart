@@ -4,9 +4,9 @@ import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:minaret/core/constants/app_defaults.dart';
 import 'package:minaret/core/theme.dart';
 import 'package:minaret/core/theme_provider.dart';
-import 'package:minaret/core/language_provider.dart';
 import 'package:minaret/widgets/atelier_layout.dart';
 import 'package:minaret/widgets/language_selector.dart';
 import 'package:minaret/services/prayer_manager.dart';
@@ -22,8 +22,8 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  String _selectedMethod = 'karachi';
-  String _selectedMadhab = 'hanafi';
+  String _selectedMethod = kDefaultCalcMethod;
+  String _selectedMadhab = kDefaultMadhab;
   
   bool _notifJanaza = true;
   bool _notifAdhan = true;
@@ -33,6 +33,7 @@ class _SettingsPageState extends State<SettingsPage> {
   bool _isLoadingPrefs = true;
   bool _isMosqueAdmin = false;
   int _unreadNotifications = 0;
+  final Set<String> _savingKeys = {};
 
   @override
   void initState() {
@@ -74,8 +75,8 @@ class _SettingsPageState extends State<SettingsPage> {
     }
 
     setState(() {
-      _selectedMethod = prefs.getString('pref_calculation_method') ?? 'karachi';
-      _selectedMadhab = prefs.getString('pref_madhab') ?? 'hanafi';
+      _selectedMethod = prefs.getString('pref_calculation_method') ?? kDefaultCalcMethod;
+      _selectedMadhab = prefs.getString('pref_madhab') ?? kDefaultMadhab;
 
       _notifJanaza = remotePrefs['janaza'] ?? true;
       _notifAdhan = remotePrefs['adhan'] ?? true;
@@ -90,9 +91,17 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   Future<void> _updateNotification(String key, bool value) async {
+    if (_savingKeys.contains(key)) return;
     final user = FirebaseAuth.instance.currentUser;
 
+    final bool prevJanaza = _notifJanaza;
+    final bool prevAdhan = _notifAdhan;
+    final bool prevNamaz = _notifNamaz;
+    final bool prevEid = _notifEid;
+    final bool prevTaraweeh = _notifTaraweeh;
+
     setState(() {
+      _savingKeys.add(key);
       if (key == 'janaza') _notifJanaza = value;
       if (key == 'adhan') _notifAdhan = value;
       if (key == 'namaz') _notifNamaz = value;
@@ -101,16 +110,37 @@ class _SettingsPageState extends State<SettingsPage> {
     });
 
     if (user != null) {
-      await FirebaseFirestore.instance.collection('users').doc(user.uid).set({
-        'notificationPrefs': {
-          'janaza': _notifJanaza,
-          'adhan': _notifAdhan,
-          'namaz': _notifNamaz,
-          'eid': _notifEid,
-          'taraweeh': _notifTaraweeh,
+      try {
+        await FirebaseFirestore.instance.collection('users').doc(user.uid).set({
+          'notificationPrefs': {
+            'janaza': _notifJanaza,
+            'adhan': _notifAdhan,
+            'namaz': _notifNamaz,
+            'eid': _notifEid,
+            'taraweeh': _notifTaraweeh,
+          }
+        }, SetOptions(merge: true));
+      } catch (e) {
+        if (mounted) {
+          setState(() {
+            _notifJanaza = prevJanaza;
+            _notifAdhan = prevAdhan;
+            _notifNamaz = prevNamaz;
+            _notifEid = prevEid;
+            _notifTaraweeh = prevTaraweeh;
+          });
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Failed to update notification preference. Please try again.'),
+              backgroundColor: Colors.redAccent,
+              behavior: SnackBarBehavior.floating,
+            ),
+          );
         }
-      }, SetOptions(merge: true));
+      }
     }
+
+    if (mounted) setState(() => _savingKeys.remove(key));
   }
 
   Future<void> _deleteAccount() async {
@@ -283,25 +313,29 @@ class _SettingsPageState extends State<SettingsPage> {
                         l10n?.notifAdhanLabel ?? 'Adhan Alerts',
                         l10n?.notifAdhanSub ?? 'Notification at exact prayer time',
                         _notifAdhan,
-                        (v) => _updateNotification('adhan', v)
+                        (v) => _updateNotification('adhan', v),
+                        savingKey: 'adhan',
                       ),
                       _buildSwitchTile(
                         l10n?.notifPrayerLabel ?? 'Prayer Reminders',
                         l10n?.notifPrayerSub ?? '5 minutes before congregation',
                         _notifNamaz,
-                        (v) => _updateNotification('namaz', v)
+                        (v) => _updateNotification('namaz', v),
+                        savingKey: 'namaz',
                       ),
                       _buildSwitchTile(
                         l10n?.notifJanazaLabel ?? 'Janaza Alerts',
                         l10n?.notifJanazaSub ?? 'Urgent local funeral notifications',
                         _notifJanaza,
-                        (v) => _updateNotification('janaza', v)
+                        (v) => _updateNotification('janaza', v),
+                        savingKey: 'janaza',
                       ),
                       _buildSwitchTile(
                         l10n?.notifEidLabel ?? 'Eid & Taraweeh',
                         l10n?.notifEidSub ?? 'Special prayer announcements',
                         _notifEid,
-                        (v) => _updateNotification('eid', v)
+                        (v) => _updateNotification('eid', v),
+                        savingKey: 'eid',
                       ),
                     ],
 
@@ -311,15 +345,15 @@ class _SettingsPageState extends State<SettingsPage> {
                       'Method',
                       _selectedMethod,
                       {
-                        'karachi': 'University of Islamic Sciences, Karachi',
-                        'isna': 'ISNA (North America)',
-                        'mwl': 'Muslim World League',
-                        'egypt': 'Egyptian Authority',
-                        'dubai': 'Dubai',
-                        'qatar': 'Qatar',
-                        'singapore': 'Singapore',
-                        'tehran': 'Tehran',
-                        'turkey': 'Turkey',
+                        kCalcMethodKarachi:   'University of Islamic Sciences, Karachi',
+                        kCalcMethodIsna:      'ISNA (North America)',
+                        kCalcMethodMwl:       'Muslim World League',
+                        kCalcMethodEgypt:     'Egyptian Authority',
+                        kCalcMethodDubai:     'Dubai',
+                        kCalcMethodQatar:     'Qatar',
+                        kCalcMethodSingapore: 'Singapore',
+                        kCalcMethodTehran:    'Tehran',
+                        kCalcMethodTurkey:    'Turkey',
                       },
                       (val) {
                         if (val != null) {
@@ -332,8 +366,8 @@ class _SettingsPageState extends State<SettingsPage> {
                       'Madhab (Asr)',
                       _selectedMadhab,
                       {
-                        'hanafi': 'Hanafi (Later)',
-                        'shafii': 'Shafi\'i / Maliki / Hanbali (Earlier)',
+                        kMadhabHanafi: 'Hanafi (Later)',
+                        kMadhabShafi:  'Shafi\'i / Maliki / Hanbali (Earlier)',
                       },
                       (val) {
                         if (val != null) {
@@ -376,12 +410,25 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
-  Widget _buildSwitchTile(String title, String subtitle, bool value, Function(bool) onChanged) {
+  Widget _buildSwitchTile(
+    String title,
+    String subtitle,
+    bool value,
+    Function(bool) onChanged, {
+    String? savingKey,
+  }) {
+    final isSaving = savingKey != null && _savingKeys.contains(savingKey);
     return ListTile(
       contentPadding: EdgeInsets.zero,
       title: Text(title, style: GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.w600)),
       subtitle: Text(subtitle, style: GoogleFonts.lato(fontSize: 12, color: MinaretTheme.slate)),
-      trailing: Switch(value: value, onChanged: onChanged),
+      trailing: isSaving
+          ? const SizedBox(
+              width: 24,
+              height: 24,
+              child: CircularProgressIndicator(strokeWidth: 2),
+            )
+          : Switch(value: value, onChanged: onChanged),
     );
   }
 

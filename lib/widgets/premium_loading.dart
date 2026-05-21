@@ -96,7 +96,7 @@ class _PremiumLoadingScreenState extends State<PremiumLoadingScreen>
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: MinaretTheme.gold
-                          .withOpacity(_dotAnimations[i].value),
+                          .withValues(alpha: _dotAnimations[i].value),
                     ),
                   ),
                 );
@@ -241,7 +241,7 @@ class PremiumLoadingOverlay extends StatelessWidget {
         child,
         if (isLoading)
           Container(
-            color: Colors.black.withOpacity(0.3),
+            color: Colors.black.withValues(alpha: 0.3),
             child: Center(
               child: PremiumLoadingScreen(message: loadingMessage),
             ),

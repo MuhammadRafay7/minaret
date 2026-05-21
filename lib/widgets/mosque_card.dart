@@ -46,11 +46,6 @@ class MosqueCard extends StatefulWidget {
 class _MosqueCardState extends State<MosqueCard> {
   StreamSubscription<void>? _tickerSub;
 
-  // Extra colours not in MinaretTheme
-  static const _headerBg = Color(0xFF0F2D1E); // deep Andalusian forest green
-  static const _creamText = Color(0xFFF5EDD8); // warm cream on dark header
-  static const _goldSoft = Color(0xFFE8C96A); // MinaretTheme.goldSoft alias
-
   @override
   void initState() {
     super.initState();
@@ -155,10 +150,10 @@ class _MosqueCardState extends State<MosqueCard> {
               borderRadius: BorderRadius.circular(16.r),
               border: Border.all(
                 color: isSoon
-                    ? MinaretTheme.gold.withOpacity(0.45)
+                    ? MinaretTheme.gold.withValues(alpha: 0.45)
                     : (isDark
-                        ? Colors.white.withOpacity(0.08)
-                        : Colors.black.withOpacity(0.07)),
+                        ? Colors.white.withValues(alpha: 0.08)
+                        : Colors.black.withValues(alpha: 0.07)),
                 width: 0.5,
               ),
               boxShadow:
@@ -276,7 +271,7 @@ class _Header extends StatelessWidget {
             children: [
               _badge(
                 label: l10n?.adminLabel ?? 'ADMIN',
-                borderColor: _goldSoft.withOpacity(0.55),
+                borderColor: _goldSoft.withValues(alpha: 0.55),
                 textColor: _goldSoft,
               ),
               if (isPending || isRejected)
@@ -285,7 +280,7 @@ class _Header extends StatelessWidget {
                       ? (l10n?.pendingApproval ?? 'PENDING')
                       : (l10n?.rejectedStatus ?? 'REJECTED'),
                   borderColor: (isPending ? Colors.orange : Colors.redAccent)
-                      .withOpacity(0.7),
+                      .withValues(alpha: 0.7),
                   textColor: isPending ? Colors.orange : Colors.redAccent,
                 ),
             ],
@@ -301,7 +296,7 @@ class _Header extends StatelessWidget {
               fontSize: 9.sp,
               letterSpacing: 1.8,
               fontWeight: FontWeight.w600,
-              color: _goldSoft.withOpacity(0.60),
+              color: _goldSoft.withValues(alpha: 0.60),
             ),
           ),
           SizedBox(height: 4.h),
@@ -352,9 +347,9 @@ class _Header extends StatelessWidget {
           Container(
             padding: EdgeInsets.symmetric(horizontal: 7.w, vertical: 3.h),
             decoration: BoxDecoration(
-              color: _goldSoft.withOpacity(0.12),
+              color: _goldSoft.withValues(alpha: 0.12),
               border: Border.all(
-                color: _goldSoft.withOpacity(0.28),
+                color: _goldSoft.withValues(alpha: 0.28),
                 width: 0.5,
               ),
               borderRadius: BorderRadius.circular(4.r),
@@ -381,7 +376,7 @@ class _Header extends StatelessWidget {
                   : Icons.notifications_none_rounded,
               color: isFollowing
                   ? MinaretTheme.emeraldLight
-                  : Colors.white.withOpacity(0.35),
+                  : Colors.white.withValues(alpha: 0.35),
               size: 20.sp,
               onTap: userId != null ? onFollowToggle : null,
             ),
@@ -389,7 +384,7 @@ class _Header extends StatelessWidget {
             _IconBtn(
               icon: Icons.north_east_rounded,
               color:
-                  isSoon ? MinaretTheme.gold : Colors.white.withOpacity(0.35),
+                  isSoon ? MinaretTheme.gold : Colors.white.withValues(alpha: 0.35),
               size: 20.sp,
               onTap: onDirections,
             ),
@@ -439,12 +434,12 @@ class _CountdownPill extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
       decoration: BoxDecoration(
         color: isSoon
-            ? MinaretTheme.gold.withOpacity(0.18)
-            : Colors.white.withOpacity(0.07),
+            ? MinaretTheme.gold.withValues(alpha: 0.18)
+            : Colors.white.withValues(alpha: 0.07),
         border: Border.all(
           color: isSoon
-              ? MinaretTheme.gold.withOpacity(0.5)
-              : Colors.white.withOpacity(0.15),
+              ? MinaretTheme.gold.withValues(alpha: 0.5)
+              : Colors.white.withValues(alpha: 0.15),
           width: 0.5,
         ),
         borderRadius: BorderRadius.circular(20.r),
@@ -458,7 +453,7 @@ class _CountdownPill extends StatelessWidget {
             decoration: BoxDecoration(
               color: isSoon
                   ? MinaretTheme.gold
-                  : const Color(0xFFE8C96A).withOpacity(0.7),
+                  : const Color(0xFFE8C96A).withValues(alpha: 0.7),
               shape: BoxShape.circle,
             ),
           ),
@@ -524,12 +519,12 @@ class _PrayerRow extends StatelessWidget {
       decoration: BoxDecoration(
         color: isDark
             ? const Color(0xFF111826)
-            : MinaretTheme.background.withOpacity(0.55),
+            : MinaretTheme.background.withValues(alpha: 0.55),
         border: Border(
           top: BorderSide(
             color: isDark
-                ? Colors.white.withOpacity(0.06)
-                : Colors.black.withOpacity(0.06),
+                ? Colors.white.withValues(alpha: 0.06)
+                : Colors.black.withValues(alpha: 0.06),
             width: 0.5,
           ),
         ),
@@ -592,7 +587,7 @@ class _PrayerCell extends StatelessWidget {
             fontSize: 7.sp,
             fontWeight: FontWeight.w700,
             letterSpacing: 0.8,
-            color: isNext ? MinaretTheme.emerald : muted.withOpacity(0.7),
+            color: isNext ? MinaretTheme.emerald : muted.withValues(alpha: 0.7),
           ),
         ),
         SizedBox(height: 5.h),
@@ -604,9 +599,9 @@ class _PrayerCell extends StatelessWidget {
               : EdgeInsets.zero,
           decoration: isNext
               ? BoxDecoration(
-                  color: MinaretTheme.emerald.withOpacity(0.09),
+                  color: MinaretTheme.emerald.withValues(alpha: 0.09),
                   border: Border.all(
-                    color: MinaretTheme.emerald.withOpacity(0.22),
+                    color: MinaretTheme.emerald.withValues(alpha: 0.22),
                     width: 0.5,
                   ),
                   borderRadius: BorderRadius.circular(3.r),
@@ -629,7 +624,7 @@ class _PrayerCell extends StatelessWidget {
           '$pfx $displayA',
           style: GoogleFonts.ibmPlexMono(
             fontSize: 8.sp,
-            color: muted.withOpacity(0.6),
+            color: muted.withValues(alpha: 0.6),
           ),
           overflow: TextOverflow.ellipsis,
         ),
@@ -664,11 +659,11 @@ class _IconBtn extends StatelessWidget {
         height: 32.w,
         decoration: BoxDecoration(
           border: Border.all(
-            color: Colors.white.withOpacity(0.12),
+            color: Colors.white.withValues(alpha: 0.12),
             width: 0.5,
           ),
           borderRadius: BorderRadius.circular(8.r),
-          color: Colors.white.withOpacity(0.05),
+          color: Colors.white.withValues(alpha: 0.05),
         ),
         alignment: Alignment.center,
         child: Icon(icon, color: color, size: size),
@@ -696,12 +691,12 @@ class _TilePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final hex = Paint()
-      ..color = _gold.withOpacity(0.07)
+      ..color = _gold.withValues(alpha: 0.07)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 0.55;
 
     final inner = Paint()
-      ..color = _gold.withOpacity(0.035)
+      ..color = _gold.withValues(alpha: 0.035)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 0.35;
 

@@ -8,7 +8,7 @@ service cloud.firestore {
     }
 
     function isOwner(userId) {
-      return request.auth.uid == userId;
+      return request.auth != null && request.auth.uid == userId;
     }
 
     function isAdmin() {
@@ -71,7 +71,10 @@ match /mosques/{mosqueId} {
     match /notifications/{notificationId} {
   allow read: if isAuthenticated() && resource.data.userId == request.auth.uid;
   allow list: if isAuthenticated() && request.query.userId == request.auth.uid;
-  allow create: if isAuthenticated();  // ← CHANGED (was: request.resource.data.userId == request.auth.uid)
+  // isAuthenticated() alone is insufficient here: any logged-in user could set
+  // an arbitrary userId field and create notifications targeting another user.
+  // We must verify that the document's userId matches the caller's own uid.
+  allow create: if isOwner(request.resource.data.userId);
   allow update: if isAuthenticated() &&
                    resource.data.userId == request.auth.uid &&
                    request.resource.data.diff(resource.data).affectedKeys().hasOnly(['read']);

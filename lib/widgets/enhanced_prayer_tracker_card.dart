@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -6,7 +7,6 @@ import 'package:minaret/l10n/generated/app_localizations.dart';
 import 'package:minaret/core/theme.dart';
 import 'package:minaret/services/enhanced_prayer_tracker_service.dart';
 import 'package:minaret/widgets/app_loading_indicator.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 class EnhancedPrayerTrackerCard extends StatefulWidget {
   const EnhancedPrayerTrackerCard({super.key});
@@ -26,6 +26,7 @@ class _EnhancedPrayerTrackerCardState extends State<EnhancedPrayerTrackerCard>
   List<String> _completed = [];
   UserPrayerStats? _userStats;
   bool _isLoading = true;
+  final Set<String> _syncingKeys = {};
 
   late AnimationController _entranceController;
   late Animation<double> _fadeAnim;
@@ -107,13 +108,14 @@ class _EnhancedPrayerTrackerCardState extends State<EnhancedPrayerTrackerCard>
     }
   }
 
-  /// Toggles prayer status with Optimistic UI updates
+  /// Toggles prayer status with optimistic UI and per-button sync guard.
   void _toggle(int index, String key) {
+    if (_syncingKeys.contains(key)) return;
     HapticFeedback.lightImpact();
     _rippleControllers[index].forward(from: 0);
 
-    // INSTANT UI UPDATE
     setState(() {
+      _syncingKeys.add(key);
       if (_completed.contains(key)) {
         _completed = List.from(_completed)..remove(key);
       } else {
@@ -121,26 +123,24 @@ class _EnhancedPrayerTrackerCardState extends State<EnhancedPrayerTrackerCard>
       }
     });
 
-    // PERFORM SYNC IN BACKGROUND
     _syncToggleWithServer(key);
   }
 
   Future<void> _syncToggleWithServer(String key) async {
     try {
       await EnhancedPrayerTrackerService.togglePrayer(key);
-      
-      // Update stats silently in background after successful sync
       final userStats = await EnhancedPrayerTrackerService.getCurrentUserStats();
       if (mounted) {
         setState(() {
           _userStats = userStats;
+          _syncingKeys.remove(key);
         });
       }
     } catch (e) {
-      debugPrint('Sync Error: $e');
-      // Rollback UI state if sync fails
+      if (kDebugMode) debugPrint('Prayer sync error: $e');
       if (mounted) {
         setState(() {
+          _syncingKeys.remove(key);
           if (_completed.contains(key)) {
             _completed = List.from(_completed)..remove(key);
           } else {
@@ -149,7 +149,8 @@ class _EnhancedPrayerTrackerCardState extends State<EnhancedPrayerTrackerCard>
         });
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(AppLocalizations.of(context)?.failedToSyncPrayer ?? 'Failed to sync prayer. Check connection.'),
+            content: Text(AppLocalizations.of(context)?.failedToSyncPrayer ??
+                'Failed to sync prayer. Check connection.'),
             backgroundColor: Colors.redAccent,
             behavior: SnackBarBehavior.floating,
           ),
@@ -172,7 +173,7 @@ class _EnhancedPrayerTrackerCardState extends State<EnhancedPrayerTrackerCard>
           borderRadius: BorderRadius.circular(20.r),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(isDark ? 0.3 : 0.07),
+              color: Colors.black.withValues(alpha: isDark ? 0.3 : 0.07),
               blurRadius: 20,
               offset: const Offset(0, 4),
             ),
@@ -215,12 +216,12 @@ class _EnhancedPrayerTrackerCardState extends State<EnhancedPrayerTrackerCard>
           borderRadius: BorderRadius.circular(20.r),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(isDark ? 0.3 : 0.07),
+              color: Colors.black.withValues(alpha: isDark ? 0.3 : 0.07),
               blurRadius: 20,
               offset: const Offset(0, 4),
             ),
             BoxShadow(
-              color: Colors.black.withOpacity(isDark ? 0.15 : 0.03),
+              color: Colors.black.withValues(alpha: isDark ? 0.15 : 0.03),
               blurRadius: 6,
               offset: const Offset(0, 1),
             ),
@@ -287,6 +288,7 @@ class _EnhancedPrayerTrackerCardState extends State<EnhancedPrayerTrackerCard>
                     child: _PrayerButton(
                       label: _shortLabel(p.key),
                       isDone: isDone,
+                      isSyncing: _syncingKeys.contains(p.key),
                       isDark: isDark,
                       surfaceColor: surfaceColor,
                       labelColor: labelColor,
@@ -405,7 +407,7 @@ class _EnhancedStreakPill extends StatelessWidget {
               style: GoogleFonts.dmSans(
                 fontSize: 9.sp,
                 fontWeight: FontWeight.w500,
-                color: MinaretTheme.gold.withOpacity(0.8),
+                color: MinaretTheme.gold.withValues(alpha: 0.8),
                 height: 1.0,
               ),
             ),
@@ -418,6 +420,7 @@ class _EnhancedStreakPill extends StatelessWidget {
 class _PrayerButton extends StatelessWidget {
   final String label;
   final bool isDone;
+  final bool isSyncing;
   final bool isDark;
   final Color surfaceColor;
   final Color labelColor;
@@ -426,6 +429,7 @@ class _PrayerButton extends StatelessWidget {
   const _PrayerButton({
     required this.label,
     required this.isDone,
+    required this.isSyncing,
     required this.isDark,
     required this.surfaceColor,
     required this.labelColor,
@@ -435,7 +439,7 @@ class _PrayerButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: isSyncing ? null : onTap,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -450,7 +454,7 @@ class _PrayerButton extends StatelessWidget {
               boxShadow: isDone
                   ? [
                       BoxShadow(
-                        color: MinaretTheme.gold.withOpacity(0.3),
+                        color: MinaretTheme.gold.withValues(alpha: 0.3),
                         blurRadius: 12,
                         offset: const Offset(0, 3),
                       ),
@@ -466,19 +470,29 @@ class _PrayerButton extends StatelessWidget {
                   scale: anim,
                   child: FadeTransition(opacity: anim, child: child),
                 ),
-                child: isDone
-                    ? Icon(
-                        Icons.check_rounded,
-                        key: const ValueKey('check'),
-                        color: Colors.white,
-                        size: 20.sp,
+                child: isSyncing
+                    ? SizedBox(
+                        key: const ValueKey('syncing'),
+                        width: 18.sp,
+                        height: 18.sp,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          color: isDone ? Colors.white : MinaretTheme.gold,
+                        ),
                       )
-                    : Icon(
-                        Icons.circle_outlined,
-                        key: const ValueKey('empty'),
-                        color: labelColor.withOpacity(0.5),
-                        size: 18.sp,
-                      ),
+                    : isDone
+                        ? Icon(
+                            Icons.check_rounded,
+                            key: const ValueKey('check'),
+                            color: Colors.white,
+                            size: 20.sp,
+                          )
+                        : Icon(
+                            Icons.circle_outlined,
+                            key: const ValueKey('empty'),
+                            color: labelColor.withValues(alpha: 0.5),
+                            size: 18.sp,
+                          ),
               ),
             ),
           ),
@@ -571,7 +585,7 @@ class _EnhancedProgressSection extends StatelessWidget {
                       style: GoogleFonts.dmSans(
                         fontSize: 9.sp,
                         fontWeight: FontWeight.w400,
-                        color: labelColor.withOpacity(0.7),
+                        color: labelColor.withValues(alpha: 0.7),
                         letterSpacing: -0.1,
                       ),
                     ),
@@ -586,7 +600,7 @@ class _EnhancedProgressSection extends StatelessWidget {
                   style: GoogleFonts.dmMono(
                     fontSize: 10.sp,
                     fontWeight: FontWeight.w500,
-                    color: allDone ? MinaretTheme.gold : labelColor.withOpacity(0.7),
+                    color: allDone ? MinaretTheme.gold : labelColor.withValues(alpha: 0.7),
                   ),
                 ),
                 if (userStats != null)
@@ -595,7 +609,7 @@ class _EnhancedProgressSection extends StatelessWidget {
                     style: GoogleFonts.dmMono(
                       fontSize: 9.sp,
                       fontWeight: FontWeight.w400,
-                      color: labelColor.withOpacity(0.6),
+                      color: labelColor.withValues(alpha: 0.6),
                     ),
                   ),
               ],

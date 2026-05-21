@@ -1,5 +1,4 @@
 import 'dart:core';
-import 'package:flutter/material.dart';
 
 /// Comprehensive input validation utility for security
 class InputValidator {

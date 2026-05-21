@@ -109,7 +109,7 @@ class _AnnouncementFormState extends State<AnnouncementForm> {
                         hintText: 'Write your message to the community...',
                         hintStyle: GoogleFonts.lato(
                           fontSize: 14.sp,
-                          color: MinaretTheme.slate.withOpacity(0.5),
+                          color: MinaretTheme.slate.withValues(alpha: 0.5),
                         ),
                         border: OutlineInputBorder(
                           borderSide: BorderSide(

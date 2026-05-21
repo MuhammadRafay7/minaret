@@ -29,7 +29,7 @@ class FiqhSelector extends StatelessWidget {
             Container(
               height: 1,
               width: 16,
-              color: MinaretTheme.gold.withOpacity(0.5),
+              color: MinaretTheme.gold.withValues(alpha: 0.5),
             ),
             const SizedBox(width: 8),
             Text(
@@ -62,7 +62,7 @@ class FiqhSelector extends StatelessWidget {
                 ),
                 decoration: BoxDecoration(
                   color: isSelected
-                      ? MinaretTheme.emerald.withOpacity(0.12)
+                      ? MinaretTheme.emerald.withValues(alpha: 0.12)
                       : Colors.transparent,
                   border: Border.all(
                     color: isSelected
@@ -79,7 +79,7 @@ class FiqhSelector extends StatelessWidget {
                     fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
                     color: isSelected
                         ? MinaretTheme.emerald
-                        : MinaretTheme.slate.withOpacity(0.7),
+                        : MinaretTheme.slate.withValues(alpha: 0.7),
                   ),
                 ),
               ),

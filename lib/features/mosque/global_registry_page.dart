@@ -33,7 +33,7 @@ class _HexPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = Colors.white.withOpacity(0.04)
+      ..color = Colors.white.withValues(alpha: 0.04)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 0.7;
 
@@ -291,72 +291,36 @@ class _GlobalRegistryPageState extends State<GlobalRegistryPage>
   Widget _buildHeader(BuildContext context, bool dark) {
     final l10n      = AppLocalizations.of(context)!;
     final textColor = dark ? Colors.white : Colors.black;
-    final muted     = dark ? Colors.white38 : Colors.black38;
-    final div       = dark ? Colors.white12 : Colors.black12;
 
     return Padding(
-      padding: const EdgeInsetsDirectional.fromSTEB(32, 64, 32, 8),
+      padding: const EdgeInsets.fromLTRB(25, 24, 25, 8),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Brand
           Text(
-            'MINARET',
+            l10n.globalHeader.toUpperCase(),
             style: GoogleFonts.montserrat(
-              fontSize: 8,
+              fontSize: 9,
               letterSpacing: 3,
-              fontWeight: FontWeight.w800,
+              fontWeight: FontWeight.w900,
               color: MinaretTheme.gold,
             ),
           ),
-          const SizedBox(height: 5),
-          // Tagline
-          Text(
-            l10n.congregationArchive.toUpperCase(),
-            style: GoogleFonts.montserrat(
-              fontSize: 7,
-              letterSpacing: 3,
-              fontWeight: FontWeight.w700,
-              color: muted,
-            ),
-          ),
-          const SizedBox(height: 8),
-          // GLOBAL — wide-tracked serif caps
-          Text(
-            l10n.globalHeader.toUpperCase(),
-            style: MinaretTheme.heading.copyWith(
-              fontSize: 14,
-              letterSpacing: 10,
-              fontWeight: FontWeight.w900,
-              color: textColor,
-              height: 1,
-            ),
-          ),
-          const SizedBox(height: 2),
-          // Registry — large serif using app theme
+          const SizedBox(height: 6),
           Text(
             l10n.registryHeader,
             style: MinaretTheme.heading.copyWith(
-              fontSize: 48,
+              fontSize: 38,
+              letterSpacing: 6,
               fontWeight: FontWeight.w900,
               color: textColor,
-              height: 1,
             ),
           ),
-          const SizedBox(height: 16),
-          // ──◆── diamond divider with app theme gold
-          Row(
-            children: [
-              Expanded(child: Container(height: 0.5, color: div)),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: Transform.rotate(
-                  angle: math.pi / 4,
-                  child: Container(width: 5, height: 5, color: MinaretTheme.gold.withOpacity(0.7)),
-                ),
-              ),
-              Expanded(child: Container(height: 0.5, color: div)),
-            ],
+          const SizedBox(height: 12),
+          Container(
+            height: 1,
+            width: 30,
+            color: MinaretTheme.gold.withValues(alpha: 0.4),
           ),
         ],
       ),
@@ -371,13 +335,13 @@ class _GlobalRegistryPageState extends State<GlobalRegistryPage>
       child: Container(
         decoration: BoxDecoration(
           color: dark
-              ? Colors.white.withOpacity(0.05)
-              : Colors.black.withOpacity(0.04),
+              ? Colors.white.withValues(alpha: 0.05)
+              : Colors.black.withValues(alpha: 0.04),
           borderRadius: BorderRadius.circular(10),
           border: Border.all(
             color: dark
-                ? Colors.white.withOpacity(0.1)
-                : Colors.black.withOpacity(0.08),
+                ? Colors.white.withValues(alpha: 0.1)
+                : Colors.black.withValues(alpha: 0.08),
           ),
         ),
         child: TextField(
@@ -428,8 +392,8 @@ class _GlobalRegistryPageState extends State<GlobalRegistryPage>
                   padding: const EdgeInsets.symmetric(vertical: 10),
                   decoration: BoxDecoration(
                     color: dark
-                        ? Colors.white.withOpacity(0.05)
-                        : Colors.black.withOpacity(0.05),
+                        ? Colors.white.withValues(alpha: 0.05)
+                        : Colors.black.withValues(alpha: 0.05),
                     borderRadius: BorderRadius.circular(8),
                     border: Border.all(
                       color: dark ? Colors.white12 : Colors.black12,
@@ -709,7 +673,7 @@ class _MosqueCardState extends State<_MosqueCard>
                   border: Border.all(color: widget.cardStroke),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
+                      color: Colors.black.withValues(alpha: 0.1),
                       blurRadius: 8,
                       offset: const Offset(0, 2),
                     ),
@@ -761,10 +725,10 @@ class _MosqueCardState extends State<_MosqueCard>
                                 width: 28,
                                 height: 28,
                                 decoration: BoxDecoration(
-                                  color: Colors.white.withOpacity(0.08),
+                                  color: Colors.white.withValues(alpha: 0.08),
                                   borderRadius: BorderRadius.circular(8),
                                   border: Border.all(
-                                    color: Colors.white.withOpacity(0.1),
+                                    color: Colors.white.withValues(alpha: 0.1),
                                   ),
                                 ),
                                 child: const Icon(
@@ -820,7 +784,7 @@ class _MosqueCardState extends State<_MosqueCard>
                           // Thin divider
                           Container(
                             height: 0.5,
-                            color: Colors.white.withOpacity(0.08),
+                            color: Colors.white.withValues(alpha: 0.08),
                           ),
 
                           const SizedBox(height: 10),

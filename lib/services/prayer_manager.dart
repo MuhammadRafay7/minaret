@@ -1,5 +1,6 @@
 import 'package:adhan/adhan.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../core/constants/app_defaults.dart';
 import 'system_config_service.dart';
 
 class PrayerManager {
@@ -19,15 +20,15 @@ class PrayerManager {
 
     // Priority: 1. User Local Prefs -> 2. Admin Global Defaults -> 3. Hardcoded Fallback
     final savedMethod = prefs.getString(_calcMethodKey) ??
-                       globalSettings?.calculationMethod?.toLowerCase() ??
-                       'karachi';
+                       globalSettings?.calculationMethod.toLowerCase() ??
+                       kDefaultCalcMethod;
 
     final savedMadhab = prefs.getString(_madhabKey) ??
-                       globalSettings?.madhab?.toLowerCase() ??
-                       'hanafi';
+                       globalSettings?.madhab.toLowerCase() ??
+                       kDefaultMadhab;
 
     final params = _getParams(savedMethod);
-    params.madhab = savedMadhab == 'shafi' ? Madhab.shafi : Madhab.hanafi;
+    params.madhab = savedMadhab == kMadhabShafi ? Madhab.shafi : Madhab.hanafi;
 
     final date = DateTime.now();
     final components = DateComponents(date.year, date.month, date.day);

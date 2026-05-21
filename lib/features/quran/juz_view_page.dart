@@ -351,12 +351,12 @@ class _JuzViewPageState extends State<JuzViewPage>
                 ru: 'Поиск суры...',
               ),
               hintStyle: GoogleFonts.lato(
-                color: textSecondary.withOpacity(0.6),
+                color: textSecondary.withValues(alpha: 0.6),
                 fontSize: 13,
               ),
               prefixIcon: Icon(
                 Icons.search_rounded,
-                color: MinaretTheme.gold.withOpacity(0.5),
+                color: MinaretTheme.gold.withValues(alpha: 0.5),
                 size: 18,
               ),
               border: InputBorder.none,
@@ -377,7 +377,7 @@ class _JuzViewPageState extends State<JuzViewPage>
           style: GoogleFonts.montserrat(
             fontSize: 8,
             letterSpacing: 2,
-            color: textSecondary.withOpacity(0.55),
+            color: textSecondary.withValues(alpha: 0.55),
             fontWeight: FontWeight.w600,
           ),
         ),
@@ -422,8 +422,8 @@ class _JuzViewPageState extends State<JuzViewPage>
               height: 40,
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                color: MinaretTheme.gold.withOpacity(0.07),
-                border: Border.all(color: MinaretTheme.gold.withOpacity(0.2)),
+                color: MinaretTheme.gold.withValues(alpha: 0.07),
+                border: Border.all(color: MinaretTheme.gold.withValues(alpha: 0.2)),
               ),
               child: Text(
                 LocaleFormat.localizedDigits(context, surah.number.toString()),
@@ -453,7 +453,7 @@ class _JuzViewPageState extends State<JuzViewPage>
                     style: GoogleFonts.montserrat(
                       fontSize: 7,
                       letterSpacing: 1.5,
-                      color: textSecondary.withOpacity(0.55),
+                      color: textSecondary.withValues(alpha: 0.55),
                       fontWeight: FontWeight.w600,
                     ),
                   ),
@@ -512,7 +512,7 @@ class _JuzViewPageState extends State<JuzViewPage>
           children: [
             Icon(
               Icons.wifi_off_rounded,
-              color: MinaretTheme.gold.withOpacity(0.35),
+              color: MinaretTheme.gold.withValues(alpha: 0.35),
               size: 32,
             ),
             const SizedBox(height: 20),
@@ -558,9 +558,9 @@ class _GlassPill extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
         decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.06),
+          color: Colors.white.withValues(alpha: 0.06),
           borderRadius: BorderRadius.circular(50),
-          border: Border.all(color: Colors.white.withOpacity(0.09)),
+          border: Border.all(color: Colors.white.withValues(alpha: 0.09)),
         ),
         child: child,
       ),
