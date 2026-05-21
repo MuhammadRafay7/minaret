@@ -17,7 +17,7 @@ class SuccessOverlay extends StatelessWidget {
       filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
       child: Container(
         // Warm ivory at high opacity — consistent with app background
-        color: MinaretTheme.background.withOpacity(0.92),
+        color: MinaretTheme.background.withValues(alpha: 0.92),
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -28,9 +28,9 @@ class SuccessOverlay extends StatelessWidget {
                 width: 64.w,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: MinaretTheme.emerald.withOpacity(0.08),
+                  color: MinaretTheme.emerald.withValues(alpha: 0.08),
                   border: Border.all(
-                    color: MinaretTheme.emerald.withOpacity(0.4),
+                    color: MinaretTheme.emerald.withValues(alpha: 0.4),
                     width: 0.8,
                   ),
                 ),

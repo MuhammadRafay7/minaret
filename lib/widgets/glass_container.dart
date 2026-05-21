@@ -22,8 +22,8 @@ class GlassContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final surfaceTint = isDark
-        ? Colors.white.withOpacity(0.08)
-        : Colors.white.withOpacity(0.18);
+        ? Colors.white.withValues(alpha: 0.08)
+        : Colors.white.withValues(alpha: 0.18);
     final resolvedTint = tint == const Color(0x80FFFFFF)
         ? (isDark
               ? const Color(0x33111826)
@@ -44,7 +44,7 @@ class GlassContainer extends StatelessWidget {
             ),
             borderRadius: borderRadius,
             border: Border.all(
-              color: Colors.white.withOpacity(isDark ? 0.22 : 0.55),
+              color: Colors.white.withValues(alpha: isDark ? 0.22 : 0.55),
               width: 0.8,
             ),
           ),

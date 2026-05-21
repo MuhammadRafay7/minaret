@@ -20,7 +20,6 @@
 
 import 'package:flutter/foundation.dart';
 import 'dart:async';
-import 'dart:collection';
 
 // ============================================================================
 // SERVICE LIFETIME ENUMS

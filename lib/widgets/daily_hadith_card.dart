@@ -149,7 +149,7 @@ class _DailyHadithCardState extends State<DailyHadithCard> {
             decoration: BoxDecoration(
               color: MinaretTheme.emerald,
               border: Border.all(
-                color: MinaretTheme.gold.withOpacity(0.3),
+                color: MinaretTheme.gold.withValues(alpha: 0.3),
                 width: 0.8,
               ),
             ),
@@ -165,7 +165,7 @@ class _DailyHadithCardState extends State<DailyHadithCard> {
                         Container(
                           width: 16,
                           height: 1,
-                          color: MinaretTheme.gold.withOpacity(0.6),
+                          color: MinaretTheme.gold.withValues(alpha: 0.6),
                         ),
                         const SizedBox(width: 10),
                         Text(
@@ -189,7 +189,7 @@ class _DailyHadithCardState extends State<DailyHadithCard> {
                               decoration: BoxDecoration(
                                 color: active
                                     ? MinaretTheme.gold
-                                    : MinaretTheme.gold.withOpacity(0.25),
+                                    : MinaretTheme.gold.withValues(alpha: 0.25),
                                 shape: BoxShape.circle,
                               ),
                             );
@@ -205,7 +205,7 @@ class _DailyHadithCardState extends State<DailyHadithCard> {
                       ),
                       decoration: BoxDecoration(
                         border: Border.all(
-                          color: MinaretTheme.gold.withOpacity(0.4),
+                          color: MinaretTheme.gold.withValues(alpha: 0.4),
                           width: 0.7,
                         ),
                       ),
@@ -243,7 +243,7 @@ class _DailyHadithCardState extends State<DailyHadithCard> {
                     fontSize: 15.sp,
                     height: 1.75,
                     fontWeight: FontWeight.w300,
-                    color: Colors.white.withOpacity(0.92),
+                    color: Colors.white.withValues(alpha: 0.92),
                   ),
                 ),
 
@@ -256,7 +256,7 @@ class _DailyHadithCardState extends State<DailyHadithCard> {
                     minWidth: 100.w,
                     maxWidth: 400.w,
                   ),
-                  color: MinaretTheme.gold.withOpacity(0.2),
+                  color: MinaretTheme.gold.withValues(alpha: 0.2),
                 ),
 
                 SizedBox(height: 14.h),
@@ -270,7 +270,7 @@ class _DailyHadithCardState extends State<DailyHadithCard> {
                         Icon(
                           Icons.auto_stories_outlined,
                           size: 10,
-                          color: MinaretTheme.gold.withOpacity(0.6),
+                          color: MinaretTheme.gold.withValues(alpha: 0.6),
                         ),
                         const SizedBox(width: 7),
                         Text(
@@ -278,7 +278,7 @@ class _DailyHadithCardState extends State<DailyHadithCard> {
                           style: GoogleFonts.ibmPlexMono(
                             fontSize: 8,
                             letterSpacing: 1.2,
-                            color: Colors.white.withOpacity(0.35),
+                            color: Colors.white.withValues(alpha: 0.35),
                           ),
                         ),
                       ],
@@ -286,7 +286,7 @@ class _DailyHadithCardState extends State<DailyHadithCard> {
                     Icon(
                       Icons.open_in_new_rounded,
                       size: 11,
-                      color: MinaretTheme.gold.withOpacity(0.4),
+                      color: MinaretTheme.gold.withValues(alpha: 0.4),
                     ),
                   ],
                 ),
@@ -302,7 +302,7 @@ class _DailyHadithCardState extends State<DailyHadithCard> {
     return Container(
       height: 160.h,
       decoration: BoxDecoration(
-        color: MinaretTheme.emeraldLight.withOpacity(0.15),
+        color: MinaretTheme.emeraldLight.withValues(alpha: 0.15),
         border: Border.all(color: MinaretTheme.dividerColor),
       ),
       child: const Center(

@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:geolocator/geolocator.dart';
 
+import '../../../core/constants/app_defaults.dart';
 import '../../../core/dependency_injection.dart';
 import '../../../core/locale_format.dart';
 import '../../../core/location_service.dart';
@@ -26,7 +27,7 @@ const int _mosqueQueryLimit = 25;
 class HomeNotifier extends ChangeNotifier {
   // ── Auth / user ───────────────────────────────────────────────────────────
   User? _user;
-  String _role = 'common';
+  String _role = kDefaultRole;
   List<String> _following = [];
   bool _isImam = false;
   UserPrayerStats? _prayerStats;
@@ -174,7 +175,7 @@ class HomeNotifier extends ChangeNotifier {
     _userSub = null;
 
     if (user == null) {
-      _role = 'common';
+      _role = kDefaultRole;
       _following = [];
       _isImam = false;
       _prayerStats = null;
@@ -190,9 +191,9 @@ class HomeNotifier extends ChangeNotifier {
 
   void _onUserProfileChanged(UserProfile? profile) {
     if (profile == null) return;
-    final newRole = profile.role ?? 'common';
+    final newRole = profile.role;
     final newFollowing = profile.followedMosques;
-    final newIsImam = newRole == 'imam';
+    final newIsImam = newRole == kRoleImam;
 
     final roleChanged = newRole != _role;
     _role = newRole;

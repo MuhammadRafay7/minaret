@@ -94,10 +94,13 @@ class NotificationService {
     }
   }
 
-  static void _saveSlotsToPrefs() {
-    SharedPreferences.getInstance().then((prefs) {
-      prefs.setString(_slotsPrefKey, jsonEncode(_mosqueSlots));
-    }).catchError((e) => debugPrint('🔴 _saveSlotsToPrefs error: $e'));
+  static Future<void> _saveSlotsToPrefs() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString(_slotsPrefKey, jsonEncode(_mosqueSlots));
+    } catch (e) {
+      debugPrint('🔴 _saveSlotsToPrefs error: $e');
+    }
   }
 
   static int _mosqueSlot(String mosqueId) {
@@ -245,7 +248,7 @@ class NotificationService {
       debugPrint('🔴 startForUser: no user logged in');
       return;
     }
-    debugPrint('🟢 startForUser: ${user.uid}');
+    if (kDebugMode) debugPrint('🟢 startForUser: authenticated');
 
     await _rescheduleIfExpiring();
     await cancelAllListeners();
@@ -325,7 +328,6 @@ class NotificationService {
         .listen(
       (userProfile) async {
         if (userProfile == null) return;
-        final rawData = userProfile.raw;
 
         final followed = userProfile.followedMosques;
         _notificationsEnabled = userProfile.notificationsEnabled;
@@ -394,12 +396,8 @@ class NotificationService {
       double minDist = double.infinity;
 
       for (final mosque in mosques) {
-        final docLat = mosque.lat;
-        final docLng = mosque.lng;
-        if (docLat == null || docLng == null) continue;
-
         final dist = LocationService.calculateDistance(
-            lat, lng, docLat, docLng);
+            lat, lng, mosque.lat, mosque.lng);
 
         if (dist < minDist) {
           minDist = dist;

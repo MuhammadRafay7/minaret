@@ -3,7 +3,6 @@
 export '../repositories/prayer_repository.dart'
     show PrayerRecord, UserPrayerStats;
 
-import 'package:flutter/foundation.dart';
 import '../core/dependency_injection.dart';
 import '../repositories/prayer_repository.dart';
 

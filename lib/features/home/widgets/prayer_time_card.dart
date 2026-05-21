@@ -58,9 +58,9 @@ class _PrayerTimeCardState extends State<PrayerTimeCard> {
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
       decoration: BoxDecoration(
         color: isDark
-            ? MinaretTheme.emerald.withOpacity(0.08)
-            : MinaretTheme.emerald.withOpacity(0.05),
-        border: Border.all(color: MinaretTheme.emerald.withOpacity(0.25)),
+            ? MinaretTheme.emerald.withValues(alpha: 0.08)
+            : MinaretTheme.emerald.withValues(alpha: 0.05),
+        border: Border.all(color: MinaretTheme.emerald.withValues(alpha: 0.25)),
       ),
       child: Row(
         children: [
@@ -79,7 +79,7 @@ class _PrayerTimeCardState extends State<PrayerTimeCard> {
                   style: GoogleFonts.montserrat(
                     fontSize: 8,
                     letterSpacing: 2,
-                    color: MinaretTheme.emerald.withOpacity(0.7),
+                    color: MinaretTheme.emerald.withValues(alpha: 0.7),
                     fontWeight: FontWeight.w700,
                   ),
                 ),

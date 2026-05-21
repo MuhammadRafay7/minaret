@@ -1,8 +1,10 @@
 import 'dart:convert';
 import 'dart:typed_data';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:image_picker/image_picker.dart';
@@ -11,6 +13,7 @@ import 'package:string_similarity/string_similarity.dart';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 
+import 'package:minaret/core/constants/app_defaults.dart';
 import 'package:minaret/l10n/generated/app_localizations.dart';
 
 import '../../core/theme.dart';
@@ -20,8 +23,6 @@ import '../../widgets/premium_button.dart';
 import '../../widgets/atelier_layout.dart';
 import '../mosque/edit_mosque_page.dart';
 import '../mosque/create_mosque_page.dart';
-import '../../widgets/success_overlay.dart';
-import '../../core/theme_provider.dart';
 import '../legal/privacy_policy_page.dart';
 import '../legal/terms_of_service_page.dart';
 import 'settings_page.dart';
@@ -438,9 +439,9 @@ class _AuthPageState extends State<AuthPage> {
   bool _isLoading = false;
   bool _isCheckingVerification = false;
   AuthStep _regStep = AuthStep.phone;
-  String _selectedRole = 'common';
+  String _selectedRole = kDefaultRole;
   bool _offersTeaching = false;
-  String _teachingAudience = 'neighbourhood';
+  String _teachingAudience = kDefaultTeachingAudience;
 
   late final Stream<User?> _authStream;
 
@@ -470,7 +471,7 @@ class _AuthPageState extends State<AuthPage> {
   Color get _textSecondary => _isDark ? Colors.white70 : MinaretTheme.slate;
   Color get _lineColor => _isDark ? Colors.white24 : MinaretTheme.dividerColor;
   Color get _surfaceColor =>
-      _isDark ? const Color(0xFF151B24) : Colors.white.withOpacity(0.45);
+      _isDark ? const Color(0xFF151B24) : Colors.white.withValues(alpha: 0.45);
 
   String _displayText(String value) {
     final locale = Localizations.localeOf(context).languageCode;
@@ -605,7 +606,7 @@ class _AuthPageState extends State<AuthPage> {
             .collection('users')
             .doc(cred.user!.uid)
             .get();
-        final role = userDoc.data()?['role'] ?? 'common';
+        final role = userDoc.data()?['role'] ?? kDefaultRole;
         if (!mounted) return;
         await _routeAfterLogin(cred.user!.uid, role);
       } else {
@@ -642,7 +643,7 @@ class _AuthPageState extends State<AuthPage> {
           return;
         }
 
-        if (_selectedRole == 'imam') {
+        if (_selectedRole == kRoleImam) {
           final nameValidation =
               InputValidator.validateName(_fullNameController.text);
           if (!nameValidation.isValid) {
@@ -725,7 +726,7 @@ class _AuthPageState extends State<AuthPage> {
             'eid': true,
             'taraweeh': true,
           },
-          if (_selectedRole == 'imam') ...{
+          if (_selectedRole == kRoleImam) ...{
             'fullName': _fullNameController.text.trim(),
             'fatherName': _fatherNameController.text.trim(),
             'phoneNumber': _phoneNumberController.text.trim(),
@@ -813,7 +814,7 @@ class _AuthPageState extends State<AuthPage> {
 
   Future<void> _routeAfterLogin(String uid, String role) async {
     if (!mounted) return;
-    if (role == 'imam') {
+    if (role == kRoleImam) {
       final q = await FirebaseFirestore.instance
           .collection('mosques')
           .where('adminUid', isEqualTo: uid)
@@ -891,7 +892,7 @@ class _AuthPageState extends State<AuthPage> {
             .collection('users')
             .doc(freshUser.uid)
             .get();
-        final role = doc.data()?['role'] ?? 'common';
+        final role = doc.data()?['role'] ?? kDefaultRole;
         if (!mounted) return;
         await _routeAfterLogin(freshUser.uid, role);
       } else {
@@ -908,7 +909,7 @@ class _AuthPageState extends State<AuthPage> {
           );
         }
       }
-    } on FirebaseAuthException catch (e) {
+    } on FirebaseAuthException {
       await FirebaseAuth.instance.signOut();
       if (mounted) {
         _showStatus(
@@ -1022,9 +1023,9 @@ class _AuthPageState extends State<AuthPage> {
           width: double.infinity,
           padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
-            color: MinaretTheme.gold.withOpacity(0.06),
+            color: MinaretTheme.gold.withValues(alpha: 0.06),
             border: Border.all(
-              color: MinaretTheme.gold.withOpacity(0.25),
+              color: MinaretTheme.gold.withValues(alpha: 0.25),
               width: 0.8,
             ),
           ),
@@ -1221,7 +1222,7 @@ class _AuthPageState extends State<AuthPage> {
                 .snapshots(),
             builder: (context, snap) {
               final role = snap.data?.data() as Map<String, dynamic>?;
-              if (role?['role'] == 'imam') {
+              if (role?['role'] == kRoleImam) {
                 return Center(
                   child: _buildTextLink(
                     _displayText(_t(
@@ -1360,6 +1361,27 @@ class _AuthPageState extends State<AuthPage> {
                 accent: true,
               ),
             ),
+            const SizedBox(height: 28),
+            Row(
+              children: [
+                Expanded(child: Divider(color: _lineColor)),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  child: Text(
+                    _displayText(_t(en: 'OR', ar: 'أو', ur: 'یا', ru: 'ИЛИ')),
+                    style: GoogleFonts.montserrat(
+                      fontSize: 9,
+                      letterSpacing: 2,
+                      fontWeight: FontWeight.w700,
+                      color: _textSecondary.withValues(alpha: 0.5),
+                    ),
+                  ),
+                ),
+                Expanded(child: Divider(color: _lineColor)),
+              ],
+            ),
+            const SizedBox(height: 20),
+            _buildGoogleSignInButton(),
           ],
           const SizedBox(height: 16),
           Center(
@@ -1448,7 +1470,7 @@ class _AuthPageState extends State<AuthPage> {
       _buildSectionLabel(l10n.sectionDesignation),
       const SizedBox(height: 16),
       _buildRoleSelector(l10n),
-      if (_selectedRole == 'imam') ...[
+      if (_selectedRole == kRoleImam) ...[
         const SizedBox(height: 28),
         _buildSectionLabel(
           _t(
@@ -1521,7 +1543,7 @@ class _AuthPageState extends State<AuthPage> {
             value: _teachingAudience,
             items: [
               DropdownMenuItem(
-                value: 'neighbourhood',
+                value: kTeachingAudienceNeighbourhood,
                 child: Text(
                   _t(
                     en: 'Neighbourhood learners',
@@ -1532,7 +1554,7 @@ class _AuthPageState extends State<AuthPage> {
                 ),
               ),
               DropdownMenuItem(
-                value: 'anyone',
+                value: kTeachingAudienceAnyone,
                 child: Text(
                   _t(en: 'Anyone', ar: 'أي شخص', ur: 'کوئی بھی', ru: 'Любой'),
                 ),
@@ -1759,7 +1781,7 @@ class _AuthPageState extends State<AuthPage> {
               color: _surfaceColor,
               border: Border.all(
                 color: isUploaded
-                    ? MinaretTheme.emerald.withOpacity(0.5)
+                    ? MinaretTheme.emerald.withValues(alpha: 0.5)
                     : _lineColor,
                 width: isUploaded ? 1.2 : 0.8,
               ),
@@ -1799,7 +1821,7 @@ class _AuthPageState extends State<AuthPage> {
                       Icon(
                         Icons.add_photo_alternate_outlined,
                         size: 30,
-                        color: MinaretTheme.gold.withOpacity(0.5),
+                        color: MinaretTheme.gold.withValues(alpha: 0.5),
                       ),
                       const SizedBox(height: 8),
                       Text(
@@ -1836,8 +1858,8 @@ class _AuthPageState extends State<AuthPage> {
       return Container(
         padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
-          color: MinaretTheme.gold.withOpacity(0.07),
-          border: Border.all(color: MinaretTheme.gold.withOpacity(0.3)),
+          color: MinaretTheme.gold.withValues(alpha: 0.07),
+          border: Border.all(color: MinaretTheme.gold.withValues(alpha: 0.3)),
         ),
         child: Row(
           children: [
@@ -1912,8 +1934,8 @@ class _AuthPageState extends State<AuthPage> {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: statusColor.withOpacity(0.07),
-        border: Border.all(color: statusColor.withOpacity(0.35)),
+        color: statusColor.withValues(alpha: 0.07),
+        border: Border.all(color: statusColor.withValues(alpha: 0.35)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -2048,7 +2070,7 @@ class _AuthPageState extends State<AuthPage> {
           children: [
             Expanded(
               child: Divider(
-                color: MinaretTheme.gold.withOpacity(0.25),
+                color: MinaretTheme.gold.withValues(alpha: 0.25),
                 thickness: 0.5,
               ),
             ),
@@ -2058,13 +2080,13 @@ class _AuthPageState extends State<AuthPage> {
                 '✦',
                 style: TextStyle(
                   fontSize: 8,
-                  color: MinaretTheme.gold.withOpacity(0.5),
+                  color: MinaretTheme.gold.withValues(alpha: 0.5),
                 ),
               ),
             ),
             Expanded(
               child: Divider(
-                color: MinaretTheme.gold.withOpacity(0.25),
+                color: MinaretTheme.gold.withValues(alpha: 0.25),
                 thickness: 0.5,
               ),
             ),
@@ -2080,9 +2102,9 @@ class _AuthPageState extends State<AuthPage> {
   Widget _buildRoleSelector(AppLocalizations l10n) {
     return Row(
       children: [
-        _roleButton(l10n.roleCommunity, 'common'),
+        _roleButton(l10n.roleCommunity, kRoleCommon),
         const SizedBox(width: 12),
-        _roleButton(l10n.roleImam, 'imam'),
+        _roleButton(l10n.roleImam, kRoleImam),
       ],
     );
   }
@@ -2141,7 +2163,43 @@ class _AuthPageState extends State<AuthPage> {
         floatingLabelBehavior: FloatingLabelBehavior.always,
         hintStyle: GoogleFonts.lato(
           fontSize: 13,
-          color: _textSecondary.withOpacity(0.7),
+          color: _textSecondary.withValues(alpha: 0.7),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildGoogleSignInButton() {
+    return GestureDetector(
+      onTap: _isLoading ? null : _signInWithGoogle,
+      child: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.symmetric(vertical: 16),
+        decoration: BoxDecoration(
+          border: Border.all(color: _lineColor),
+          color: Colors.transparent,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset('assets/icons/google_logo.png', width: 18, height: 18,
+                errorBuilder: (_, __, ___) => const Icon(Icons.g_mobiledata, size: 20)),
+            const SizedBox(width: 10),
+            Text(
+              _displayText(_t(
+                en: 'Continue with Google',
+                ar: 'المتابعة عبر جوجل',
+                ur: 'گوگل سے جاری رکھیں',
+                ru: 'Войти через Google',
+              )),
+              style: GoogleFonts.montserrat(
+                fontSize: 10,
+                letterSpacing: 1.5,
+                fontWeight: FontWeight.w700,
+                color: _textSecondary,
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -2174,11 +2232,101 @@ class _AuthPageState extends State<AuthPage> {
           color: accent
               ? MinaretTheme.gold
               : muted
-                  ? _textSecondary.withOpacity(0.5)
+                  ? _textSecondary.withValues(alpha: 0.5)
                   : _textSecondary,
         ),
       ),
     );
+  }
+
+  Future<void> _signInWithGoogle() async {
+    setState(() => _isLoading = true);
+    try {
+      final googleUser = await GoogleSignIn(
+        clientId: kIsWeb
+            ? '917799173646-jd6ebo6gsh37pljk08no9u3lm6bnu15n.apps.googleusercontent.com'
+            : null,
+        serverClientId: kIsWeb
+            ? null
+            : '917799173646-jd6ebo6gsh37pljk08no9u3lm6bnu15n.apps.googleusercontent.com',
+      ).signIn();
+      if (googleUser == null) {
+        setState(() => _isLoading = false);
+        return;
+      }
+      final googleAuth = await googleUser.authentication;
+      if (googleAuth.idToken == null) {
+        if (mounted) {
+          _showStatus(_t(
+            en: 'Google sign-in failed: could not get ID token. Make sure SHA-1 is added in Firebase Console.',
+            ar: 'فشل تسجيل الدخول: تأكد من إضافة SHA-1 في Firebase.',
+            ur: 'سائن اِن ناکام: Firebase Console میں SHA-1 شامل کریں۔',
+            ru: 'Ошибка: не удалось получить ID токен. Добавьте SHA-1 в Firebase Console.',
+          ));
+          setState(() => _isLoading = false);
+        }
+        return;
+      }
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+      final userCred = await FirebaseAuth.instance.signInWithCredential(credential);
+      final uid = userCred.user!.uid;
+      final userDoc = await FirebaseFirestore.instance.collection('users').doc(uid).get();
+      if (!userDoc.exists) {
+        // New Google user — register them automatically
+        await FirebaseFirestore.instance.collection('users').doc(uid).set({
+          'email': userCred.user!.email ?? '',
+          'displayName': userCred.user!.displayName ?? '',
+          'role': kDefaultRole,
+          'city': '',
+          'createdAt': FieldValue.serverTimestamp(),
+          'favorites': <String>[],
+          'followedMosques': <String>[],
+          'notificationsEnabled': true,
+          'notificationPrefs': {
+            'janaza': true,
+            'adhan': true,
+            'namaz': true,
+            'eid': true,
+            'taraweeh': true,
+          },
+        });
+        if (!mounted) return;
+        await _routeAfterLogin(uid, kDefaultRole);
+      } else {
+        final role = userDoc.data()?['role'] ?? kDefaultRole;
+        if (!mounted) return;
+        await _routeAfterLogin(uid, role);
+      }
+    } on FirebaseAuthException catch (e) {
+      if (!mounted) return;
+      if (e.code == 'account-exists-with-different-credential') {
+        _showStatus(_t(
+          en: 'This email is already registered with a password. Please sign in with your email and password instead.',
+          ar: 'هذا البريد الإلكتروني مسجل بكلمة مرور. يرجى تسجيل الدخول بالبريد وكلمة المرور.',
+          ur: 'یہ ای میل پاس ورڈ سے رجسٹر ہے۔ براہ کرم ای میل اور پاس ورڈ سے سائن اِن کریں۔',
+          ru: 'Этот email уже зарегистрирован с паролем. Войдите через email и пароль.',
+        ));
+      } else {
+        _showStatus(_t(
+          en: 'Google sign-in failed. Please try again.',
+          ar: 'فشل تسجيل الدخول بجوجل.',
+          ur: 'گوگل سائن اِن ناکام ہوا۔',
+          ru: 'Ошибка входа через Google.',
+        ));
+      }
+    } catch (e) {
+      if (mounted) _showStatus(_t(
+        en: 'Google sign-in failed. Please try again.',
+        ar: 'فشل تسجيل الدخول بجوجل.',
+        ur: 'گوگل سائن اِن ناکام ہوا۔',
+        ru: 'Ошибка входа через Google.',
+      ));
+    } finally {
+      if (mounted) setState(() => _isLoading = false);
+    }
   }
 
   void _showStatus(String message) {

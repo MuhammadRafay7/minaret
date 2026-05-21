@@ -180,7 +180,7 @@ class _Header extends StatelessWidget {
                   width: 40,
                   height: 4,
                   decoration: BoxDecoration(
-                    color: Colors.grey.withOpacity(0.3),
+                    color: Colors.grey.withValues(alpha: 0.3),
                     borderRadius: BorderRadius.circular(2),
                   ),
                 ),
@@ -227,7 +227,7 @@ class _Header extends StatelessWidget {
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                       borderSide:
-                          BorderSide(color: Colors.grey.withOpacity(0.3)),
+                          BorderSide(color: Colors.grey.withValues(alpha: 0.3)),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
@@ -304,7 +304,7 @@ class _Header extends StatelessWidget {
     final rtl = code == 'ar' || code == 'ur';
     String display(String v) => rtl ? v : v.toUpperCase();
     final subtitleColor =
-        isDark ? Colors.white60 : MinaretTheme.slate.withOpacity(0.72);
+        isDark ? Colors.white60 : MinaretTheme.slate.withValues(alpha: 0.72);
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(25, 16, 25, 0),
@@ -330,7 +330,7 @@ class _Header extends StatelessWidget {
                       const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                   decoration: BoxDecoration(
                     border: Border.all(
-                        color: MinaretTheme.gold.withOpacity(0.3)),
+                        color: MinaretTheme.gold.withValues(alpha: 0.3)),
                     borderRadius: BorderRadius.circular(4),
                   ),
                   child: Row(
@@ -400,7 +400,7 @@ class _SearchAndFilters extends StatelessWidget {
         isDark ? const Color(0x1AFFFFFF) : MinaretTheme.dividerColor;
     final bgColor = isDark
         ? const Color(0xFF151B24)
-        : MinaretTheme.surface.withOpacity(0.6);
+        : MinaretTheme.surface.withValues(alpha: 0.6);
     final code = Localizations.localeOf(context).languageCode;
     final rtl = code == 'ar' || code == 'ur';
     String display(String v) => rtl ? v : v.toUpperCase();
@@ -427,7 +427,7 @@ class _SearchAndFilters extends StatelessWidget {
                   color: isDark ? Colors.white38 : MinaretTheme.slate,
                 ),
                 prefixIcon: Icon(Icons.search,
-                    size: 20, color: MinaretTheme.gold.withOpacity(0.5)),
+                    size: 20, color: MinaretTheme.gold.withValues(alpha: 0.5)),
                 border: InputBorder.none,
                 contentPadding: const EdgeInsets.symmetric(vertical: 20),
               ),
@@ -484,7 +484,7 @@ class _SearchAndFilters extends StatelessWidget {
                   padding:
                       EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
                   decoration: BoxDecoration(
-                    color: MinaretTheme.gold.withOpacity(0.1),
+                    color: MinaretTheme.gold.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(6.r),
                   ),
                   child: Text(
@@ -655,9 +655,9 @@ class _ImamStreakCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(AppSpacing.md),
       decoration: BoxDecoration(
-        color: MinaretTheme.background.withOpacity(0.5),
+        color: MinaretTheme.background.withValues(alpha: 0.5),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: MinaretTheme.gold.withOpacity(0.3)),
+        border: Border.all(color: MinaretTheme.gold.withValues(alpha: 0.3)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -739,7 +739,7 @@ class _Stat extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
+        color: color.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(8),
       ),
       child: Column(

@@ -27,8 +27,6 @@ class MosqueFilterForm extends StatefulWidget {
 }
 
 class _MosqueFilterFormState extends State<MosqueFilterForm> {
-  static const List<double> _radiusOptions = [1, 3, 5, 10, 20, 50];
-  
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
@@ -40,12 +38,12 @@ class _MosqueFilterFormState extends State<MosqueFilterForm> {
         color: isDark ? const Color(0xFF151B24) : Colors.white,
         borderRadius: BorderRadius.circular(16.r),
         border: Border.all(
-          color: MinaretTheme.gold.withOpacity(0.2),
+          color: MinaretTheme.gold.withValues(alpha: 0.2),
           width: 1,
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -65,9 +63,9 @@ class _MosqueFilterFormState extends State<MosqueFilterForm> {
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                     colors: [
-                      MinaretTheme.gold.withOpacity(0.0),
+                      MinaretTheme.gold.withValues(alpha: 0.0),
                       MinaretTheme.gold,
-                      MinaretTheme.gold.withOpacity(0.0),
+                      MinaretTheme.gold.withValues(alpha: 0.0),
                     ],
                   ),
                 ),
@@ -141,7 +139,7 @@ class _FilterSection extends StatelessWidget {
             fontSize: 8.sp,
             letterSpacing: 2,
             fontWeight: FontWeight.w700,
-            color: MinaretTheme.gold.withOpacity(0.8),
+            color: MinaretTheme.gold.withValues(alpha: 0.8),
           ),
         ),
         SizedBox(height: 12.h),
@@ -158,8 +156,6 @@ class _ResetButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-
     return GestureDetector(
       onTap: onPressed,
       child: Container(
@@ -167,7 +163,7 @@ class _ResetButton extends StatelessWidget {
         decoration: BoxDecoration(
           color: Colors.transparent,
           border: Border.all(
-            color: MinaretTheme.gold.withOpacity(0.3),
+            color: MinaretTheme.gold.withValues(alpha: 0.3),
             width: 0.8,
           ),
           borderRadius: BorderRadius.circular(8.r),
@@ -178,7 +174,7 @@ class _ResetButton extends StatelessWidget {
             fontSize: 7.sp,
             letterSpacing: 1.5,
             fontWeight: FontWeight.w600,
-            color: MinaretTheme.gold.withOpacity(0.7),
+            color: MinaretTheme.gold.withValues(alpha: 0.7),
           ),
         ),
       ),
@@ -221,13 +217,13 @@ class _RadiusSelector extends StatelessWidget {
                           margin: EdgeInsets.symmetric(horizontal: 1.w),
                           decoration: BoxDecoration(
                             color: isSelected
-                                ? MinaretTheme.gold.withOpacity(0.15)
+                                ? MinaretTheme.gold.withValues(alpha: 0.15)
                                 : Colors.transparent,
                             borderRadius: BorderRadius.circular(4.r),
                             border: Border.all(
                               color: isSelected
                                   ? MinaretTheme.gold
-                                  : MinaretTheme.dividerColor.withOpacity(0.3),
+                                  : MinaretTheme.dividerColor.withValues(alpha: 0.3),
                               width: isSelected ? 1.2 : 0.8,
                             ),
                           ),
@@ -250,7 +246,7 @@ class _RadiusSelector extends StatelessWidget {
                           child: Container(
                             height: 1.h,
                             margin: EdgeInsets.symmetric(horizontal: 8.w),
-                            color: MinaretTheme.dividerColor.withOpacity(0.2),
+                            color: MinaretTheme.dividerColor.withValues(alpha: 0.2),
                           ),
                         ),
                     ],
@@ -265,7 +261,7 @@ class _RadiusSelector extends StatelessWidget {
         Container(
           padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
           decoration: BoxDecoration(
-            color: MinaretTheme.gold.withOpacity(0.08),
+            color: MinaretTheme.gold.withValues(alpha: 0.08),
             borderRadius: BorderRadius.circular(6.r),
           ),
           child: Text(
@@ -317,7 +313,7 @@ class _FiqhSelector extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
             decoration: BoxDecoration(
               color: isSelected
-                  ? MinaretTheme.emerald.withOpacity(0.12)
+                  ? MinaretTheme.emerald.withValues(alpha: 0.12)
                   : Colors.transparent,
               border: Border.all(
                 color: isSelected

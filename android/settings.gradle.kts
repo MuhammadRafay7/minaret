@@ -1,5 +1,5 @@
 pluginManagement {
-    val flutterSdkPath = "C:/flutter"
+    val flutterSdkPath = System.getenv("FLUTTER_ROOT") ?: "/home/m-rafay/snap/flutter/common/flutter"
     includeBuild("$flutterSdkPath/packages/flutter_tools/gradle")
     repositories {
         google()

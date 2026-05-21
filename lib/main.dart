@@ -6,24 +6,19 @@ import 'package:flutter/services.dart';
 
 // Firebase Core Services
 import 'package:firebase_core/firebase_core.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:firebase_performance/firebase_performance.dart';
 
 // UI and Framework
 import 'package:google_fonts/google_fonts.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:flutter/foundation.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:app_links/app_links.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 // Local Imports
+import 'package:minaret/core/config/certificate_pins.dart';
 import 'package:minaret/core/app_repositories.dart';
 import 'package:minaret/l10n/generated/app_localizations.dart';
 import 'package:minaret/firebase_options.dart';
@@ -31,8 +26,6 @@ import 'package:minaret/main_navigation.dart';
 import 'package:minaret/core/theme.dart';
 import 'package:minaret/core/language_provider.dart';
 import 'package:minaret/core/theme_provider.dart';
-import 'package:minaret/core/secure_config.dart';
-import 'package:minaret/services/notification_service.dart';
 import 'package:minaret/services/quran_download_service.dart';
 import 'package:minaret/services/prayer_tracker_service.dart';
 import 'package:minaret/services/offline_cache_service.dart';
@@ -56,12 +49,22 @@ Future<void> main() async {
   runZonedGuarded(
     () async {
       WidgetsFlutterBinding.ensureInitialized();
+      if (!kIsWeb) CertificatePins.assertConfigured();
       final appConfig = await _initializeApp();
       runApp(appConfig);
     },
     (error, stackTrace) {
       if (kDebugMode) {
-        debugPrint('Global error: $error');
+        debugPrint('Uncaught async error: $error\n$stackTrace');
+      }
+      // Firebase.apps is non-empty once initializeApp() has completed, so
+      // Crashlytics is guaranteed to be ready when errors reach here in
+      // production. Early startup errors (before Firebase init) are only
+      // visible in debug logs; they will be replayed on next launch by
+      // Crashlytics's on-device buffering.
+      if (!kIsWeb && Firebase.apps.isNotEmpty) {
+        FirebaseCrashlytics.instance
+            .recordError(error, stackTrace, fatal: true);
       }
     },
   );
@@ -85,7 +88,23 @@ Future<Widget> _initializeApp() async {
       await FirebaseAppCheck.instance.activate(
         androidProvider: kDebugMode ? AndroidProvider.debug : AndroidProvider.playIntegrity,
       );
-      FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
+
+      FlutterError.onError = (FlutterErrorDetails details) {
+        if (kDebugMode) {
+          FlutterError.dumpErrorToConsole(details);
+        }
+        FirebaseCrashlytics.instance.recordFlutterFatalError(details);
+      };
+
+      // Catches errors on the platform's event loop that escape Flutter's
+      // widget layer (e.g. errors in isolate callbacks, platform channels).
+      PlatformDispatcher.instance.onError = (error, stack) {
+        if (kDebugMode) {
+          debugPrint('PlatformDispatcher error: $error\n$stack');
+        }
+        FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+        return true; // returning true marks the error as handled
+      };
     }
 
     final languageProvider = LanguageProvider();
@@ -145,7 +164,11 @@ class MinaretApp extends StatelessWidget {
             darkTheme: MinaretTheme.darkTheme,
             themeMode: theme.themeMode,
             builder: (context, child) {
-              return Gatekeeper(child: child!);
+              // child is null only during the brief MaterialApp init window
+              // before any route is mounted; SizedBox.shrink() is a safe
+              // transparent placeholder for that instant.
+              assert(child != null, 'MaterialApp builder received a null child');
+              return Gatekeeper(child: child ?? const SizedBox.shrink());
             },
             home: showOnboarding 
                 ? OnboardingPage(firebaseReady: firebaseReady) 

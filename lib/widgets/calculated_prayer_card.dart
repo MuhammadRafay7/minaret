@@ -121,7 +121,7 @@ class _CalculatedPrayerCardState extends State<CalculatedPrayerCard> {
                       fontSize: 7.sp,
                       letterSpacing: 1,
                       fontWeight: FontWeight.w600,
-                      color: MinaretTheme.gold.withOpacity(0.6),
+                      color: MinaretTheme.gold.withValues(alpha: 0.6),
                     ),
                   ),
                 ],

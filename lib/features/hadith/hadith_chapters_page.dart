@@ -5,7 +5,6 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:share_plus/share_plus.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:minaret/l10n/generated/app_localizations.dart';
 
 import '../../core/theme.dart';
@@ -163,7 +162,7 @@ class _HadithChaptersPageState extends State<HadithChaptersPage> {
       }
 
       if (!mounted) return;
-      _parseAndApplyPayload(data!);
+      _parseAndApplyPayload(data);
     } catch (e) {
       if (!mounted) return;
       setState(() {
@@ -340,7 +339,7 @@ class _HadithChaptersPageState extends State<HadithChaptersPage> {
                 Container(
                   width: 40.w,
                   height: 1,
-                  color: MinaretTheme.gold.withOpacity(0.4),
+                  color: MinaretTheme.gold.withValues(alpha: 0.4),
                 ),
                 SizedBox(height: 20.h),
                 _buildDisclaimerBanner(),
@@ -400,7 +399,7 @@ class _HadithChaptersPageState extends State<HadithChaptersPage> {
           Icon(
             Icons.arrow_back_ios_rounded,
             size: 14.sp,
-            color: textSecondary.withOpacity(0.75),
+            color: textSecondary.withValues(alpha: 0.75),
           ),
           SizedBox(width: 8.w),
           Text(
@@ -450,7 +449,7 @@ class _HadithChaptersPageState extends State<HadithChaptersPage> {
       '${allHadiths.length} ${_tr(en: 'HADITHS', ar: 'أحاديث', ur: 'احادیث', ru: 'ХАДИСОВ')} · ${filteredHadiths.length} ${_tr(en: 'SHOWN', ar: 'مُعروض', ur: 'نمایاں', ru: 'ПОКАЗАНО')}',
       style: GoogleFonts.ibmPlexMono(
         fontSize: 10.sp,
-        color: textSecondary.withOpacity(0.75),
+        color: textSecondary.withValues(alpha: 0.75),
         letterSpacing: 1,
       ),
     );
@@ -472,7 +471,7 @@ class _HadithChaptersPageState extends State<HadithChaptersPage> {
             ),
           ),
           SizedBox(height: 6.h),
-          Container(height: 0.5, color: MinaretTheme.gold.withOpacity(0.3)),
+          Container(height: 0.5, color: MinaretTheme.gold.withValues(alpha: 0.3)),
         ],
       ),
     );
@@ -496,7 +495,7 @@ class _HadithChaptersPageState extends State<HadithChaptersPage> {
           hintStyle: GoogleFonts.montserrat(
             fontSize: 11.sp,
             letterSpacing: 1,
-            color: textSecondary.withOpacity(0.65),
+            color: textSecondary.withValues(alpha: 0.65),
           ),
           border: InputBorder.none,
           suffixIcon: _searchController.text.isNotEmpty
@@ -504,7 +503,7 @@ class _HadithChaptersPageState extends State<HadithChaptersPage> {
                   icon: Icon(
                     Icons.clear_rounded,
                     size: 16.sp,
-                    color: textSecondary.withOpacity(0.5),
+                    color: textSecondary.withValues(alpha: 0.5),
                   ),
                   onPressed: () {
                     _searchController.clear();
@@ -515,7 +514,7 @@ class _HadithChaptersPageState extends State<HadithChaptersPage> {
           icon: Icon(
             Icons.search_rounded,
             size: 18.sp,
-            color: MinaretTheme.gold.withOpacity(0.5),
+            color: MinaretTheme.gold.withValues(alpha: 0.5),
           ),
         ),
       ),
@@ -539,9 +538,9 @@ class _HadithChaptersPageState extends State<HadithChaptersPage> {
       padding: highlight ? const EdgeInsets.all(16) : EdgeInsets.zero,
       decoration: highlight
           ? BoxDecoration(
-              color: MinaretTheme.gold.withOpacity(0.05),
+              color: MinaretTheme.gold.withValues(alpha: 0.05),
               border: Border.all(
-                color: MinaretTheme.gold.withOpacity(0.3),
+                color: MinaretTheme.gold.withValues(alpha: 0.3),
                 width: 0.8,
               ),
             )
@@ -570,7 +569,7 @@ class _HadithChaptersPageState extends State<HadithChaptersPage> {
                     icon: Icon(
                       Icons.copy_rounded,
                       size: 16.sp,
-                      color: textSecondary.withOpacity(0.5),
+                      color: textSecondary.withValues(alpha: 0.5),
                     ),
                   ),
                   IconButton(
@@ -580,7 +579,7 @@ class _HadithChaptersPageState extends State<HadithChaptersPage> {
                     icon: Icon(
                       Icons.ios_share_rounded,
                       size: 16.sp,
-                      color: textSecondary.withOpacity(0.5),
+                      color: textSecondary.withValues(alpha: 0.5),
                     ),
                   ),
                 ],
@@ -617,8 +616,8 @@ class _HadithChaptersPageState extends State<HadithChaptersPage> {
       margin: EdgeInsets.only(right: 6.w),
       padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 3.h),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.08),
-        border: Border.all(color: color.withOpacity(0.3), width: 0.7),
+        color: color.withValues(alpha: 0.08),
+        border: Border.all(color: color.withValues(alpha: 0.3), width: 0.7),
       ),
       child: Text(
         grade.toUpperCase(),
@@ -642,7 +641,7 @@ class _HadithChaptersPageState extends State<HadithChaptersPage> {
           padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 3.h),
           decoration: BoxDecoration(
             border: Border.all(
-              color: MinaretTheme.gold.withOpacity(0.5),
+              color: MinaretTheme.gold.withValues(alpha: 0.5),
               width: 0.7,
             ),
           ),
@@ -669,7 +668,7 @@ class _HadithChaptersPageState extends State<HadithChaptersPage> {
           Icon(
             Icons.info_outline_rounded,
             size: 14.sp,
-            color: MinaretTheme.gold.withOpacity(0.7),
+            color: MinaretTheme.gold.withValues(alpha: 0.7),
           ),
           SizedBox(width: 8.w),
           Expanded(
@@ -729,7 +728,7 @@ class _HadithChaptersPageState extends State<HadithChaptersPage> {
           children: [
             Icon(
               Icons.wifi_off_rounded,
-              color: MinaretTheme.gold.withOpacity(0.35),
+              color: MinaretTheme.gold.withValues(alpha: 0.35),
               size: 32,
             ),
             SizedBox(height: 16.h),
@@ -753,7 +752,7 @@ class _HadithChaptersPageState extends State<HadithChaptersPage> {
               _error!,
               style: GoogleFonts.lato(
                 fontSize: 11.sp,
-                color: textSecondary.withOpacity(0.5),
+                color: textSecondary.withValues(alpha: 0.5),
                 height: 1.5,
               ),
               textAlign: TextAlign.center,

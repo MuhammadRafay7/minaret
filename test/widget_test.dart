@@ -6,7 +6,6 @@ import 'package:minaret/core/language_provider.dart';
 import 'package:minaret/core/theme_provider.dart';
 import 'package:minaret/services/quran_download_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 void main() {
   testWidgets('App loads with MaterialApp', (WidgetTester tester) async {
@@ -27,6 +26,7 @@ void main() {
           ChangeNotifierProvider(create: (_) => quranDownloadService),
         ],
         child: const MinaretApp(
+          firebaseReady: true,
           showOnboarding: true,
         ),
       ),

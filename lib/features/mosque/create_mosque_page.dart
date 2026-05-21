@@ -14,11 +14,9 @@ import 'package:minaret/l10n/generated/app_localizations.dart';
 import 'package:minaret/core/theme.dart';
 import 'package:minaret/core/location_service.dart';
 import 'package:minaret/core/input_validator.dart';
-import 'package:minaret/core/errors/app_error.dart';
 import 'package:minaret/core/errors/error_extensions.dart';
 import 'package:minaret/widgets/success_overlay.dart';
 import 'package:minaret/widgets/fiqh_selector.dart';
-import 'package:minaret/core/constants/fiqh_constants.dart';
 import 'package:minaret/widgets/atelier_layout.dart';
 
 class CreateMosquePage extends StatefulWidget {
@@ -352,7 +350,7 @@ class _CreateMosquePageState extends State<CreateMosquePage> {
                     ),
                     selected: _facilities[key]!,
                     onSelected: (val) => setState(() => _facilities[key] = val),
-                    selectedColor: MinaretTheme.emerald.withOpacity(0.2),
+                    selectedColor: MinaretTheme.emerald.withValues(alpha: 0.2),
                     checkmarkColor: MinaretTheme.emerald,
                   );
                 }).toList(),

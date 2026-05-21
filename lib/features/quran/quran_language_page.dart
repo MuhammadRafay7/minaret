@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:minaret/core/secure_http_client.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:minaret/services/offline_cache_service.dart';
 import 'package:minaret/l10n/generated/app_localizations.dart';
 
 import 'package:minaret/core/theme.dart';
 import 'package:minaret/widgets/atelier_layout.dart';
-import 'package:minaret/widgets/glass_container.dart';
 import 'package:minaret/features/quran/quran_reader_page.dart';
 
 class QuranLanguagePage extends StatefulWidget {
@@ -174,10 +172,6 @@ class _QuranLanguagePageState extends State<QuranLanguagePage> {
             const SizedBox(height: 55),
             _buildHeader(l10n),
             _buildSearchField(l10n),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(25, 0, 25, 8),
-              child: _annotationsBanner(),
-            ),
             Expanded(
               child: isLoading
                   ? _buildLoadingState()
@@ -228,65 +222,6 @@ class _QuranLanguagePageState extends State<QuranLanguagePage> {
     );
   }
 
-  Widget _annotationsBanner() {
-    return GlassContainer(
-      padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Icon(
-            Icons.chat_bubble_outline_rounded,
-            size: 11,
-            color: MinaretTheme.gold.withOpacity(0.7),
-          ),
-          const SizedBox(width: 10),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  _tr(
-                    en: 'COMMUNITY ANNOTATIONS',
-                    ar: 'ملاحظات المجتمع',
-                    ur: 'کمیونٹی نوٹس',
-                    ru: 'ЗАМЕТКИ СООБЩЕСТВА',
-                    fa: 'یادداشت های جامعه',
-                    nl: 'AANTEKENINGEN VAN DE GEMEENSCHAP',
-                    zh: '社区注释',
-                  ),
-                  style: GoogleFonts.montserrat(
-                    fontSize: 8,
-                    letterSpacing: 2.5,
-                    color: textPrimary,
-                    fontWeight: FontWeight.w800,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  _tr(
-                    en: 'SCHOLARS & READERS LEAVE NOTES ON AYAT - COMING SOON.',
-                    ar: 'سيضيف العلماء والقراء ملاحظات على الآيات - قريباً.',
-                    ur: 'علماء اور قارئین آیات پر نوٹس چھوڑ سکیں گے - جلد آرہا ہے۔',
-                    ru: 'Ученые и читатели смогут оставлять заметки к аятам - скоро.',
-                    fa: 'یادداشت های علما و قاریان بر آیات به زودی افزوده می شود.',
-                    nl: 'Geleerden en lezers kunnen binnenkort notities bij verzen plaatsen.',
-                    zh: '学者和读者将可在经文上留下注释，敬请期待。',
-                  ),
-                  style: GoogleFonts.montserrat(
-                    fontSize: 7,
-                    letterSpacing: 1.1,
-                    color: textSecondary,
-                    fontWeight: FontWeight.w500,
-                    height: 1.7,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 
   Widget _buildHeader(AppLocalizations l10n) {
     return Padding(
@@ -336,14 +271,14 @@ class _QuranLanguagePageState extends State<QuranLanguagePage> {
             ),
             style: GoogleFonts.cairo(
               fontSize: 11,
-              color: textSecondary.withOpacity(0.85),
+              color: textSecondary.withValues(alpha: 0.85),
             ),
           ),
           const SizedBox(height: 14),
           Container(
             height: 1,
             width: 30,
-            color: MinaretTheme.gold.withOpacity(0.4),
+            color: MinaretTheme.gold.withValues(alpha: 0.4),
           ),
         ],
       ),
@@ -372,12 +307,12 @@ class _QuranLanguagePageState extends State<QuranLanguagePage> {
               ru: 'Поиск языка или переводчика...',
             ),
             hintStyle: GoogleFonts.lato(
-              color: textSecondary.withOpacity(0.7),
+              color: textSecondary.withValues(alpha: 0.7),
               fontSize: 13,
             ),
             prefixIcon: Icon(
               Icons.search_rounded,
-              color: MinaretTheme.gold.withOpacity(0.5),
+              color: MinaretTheme.gold.withValues(alpha: 0.5),
               size: 18,
             ),
             contentPadding: const EdgeInsets.symmetric(vertical: 20),
@@ -414,9 +349,9 @@ class _QuranLanguagePageState extends State<QuranLanguagePage> {
               height: 38,
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                color: MinaretTheme.emerald.withOpacity(0.07),
+                color: MinaretTheme.emerald.withValues(alpha: 0.07),
                 border: Border.all(
-                  color: MinaretTheme.emerald.withOpacity(0.15),
+                  color: MinaretTheme.emerald.withValues(alpha: 0.15),
                   width: 0.7,
                 ),
               ),
@@ -462,7 +397,7 @@ class _QuranLanguagePageState extends State<QuranLanguagePage> {
             ),
             Icon(
               Icons.chevron_right_rounded,
-              color: textSecondary.withOpacity(0.5),
+              color: textSecondary.withValues(alpha: 0.5),
               size: 18,
             ),
           ],

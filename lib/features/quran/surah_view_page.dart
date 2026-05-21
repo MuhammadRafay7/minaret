@@ -249,7 +249,7 @@ class _SurahViewPageState extends State<SurahViewPage> {
                       ),
                       style: OutlinedButton.styleFrom(
                         side: BorderSide(
-                          color: MinaretTheme.gold.withOpacity(0.4),
+                          color: MinaretTheme.gold.withValues(alpha: 0.4),
                         ),
                         padding: const EdgeInsets.symmetric(vertical: AppSpacing.md),
                       ),
@@ -268,11 +268,11 @@ class _SurahViewPageState extends State<SurahViewPage> {
                           fontSize: 32,
                           color: _isPlayingBismillah
                               ? MinaretTheme.gold
-                              : MinaretTheme.gold.withOpacity(0.7),
+                              : MinaretTheme.gold.withValues(alpha: 0.7),
                           shadows: _isPlayingBismillah
                               ? [
                                   Shadow(
-                                    color: MinaretTheme.gold.withOpacity(0.3),
+                                    color: MinaretTheme.gold.withValues(alpha: 0.3),
                                     blurRadius: 20,
                                   ),
                                 ]
@@ -304,7 +304,7 @@ class _SurahViewPageState extends State<SurahViewPage> {
                           ),
                         ),
                         color: _currentPlayingIndex == index
-                            ? MinaretTheme.gold.withOpacity(0.05)
+                            ? MinaretTheme.gold.withValues(alpha: 0.05)
                             : null,
                       ),
                       child: Column(

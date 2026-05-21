@@ -25,9 +25,9 @@ class MinaretTheme {
   static ImageFilter get blurHeavy => ImageFilter.blur(sigmaX: 40, sigmaY: 40);
 
   // ── Glass surface colors (use these as Container colors over blur) ──────────
-  static Color get glassSurface => Colors.white.withOpacity(0.62);
-  static Color get glassSurfaceThick => Colors.white.withOpacity(0.82);
-  static Color get glassChrome => Colors.white.withOpacity(0.45);
+  static Color get glassSurface => Colors.white.withValues(alpha: 0.62);
+  static Color get glassSurfaceThick => Colors.white.withValues(alpha: 0.82);
+  static Color get glassChrome => Colors.white.withValues(alpha: 0.45);
 
   // ── Spacing ─────────────────────────────────────────────────────────────────
   static const double cardPadding = 20.0;
@@ -59,12 +59,12 @@ class MinaretTheme {
   // ── Shadows ──────────────────────────────────────────────────────────────────
   static List<BoxShadow> get cardShadow => [
     BoxShadow(
-      color: Colors.black.withOpacity(0.06),
+      color: Colors.black.withValues(alpha: 0.06),
       blurRadius: 24,
       offset: const Offset(0, 2),
     ),
     BoxShadow(
-      color: Colors.black.withOpacity(0.04),
+      color: Colors.black.withValues(alpha: 0.04),
       blurRadius: 4,
       offset: const Offset(0, 1),
     ),
@@ -72,7 +72,7 @@ class MinaretTheme {
 
   static List<BoxShadow> get goldShadow => [
     BoxShadow(
-      color: gold.withOpacity(0.22),
+      color: gold.withValues(alpha: 0.22),
       blurRadius: 24,
       offset: const Offset(0, 4),
     ),
@@ -80,7 +80,7 @@ class MinaretTheme {
 
   static List<BoxShadow> get heroShadow => [
     BoxShadow(
-      color: emerald.withOpacity(0.35),
+      color: emerald.withValues(alpha: 0.35),
       blurRadius: 32,
       offset: const Offset(0, 8),
     ),
@@ -115,7 +115,7 @@ class MinaretTheme {
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: Colors.white.withOpacity(0.45),
+        fillColor: Colors.white.withValues(alpha: 0.45),
         labelStyle: GoogleFonts.cairo(
           fontSize: 10,
           letterSpacing: 1.2,
@@ -139,10 +139,10 @@ class MinaretTheme {
       dividerTheme: const DividerThemeData(thickness: 0.5, color: dividerColor),
       cardTheme: CardThemeData(
         elevation: 0,
-        color: Colors.white.withOpacity(0.62), // glass base
+        color: Colors.white.withValues(alpha: 0.62), // glass base
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(cardRadius),
-          side: BorderSide(color: Colors.white.withOpacity(0.5), width: 0.8),
+          side: BorderSide(color: Colors.white.withValues(alpha: 0.5), width: 0.8),
         ),
       ),
       snackBarTheme: SnackBarThemeData(
@@ -187,7 +187,7 @@ class MinaretTheme {
       ),
       appBarTheme: AppBarTheme(
         // Use with BackdropFilter(filter: MinaretTheme.blur) in your AppBar
-        backgroundColor: Colors.white.withOpacity(0.45),
+        backgroundColor: Colors.white.withValues(alpha: 0.45),
         foregroundColor: onyx,
         elevation: 0,
         surfaceTintColor: Colors.transparent,
@@ -200,15 +200,15 @@ class MinaretTheme {
         }),
         trackColor: WidgetStateProperty.resolveWith((states) {
           if (states.contains(WidgetState.selected)) {
-            return emerald.withOpacity(0.35);
+            return emerald.withValues(alpha: 0.35);
           }
-          return slate.withOpacity(0.28);
+          return slate.withValues(alpha: 0.28);
         }),
       ),
       bottomSheetTheme: BottomSheetThemeData(
-        backgroundColor: Colors.white.withOpacity(0.84),
+        backgroundColor: Colors.white.withValues(alpha: 0.84),
         showDragHandle: true,
-        dragHandleColor: slate.withOpacity(0.45),
+        dragHandleColor: slate.withValues(alpha: 0.45),
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(top: Radius.circular(22)),
         ),
@@ -224,8 +224,8 @@ class MinaretTheme {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
       ),
       navigationBarTheme: NavigationBarThemeData(
-        backgroundColor: Colors.white.withOpacity(0.78),
-        indicatorColor: emerald.withOpacity(0.16),
+        backgroundColor: Colors.white.withValues(alpha: 0.78),
+        indicatorColor: emerald.withValues(alpha: 0.16),
         elevation: 0,
         iconTheme: WidgetStateProperty.resolveWith((states) {
           final selected = states.contains(WidgetState.selected);
@@ -242,7 +242,7 @@ class MinaretTheme {
       ),
       bottomNavigationBarTheme: BottomNavigationBarThemeData(
         // Wrap in BackdropFilter for glass effect
-        backgroundColor: Colors.white.withOpacity(0.82),
+        backgroundColor: Colors.white.withValues(alpha: 0.82),
         selectedItemColor: emerald,
         unselectedItemColor: slate,
         elevation: 0,
@@ -283,7 +283,7 @@ class MinaretTheme {
           letterSpacing: 0.5,
         ),
         bodyMedium: GoogleFonts.notoNaskhArabic(
-          color: Colors.white.withOpacity(0.92),
+          color: Colors.white.withValues(alpha: 0.92),
           fontSize: 16,
           height: 2.0,
         ),
@@ -293,14 +293,14 @@ class MinaretTheme {
           fontWeight: FontWeight.w700,
         ),
         bodyLarge: GoogleFonts.cairo(
-          color: Colors.white.withOpacity(0.92),
+          color: Colors.white.withValues(alpha: 0.92),
           fontSize: 17,
           height: 1.7,
         ),
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: Colors.white.withOpacity(0.06),
+        fillColor: Colors.white.withValues(alpha: 0.06),
         labelStyle: GoogleFonts.cairo(
           fontSize: 10,
           letterSpacing: 1.2,
@@ -324,10 +324,10 @@ class MinaretTheme {
       dividerTheme: const DividerThemeData(thickness: 0.5, color: darkDivider),
       cardTheme: CardThemeData(
         elevation: 0,
-        color: Colors.white.withOpacity(0.07),
+        color: Colors.white.withValues(alpha: 0.07),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(cardRadius),
-          side: BorderSide(color: Colors.white.withOpacity(0.12), width: 0.8),
+          side: BorderSide(color: Colors.white.withValues(alpha: 0.12), width: 0.8),
         ),
       ),
       snackBarTheme: SnackBarThemeData(
@@ -371,7 +371,7 @@ class MinaretTheme {
         ),
       ),
       appBarTheme: AppBarTheme(
-        backgroundColor: Colors.black.withOpacity(0.22),
+        backgroundColor: Colors.black.withValues(alpha: 0.22),
         foregroundColor: Colors.white,
         elevation: 0,
         surfaceTintColor: Colors.transparent,
@@ -384,13 +384,13 @@ class MinaretTheme {
         }),
         trackColor: WidgetStateProperty.resolveWith((states) {
           if (states.contains(WidgetState.selected)) {
-            return gold.withOpacity(0.35);
+            return gold.withValues(alpha: 0.35);
           }
           return Colors.white24;
         }),
       ),
       bottomSheetTheme: BottomSheetThemeData(
-        backgroundColor: const Color(0xFF0D1117).withOpacity(0.88),
+        backgroundColor: const Color(0xFF0D1117).withValues(alpha: 0.88),
         showDragHandle: true,
         dragHandleColor: Colors.white38,
         shape: const RoundedRectangleBorder(
@@ -398,7 +398,7 @@ class MinaretTheme {
         ),
       ),
       dialogTheme: DialogThemeData(
-        backgroundColor: const Color(0xFF111826).withOpacity(0.92),
+        backgroundColor: const Color(0xFF111826).withValues(alpha: 0.92),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(22)),
       ),
       listTileTheme: ListTileThemeData(
@@ -408,8 +408,8 @@ class MinaretTheme {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
       ),
       navigationBarTheme: NavigationBarThemeData(
-        backgroundColor: Colors.black.withOpacity(0.62),
-        indicatorColor: gold.withOpacity(0.2),
+        backgroundColor: Colors.black.withValues(alpha: 0.62),
+        indicatorColor: gold.withValues(alpha: 0.2),
         elevation: 0,
         iconTheme: WidgetStateProperty.resolveWith((states) {
           final selected = states.contains(WidgetState.selected);
@@ -428,7 +428,7 @@ class MinaretTheme {
         }),
       ),
       bottomNavigationBarTheme: BottomNavigationBarThemeData(
-        backgroundColor: Colors.black.withOpacity(0.70),
+        backgroundColor: Colors.black.withValues(alpha: 0.70),
         selectedItemColor: gold,
         unselectedItemColor: Colors.white38,
         elevation: 0,

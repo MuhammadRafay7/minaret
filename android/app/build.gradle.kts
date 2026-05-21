@@ -1,3 +1,4 @@
+import org.gradle.api.GradleException
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import java.util.Properties
 import java.io.FileInputStream
@@ -10,23 +11,50 @@ plugins {
     id("dev.flutter.flutter-gradle-plugin")
 }
 
-val keystoreProps = Properties()
-val keystorePropsFile = rootProject.file("key.properties")
-if (keystorePropsFile.exists()) {
-    keystoreProps.load(FileInputStream(keystorePropsFile))
+// ---------------------------------------------------------------------------
+// Release signing — credentials are read from environment variables first
+// (CI/CD), then from the local android/key.properties file (developer
+// machines).  NEVER hardcode passwords here or commit key.properties.
+// See android/key.properties.example for the required file format.
+// ---------------------------------------------------------------------------
+
+fun signingValue(envKey: String, propKey: String, propsFile: File): String? {
+    System.getenv(envKey)?.takeIf { it.isNotEmpty() }?.let { return it }
+    if (propsFile.exists()) {
+        val props = Properties().apply { load(FileInputStream(propsFile)) }
+        (props[propKey] as? String)?.takeIf { it.isNotEmpty() }?.let { return it }
+    }
+    return null
 }
+
+// Read once before android {} so the values are in scope for both
+// signingConfigs and buildTypes.
+val keystorePropsFile    = rootProject.file("key.properties")
+val signingStorePassword = signingValue("KEYSTORE_PASSWORD", "storePassword", keystorePropsFile)
+val signingKeyPassword   = signingValue("KEY_PASSWORD",      "keyPassword",   keystorePropsFile)
+val signingKeyAlias      = signingValue("KEY_ALIAS",         "keyAlias",      keystorePropsFile)
+val signingStoreFile     = signingValue("KEYSTORE_PATH",     "storeFile",     keystorePropsFile)
 
 android {
     signingConfigs {
         create("release") {
-            keyAlias = keystoreProps["keyAlias"] as? String
-                ?: error("keyAlias missing from android/key.properties")
-            keyPassword = keystoreProps["keyPassword"] as? String
-                ?: error("keyPassword missing from android/key.properties")
-            storeFile = (keystoreProps["storeFile"] as? String)?.let { file(it) }
-                ?: error("storeFile missing from android/key.properties")
-            storePassword = keystoreProps["storePassword"] as? String
-                ?: error("storePassword missing from android/key.properties")
+            // All four values must be present — fail with a clear message so
+            // the developer knows exactly what to set.
+            if (signingStorePassword.isNullOrEmpty() || signingKeyPassword.isNullOrEmpty() ||
+                signingKeyAlias.isNullOrEmpty()      || signingStoreFile.isNullOrEmpty()) {
+                throw GradleException(
+                    "\n\nRelease signing credentials not found.\n" +
+                    "Option A — CI/CD: set environment variables:\n" +
+                    "  KEYSTORE_PASSWORD, KEY_PASSWORD, KEY_ALIAS, KEYSTORE_PATH\n" +
+                    "Option B — Local: create android/key.properties\n" +
+                    "  (copy android/key.properties.example and fill in real values)\n" +
+                    "Never commit key.properties or hardcode passwords in build scripts.\n"
+                )
+            }
+            keyAlias      = signingKeyAlias!!
+            keyPassword   = signingKeyPassword!!
+            storeFile     = file(signingStoreFile!!)
+            storePassword = signingStorePassword!!
         }
     }
     namespace = "com.atelier.minaret"
@@ -47,6 +75,11 @@ android {
 
     buildTypes {
         release {
+            // Fail fast if KEYSTORE_PASSWORD is missing — catches CI environments
+            // where secrets haven't been injected before a release build runs.
+            if (signingStorePassword.isNullOrEmpty()) {
+                throw GradleException("KEYSTORE_PASSWORD env var is not set. Cannot build release APK.")
+            }
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(
@@ -54,16 +87,15 @@ android {
                 "proguard-rules.pro"
             )
             signingConfig = signingConfigs.getByName("release")
-            
+
             // Additional size optimization settings
             ndk {
                 debugSymbolLevel = "NONE"
             }
-            
-            // Disable Crashlytics mapping file upload to avoid network issues
-            manifestPlaceholders["crashlyticsCollectionEnabled"] = "false"
+
+            manifestPlaceholders["crashlyticsCollectionEnabled"] = "true"
         }
-        
+
         // Create a minimal build for size optimization
         create("minimal") {
             initWith(getByName("release"))
@@ -73,14 +105,13 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            
+
             // Aggressive optimization
             ndk {
                 debugSymbolLevel = "NONE"
             }
-            
-            // Disable Crashlytics mapping file upload to avoid network issues
-            manifestPlaceholders["crashlyticsCollectionEnabled"] = "false"
+
+            manifestPlaceholders["crashlyticsCollectionEnabled"] = "true"
         }
     }
 
@@ -107,7 +138,7 @@ android {
             excludes += "/com/squareup/**"
             excludes += "DebugProbesKt.bin"
         }
-        
+
         // Exclude duplicate files
         jniLibs {
             pickFirsts += "**/libc++_shared.so"
@@ -138,7 +169,7 @@ dependencies {
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")
     implementation(platform("com.google.firebase:firebase-bom:33.9.0"))
     implementation("com.google.firebase:firebase-analytics")
-    
+
     // HomeWidget dependency removed due to compatibility issues
     // implementation("es.antonborri.home_widget:home_widget:0.7.1")
 }

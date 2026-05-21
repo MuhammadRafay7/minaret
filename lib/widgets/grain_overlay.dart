@@ -36,7 +36,7 @@ class _GrainPainter extends CustomPainter {
       // Vary opacity slightly for a more organic grain feel
       final double opacity = 0.02 + _random.nextDouble() * 0.04;
 
-      paint.color = Colors.black.withOpacity(opacity);
+      paint.color = Colors.black.withValues(alpha: opacity);
       canvas.drawCircle(Offset(x, y), 0.6, paint);
     }
   }

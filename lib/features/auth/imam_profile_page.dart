@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:minaret/core/constants/app_defaults.dart';
 import 'package:minaret/core/theme.dart';
 import 'package:minaret/widgets/atelier_layout.dart';
-import 'package:minaret/l10n/generated/app_localizations.dart';
 import '../prayer/prayer_stats_page.dart';
 
 class ImamProfilePage extends StatefulWidget {
@@ -22,7 +22,7 @@ class _ImamProfilePageState extends State<ImamProfilePage> {
   final _teachingNotesController = TextEditingController();
 
   bool _offersTeaching = false;
-  String _teachingAudience = 'neighbourhood';
+  String _teachingAudience = kDefaultTeachingAudience;
   bool _isLoading = true;
   bool _isSaving = false;
 
@@ -58,7 +58,7 @@ class _ImamProfilePageState extends State<ImamProfilePage> {
           _phoneNumberController.text = data['phoneNumber'] ?? imamData['phoneNumber'] ?? '';
           
           _offersTeaching = imamData['offersTeaching'] ?? false;
-          _teachingAudience = imamData['teachingAudience'] ?? 'neighbourhood';
+          _teachingAudience = imamData['teachingAudience'] ?? kDefaultTeachingAudience;
           _teachingFeeController.text = imamData['teachingFee'] ?? '';
           _teachingNotesController.text = imamData['teachingNotes'] ?? '';
           
@@ -130,7 +130,6 @@ class _ImamProfilePageState extends State<ImamProfilePage> {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final textPrimary = Theme.of(context).colorScheme.onSurface;
     final textSecondary = isDark ? Colors.white70 : MinaretTheme.slate;
 
     return Scaffold(
@@ -179,11 +178,11 @@ class _ImamProfilePageState extends State<ImamProfilePage> {
                         dropdownColor: isDark ? const Color(0xFF1A212B) : Colors.white,
                         items: [
                           DropdownMenuItem(
-                            value: 'neighbourhood',
+                            value: kTeachingAudienceNeighbourhood,
                             child: Text(_t(en: 'Neighbourhood learners', ar: 'متعلمين من الحي', ur: 'محلے کے سیکھنے والے', ru: 'Ученики из района')),
                           ),
                           DropdownMenuItem(
-                            value: 'anyone',
+                            value: kTeachingAudienceAnyone,
                             child: Text(_t(en: 'Anyone', ar: 'أي شخص', ur: 'کوئی بھی', ru: 'Любой')),
                           ),
                         ],
@@ -204,10 +203,10 @@ class _ImamProfilePageState extends State<ImamProfilePage> {
                     Container(
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        color: MinaretTheme.background.withOpacity(0.5),
+                        color: MinaretTheme.background.withValues(alpha: 0.5),
                         borderRadius: BorderRadius.circular(12),
                         border: Border.all(
-                          color: MinaretTheme.gold.withOpacity(0.3),
+                          color: MinaretTheme.gold.withValues(alpha: 0.3),
                           width: 1,
                         ),
                       ),

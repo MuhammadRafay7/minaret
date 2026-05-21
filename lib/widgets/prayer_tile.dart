@@ -29,9 +29,9 @@ class PrayerTile extends StatelessWidget {
       ),
       decoration: isNext
           ? BoxDecoration(
-              color: MinaretTheme.gold.withOpacity(0.06),
+              color: MinaretTheme.gold.withValues(alpha: 0.06),
               border: Border.all(
-                color: MinaretTheme.gold.withOpacity(0.2),
+                color: MinaretTheme.gold.withValues(alpha: 0.2),
                 width: 0.6,
               ),
             )

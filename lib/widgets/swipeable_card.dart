@@ -188,8 +188,6 @@ class _SwipeableCardState extends State<SwipeableCard>
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    
     return GestureDetector(
       onTap: _handleTap,
       onPanStart: _handlePanStart,
@@ -219,7 +217,7 @@ class _SwipeableCardState extends State<SwipeableCard>
                   boxShadow: _isDragging || _detectedSwipe != null
                       ? [
                           BoxShadow(
-                            color: _getSwipeColor(_detectedSwipe).withOpacity(0.3),
+                            color: _getSwipeColor(_detectedSwipe).withValues(alpha: 0.3),
                             blurRadius: 20,
                             spreadRadius: 2,
                           ),
@@ -293,10 +291,10 @@ class SwipeableListTile extends StatelessWidget {
       child: Container(
         margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 4.h),
         decoration: BoxDecoration(
-          color: isDark ? Colors.white.withOpacity(0.05) : Colors.white,
+          color: isDark ? Colors.white.withValues(alpha: 0.05) : Colors.white,
           borderRadius: BorderRadius.circular(12.r),
           border: Border.all(
-            color: isDark ? Colors.white.withOpacity(0.1) : Colors.black.withOpacity(0.1),
+            color: isDark ? Colors.white.withValues(alpha: 0.1) : Colors.black.withValues(alpha: 0.1),
           ),
         ),
         child: ListTile(
@@ -335,7 +333,7 @@ class SwipeableListTile extends StatelessWidget {
                         '← Swipe',
                         style: GoogleFonts.cairo(
                           fontSize: 8.sp,
-                          color: Colors.red.withOpacity(0.6),
+                          color: Colors.red.withValues(alpha: 0.6),
                         ),
                       ),
                     if (onSwipeRight != null)
@@ -343,7 +341,7 @@ class SwipeableListTile extends StatelessWidget {
                         'Swipe →',
                         style: GoogleFonts.cairo(
                           fontSize: 8.sp,
-                          color: Colors.green.withOpacity(0.6),
+                          color: Colors.green.withValues(alpha: 0.6),
                         ),
                       ),
                   ],
@@ -376,7 +374,6 @@ class PullToRefreshContainer extends StatefulWidget {
 class _PullToRefreshContainerState extends State<PullToRefreshContainer>
     with TickerProviderStateMixin {
   late AnimationController _refreshController;
-  late Animation<double> _refreshAnimation;
   double _dragOffset = 0.0;
   bool _isRefreshing = false;
 
@@ -387,8 +384,6 @@ class _PullToRefreshContainerState extends State<PullToRefreshContainer>
       this,
       duration: AppAnimations.slow,
     );
-    _refreshAnimation = Tween<double>(begin: 0.0, end: 1.0)
-        .animate(CurvedAnimation(parent: _refreshController, curve: AppAnimations.easeOutCubic));
   }
 
   @override

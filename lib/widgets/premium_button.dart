@@ -130,7 +130,7 @@ class _PremiumButtonState extends State<PremiumButton>
                                     end: Alignment.centerRight,
                                     colors: [
                                       Colors.transparent,
-                                      Colors.white.withOpacity(0.3),
+                                      Colors.white.withValues(alpha: 0.3),
                                       Colors.transparent,
                                     ],
                                   ),
@@ -183,7 +183,7 @@ class _PremiumButtonState extends State<PremiumButton>
         return _ButtonColors(
           gradient: [
             widget.backgroundColor ?? MinaretTheme.emerald,
-            widget.backgroundColor ?? MinaretTheme.emerald.withOpacity(0.8),
+            widget.backgroundColor ?? MinaretTheme.emerald.withValues(alpha: 0.8),
           ],
           textColor: widget.textColor ?? Colors.white,
           shadow: MinaretTheme.heroShadow,
