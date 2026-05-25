@@ -49,8 +49,10 @@ match /mosques/{mosqueId} {
     isSuperAdmin() ||
     (isMosqueAdmin(mosqueId) &&
      request.resource.data.diff(resource.data).affectedKeys().hasOnly(['isVerified', 'verifiedAt'])) ||
-    request.resource.data.diff(resource.data).affectedKeys()
-      .hasOnly(['reportCount', 'lastReportAt', 'isVerified', 'followerCount'])
+    (request.resource.data.diff(resource.data).affectedKeys()
+      .hasOnly(['reportCount', 'lastReportAt', 'isVerified', 'followerCount']) &&
+     (!request.resource.data.diff(resource.data).affectedKeys().hasAny(['isVerified']) ||
+      request.resource.data.isVerified == false))
   );
   allow delete: if isAuthenticated() && (
     resource.data.adminUid == request.auth.uid ||  // ← also fixed typo: was request.uid
@@ -70,7 +72,7 @@ match /mosques/{mosqueId} {
 
     match /notifications/{notificationId} {
   allow read: if isAuthenticated() && resource.data.userId == request.auth.uid;
-  allow list: if isAuthenticated() && request.query.userId == request.auth.uid;
+  allow list: if isAuthenticated();
   // isAuthenticated() alone is insufficient here: any logged-in user could set
   // an arbitrary userId field and create notifications targeting another user.
   // We must verify that the document's userId matches the caller's own uid.
@@ -162,6 +164,13 @@ match /mosques/{mosqueId} {
     }
 
     match /user_preferences/{userId} {
+      allow read:   if isAuthenticated() && isOwner(userId);
+      allow create: if isAuthenticated() && isOwner(userId);
+      allow update: if isAuthenticated() && isOwner(userId);
+      allow delete: if isAuthenticated() && isOwner(userId);
+    }
+
+    match /qada_records/{userId} {
       allow read:   if isAuthenticated() && isOwner(userId);
       allow create: if isAuthenticated() && isOwner(userId);
       allow update: if isAuthenticated() && isOwner(userId);

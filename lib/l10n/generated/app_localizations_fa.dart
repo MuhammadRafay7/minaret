@@ -595,4 +595,120 @@ class AppLocalizationsFa extends AppLocalizations {
   @override
   String get maintenanceBody =>
       'در حال انجام بهبودهای برنامه‌ریزی شده هستیم. لطفاً بعداً دوباره بررسی کنید.';
+
+  @override
+  String get tryAgain => 'دوباره امتحان کنید';
+
+  @override
+  String get retry => 'تلاش مجدد';
+
+  @override
+  String get notifPrefUpdateFailed =>
+      'به‌روزرسانی تنظیمات اعلان ناموفق بود. لطفاً دوباره امتحان کنید.';
+
+  @override
+  String get profileUpdatedSuccess => 'پروفایل با موفقیت به‌روزرسانی شد';
+
+  @override
+  String errorSavingProfile(String error) {
+    return 'خطا در ذخیره پروفایل: $error';
+  }
+
+  @override
+  String get announcementPosted => 'اعلان با موفقیت منتشر شد.';
+
+  @override
+  String errorPostingAnnouncement(String error) {
+    return 'خطا در انتشار اعلان: $error';
+  }
+
+  @override
+  String get reportIssue => 'گزارش مشکل';
+
+  @override
+  String get submitReport => 'ارسال گزارش';
+
+  @override
+  String get detailsOptional => 'جزئیات (اختیاری)';
+
+  @override
+  String get donationNotAvailable =>
+      'اطلاعات کمک مالی برای این مسجد موجود نیست.';
+
+  @override
+  String get donationDetails => 'جزئیات کمک مالی';
+
+  @override
+  String get accountDetailsCopied => 'جزئیات حساب در کلیپ‌بورد کپی شد';
+
+  @override
+  String get copyDetails => 'کپی جزئیات';
+
+  @override
+  String get closeAction => 'بستن';
+
+  @override
+  String get locationNotAvailable =>
+      'مختصات موقعیت مکانی برای این مسجد موجود نیست.';
+
+  @override
+  String get couldNotLaunchMaps => 'امکان باز کردن Google Maps وجود ندارد.';
+
+  @override
+  String errorLaunchingDirections(String error) {
+    return 'خطا در باز کردن مسیر: $error';
+  }
+
+  @override
+  String get testPermissions => 'آزمایش مجوزها';
+
+  @override
+  String get noResultsFound => 'نتیجه‌ای یافت نشد.';
+
+  @override
+  String get shareYourStreak => 'سابقه‌ات را به اشتراک بگذار';
+
+  @override
+  String get dayLabel => 'روز';
+
+  @override
+  String get bestShortLabel => 'بهترین';
+
+  @override
+  String get totalShortLabel => 'مجموع';
+
+  @override
+  String get rateShortLabel => 'نرخ';
+
+  @override
+  String get allPrayersComplete => 'همه نمازها کامل شد';
+
+  @override
+  String get allPrayersCompleted => 'هر ۵ نماز کامل شد';
+
+  @override
+  String get saveLabel => 'ذخیره';
+
+  @override
+  String get shareLabel => 'اشتراک‌گذاری';
+
+  @override
+  String get savedToGallery => 'در گالری ذخیره شد!';
+
+  @override
+  String get couldNotSaveToGallery => 'ذخیره در گالری ممکن نیست.';
+
+  @override
+  String get dayStreakLabel => 'روز متوالی';
+
+  @override
+  String get overallLabel => 'کلی';
+
+  @override
+  String get trackPrayerHabits => 'عادت‌های نماز و سابقه‌هایت را پیگیری کن';
+
+  @override
+  String ofTotalCompleted(int completed, int total) {
+    return '$completed از $total کامل';
+  }
 }

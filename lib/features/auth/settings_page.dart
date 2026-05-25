@@ -13,6 +13,8 @@ import 'package:minaret/services/prayer_manager.dart';
 import 'package:minaret/l10n/generated/app_localizations.dart';
 import '../notifications/notifications_page.dart';
 import '../prayer/prayer_stats_page.dart';
+import '../legal/privacy_policy_page.dart';
+import '../legal/terms_of_service_page.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -130,8 +132,8 @@ class _SettingsPageState extends State<SettingsPage> {
             _notifTaraweeh = prevTaraweeh;
           });
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Failed to update notification preference. Please try again.'),
+            SnackBar(
+              content: Text(AppLocalizations.of(context)!.notifPrefUpdateFailed),
               backgroundColor: Colors.redAccent,
               behavior: SnackBarBehavior.floating,
             ),
@@ -180,7 +182,7 @@ class _SettingsPageState extends State<SettingsPage> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Please re-authenticate before deleting account.')),
+          SnackBar(content: Text(AppLocalizations.of(context)!.reAuthBeforeDelete)),
         );
       }
     }
@@ -293,11 +295,11 @@ class _SettingsPageState extends State<SettingsPage> {
                         contentPadding: EdgeInsets.zero,
                         leading: Icon(Icons.analytics_outlined, color: MinaretTheme.gold),
                         title: Text(
-                          'Prayer Statistics',
+                          l10n?.prayerStatisticsLabel ?? 'Prayer Statistics',
                           style: GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.w600, color: MinaretTheme.gold)
                         ),
                         subtitle: Text(
-                          'View your prayer history and analytics',
+                          l10n?.prayerStatisticsSub ?? 'View your prayer history and analytics',
                           style: GoogleFonts.lato(fontSize: 12, color: MinaretTheme.slate)
                         ),
                         trailing: Icon(Icons.arrow_forward_ios, size: 16, color: MinaretTheme.gold),
@@ -342,7 +344,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     const SizedBox(height: 30),
                     _sectionHeader(_displayText(context, l10n?.sectionPrayerCalc ?? 'PRAYER CALCULATION')),
                     _buildDropdownTile(
-                      'Method',
+                      l10n?.calculationMethodLabel ?? 'Method',
                       _selectedMethod,
                       {
                         kCalcMethodKarachi:   'University of Islamic Sciences, Karachi',
@@ -363,7 +365,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       },
                     ),
                     _buildDropdownTile(
-                      'Madhab (Asr)',
+                      l10n?.madhabAsrLabel ?? 'Madhab (Asr)',
                       _selectedMadhab,
                       {
                         kMadhabHanafi: 'Hanafi (Later)',
@@ -393,6 +395,43 @@ class _SettingsPageState extends State<SettingsPage> {
                         onTap: _deleteAccount,
                       ),
                     ],
+
+                    const SizedBox(height: 30),
+                    _sectionHeader(_displayText(context, 'LEGAL')),
+                    ListTile(
+                      contentPadding: EdgeInsets.zero,
+                      leading: Icon(Icons.privacy_tip_outlined, color: MinaretTheme.gold),
+                      title: Text(
+                        'Privacy Policy',
+                        style: GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.w600),
+                      ),
+                      subtitle: Text(
+                        'How we handle your data',
+                        style: GoogleFonts.lato(fontSize: 12, color: MinaretTheme.slate),
+                      ),
+                      trailing: Icon(Icons.arrow_forward_ios, size: 16, color: MinaretTheme.gold),
+                      onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => const PrivacyPolicyPage()),
+                      ),
+                    ),
+                    ListTile(
+                      contentPadding: EdgeInsets.zero,
+                      leading: Icon(Icons.description_outlined, color: MinaretTheme.gold),
+                      title: Text(
+                        'Terms of Service',
+                        style: GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.w600),
+                      ),
+                      subtitle: Text(
+                        'Terms governing your use of Minaret',
+                        style: GoogleFonts.lato(fontSize: 12, color: MinaretTheme.slate),
+                      ),
+                      trailing: Icon(Icons.arrow_forward_ios, size: 16, color: MinaretTheme.gold),
+                      onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => const TermsOfServicePage()),
+                      ),
+                    ),
                     const SizedBox(height: 100),
                   ],
                 ),

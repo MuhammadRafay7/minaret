@@ -595,4 +595,120 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get maintenanceBody =>
       'We are currently performing scheduled improvements. Please check back shortly.';
+
+  @override
+  String get tryAgain => 'Try again';
+
+  @override
+  String get retry => 'Retry';
+
+  @override
+  String get notifPrefUpdateFailed =>
+      'Failed to update notification preference. Please try again.';
+
+  @override
+  String get profileUpdatedSuccess => 'Profile updated successfully';
+
+  @override
+  String errorSavingProfile(String error) {
+    return 'Error saving profile: $error';
+  }
+
+  @override
+  String get announcementPosted => 'Announcement posted successfully.';
+
+  @override
+  String errorPostingAnnouncement(String error) {
+    return 'Error posting announcement: $error';
+  }
+
+  @override
+  String get reportIssue => 'REPORT ISSUE';
+
+  @override
+  String get submitReport => 'SUBMIT REPORT';
+
+  @override
+  String get detailsOptional => 'DETAILS (OPTIONAL)';
+
+  @override
+  String get donationNotAvailable =>
+      'Donation information not available for this mosque.';
+
+  @override
+  String get donationDetails => 'DONATION DETAILS';
+
+  @override
+  String get accountDetailsCopied => 'Account details copied to clipboard';
+
+  @override
+  String get copyDetails => 'COPY DETAILS';
+
+  @override
+  String get closeAction => 'CLOSE';
+
+  @override
+  String get locationNotAvailable =>
+      'Location coordinates not available for this mosque.';
+
+  @override
+  String get couldNotLaunchMaps => 'Could not launch Google Maps.';
+
+  @override
+  String errorLaunchingDirections(String error) {
+    return 'Error launching directions: $error';
+  }
+
+  @override
+  String get testPermissions => 'Test Permissions';
+
+  @override
+  String get noResultsFound => 'No results found.';
+
+  @override
+  String get shareYourStreak => 'Share Your Streak';
+
+  @override
+  String get dayLabel => 'day';
+
+  @override
+  String get bestShortLabel => 'Best';
+
+  @override
+  String get totalShortLabel => 'Total';
+
+  @override
+  String get rateShortLabel => 'Rate';
+
+  @override
+  String get allPrayersComplete => 'All prayers complete';
+
+  @override
+  String get allPrayersCompleted => 'All 5 prayers completed';
+
+  @override
+  String get saveLabel => 'Save';
+
+  @override
+  String get shareLabel => 'Share';
+
+  @override
+  String get savedToGallery => 'Saved to gallery!';
+
+  @override
+  String get couldNotSaveToGallery => 'Could not save to gallery.';
+
+  @override
+  String get dayStreakLabel => 'DAY STREAK';
+
+  @override
+  String get overallLabel => 'overall';
+
+  @override
+  String get trackPrayerHabits => 'Track your prayer habits and streaks';
+
+  @override
+  String ofTotalCompleted(int completed, int total) {
+    return '$completed of $total completed';
+  }
 }

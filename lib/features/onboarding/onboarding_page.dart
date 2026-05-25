@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../core/theme.dart';
 import '../../main_navigation.dart';
 
@@ -40,6 +41,9 @@ class _OnboardingPageState extends State<OnboardingPage> {
   ];
 
   Future<void> _finishOnboarding() async {
+    if (!mounted) return;
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('seen_onboarding', true);
     if (!mounted) return;
     Navigator.pushReplacement(
       context,

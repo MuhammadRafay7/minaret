@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:minaret/l10n/generated/app_localizations.dart';
 import '../../core/theme.dart';
 import '../../core/dependency_injection.dart';
 import '../../repositories/mosque_repository.dart';
@@ -37,15 +38,16 @@ class _AnnouncementFormState extends State<AnnouncementForm> {
       );
 
       if (mounted) {
+        final l10n = AppLocalizations.of(context)!;
         Navigator.pop(context);
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Announcement posted successfully.')),
+          SnackBar(content: Text(l10n.announcementPosted)),
         );
       }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error posting announcement: $e')),
+          SnackBar(content: Text(AppLocalizations.of(context)!.errorPostingAnnouncement(e.toString()))),
         );
       }
     } finally {

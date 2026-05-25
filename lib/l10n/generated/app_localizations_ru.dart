@@ -598,4 +598,121 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String get maintenanceBody =>
       'В настоящее время выполняются плановые улучшения. Пожалуйста, зайдите позже.';
+
+  @override
+  String get tryAgain => 'Попробовать снова';
+
+  @override
+  String get retry => 'Повторить';
+
+  @override
+  String get notifPrefUpdateFailed =>
+      'Не удалось обновить настройку уведомления. Попробуйте снова.';
+
+  @override
+  String get profileUpdatedSuccess => 'Профиль успешно обновлён';
+
+  @override
+  String errorSavingProfile(String error) {
+    return 'Ошибка сохранения профиля: $error';
+  }
+
+  @override
+  String get announcementPosted => 'Объявление успешно опубликовано.';
+
+  @override
+  String errorPostingAnnouncement(String error) {
+    return 'Ошибка публикации объявления: $error';
+  }
+
+  @override
+  String get reportIssue => 'СООБЩИТЬ О ПРОБЛЕМЕ';
+
+  @override
+  String get submitReport => 'ОТПРАВИТЬ ЖАЛОБУ';
+
+  @override
+  String get detailsOptional => 'ПОДРОБНОСТИ (НЕОБЯЗАТЕЛЬНО)';
+
+  @override
+  String get donationNotAvailable =>
+      'Информация о пожертвовании недоступна для этой мечети.';
+
+  @override
+  String get donationDetails => 'ДЕТАЛИ ПОЖЕРТВОВАНИЯ';
+
+  @override
+  String get accountDetailsCopied =>
+      'Реквизиты счёта скопированы в буфер обмена';
+
+  @override
+  String get copyDetails => 'КОПИРОВАТЬ РЕКВИЗИТЫ';
+
+  @override
+  String get closeAction => 'ЗАКРЫТЬ';
+
+  @override
+  String get locationNotAvailable =>
+      'Координаты местоположения недоступны для этой мечети.';
+
+  @override
+  String get couldNotLaunchMaps => 'Не удалось открыть Google Maps.';
+
+  @override
+  String errorLaunchingDirections(String error) {
+    return 'Ошибка открытия маршрута: $error';
+  }
+
+  @override
+  String get testPermissions => 'Проверить разрешения';
+
+  @override
+  String get noResultsFound => 'Результатов не найдено.';
+
+  @override
+  String get shareYourStreak => 'Поделиться серией';
+
+  @override
+  String get dayLabel => 'день';
+
+  @override
+  String get bestShortLabel => 'Рекорд';
+
+  @override
+  String get totalShortLabel => 'Всего';
+
+  @override
+  String get rateShortLabel => 'Выполн.';
+
+  @override
+  String get allPrayersComplete => 'Все молитвы выполнены';
+
+  @override
+  String get allPrayersCompleted => 'Все 5 молитв выполнены';
+
+  @override
+  String get saveLabel => 'Сохранить';
+
+  @override
+  String get shareLabel => 'Поделиться';
+
+  @override
+  String get savedToGallery => 'Сохранено в галерею!';
+
+  @override
+  String get couldNotSaveToGallery => 'Не удалось сохранить в галерею.';
+
+  @override
+  String get dayStreakLabel => 'ДНЕЙ ПОДРЯД';
+
+  @override
+  String get overallLabel => 'всего';
+
+  @override
+  String get trackPrayerHabits => 'Отслеживай привычки и серии молитв';
+
+  @override
+  String ofTotalCompleted(int completed, int total) {
+    return '$completed из $total выполнено';
+  }
 }

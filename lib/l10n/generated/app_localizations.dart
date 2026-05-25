@@ -1259,6 +1259,216 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'We are currently performing scheduled improvements. Please check back shortly.'**
   String get maintenanceBody;
+
+  /// No description provided for @tryAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Try again'**
+  String get tryAgain;
+
+  /// No description provided for @retry.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get retry;
+
+  /// No description provided for @notifPrefUpdateFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to update notification preference. Please try again.'**
+  String get notifPrefUpdateFailed;
+
+  /// No description provided for @profileUpdatedSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile updated successfully'**
+  String get profileUpdatedSuccess;
+
+  /// No description provided for @errorSavingProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Error saving profile: {error}'**
+  String errorSavingProfile(String error);
+
+  /// No description provided for @announcementPosted.
+  ///
+  /// In en, this message translates to:
+  /// **'Announcement posted successfully.'**
+  String get announcementPosted;
+
+  /// No description provided for @errorPostingAnnouncement.
+  ///
+  /// In en, this message translates to:
+  /// **'Error posting announcement: {error}'**
+  String errorPostingAnnouncement(String error);
+
+  /// No description provided for @reportIssue.
+  ///
+  /// In en, this message translates to:
+  /// **'REPORT ISSUE'**
+  String get reportIssue;
+
+  /// No description provided for @submitReport.
+  ///
+  /// In en, this message translates to:
+  /// **'SUBMIT REPORT'**
+  String get submitReport;
+
+  /// No description provided for @detailsOptional.
+  ///
+  /// In en, this message translates to:
+  /// **'DETAILS (OPTIONAL)'**
+  String get detailsOptional;
+
+  /// No description provided for @donationNotAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Donation information not available for this mosque.'**
+  String get donationNotAvailable;
+
+  /// No description provided for @donationDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'DONATION DETAILS'**
+  String get donationDetails;
+
+  /// No description provided for @accountDetailsCopied.
+  ///
+  /// In en, this message translates to:
+  /// **'Account details copied to clipboard'**
+  String get accountDetailsCopied;
+
+  /// No description provided for @copyDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'COPY DETAILS'**
+  String get copyDetails;
+
+  /// No description provided for @closeAction.
+  ///
+  /// In en, this message translates to:
+  /// **'CLOSE'**
+  String get closeAction;
+
+  /// No description provided for @locationNotAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Location coordinates not available for this mosque.'**
+  String get locationNotAvailable;
+
+  /// No description provided for @couldNotLaunchMaps.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not launch Google Maps.'**
+  String get couldNotLaunchMaps;
+
+  /// No description provided for @errorLaunchingDirections.
+  ///
+  /// In en, this message translates to:
+  /// **'Error launching directions: {error}'**
+  String errorLaunchingDirections(String error);
+
+  /// No description provided for @testPermissions.
+  ///
+  /// In en, this message translates to:
+  /// **'Test Permissions'**
+  String get testPermissions;
+
+  /// No description provided for @noResultsFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No results found.'**
+  String get noResultsFound;
+
+  /// No description provided for @shareYourStreak.
+  ///
+  /// In en, this message translates to:
+  /// **'Share Your Streak'**
+  String get shareYourStreak;
+
+  /// No description provided for @dayLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'day'**
+  String get dayLabel;
+
+  /// No description provided for @bestShortLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Best'**
+  String get bestShortLabel;
+
+  /// No description provided for @totalShortLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Total'**
+  String get totalShortLabel;
+
+  /// No description provided for @rateShortLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Rate'**
+  String get rateShortLabel;
+
+  /// No description provided for @allPrayersComplete.
+  ///
+  /// In en, this message translates to:
+  /// **'All prayers complete'**
+  String get allPrayersComplete;
+
+  /// No description provided for @allPrayersCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'All 5 prayers completed'**
+  String get allPrayersCompleted;
+
+  /// No description provided for @saveLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get saveLabel;
+
+  /// No description provided for @shareLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Share'**
+  String get shareLabel;
+
+  /// No description provided for @savedToGallery.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved to gallery!'**
+  String get savedToGallery;
+
+  /// No description provided for @couldNotSaveToGallery.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not save to gallery.'**
+  String get couldNotSaveToGallery;
+
+  /// No description provided for @dayStreakLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'DAY STREAK'**
+  String get dayStreakLabel;
+
+  /// No description provided for @overallLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'overall'**
+  String get overallLabel;
+
+  /// No description provided for @trackPrayerHabits.
+  ///
+  /// In en, this message translates to:
+  /// **'Track your prayer habits and streaks'**
+  String get trackPrayerHabits;
+
+  /// No description provided for @ofTotalCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'{completed} of {total} completed'**
+  String ofTotalCompleted(int completed, int total);
 }
 
 class _AppLocalizationsDelegate

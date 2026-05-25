@@ -12,9 +12,9 @@ class EnhancedPrayerTrackerService {
   static PrayerRepository get _repo =>
       ServiceLocator.get<PrayerRepository>();
 
-  static Future<void> togglePrayer(String prayerName) async {
+  static Future<UserPrayerStats?> togglePrayer(String prayerName) async {
     try {
-      await _repo.togglePrayer(prayerName);
+      return await _repo.togglePrayer(prayerName);
     } catch (e) {
       throw Exception('Failed to toggle prayer: $e');
     }

@@ -592,4 +592,118 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get maintenanceBody =>
       'نقوم حاليًا بإجراء تحسينات مجدولة. يُرجى التحقق مجددًا قريبًا.';
+
+  @override
+  String get tryAgain => 'حاول مجدداً';
+
+  @override
+  String get retry => 'إعادة المحاولة';
+
+  @override
+  String get notifPrefUpdateFailed =>
+      'فشل تحديث تفضيل الإشعارات. يرجى المحاولة مجدداً.';
+
+  @override
+  String get profileUpdatedSuccess => 'تم تحديث الملف الشخصي بنجاح';
+
+  @override
+  String errorSavingProfile(String error) {
+    return 'خطأ في حفظ الملف الشخصي: $error';
+  }
+
+  @override
+  String get announcementPosted => 'تم نشر الإعلان بنجاح.';
+
+  @override
+  String errorPostingAnnouncement(String error) {
+    return 'خطأ في نشر الإعلان: $error';
+  }
+
+  @override
+  String get reportIssue => 'الإبلاغ عن مشكلة';
+
+  @override
+  String get submitReport => 'إرسال البلاغ';
+
+  @override
+  String get detailsOptional => 'التفاصيل (اختياري)';
+
+  @override
+  String get donationNotAvailable => 'معلومات التبرع غير متوفرة لهذا المسجد.';
+
+  @override
+  String get donationDetails => 'تفاصيل التبرع';
+
+  @override
+  String get accountDetailsCopied => 'تم نسخ تفاصيل الحساب إلى الحافظة';
+
+  @override
+  String get copyDetails => 'نسخ التفاصيل';
+
+  @override
+  String get closeAction => 'إغلاق';
+
+  @override
+  String get locationNotAvailable => 'إحداثيات الموقع غير متوفرة لهذا المسجد.';
+
+  @override
+  String get couldNotLaunchMaps => 'تعذّر فتح خرائط Google.';
+
+  @override
+  String errorLaunchingDirections(String error) {
+    return 'خطأ في فتح الاتجاهات: $error';
+  }
+
+  @override
+  String get testPermissions => 'اختبار الأذونات';
+
+  @override
+  String get noResultsFound => 'لا توجد نتائج.';
+
+  @override
+  String get shareYourStreak => 'شارك سلسلتك';
+
+  @override
+  String get dayLabel => 'يوم';
+
+  @override
+  String get bestShortLabel => 'الأفضل';
+
+  @override
+  String get totalShortLabel => 'المجموع';
+
+  @override
+  String get rateShortLabel => 'المعدل';
+
+  @override
+  String get allPrayersComplete => 'تمت جميع الصلوات';
+
+  @override
+  String get allPrayersCompleted => 'اكتملت الصلوات الخمس';
+
+  @override
+  String get saveLabel => 'حفظ';
+
+  @override
+  String get shareLabel => 'مشاركة';
+
+  @override
+  String get savedToGallery => 'تم الحفظ في المعرض!';
+
+  @override
+  String get couldNotSaveToGallery => 'تعذّر الحفظ في المعرض.';
+
+  @override
+  String get dayStreakLabel => 'سلسلة أيام';
+
+  @override
+  String get overallLabel => 'إجمالي';
+
+  @override
+  String get trackPrayerHabits => 'تابع عاداتك الصلاتية وسلاسلك';
+
+  @override
+  String ofTotalCompleted(int completed, int total) {
+    return '$completed من $total مكتملة';
+  }
 }

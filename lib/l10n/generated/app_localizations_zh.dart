@@ -589,4 +589,117 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get maintenanceBody => '我们目前正在进行计划内的改进。请稍后再查看。';
+
+  @override
+  String get tryAgain => '重试';
+
+  @override
+  String get retry => '重试';
+
+  @override
+  String get notifPrefUpdateFailed => '更新通知偏好失败，请重试。';
+
+  @override
+  String get profileUpdatedSuccess => '个人资料更新成功';
+
+  @override
+  String errorSavingProfile(String error) {
+    return '保存个人资料时出错：$error';
+  }
+
+  @override
+  String get announcementPosted => '公告发布成功。';
+
+  @override
+  String errorPostingAnnouncement(String error) {
+    return '发布公告时出错：$error';
+  }
+
+  @override
+  String get reportIssue => '举报问题';
+
+  @override
+  String get submitReport => '提交举报';
+
+  @override
+  String get detailsOptional => '详情（可选）';
+
+  @override
+  String get donationNotAvailable => '该清真寺的捐款信息暂不可用。';
+
+  @override
+  String get donationDetails => '捐款详情';
+
+  @override
+  String get accountDetailsCopied => '账户详情已复制到剪贴板';
+
+  @override
+  String get copyDetails => '复制详情';
+
+  @override
+  String get closeAction => '关闭';
+
+  @override
+  String get locationNotAvailable => '该清真寺的位置坐标不可用。';
+
+  @override
+  String get couldNotLaunchMaps => '无法打开 Google 地图。';
+
+  @override
+  String errorLaunchingDirections(String error) {
+    return '打开导航时出错：$error';
+  }
+
+  @override
+  String get testPermissions => '测试权限';
+
+  @override
+  String get noResultsFound => '未找到结果。';
+
+  @override
+  String get shareYourStreak => '分享你的连续记录';
+
+  @override
+  String get dayLabel => '天';
+
+  @override
+  String get bestShortLabel => '最佳';
+
+  @override
+  String get totalShortLabel => '总计';
+
+  @override
+  String get rateShortLabel => '比率';
+
+  @override
+  String get allPrayersComplete => '所有礼拜已完成';
+
+  @override
+  String get allPrayersCompleted => '五次礼拜全部完成';
+
+  @override
+  String get saveLabel => '保存';
+
+  @override
+  String get shareLabel => '分享';
+
+  @override
+  String get savedToGallery => '已保存到相册！';
+
+  @override
+  String get couldNotSaveToGallery => '无法保存到相册。';
+
+  @override
+  String get dayStreakLabel => '天连续';
+
+  @override
+  String get overallLabel => '总体';
+
+  @override
+  String get trackPrayerHabits => '追踪你的礼拜习惯和连续记录';
+
+  @override
+  String ofTotalCompleted(int completed, int total) {
+    return '已完成 $completed/$total';
+  }
 }

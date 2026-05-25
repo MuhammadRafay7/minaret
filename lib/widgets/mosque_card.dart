@@ -156,8 +156,31 @@ class _MosqueCardState extends State<MosqueCard> {
                         : Colors.black.withValues(alpha: 0.07)),
                 width: 0.5,
               ),
-              boxShadow:
-                  isSoon ? MinaretTheme.goldShadow : MinaretTheme.cardShadow,
+              boxShadow: isSoon
+                  ? [
+                      BoxShadow(
+                        color: MinaretTheme.gold.withValues(alpha: 0.18),
+                        blurRadius: 20,
+                        offset: const Offset(0, 5),
+                      ),
+                      BoxShadow(
+                        color: Colors.black.withValues(alpha: 0.14),
+                        blurRadius: 8,
+                        offset: const Offset(0, 2),
+                      ),
+                    ]
+                  : [
+                      BoxShadow(
+                        color: Colors.black.withValues(alpha: 0.13),
+                        blurRadius: 16,
+                        offset: const Offset(0, 4),
+                      ),
+                      BoxShadow(
+                        color: Colors.black.withValues(alpha: 0.05),
+                        blurRadius: 3,
+                        offset: const Offset(0, 1),
+                      ),
+                    ],
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(16.r),
@@ -213,7 +236,6 @@ class _Header extends StatelessWidget {
   final VoidCallback onFollowToggle, onDirections;
   final AppLocalizations? l10n;
 
-  static const _headerBg = Color(0xFF0F2D1E);
   static const _creamText = Color(0xFFF5EDD8);
   static const _goldSoft = Color(0xFFE8C96A);
 
@@ -240,8 +262,34 @@ class _Header extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        // base colour
-        Positioned.fill(child: ColoredBox(color: _headerBg)),
+        // gradient header — richer depth than flat colour
+        const Positioned.fill(
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [Color(0xFF082214), Color(0xFF0F2D1E), Color(0xFF133222)],
+              ),
+            ),
+          ),
+        ),
+        // subtle top-edge highlight
+        Positioned(
+          top: 0, left: 0, right: 0,
+          child: Container(
+            height: 0.5,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Colors.transparent,
+                  Colors.white.withValues(alpha: 0.1),
+                  Colors.transparent,
+                ],
+              ),
+            ),
+          ),
+        ),
         // geometric tile
         const Positioned.fill(child: _GeometricTileOverlay()),
         // content
@@ -306,7 +354,7 @@ class _Header extends StatelessWidget {
         Text(
           data['name'] ?? 'Masjid',
           style: GoogleFonts.amiri(
-            fontSize: 22.sp,
+            fontSize: 24.sp,
             fontWeight: FontWeight.w700,
             color: _creamText,
             height: 1.2,
@@ -691,14 +739,14 @@ class _TilePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final hex = Paint()
-      ..color = _gold.withValues(alpha: 0.07)
+      ..color = _gold.withValues(alpha: 0.09)
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 0.55;
+      ..strokeWidth = 0.6;
 
     final inner = Paint()
-      ..color = _gold.withValues(alpha: 0.035)
+      ..color = _gold.withValues(alpha: 0.045)
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 0.35;
+      ..strokeWidth = 0.4;
 
     final cols = (size.width / _tileSize).ceil() + 1;
     final rows = (size.height / _tileSize).ceil() + 1;

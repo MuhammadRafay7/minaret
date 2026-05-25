@@ -213,5 +213,61 @@
   "failedToSyncPrayer": "نماز مطابقت میں ناکامی۔ کنکشن چیک کریں۔"
 ,
   "maintenanceTitle": "سسٹم کی دیکھ بھال",
-  "maintenanceBody": "ہم ابھی طے شدہ بہتری کا کام کر رہے ہیں۔ جلد ہی دوبارہ آئیں۔"
+  "maintenanceBody": "ہم ابھی طے شدہ بہتری کا کام کر رہے ہیں۔ جلد ہی دوبارہ آئیں۔",
+  "tryAgain": "دوبارہ کوشش کریں",
+  "retry": "دوبارہ",
+  "notifPrefUpdateFailed": "اطلاع کی ترجیح اپ ڈیٹ کرنے میں ناکامی۔ دوبارہ کوشش کریں۔",
+  "profileUpdatedSuccess": "پروفائل کامیابی سے اپ ڈیٹ ہو گیا",
+  "errorSavingProfile": "پروفائل محفوظ کرنے میں خرابی: {error}",
+  "@errorSavingProfile": {
+    "placeholders": {
+      "error": {"type": "String"}
+    }
+  },
+  "announcementPosted": "اعلان کامیابی سے پوسٹ کیا گیا۔",
+  "errorPostingAnnouncement": "اعلان پوسٹ کرنے میں خرابی: {error}",
+  "@errorPostingAnnouncement": {
+    "placeholders": {
+      "error": {"type": "String"}
+    }
+  },
+  "reportIssue": "مسئلہ رپورٹ کریں",
+  "submitReport": "رپورٹ جمع کریں",
+  "detailsOptional": "تفصیلات (اختیاری)",
+  "donationNotAvailable": "اس مسجد کے لیے عطیہ کی معلومات دستیاب نہیں ہیں۔",
+  "donationDetails": "عطیہ کی تفصیلات",
+  "accountDetailsCopied": "اکاؤنٹ کی تفصیلات کاپی ہو گئی",
+  "copyDetails": "تفصیلات کاپی کریں",
+  "closeAction": "بند کریں",
+  "locationNotAvailable": "اس مسجد کے لیے مقام کے نقاط دستیاب نہیں ہیں۔",
+  "couldNotLaunchMaps": "گوگل میپس نہیں کھل سکا۔",
+  "errorLaunchingDirections": "راستہ کھولنے میں خرابی: {error}",
+  "@errorLaunchingDirections": {
+    "placeholders": {
+      "error": {"type": "String"}
+    }
+  },
+  "testPermissions": "اجازتیں آزمائیں",
+  "noResultsFound": "کوئی نتیجہ نہیں ملا۔",
+  "shareYourStreak": "اپنی سلسلہ شیئر کریں",
+  "dayLabel": "دن",
+  "bestShortLabel": "بہترین",
+  "totalShortLabel": "کل",
+  "rateShortLabel": "شرح",
+  "allPrayersComplete": "تمام نمازیں مکمل",
+  "allPrayersCompleted": "پانچوں نمازیں مکمل",
+  "saveLabel": "محفوظ کریں",
+  "shareLabel": "شیئر کریں",
+  "savedToGallery": "گیلری میں محفوظ ہو گیا!",
+  "couldNotSaveToGallery": "گیلری میں محفوظ نہیں ہو سکا۔",
+  "dayStreakLabel": "دن کا سلسلہ",
+  "overallLabel": "مجموعی",
+  "trackPrayerHabits": "اپنی نماز کی عادات اور سلسلہ ٹریک کریں",
+  "ofTotalCompleted": "{completed} / {total} مکمل",
+  "@ofTotalCompleted": {
+    "placeholders": {
+      "completed": {"type": "int"},
+      "total": {"type": "int"}
+    }
+  }
 }

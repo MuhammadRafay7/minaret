@@ -214,5 +214,61 @@
   "failedToSyncPrayer": "همگام‌سازی نماز ناموفق بود. اتصال را بررسی کنید."
 ,
   "maintenanceTitle": "نگهداری سیستم",
-  "maintenanceBody": "در حال انجام بهبودهای برنامه‌ریزی شده هستیم. لطفاً بعداً دوباره بررسی کنید."
+  "maintenanceBody": "در حال انجام بهبودهای برنامه‌ریزی شده هستیم. لطفاً بعداً دوباره بررسی کنید.",
+  "tryAgain": "دوباره امتحان کنید",
+  "retry": "تلاش مجدد",
+  "notifPrefUpdateFailed": "به‌روزرسانی تنظیمات اعلان ناموفق بود. لطفاً دوباره امتحان کنید.",
+  "profileUpdatedSuccess": "پروفایل با موفقیت به‌روزرسانی شد",
+  "errorSavingProfile": "خطا در ذخیره پروفایل: {error}",
+  "@errorSavingProfile": {
+    "placeholders": {
+      "error": {"type": "String"}
+    }
+  },
+  "announcementPosted": "اعلان با موفقیت منتشر شد.",
+  "errorPostingAnnouncement": "خطا در انتشار اعلان: {error}",
+  "@errorPostingAnnouncement": {
+    "placeholders": {
+      "error": {"type": "String"}
+    }
+  },
+  "reportIssue": "گزارش مشکل",
+  "submitReport": "ارسال گزارش",
+  "detailsOptional": "جزئیات (اختیاری)",
+  "donationNotAvailable": "اطلاعات کمک مالی برای این مسجد موجود نیست.",
+  "donationDetails": "جزئیات کمک مالی",
+  "accountDetailsCopied": "جزئیات حساب در کلیپ‌بورد کپی شد",
+  "copyDetails": "کپی جزئیات",
+  "closeAction": "بستن",
+  "locationNotAvailable": "مختصات موقعیت مکانی برای این مسجد موجود نیست.",
+  "couldNotLaunchMaps": "امکان باز کردن Google Maps وجود ندارد.",
+  "errorLaunchingDirections": "خطا در باز کردن مسیر: {error}",
+  "@errorLaunchingDirections": {
+    "placeholders": {
+      "error": {"type": "String"}
+    }
+  },
+  "testPermissions": "آزمایش مجوزها",
+  "noResultsFound": "نتیجه‌ای یافت نشد.",
+  "shareYourStreak": "سابقه‌ات را به اشتراک بگذار",
+  "dayLabel": "روز",
+  "bestShortLabel": "بهترین",
+  "totalShortLabel": "مجموع",
+  "rateShortLabel": "نرخ",
+  "allPrayersComplete": "همه نمازها کامل شد",
+  "allPrayersCompleted": "هر ۵ نماز کامل شد",
+  "saveLabel": "ذخیره",
+  "shareLabel": "اشتراک‌گذاری",
+  "savedToGallery": "در گالری ذخیره شد!",
+  "couldNotSaveToGallery": "ذخیره در گالری ممکن نیست.",
+  "dayStreakLabel": "روز متوالی",
+  "overallLabel": "کلی",
+  "trackPrayerHabits": "عادت‌های نماز و سابقه‌هایت را پیگیری کن",
+  "ofTotalCompleted": "{completed} از {total} کامل",
+  "@ofTotalCompleted": {
+    "placeholders": {
+      "completed": {"type": "int"},
+      "total": {"type": "int"}
+    }
+  }
 }

@@ -213,5 +213,61 @@
   "failedToSyncPrayer": "Не удалось синхронизировать молитву. Проверьте подключение."
 ,
   "maintenanceTitle": "ТЕХНИЧЕСКОЕ ОБСЛУЖИВАНИЕ",
-  "maintenanceBody": "В настоящее время выполняются плановые улучшения. Пожалуйста, зайдите позже."
+  "maintenanceBody": "В настоящее время выполняются плановые улучшения. Пожалуйста, зайдите позже.",
+  "tryAgain": "Попробовать снова",
+  "retry": "Повторить",
+  "notifPrefUpdateFailed": "Не удалось обновить настройку уведомления. Попробуйте снова.",
+  "profileUpdatedSuccess": "Профиль успешно обновлён",
+  "errorSavingProfile": "Ошибка сохранения профиля: {error}",
+  "@errorSavingProfile": {
+    "placeholders": {
+      "error": {"type": "String"}
+    }
+  },
+  "announcementPosted": "Объявление успешно опубликовано.",
+  "errorPostingAnnouncement": "Ошибка публикации объявления: {error}",
+  "@errorPostingAnnouncement": {
+    "placeholders": {
+      "error": {"type": "String"}
+    }
+  },
+  "reportIssue": "СООБЩИТЬ О ПРОБЛЕМЕ",
+  "submitReport": "ОТПРАВИТЬ ЖАЛОБУ",
+  "detailsOptional": "ПОДРОБНОСТИ (НЕОБЯЗАТЕЛЬНО)",
+  "donationNotAvailable": "Информация о пожертвовании недоступна для этой мечети.",
+  "donationDetails": "ДЕТАЛИ ПОЖЕРТВОВАНИЯ",
+  "accountDetailsCopied": "Реквизиты счёта скопированы в буфер обмена",
+  "copyDetails": "КОПИРОВАТЬ РЕКВИЗИТЫ",
+  "closeAction": "ЗАКРЫТЬ",
+  "locationNotAvailable": "Координаты местоположения недоступны для этой мечети.",
+  "couldNotLaunchMaps": "Не удалось открыть Google Maps.",
+  "errorLaunchingDirections": "Ошибка открытия маршрута: {error}",
+  "@errorLaunchingDirections": {
+    "placeholders": {
+      "error": {"type": "String"}
+    }
+  },
+  "testPermissions": "Проверить разрешения",
+  "noResultsFound": "Результатов не найдено.",
+  "shareYourStreak": "Поделиться серией",
+  "dayLabel": "день",
+  "bestShortLabel": "Рекорд",
+  "totalShortLabel": "Всего",
+  "rateShortLabel": "Выполн.",
+  "allPrayersComplete": "Все молитвы выполнены",
+  "allPrayersCompleted": "Все 5 молитв выполнены",
+  "saveLabel": "Сохранить",
+  "shareLabel": "Поделиться",
+  "savedToGallery": "Сохранено в галерею!",
+  "couldNotSaveToGallery": "Не удалось сохранить в галерею.",
+  "dayStreakLabel": "ДНЕЙ ПОДРЯД",
+  "overallLabel": "всего",
+  "trackPrayerHabits": "Отслеживай привычки и серии молитв",
+  "ofTotalCompleted": "{completed} из {total} выполнено",
+  "@ofTotalCompleted": {
+    "placeholders": {
+      "completed": {"type": "int"},
+      "total": {"type": "int"}
+    }
+  }
 }

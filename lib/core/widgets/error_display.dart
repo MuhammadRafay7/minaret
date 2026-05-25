@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:minaret/l10n/generated/app_localizations.dart';
 
 import '../app_spacing.dart';
 import '../errors/app_error.dart';
@@ -69,7 +70,7 @@ class _FullError extends StatelessWidget {
               OutlinedButton.icon(
                 onPressed: onRetry,
                 icon: const Icon(Icons.refresh_rounded, size: 18),
-                label: const Text('Try again'),
+                label: Text(AppLocalizations.of(context)!.tryAgain),
                 style: OutlinedButton.styleFrom(
                   foregroundColor: MinaretTheme.emerald,
                   side: const BorderSide(color: MinaretTheme.emerald),
@@ -128,7 +129,7 @@ class _CompactError extends StatelessWidget {
                   vertical: AppSpacing.xs,
                 ),
               ),
-              child: const Text('Retry'),
+              child: Text(AppLocalizations.of(context)!.retry),
             ),
           ],
         ],
@@ -174,7 +175,7 @@ class ErrorSnackbar {
         ),
         action: (error.isRecoverable && onRetry != null)
             ? SnackBarAction(
-                label: 'Retry',
+                label: AppLocalizations.of(context)!.retry,
                 textColor: Colors.white,
                 onPressed: onRetry,
               )

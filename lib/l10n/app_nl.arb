@@ -213,5 +213,61 @@
   "failedToSyncPrayer": "Synchroniseren van gebed mislukt. Controleer verbinding."
 ,
   "maintenanceTitle": "SYSTEEMONDERHOUD",
-  "maintenanceBody": "We voeren momenteel geplande verbeteringen uit. Kom binnenkort terug."
+  "maintenanceBody": "We voeren momenteel geplande verbeteringen uit. Kom binnenkort terug.",
+  "tryAgain": "Probeer opnieuw",
+  "retry": "Opnieuw",
+  "notifPrefUpdateFailed": "Bijwerken van meldingsvoorkeur mislukt. Probeer opnieuw.",
+  "profileUpdatedSuccess": "Profiel succesvol bijgewerkt",
+  "errorSavingProfile": "Fout bij opslaan profiel: {error}",
+  "@errorSavingProfile": {
+    "placeholders": {
+      "error": {"type": "String"}
+    }
+  },
+  "announcementPosted": "Aankondiging succesvol geplaatst.",
+  "errorPostingAnnouncement": "Fout bij plaatsen aankondiging: {error}",
+  "@errorPostingAnnouncement": {
+    "placeholders": {
+      "error": {"type": "String"}
+    }
+  },
+  "reportIssue": "PROBLEEM MELDEN",
+  "submitReport": "RAPPORT INDIENEN",
+  "detailsOptional": "DETAILS (OPTIONEEL)",
+  "donationNotAvailable": "Donatie-informatie niet beschikbaar voor deze moskee.",
+  "donationDetails": "DONATIEDETAILS",
+  "accountDetailsCopied": "Accountgegevens gekopieerd naar klembord",
+  "copyDetails": "DETAILS KOPIËREN",
+  "closeAction": "SLUITEN",
+  "locationNotAvailable": "Locatiecoördinaten niet beschikbaar voor deze moskee.",
+  "couldNotLaunchMaps": "Kan Google Maps niet openen.",
+  "errorLaunchingDirections": "Fout bij openen routebeschrijving: {error}",
+  "@errorLaunchingDirections": {
+    "placeholders": {
+      "error": {"type": "String"}
+    }
+  },
+  "testPermissions": "Machtigingen testen",
+  "noResultsFound": "Geen resultaten gevonden.",
+  "shareYourStreak": "Deel je reeks",
+  "dayLabel": "dag",
+  "bestShortLabel": "Best",
+  "totalShortLabel": "Totaal",
+  "rateShortLabel": "Percentage",
+  "allPrayersComplete": "Alle gebeden voltooid",
+  "allPrayersCompleted": "Alle 5 gebeden voltooid",
+  "saveLabel": "Opslaan",
+  "shareLabel": "Delen",
+  "savedToGallery": "Opgeslagen in galerij!",
+  "couldNotSaveToGallery": "Kan niet opslaan in galerij.",
+  "dayStreakLabel": "DAAGSE REEKS",
+  "overallLabel": "totaal",
+  "trackPrayerHabits": "Volg je gebedgewoonten en reeksen",
+  "ofTotalCompleted": "{completed} van {total} voltooid",
+  "@ofTotalCompleted": {
+    "placeholders": {
+      "completed": {"type": "int"},
+      "total": {"type": "int"}
+    }
+  }
 }

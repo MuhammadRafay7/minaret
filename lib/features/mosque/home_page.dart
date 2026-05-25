@@ -271,7 +271,7 @@ class _Header extends StatelessWidget {
                 if (results.isEmpty && !searching && ctrl.text.isNotEmpty)
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 20),
-                    child: Text('No results found.',
+                    child: Text(l10n.noResultsFound,
                         style: GoogleFonts.montserrat(
                             fontSize: 12, color: Colors.grey)),
                   ),

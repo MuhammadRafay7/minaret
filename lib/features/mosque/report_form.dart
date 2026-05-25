@@ -1,6 +1,7 @@
 /// report_form.dart
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:minaret/l10n/generated/app_localizations.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:minaret/core/dependency_injection.dart';
@@ -114,20 +115,25 @@ class _ReportFormPageState extends State<ReportFormPage> {
         transaction.update(mosqueRef, mosqueUpdate);
       });
 
-      // 3. Send warning notification to mosque admin
+      // 3. Send warning notification to mosque admin (best-effort — rules
+      // restrict cross-user notification writes, so don't fail the report if this throws)
       if (adminUid != null && adminUid!.isNotEmpty) {
-        await ServiceLocator.get<NotificationRepository>().addNotification({
-          'userId': adminUid,
-          'type': 'report_warning',
-          'title': 'Mosque Report Warning',
-          'message':
-              'Your mosque "${widget.mosqueName}" has received a report: ${_selectedReason!.label}. Please review and address this issue.',
-          'mosqueId': widget.mosqueId,
-          'mosqueName': widget.mosqueName,
-          'reportReason': _selectedReason!.code,
-          'read': false,
-          'createdAt': FieldValue.serverTimestamp(),
-        });
+        try {
+          await ServiceLocator.get<NotificationRepository>().addNotification({
+            'userId': adminUid,
+            'type': 'report_warning',
+            'title': 'Mosque Report Warning',
+            'message':
+                'Your mosque "${widget.mosqueName}" has received a report: ${_selectedReason!.label}. Please review and address this issue.',
+            'mosqueId': widget.mosqueId,
+            'mosqueName': widget.mosqueName,
+            'reportReason': _selectedReason!.code,
+            'read': false,
+            'createdAt': FieldValue.serverTimestamp(),
+          });
+        } catch (e) {
+          debugPrint('Report notification skipped: $e');
+        }
       }
 
       if (!mounted) return;
@@ -165,6 +171,7 @@ class _ReportFormPageState extends State<ReportFormPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: MinaretTheme.background,
       body: AtelierLayout(
@@ -178,7 +185,7 @@ class _ReportFormPageState extends State<ReportFormPage> {
                   icon: const Icon(Icons.arrow_back_ios_new,
                       size: 14, color: MinaretTheme.emerald)),
               const SizedBox(height: 40),
-              Text('REPORT ISSUE',
+              Text(l10n.reportIssue,
                   style: MinaretTheme.heading
                       .copyWith(fontSize: 28, letterSpacing: 6)),
               const SizedBox(height: 10),
@@ -205,8 +212,8 @@ class _ReportFormPageState extends State<ReportFormPage> {
               TextField(
                   controller: _detailsController,
                   maxLines: 3,
-                  decoration: const InputDecoration(
-                    labelText: 'DETAILS (OPTIONAL)',
+                  decoration: InputDecoration(
+                    labelText: l10n.detailsOptional,
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                   )),
               const SizedBox(height: 50),
@@ -219,8 +226,8 @@ class _ReportFormPageState extends State<ReportFormPage> {
                           side: BorderSide.none),
                       child: _isSaving
                           ? const CircularProgressIndicator(color: Colors.white)
-                          : const Text('SUBMIT REPORT',
-                              style: TextStyle(color: Colors.white)))),
+                          : Text(l10n.submitReport,
+                              style: const TextStyle(color: Colors.white)))),
             ],
           ),
         ),
