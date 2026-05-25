@@ -1,9 +1,7 @@
-// functions/src/verifyImamDocuments.js
+// functions/src/index.js
 //
-// Firebase Cloud Function that uses the Anthropic Claude API (vision)
-// to compare an imam's CNIC/passport against their sanad/certificate.
-//
-// Deploy:  firebase deploy --only functions:verifyImamDocuments
+// Firebase Cloud Functions — Minaret
+// Deploy: firebase deploy --only functions
 //
 // Required environment variable (set via Firebase secrets):
 //   ANTHROPIC_API_KEY
@@ -13,6 +11,14 @@ const { defineSecret } = require("firebase-functions/params");
 const Anthropic = require("@anthropic-ai/sdk");
 
 const anthropicKey = defineSecret("ANTHROPIC_API_KEY");
+
+function detectMediaType(b64) {
+  if (b64.startsWith("/9j/")) return "image/jpeg";
+  if (b64.startsWith("iVBOR")) return "image/png";
+  if (b64.startsWith("R0lGO")) return "image/gif";
+  if (b64.startsWith("UklGR")) return "image/webp";
+  return "image/jpeg";
+}
 
 exports.verifyImamDocuments = onCall(
   { secrets: [anthropicKey], timeoutSeconds: 60 },
@@ -35,15 +41,6 @@ exports.verifyImamDocuments = onCall(
     const MAX_B64 = 7 * 1024 * 1024; // ~5 MB raw
     if (idCardBase64.length > MAX_B64 || sanadBase64.length > MAX_B64) {
       throw new HttpsError("invalid-argument", "Image too large (max 5 MB).");
-    }
-
-    // ── Detect media type from base64 header ──────────────────────────────
-    function detectMediaType(b64) {
-      if (b64.startsWith("/9j/")) return "image/jpeg";
-      if (b64.startsWith("iVBOR")) return "image/png";
-      if (b64.startsWith("R0lGO")) return "image/gif";
-      if (b64.startsWith("UklGR")) return "image/webp";
-      return "image/jpeg"; // fallback
     }
 
     const idMediaType = detectMediaType(idCardBase64);
@@ -173,3 +170,6 @@ If a document is unreadable, score it conservatively and set status to needs_rev
     };
   },
 );
+
+// extractPrayerTimes is handled directly in Flutter via Gemini Flash REST API.
+// No Cloud Function needed for that feature.

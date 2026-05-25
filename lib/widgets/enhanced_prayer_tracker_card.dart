@@ -1,12 +1,20 @@
+import 'dart:io';
+import 'dart:ui' as ui;
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gal/gal.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:minaret/l10n/generated/app_localizations.dart';
 import 'package:minaret/core/theme.dart';
 import 'package:minaret/services/enhanced_prayer_tracker_service.dart';
 import 'package:minaret/widgets/app_loading_indicator.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:share_plus/share_plus.dart';
 
 class EnhancedPrayerTrackerCard extends StatefulWidget {
   const EnhancedPrayerTrackerCard({super.key});
@@ -128,11 +136,10 @@ class _EnhancedPrayerTrackerCardState extends State<EnhancedPrayerTrackerCard>
 
   Future<void> _syncToggleWithServer(String key) async {
     try {
-      await EnhancedPrayerTrackerService.togglePrayer(key);
-      final userStats = await EnhancedPrayerTrackerService.getCurrentUserStats();
+      final userStats = await EnhancedPrayerTrackerService.togglePrayer(key);
       if (mounted) {
         setState(() {
-          _userStats = userStats;
+          _userStats = userStats ?? _userStats;
           _syncingKeys.remove(key);
         });
       }
@@ -151,6 +158,85 @@ class _EnhancedPrayerTrackerCardState extends State<EnhancedPrayerTrackerCard>
           SnackBar(
             content: Text(AppLocalizations.of(context)?.failedToSyncPrayer ??
                 'Failed to sync prayer. Check connection.'),
+            backgroundColor: Colors.redAccent,
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+      }
+    }
+  }
+
+  final GlobalKey _shareCardKey = GlobalKey();
+
+  void _showShareSheet(BuildContext context, bool isDark) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      builder: (ctx) => _ShareBottomSheet(
+        shareCardKey: _shareCardKey,
+        userStats: _userStats!,
+        isDark: isDark,
+        onShare: () => _captureAndShare(ctx),
+        onSave: () => _saveToGallery(ctx),
+      ),
+    );
+  }
+
+  Future<Uint8List?> _captureCardBytes() async {
+    final boundary = _shareCardKey.currentContext
+        ?.findRenderObject() as RenderRepaintBoundary?;
+    if (boundary == null) return null;
+    final image = await boundary.toImage(pixelRatio: 3.0);
+    final byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+    return byteData?.buffer.asUint8List();
+  }
+
+  Future<void> _captureAndShare(BuildContext ctx) async {
+    try {
+      final bytes = await _captureCardBytes();
+      if (bytes == null) return;
+
+      final dir = await getTemporaryDirectory();
+      final file = File('${dir.path}/minaret_streak.png');
+      await file.writeAsBytes(bytes);
+
+      await Share.shareXFiles(
+        [XFile(file.path)],
+        text: '🕌 ${_userStats!.currentStreak}-day prayer streak on Minaret! Alhamdulillah!',
+      );
+    } catch (e) {
+      if (kDebugMode) debugPrint('Share error: $e');
+    }
+  }
+
+  Future<void> _saveToGallery(BuildContext ctx) async {
+    try {
+      final bytes = await _captureCardBytes();
+      if (bytes == null) return;
+
+      final dir = await getTemporaryDirectory();
+      final file = File('${dir.path}/minaret_streak.png');
+      await file.writeAsBytes(bytes);
+
+      await Gal.putImage(file.path, album: 'Minaret');
+
+      if (ctx.mounted) {
+        Navigator.pop(ctx);
+        ScaffoldMessenger.of(ctx).showSnackBar(
+          SnackBar(
+            content: Text(AppLocalizations.of(ctx)!.savedToGallery),
+            backgroundColor: MinaretTheme.emerald,
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+      }
+    } catch (e) {
+      if (kDebugMode) debugPrint('Gallery save error: $e');
+      if (ctx.mounted) {
+        ScaffoldMessenger.of(ctx).showSnackBar(
+          SnackBar(
+            content: Text(AppLocalizations.of(ctx)!.couldNotSaveToGallery),
             backgroundColor: Colors.redAccent,
             behavior: SnackBarBehavior.floating,
           ),
@@ -263,12 +349,36 @@ class _EnhancedPrayerTrackerCardState extends State<EnhancedPrayerTrackerCard>
                       ],
                     ),
                   ),
-                  _EnhancedStreakPill(
-                    currentStreak: _userStats?.currentStreak ?? 0,
-                    longestStreak: _userStats?.longestStreak ?? 0,
-                    completionRate: _userStats?.overallCompletionRate ?? 0.0,
-                    isDark: isDark,
-                    surfaceColor: surfaceColor),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      _EnhancedStreakPill(
+                        currentStreak: _userStats?.currentStreak ?? 0,
+                        longestStreak: _userStats?.longestStreak ?? 0,
+                        completionRate: _userStats?.overallCompletionRate ?? 0.0,
+                        isDark: isDark,
+                        surfaceColor: surfaceColor,
+                      ),
+                      if (_userStats != null) ...[
+                        SizedBox(width: 6.w),
+                        GestureDetector(
+                          onTap: () => _showShareSheet(context, isDark),
+                          child: Container(
+                            padding: EdgeInsets.all(6.w),
+                            decoration: BoxDecoration(
+                              color: surfaceColor,
+                              shape: BoxShape.circle,
+                            ),
+                            child: Icon(
+                              Icons.share_rounded,
+                              size: 14.sp,
+                              color: MinaretTheme.gold,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
                 ],
               ),
 
@@ -286,7 +396,7 @@ class _EnhancedPrayerTrackerCardState extends State<EnhancedPrayerTrackerCard>
                       child: child,
                     ),
                     child: _PrayerButton(
-                      label: _shortLabel(p.key),
+                      label: p.name,
                       isDone: isDone,
                       isSyncing: _syncingKeys.contains(p.key),
                       isDark: isDark,
@@ -317,26 +427,8 @@ class _EnhancedPrayerTrackerCardState extends State<EnhancedPrayerTrackerCard>
   }
 
   String _todayLabel() {
-    final now = DateTime.now();
-    const months = [
-      'January', 'February', 'March', 'April', 'May', 'June',
-      'July', 'August', 'September', 'October', 'November', 'December'
-    ];
-    const days = [
-      'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'
-    ];
-    return '${days[now.weekday - 1]}, ${months[now.month - 1]} ${now.day}';
-  }
-
-  String _shortLabel(String key) {
-    const map = {
-      'Fajr': 'Fajr',
-      'Dhuhr': 'Dhuhr',
-      'Asr': 'Asr',
-      'Maghrib': 'Maghr',
-      'Isha': 'Isha',
-    };
-    return map[key] ?? key;
+    final locale = Localizations.localeOf(context).languageCode;
+    return DateFormat('EEEE, MMMM d', locale).format(DateTime.now());
   }
 }
 
@@ -391,7 +483,7 @@ class _EnhancedStreakPill extends StatelessWidget {
               ),
               SizedBox(width: 3.w),
               Text(
-                'day',
+                AppLocalizations.of(context)!.dayLabel,
                 style: GoogleFonts.dmSans(
                   fontSize: 11.sp,
                   fontWeight: FontWeight.w400,
@@ -403,7 +495,7 @@ class _EnhancedStreakPill extends StatelessWidget {
           ),
           if (longestStreak > 0)
             Text(
-              'Best: $longestStreak',
+              '${AppLocalizations.of(context)!.bestShortLabel}: $longestStreak',
               style: GoogleFonts.dmSans(
                 fontSize: 9.sp,
                 fontWeight: FontWeight.w500,
@@ -570,8 +662,8 @@ class _EnhancedProgressSection extends StatelessWidget {
                 children: [
                   Text(
                     allDone
-                        ? 'All prayers complete'
-                        : '$completed of $total completed',
+                        ? AppLocalizations.of(context)!.allPrayersComplete
+                        : AppLocalizations.of(context)!.ofTotalCompleted(completed, total),
                     style: GoogleFonts.dmSans(
                       fontSize: 11.sp,
                       fontWeight: FontWeight.w500,
@@ -581,7 +673,7 @@ class _EnhancedProgressSection extends StatelessWidget {
                   ),
                   if (userStats != null)
                     Text(
-                      'Total: ${userStats!.totalPrayers} prayers',
+                      '${AppLocalizations.of(context)!.totalPrayersLabel}: ${userStats!.totalPrayers}',
                       style: GoogleFonts.dmSans(
                         fontSize: 9.sp,
                         fontWeight: FontWeight.w400,
@@ -605,7 +697,7 @@ class _EnhancedProgressSection extends StatelessWidget {
                 ),
                 if (userStats != null)
                   Text(
-                    '${(userStats!.overallCompletionRate * 100).toInt()}% overall',
+                    '${(userStats!.overallCompletionRate * 100).toInt()}% ${AppLocalizations.of(context)!.overallLabel}',
                     style: GoogleFonts.dmMono(
                       fontSize: 9.sp,
                       fontWeight: FontWeight.w400,
@@ -615,6 +707,266 @@ class _EnhancedProgressSection extends StatelessWidget {
               ],
             ),
           ],
+        ),
+      ],
+    );
+  }
+}
+
+// ── Share bottom sheet ────────────────────────────────────────────────────────
+
+class _ShareBottomSheet extends StatelessWidget {
+  final GlobalKey shareCardKey;
+  final UserPrayerStats userStats;
+  final bool isDark;
+  final VoidCallback onShare;
+  final VoidCallback onSave;
+
+  const _ShareBottomSheet({
+    required this.shareCardKey,
+    required this.userStats,
+    required this.isDark,
+    required this.onShare,
+    required this.onSave,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: isDark ? const Color(0xFF1C1C1E) : Colors.white,
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+      ),
+      padding: EdgeInsets.fromLTRB(24.w, 12.h, 24.w, 32.h),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            width: 36.w,
+            height: 4.h,
+            decoration: BoxDecoration(
+              color: Colors.grey.withValues(alpha: 0.3),
+              borderRadius: BorderRadius.circular(2),
+            ),
+          ),
+          SizedBox(height: 20.h),
+          Text(
+            AppLocalizations.of(context)!.shareYourStreak,
+            style: GoogleFonts.dmSans(
+              fontSize: 16.sp,
+              fontWeight: FontWeight.w700,
+              color: isDark ? Colors.white : const Color(0xFF1C1C1E),
+            ),
+          ),
+          SizedBox(height: 20.h),
+          // The card that will be captured
+          RepaintBoundary(
+            key: shareCardKey,
+            child: _StreakShareCard(userStats: userStats),
+          ),
+          SizedBox(height: 24.h),
+          Row(
+            children: [
+              Expanded(
+                child: OutlinedButton.icon(
+                  onPressed: onSave,
+                  icon: const Icon(Icons.download_rounded, size: 18),
+                  label: Text(
+                    AppLocalizations.of(context)!.saveLabel,
+                    style: GoogleFonts.dmSans(
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  style: OutlinedButton.styleFrom(
+                    foregroundColor: MinaretTheme.emerald,
+                    side: BorderSide(color: MinaretTheme.emerald),
+                    padding: EdgeInsets.symmetric(vertical: 14.h),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(14.r),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(width: 12.w),
+              Expanded(
+                child: ElevatedButton.icon(
+                  onPressed: onShare,
+                  icon: const Icon(Icons.share_rounded, size: 18),
+                  label: Text(
+                    AppLocalizations.of(context)!.shareLabel,
+                    style: GoogleFonts.dmSans(
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: MinaretTheme.emerald,
+                    foregroundColor: Colors.white,
+                    padding: EdgeInsets.symmetric(vertical: 14.h),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(14.r),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// ── The shareable card design ─────────────────────────────────────────────────
+
+class _StreakShareCard extends StatelessWidget {
+  final UserPrayerStats userStats;
+
+  const _StreakShareCard({required this.userStats});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.symmetric(horizontal: 28.w, vertical: 32.h),
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [Color(0xFF1B4332), Color(0xFF2D6A4F), Color(0xFF1B4332)],
+        ),
+        borderRadius: BorderRadius.circular(20.r),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          // Header
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                '☽',
+                style: TextStyle(fontSize: 14.sp, color: MinaretTheme.gold),
+              ),
+              SizedBox(width: 6.w),
+              Text(
+                'MINARET',
+                style: GoogleFonts.dmSans(
+                  fontSize: 13.sp,
+                  fontWeight: FontWeight.w700,
+                  color: MinaretTheme.gold,
+                  letterSpacing: 3,
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 24.h),
+          // Streak number
+          Text(
+            '${userStats.currentStreak}',
+            style: GoogleFonts.dmSans(
+              fontSize: 72.sp,
+              fontWeight: FontWeight.w800,
+              color: Colors.white,
+              height: 1.0,
+            ),
+          ),
+          Text(
+            AppLocalizations.of(context)!.dayStreakLabel,
+            style: GoogleFonts.dmSans(
+              fontSize: 13.sp,
+              fontWeight: FontWeight.w600,
+              color: MinaretTheme.gold,
+              letterSpacing: 3,
+            ),
+          ),
+          SizedBox(height: 20.h),
+          // Prayer dots
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: List.generate(5, (i) => Padding(
+              padding: EdgeInsets.symmetric(horizontal: 4.w),
+              child: Container(
+                width: 10.w,
+                height: 10.w,
+                decoration: BoxDecoration(
+                  color: MinaretTheme.gold,
+                  shape: BoxShape.circle,
+                ),
+              ),
+            )),
+          ),
+          SizedBox(height: 8.h),
+          Text(
+            AppLocalizations.of(context)!.allPrayersCompleted,
+            style: GoogleFonts.dmSans(
+              fontSize: 11.sp,
+              color: Colors.white.withValues(alpha: 0.7),
+            ),
+          ),
+          SizedBox(height: 20.h),
+          Container(
+            height: 1,
+            color: Colors.white.withValues(alpha: 0.15),
+          ),
+          SizedBox(height: 16.h),
+          // Stats row
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              _StatItem(
+                label: AppLocalizations.of(context)!.bestShortLabel,
+                value: '${userStats.longestStreak}d',
+              ),
+              _StatItem(
+                label: AppLocalizations.of(context)!.totalShortLabel,
+                value: '${userStats.totalPrayers}',
+              ),
+              _StatItem(
+                label: AppLocalizations.of(context)!.rateShortLabel,
+                value: '${(userStats.overallCompletionRate * 100).toInt()}%',
+              ),
+            ],
+          ),
+          SizedBox(height: 16.h),
+          Text(
+            DateFormat('EEEE, MMMM d', Localizations.localeOf(context).languageCode).format(DateTime.now()),
+            style: GoogleFonts.dmSans(
+              fontSize: 10.sp,
+              color: Colors.white.withValues(alpha: 0.5),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _StatItem extends StatelessWidget {
+  final String label;
+  final String value;
+
+  const _StatItem({required this.label, required this.value});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text(
+          value,
+          style: GoogleFonts.dmSans(
+            fontSize: 18.sp,
+            fontWeight: FontWeight.w700,
+            color: Colors.white,
+          ),
+        ),
+        Text(
+          label,
+          style: GoogleFonts.dmSans(
+            fontSize: 10.sp,
+            color: Colors.white.withValues(alpha: 0.5),
+          ),
         ),
       ],
     );

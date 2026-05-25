@@ -8,10 +8,6 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
-import 'package:string_similarity/string_similarity.dart';
-import 'dart:io';
-import 'package:path_provider/path_provider.dart';
 
 import 'package:minaret/core/constants/app_defaults.dart';
 import 'package:minaret/l10n/generated/app_localizations.dart';
@@ -23,379 +19,11 @@ import '../../widgets/premium_button.dart';
 import '../../widgets/atelier_layout.dart';
 import '../mosque/edit_mosque_page.dart';
 import '../mosque/create_mosque_page.dart';
-import '../legal/privacy_policy_page.dart';
-import '../legal/terms_of_service_page.dart';
 import 'settings_page.dart';
 import 'imam_profile_page.dart';
+import 'document_verification.dart';
+import 'google_imam_setup_page.dart';
 import '../../services/system_config_service.dart';
-
-// ─────────────────────────────────────────────────────────────────────────────
-// On-Device Verification Result
-// ─────────────────────────────────────────────────────────────────────────────
-
-class ImamVerificationResult {
-  final bool approved;
-  final String status; // 'approved' | 'rejected' | 'needs_review'
-  final int score; // 0-100
-  final String reason;
-  final int nameMatchConfidence; // 0-100
-
-  const ImamVerificationResult({
-    required this.approved,
-    required this.status,
-    required this.score,
-    required this.reason,
-    required this.nameMatchConfidence,
-  });
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// International Document Verification Service
-// ─────────────────────────────────────────────────────────────────────────────
-
-class InternationalDocumentVerificationService {
-  static const Map<String, CountryConfig> _countries = {
-    'PK': CountryConfig(
-      name: 'Pakistan',
-      idPatterns: [r'\b(\d{5}[\s\-]?\d{7}[\s\-]?\d{1})\b'],
-      nameKeywords: [
-        'name',
-        'naam',
-        'full name',
-        'holder',
-        'issued to',
-        'applicant',
-        'نام'
-      ],
-      scripts: [TextRecognitionScript.latin],
-    ),
-    'US': CountryConfig(
-      name: 'United States',
-      idPatterns: [r'\b(\d{3}[\s\-]?\d{2}[\s\-]?\d{4})\b'],
-      nameKeywords: [
-        'name',
-        'full name',
-        'holder',
-        'issued to',
-        'applicant',
-        'first name',
-        'last name'
-      ],
-      scripts: [TextRecognitionScript.latin],
-    ),
-    'GB': CountryConfig(
-      name: 'United Kingdom',
-      idPatterns: [r'\b([A-Z]{2}\d{6})\b', r'\b(\d{9})\b'],
-      nameKeywords: [
-        'name',
-        'full name',
-        'holder',
-        'issued to',
-        'applicant',
-        'forename',
-        'surname'
-      ],
-      scripts: [TextRecognitionScript.latin],
-    ),
-    'SA': CountryConfig(
-      name: 'Saudi Arabia',
-      idPatterns: [r'\b(\d{10})\b'],
-      nameKeywords: [
-        'name',
-        'full name',
-        'holder',
-        'issued to',
-        'applicant',
-        'الاسم',
-        'اسم'
-      ],
-      scripts: [TextRecognitionScript.latin],
-    ),
-    'AE': CountryConfig(
-      name: 'United Arab Emirates',
-      idPatterns: [r'\b(\d{3}[\s\-]?\d{4}[\s\-]?\d{7}[\s\-]?\d{1})\b'],
-      nameKeywords: [
-        'name',
-        'full name',
-        'holder',
-        'issued to',
-        'applicant',
-        'الاسم',
-        'اسم'
-      ],
-      scripts: [TextRecognitionScript.latin],
-    ),
-    'IN': CountryConfig(
-      name: 'India',
-      idPatterns: [r'\b(\d{4}[\s\-]?\d{4}[\s\-]?\d{4})\b'],
-      nameKeywords: [
-        'name',
-        'full name',
-        'holder',
-        'issued to',
-        'applicant',
-        'नाम',
-        'nam'
-      ],
-      scripts: [TextRecognitionScript.latin],
-    ),
-    'EG': CountryConfig(
-      name: 'Egypt',
-      idPatterns: [r'\b(\d{14})\b'],
-      nameKeywords: [
-        'name',
-        'full name',
-        'holder',
-        'issued to',
-        'applicant',
-        'الاسم',
-        'اسم'
-      ],
-      scripts: [TextRecognitionScript.latin],
-    ),
-    'TR': CountryConfig(
-      name: 'Turkey',
-      idPatterns: [r'\b(\d{11})\b'],
-      nameKeywords: [
-        'name',
-        'full name',
-        'holder',
-        'issued to',
-        'applicant',
-        'ad',
-        'soyad'
-      ],
-      scripts: [TextRecognitionScript.latin],
-    ),
-    'FR': CountryConfig(
-      name: 'France',
-      idPatterns: [r'\b(\d{12}[\s\-]?\d{2})\b'],
-      nameKeywords: [
-        'name',
-        'full name',
-        'holder',
-        'issued to',
-        'applicant',
-        'nom',
-        'prénom'
-      ],
-      scripts: [TextRecognitionScript.latin],
-    ),
-    'DE': CountryConfig(
-      name: 'Germany',
-      idPatterns: [r'\b([A-Z]{2}\d{8})\b'],
-      nameKeywords: [
-        'name',
-        'full name',
-        'holder',
-        'issued to',
-        'applicant',
-        'name',
-        'vorname',
-        'nachname'
-      ],
-      scripts: [TextRecognitionScript.latin],
-    ),
-    'GENERIC': CountryConfig(
-      name: 'Generic',
-      idPatterns: [
-        r'\b([A-Z]\d{7,9})\b',
-        r'\b([A-Z]{2}\d{6,8})\b',
-      ],
-      nameKeywords: ['name', 'full name', 'holder', 'issued to', 'applicant'],
-      scripts: [TextRecognitionScript.latin],
-    ),
-  };
-
-  static List<String> getSupportedCountries() => _countries.keys.toList();
-
-  static CountryConfig getCountryConfig(String countryCode) =>
-      _countries[countryCode] ?? _countries['GENERIC']!;
-
-  static Future<File> _bytesToTempFile(Uint8List bytes, String name) async {
-    final dir = await getTemporaryDirectory();
-    final file = File('${dir.path}/$name.jpg');
-    await file.writeAsBytes(bytes);
-    return file;
-  }
-
-  static Future<String> _extractText(Uint8List imageBytes, String tag,
-      List<TextRecognitionScript> scripts) async {
-    final file = await _bytesToTempFile(imageBytes, tag);
-    final inputImage = InputImage.fromFile(file);
-    String combinedText = '';
-    for (final script in scripts) {
-      final recognizer = TextRecognizer(script: script);
-      try {
-        final result = await recognizer.processImage(inputImage);
-        if (result.text.trim().isNotEmpty) {
-          combinedText += result.text + '\n';
-        }
-      } catch (e) {
-        continue;
-      } finally {
-        recognizer.close();
-      }
-    }
-    return combinedText.trim();
-  }
-
-  static String _clean(String raw) =>
-      raw.toLowerCase().replaceAll(RegExp(r'[^a-z0-9 ]'), ' ').trim();
-
-  static String? _extractIdNumber(String raw, List<String> patterns) {
-    for (final pattern in patterns) {
-      final regex = RegExp(pattern, caseSensitive: false);
-      final match = regex.firstMatch(raw);
-      if (match != null) {
-        return match.group(1)?.replaceAll(RegExp(r'[\s\-]'), '');
-      }
-    }
-    return null;
-  }
-
-  static String _extractName(String raw, List<String> keywords) {
-    final lines = raw.split(RegExp(r'[\n\r]+')).map((l) => l.trim()).toList();
-    final keywordPattern = RegExp(
-      r'\b(' + keywords.join('|') + r')\b',
-      caseSensitive: false,
-    );
-    for (int i = 0; i < lines.length; i++) {
-      if (keywordPattern.hasMatch(lines[i])) {
-        final sameLineValue =
-            lines[i].replaceAll(keywordPattern, '').replaceAll(':', '').trim();
-        if (sameLineValue.length > 2) return _clean(sameLineValue);
-        if (i + 1 < lines.length) return _clean(lines[i + 1]);
-      }
-    }
-    return lines
-        .map(_clean)
-        .where((l) => l.isNotEmpty && RegExp(r'^[a-z ]+$').hasMatch(l))
-        .fold('', (a, b) => b.length > a.length ? b : a);
-  }
-
-  static Future<ImamVerificationResult> verify({
-    required Uint8List idCardBytes,
-    required Uint8List idCardBackBytes,
-    required Uint8List sanadBytes,
-    required String countryCode,
-  }) async {
-    final config = getCountryConfig(countryCode);
-    final idRaw = await _extractText(idCardBytes, 'id_card', config.scripts);
-    final idBackRaw =
-        await _extractText(idCardBackBytes, 'id_card_back', config.scripts);
-    final sanadRaw = await _extractText(sanadBytes, 'sanad', config.scripts);
-    final combinedIdText = '$idRaw\n$idBackRaw';
-
-    final idNumber = _extractIdNumber(combinedIdText, config.idPatterns);
-    final sanadNumber = _extractIdNumber(sanadRaw, config.idPatterns);
-
-    if (idNumber != null && sanadNumber != null) {
-      if (idNumber == sanadNumber) {
-        return ImamVerificationResult(
-          approved: true,
-          status: 'approved',
-          score: 100,
-          reason: 'ID numbers match (${config.name})',
-          nameMatchConfidence: 100,
-        );
-      } else {
-        return ImamVerificationResult(
-          approved: false,
-          status: 'rejected',
-          score: 0,
-          reason:
-              'ID numbers found on both documents do not match ($idNumber vs $sanadNumber) for ${config.name}.',
-          nameMatchConfidence: 0,
-        );
-      }
-    }
-
-    final idName = _extractName(combinedIdText, config.nameKeywords);
-    final sanadName = _extractName(sanadRaw, config.nameKeywords);
-
-    if (idName.length < 3 || sanadName.length < 3) {
-      return ImamVerificationResult(
-        approved: false,
-        status: 'needs_review',
-        score: 0,
-        reason:
-            'Could not extract a readable name from one or both documents for ${config.name}. '
-            'Documents have been saved for manual review.',
-        nameMatchConfidence: 0,
-      );
-    }
-
-    final similarity = idName.similarityTo(sanadName);
-    final score = (similarity * 100).round();
-    final confidence = score;
-
-    if (similarity >= 0.80) {
-      return ImamVerificationResult(
-        approved: true,
-        status: 'approved',
-        score: score,
-        reason: 'Names match for ${config.name}',
-        nameMatchConfidence: confidence,
-      );
-    } else if (similarity >= 0.55) {
-      return ImamVerificationResult(
-        approved: false,
-        status: 'needs_review',
-        score: score,
-        reason:
-            'Names are similar but confidence is low for ${config.name} (possible OCR noise). '
-            'Saved for manual review.',
-        nameMatchConfidence: confidence,
-      );
-    } else {
-      return ImamVerificationResult(
-        approved: false,
-        status: 'rejected',
-        score: score,
-        reason: 'Names on documents do not appear to match for ${config.name}. '
-            'Please upload the correct ID and Sanad.',
-        nameMatchConfidence: confidence,
-      );
-    }
-  }
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Country Configuration Class
-// ─────────────────────────────────────────────────────────────────────────────
-
-class CountryConfig {
-  final String name;
-  final List<String> idPatterns;
-  final List<String> nameKeywords;
-  final List<TextRecognitionScript> scripts;
-
-  const CountryConfig({
-    required this.name,
-    required this.idPatterns,
-    required this.nameKeywords,
-    required this.scripts,
-  });
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Legacy Compatibility
-// ─────────────────────────────────────────────────────────────────────────────
-
-class OnDeviceVerificationService {
-  static Future<ImamVerificationResult> verify({
-    required Uint8List idCardBytes,
-    required Uint8List sanadBytes,
-  }) async {
-    return InternationalDocumentVerificationService.verify(
-      idCardBytes: idCardBytes,
-      idCardBackBytes: idCardBytes,
-      sanadBytes: sanadBytes,
-      countryCode: 'PK',
-    );
-  }
-}
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Auth Page
@@ -1250,31 +878,6 @@ class _AuthPageState extends State<AuthPage> {
             });
         }),
         const SizedBox(height: 40),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            _buildTextLink(
-              _displayText(_t(
-                  en: 'Privacy',
-                  ar: 'الخصوصية',
-                  ur: 'رازداری',
-                  ru: 'ПРИВАТНОСТЬ')),
-              () => Navigator.push(context,
-                  MaterialPageRoute(builder: (_) => const PrivacyPolicyPage())),
-              muted: true,
-            ),
-            const SizedBox(width: 24),
-            _buildTextLink(
-              _displayText(
-                  _t(en: 'Terms', ar: 'الشروط', ur: 'شرائط', ru: 'УСЛОВИЯ')),
-              () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (_) => const TermsOfServicePage())),
-              muted: true,
-            ),
-          ],
-        ),
       ],
     );
   }
@@ -1397,37 +1000,6 @@ class _AuthPageState extends State<AuthPage> {
                 _cityController.clear();
               }),
             ),
-          ),
-          const SizedBox(height: 40),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              _buildTextLink(
-                _displayText(_t(
-                    en: 'Privacy',
-                    ar: 'الخصوصية',
-                    ur: 'رازداری',
-                    ru: 'ПРИВАТНОСТЬ')),
-                () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (_) => const PrivacyPolicyPage())),
-                muted: true,
-              ),
-              const SizedBox(width: 24),
-              _buildTextLink(
-                _displayText(_t(
-                    en: 'Terms',
-                    ar: 'الشروط',
-                    ur: 'شرائط',
-                    ru: 'УСлَوْبُ العَمَلِ')),
-                () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (_) => const TermsOfServicePage())),
-                muted: true,
-              ),
-            ],
           ),
           const SizedBox(height: 40),
         ],
@@ -2239,6 +1811,137 @@ class _AuthPageState extends State<AuthPage> {
     );
   }
 
+  Future<String?> _showGoogleRoleSheet() {
+    return showModalBottomSheet<String>(
+      context: context,
+      isDismissible: true,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (ctx) {
+        final isDark = Theme.of(ctx).brightness == Brightness.dark;
+        final bg = isDark ? const Color(0xFF1C2430) : const Color(0xFFF8F3E9);
+        final textSec = isDark ? Colors.white70 : MinaretTheme.slate;
+        final lineColor = isDark ? Colors.white24 : MinaretTheme.dividerColor;
+
+        String t({required String en, required String ar, required String ur, required String ru}) {
+          switch (Localizations.localeOf(ctx).languageCode) {
+            case 'ar': return ar;
+            case 'ur': return ur;
+            case 'ru': return ru;
+            default: return en;
+          }
+        }
+
+        String d(String v) {
+          final lang = Localizations.localeOf(ctx).languageCode;
+          return (lang == 'ar' || lang == 'ur') ? v : v.toUpperCase();
+        }
+
+        return Container(
+          decoration: BoxDecoration(
+            color: bg,
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+          ),
+          padding: const EdgeInsets.fromLTRB(28, 24, 28, 40),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Center(
+                child: Container(
+                  width: 36,
+                  height: 3,
+                  margin: const EdgeInsets.only(bottom: 24),
+                  decoration: BoxDecoration(
+                    color: lineColor,
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                ),
+              ),
+              Text(
+                d(t(en: 'Who are you?', ar: 'من أنت؟', ur: 'آپ کون ہیں؟', ru: 'Кто вы?')),
+                style: MinaretTheme.heading,
+              ),
+              const SizedBox(height: 8),
+              Text(
+                t(
+                  en: 'Choose how you want to use Minaret.',
+                  ar: 'اختر كيف تريد استخدام التطبيق.',
+                  ur: 'منتخب کریں آپ مینارت کیسے استعمال کرنا چاہتے ہیں۔',
+                  ru: 'Выберите, как вы хотите использовать Minaret.',
+                ),
+                style: GoogleFonts.lato(fontSize: 13, color: textSec, height: 1.6),
+              ),
+              const SizedBox(height: 28),
+              Row(
+                children: [
+                  Expanded(
+                    child: _roleSheetButton(
+                      ctx: ctx,
+                      label: d(t(en: 'Community\nMember', ar: 'عضو\nالمجتمع', ur: 'کمیونٹی\nممبر', ru: 'Пользователь')),
+                      icon: Icons.people_outline,
+                      value: kRoleCommon,
+                      color: MinaretTheme.emerald,
+                      lineColor: lineColor,
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: _roleSheetButton(
+                      ctx: ctx,
+                      label: d(t(en: 'Imam', ar: 'إمام', ur: 'امام', ru: 'Имам')),
+                      icon: Icons.mosque_outlined,
+                      value: kRoleImam,
+                      color: MinaretTheme.gold,
+                      lineColor: lineColor,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _roleSheetButton({
+    required BuildContext ctx,
+    required String label,
+    required IconData icon,
+    required String value,
+    required Color color,
+    required Color lineColor,
+  }) {
+    return GestureDetector(
+      onTap: () => Navigator.of(ctx).pop(value),
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 20),
+        decoration: BoxDecoration(
+          border: Border.all(color: color.withValues(alpha: 0.5), width: 1.5),
+          color: color.withValues(alpha: 0.05),
+        ),
+        child: Column(
+          children: [
+            Icon(icon, size: 28, color: color),
+            const SizedBox(height: 10),
+            Text(
+              label,
+              textAlign: TextAlign.center,
+              style: GoogleFonts.montserrat(
+                fontSize: 9,
+                letterSpacing: 1.5,
+                fontWeight: FontWeight.w700,
+                color: color,
+                height: 1.5,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   Future<void> _signInWithGoogle() async {
     setState(() => _isLoading = true);
     try {
@@ -2275,11 +1978,35 @@ class _AuthPageState extends State<AuthPage> {
       final uid = userCred.user!.uid;
       final userDoc = await FirebaseFirestore.instance.collection('users').doc(uid).get();
       if (!userDoc.exists) {
-        // New Google user — register them automatically
+        // New Google user — ask whether they are an imam or community member
+        setState(() => _isLoading = false);
+        final chosenRole = await _showGoogleRoleSheet();
+        if (!mounted) return;
+        if (chosenRole == null) {
+          // User dismissed without choosing — sign them out and stay on auth page
+          await FirebaseAuth.instance.signOut();
+          return;
+        }
+        if (chosenRole == kRoleImam) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (_) => GoogleImamSetupPage(
+                uid: uid,
+                email: userCred.user!.email ?? '',
+                displayName: userCred.user!.displayName ?? '',
+                onLoginSuccess: widget.onLoginSuccess,
+              ),
+            ),
+          );
+          return;
+        }
+        // Common user — create doc and proceed
+        setState(() => _isLoading = true);
         await FirebaseFirestore.instance.collection('users').doc(uid).set({
           'email': userCred.user!.email ?? '',
           'displayName': userCred.user!.displayName ?? '',
-          'role': kDefaultRole,
+          'role': kRoleCommon,
           'city': '',
           'createdAt': FieldValue.serverTimestamp(),
           'favorites': <String>[],
@@ -2294,7 +2021,7 @@ class _AuthPageState extends State<AuthPage> {
           },
         });
         if (!mounted) return;
-        await _routeAfterLogin(uid, kDefaultRole);
+        await _routeAfterLogin(uid, kRoleCommon);
       } else {
         final role = userDoc.data()?['role'] ?? kDefaultRole;
         if (!mounted) return;

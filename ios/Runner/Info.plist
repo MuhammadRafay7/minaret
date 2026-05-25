@@ -36,6 +36,8 @@
 	<string>Minaret needs camera access to scan your documents for Imam verification.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Minaret needs photo library access to upload your documents for Imam verification.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Minaret needs access to save your prayer streak image to your photo library.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Minaret needs microphone access for video-related verification features if used.</string>
 	<key>UIApplicationSceneManifest</key>

@@ -213,5 +213,61 @@
   "failedToSyncPrayer": "Failed to sync prayer. Check connection."
 ,
   "maintenanceTitle": "SYSTEM MAINTENANCE",
-  "maintenanceBody": "We are currently performing scheduled improvements. Please check back shortly."
+  "maintenanceBody": "We are currently performing scheduled improvements. Please check back shortly.",
+  "tryAgain": "Try again",
+  "retry": "Retry",
+  "notifPrefUpdateFailed": "Failed to update notification preference. Please try again.",
+  "profileUpdatedSuccess": "Profile updated successfully",
+  "errorSavingProfile": "Error saving profile: {error}",
+  "@errorSavingProfile": {
+    "placeholders": {
+      "error": {"type": "String"}
+    }
+  },
+  "announcementPosted": "Announcement posted successfully.",
+  "errorPostingAnnouncement": "Error posting announcement: {error}",
+  "@errorPostingAnnouncement": {
+    "placeholders": {
+      "error": {"type": "String"}
+    }
+  },
+  "reportIssue": "REPORT ISSUE",
+  "submitReport": "SUBMIT REPORT",
+  "detailsOptional": "DETAILS (OPTIONAL)",
+  "donationNotAvailable": "Donation information not available for this mosque.",
+  "donationDetails": "DONATION DETAILS",
+  "accountDetailsCopied": "Account details copied to clipboard",
+  "copyDetails": "COPY DETAILS",
+  "closeAction": "CLOSE",
+  "locationNotAvailable": "Location coordinates not available for this mosque.",
+  "couldNotLaunchMaps": "Could not launch Google Maps.",
+  "errorLaunchingDirections": "Error launching directions: {error}",
+  "@errorLaunchingDirections": {
+    "placeholders": {
+      "error": {"type": "String"}
+    }
+  },
+  "testPermissions": "Test Permissions",
+  "noResultsFound": "No results found.",
+  "shareYourStreak": "Share Your Streak",
+  "dayLabel": "day",
+  "bestShortLabel": "Best",
+  "totalShortLabel": "Total",
+  "rateShortLabel": "Rate",
+  "allPrayersComplete": "All prayers complete",
+  "allPrayersCompleted": "All 5 prayers completed",
+  "saveLabel": "Save",
+  "shareLabel": "Share",
+  "savedToGallery": "Saved to gallery!",
+  "couldNotSaveToGallery": "Could not save to gallery.",
+  "dayStreakLabel": "DAY STREAK",
+  "overallLabel": "overall",
+  "trackPrayerHabits": "Track your prayer habits and streaks",
+  "ofTotalCompleted": "{completed} of {total} completed",
+  "@ofTotalCompleted": {
+    "placeholders": {
+      "completed": {"type": "int"},
+      "total": {"type": "int"}
+    }
+  }
 }

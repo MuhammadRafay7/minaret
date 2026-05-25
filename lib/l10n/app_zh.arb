@@ -213,5 +213,61 @@
   "failedToSyncPrayer": "礼拜同步失败。请检查连接。"
 ,
   "maintenanceTitle": "系统维护",
-  "maintenanceBody": "我们目前正在进行计划内的改进。请稍后再查看。"
+  "maintenanceBody": "我们目前正在进行计划内的改进。请稍后再查看。",
+  "tryAgain": "重试",
+  "retry": "重试",
+  "notifPrefUpdateFailed": "更新通知偏好失败，请重试。",
+  "profileUpdatedSuccess": "个人资料更新成功",
+  "errorSavingProfile": "保存个人资料时出错：{error}",
+  "@errorSavingProfile": {
+    "placeholders": {
+      "error": {"type": "String"}
+    }
+  },
+  "announcementPosted": "公告发布成功。",
+  "errorPostingAnnouncement": "发布公告时出错：{error}",
+  "@errorPostingAnnouncement": {
+    "placeholders": {
+      "error": {"type": "String"}
+    }
+  },
+  "reportIssue": "举报问题",
+  "submitReport": "提交举报",
+  "detailsOptional": "详情（可选）",
+  "donationNotAvailable": "该清真寺的捐款信息暂不可用。",
+  "donationDetails": "捐款详情",
+  "accountDetailsCopied": "账户详情已复制到剪贴板",
+  "copyDetails": "复制详情",
+  "closeAction": "关闭",
+  "locationNotAvailable": "该清真寺的位置坐标不可用。",
+  "couldNotLaunchMaps": "无法打开 Google 地图。",
+  "errorLaunchingDirections": "打开导航时出错：{error}",
+  "@errorLaunchingDirections": {
+    "placeholders": {
+      "error": {"type": "String"}
+    }
+  },
+  "testPermissions": "测试权限",
+  "noResultsFound": "未找到结果。",
+  "shareYourStreak": "分享你的连续记录",
+  "dayLabel": "天",
+  "bestShortLabel": "最佳",
+  "totalShortLabel": "总计",
+  "rateShortLabel": "比率",
+  "allPrayersComplete": "所有礼拜已完成",
+  "allPrayersCompleted": "五次礼拜全部完成",
+  "saveLabel": "保存",
+  "shareLabel": "分享",
+  "savedToGallery": "已保存到相册！",
+  "couldNotSaveToGallery": "无法保存到相册。",
+  "dayStreakLabel": "天连续",
+  "overallLabel": "总体",
+  "trackPrayerHabits": "追踪你的礼拜习惯和连续记录",
+  "ofTotalCompleted": "已完成 {completed}/{total}",
+  "@ofTotalCompleted": {
+    "placeholders": {
+      "completed": {"type": "int"},
+      "total": {"type": "int"}
+    }
+  }
 }

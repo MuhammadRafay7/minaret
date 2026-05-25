@@ -552,7 +552,7 @@ class _DetailsView extends StatelessWidget {
 
     if (bankName == null || accountHolder == null || accountNumber == null) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('Donation information not available for this mosque.',
+        content: Text(l10n.donationNotAvailable,
             style: GoogleFonts.montserrat(fontSize: 12, color: Colors.white)),
         backgroundColor: MinaretTheme.gold,
         duration: const Duration(seconds: 3),
@@ -616,7 +616,7 @@ class _DetailsView extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('DONATION DETAILS',
+                            Text(l10n.donationDetails,
                                 style: GoogleFonts.montserrat(
                                     fontSize: 8.sp,
                                     letterSpacing: 3,
@@ -651,7 +651,7 @@ class _DetailsView extends StatelessWidget {
                               ClipboardData(text: details));
                           if (ctx.mounted) {
                             ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(
-                              content: Text('Account details copied to clipboard',
+                              content: Text(l10n.accountDetailsCopied,
                                   style: GoogleFonts.montserrat(
                                       fontSize: 12, color: Colors.white)),
                               backgroundColor: MinaretTheme.emerald,
@@ -670,7 +670,7 @@ class _DetailsView extends StatelessWidget {
                             borderRadius: BorderRadius.circular(12.r),
                           ),
                           child: Center(
-                              child: Text('COPY DETAILS',
+                              child: Text(l10n.copyDetails,
                                   style: GoogleFonts.montserrat(
                                       fontSize: 9.sp,
                                       letterSpacing: 2,
@@ -692,7 +692,7 @@ class _DetailsView extends StatelessWidget {
                             borderRadius: BorderRadius.circular(12.r),
                           ),
                           child: Center(
-                              child: Text('CLOSE',
+                              child: Text(l10n.closeAction,
                                   style: GoogleFonts.montserrat(
                                       fontSize: 9.sp,
                                       letterSpacing: 2,
@@ -720,7 +720,7 @@ class _DetailsView extends StatelessWidget {
     if (latitude == null || longitude == null) {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text('Location coordinates not available for this mosque.',
+          content: Text(AppLocalizations.of(context)!.locationNotAvailable,
               style:
                   GoogleFonts.montserrat(fontSize: 12, color: Colors.white)),
           backgroundColor: Colors.redAccent,
@@ -742,7 +742,7 @@ class _DetailsView extends StatelessWidget {
       } else {
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text('Could not launch Google Maps.',
+            content: Text(AppLocalizations.of(context)!.couldNotLaunchMaps,
                 style: GoogleFonts.montserrat(
                     fontSize: 12, color: Colors.white)),
             backgroundColor: Colors.redAccent,
@@ -754,7 +754,7 @@ class _DetailsView extends StatelessWidget {
     } catch (e) {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text('Error launching directions: $e',
+          content: Text(AppLocalizations.of(context)!.errorLaunchingDirections(e.toString()),
               style:
                   GoogleFonts.montserrat(fontSize: 12, color: Colors.white)),
           backgroundColor: Colors.redAccent,

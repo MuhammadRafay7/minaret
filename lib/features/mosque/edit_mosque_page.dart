@@ -5,11 +5,14 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:minaret/core/dependency_injection.dart';
 import 'package:minaret/repositories/mosque_repository.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:minaret/l10n/generated/app_localizations.dart';
+import 'prayer_scan_service.dart';
+import 'prayer_scan_dialog.dart';
 
 import '../../core/theme.dart';
 import '../../widgets/atelier_layout.dart';
@@ -56,6 +59,7 @@ class _EditMosquePageState extends State<EditMosquePage> {
   final Map<String, TextEditingController> _timeControllers = {};
 
   bool _isSaving = false;
+  bool _isScanning = false;
   String _selectedFiqh = '';
 
   // Prayer keys: iqamah times + azan times + special prayers
@@ -150,6 +154,92 @@ class _EditMosquePageState extends State<EditMosquePage> {
       );
       setState(() => ctrl.text = DateFormat.jm().format(dt));
     }
+  }
+
+  Future<void> _scanPrayerTimes() async {
+    final source = await _pickImageSource();
+    if (source == null) return;
+
+    setState(() => _isScanning = true);
+    try {
+      final times = await PrayerScanService.pickAndScan(source);
+      if (times == null || !mounted) return;
+      await showDialog(
+        context: context,
+        builder: (ctx) => PrayerScanDialog(
+          times: times,
+          onConfirm: () => _applyScannedTimes(times),
+        ),
+      );
+    } on AnalogBoardException {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text('ANALOG CLOCK BOARDS CANNOT BE SCANNED — PHOTOGRAPH A DIGITAL PRAYER TIME DISPLAY'),
+        ));
+      }
+    } on NoTimesFoundException {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text('NO PRAYER TIMES FOUND — TRY A CLEARER PHOTO'),
+        ));
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text('COULD NOT READ PRAYER TIMES — TRY A CLEARER PHOTO'),
+        ));
+      }
+    } finally {
+      if (mounted) setState(() => _isScanning = false);
+    }
+  }
+
+  Future<ImageSource?> _pickImageSource() {
+    return showModalBottomSheet<ImageSource>(
+      context: context,
+      backgroundColor: MinaretTheme.background,
+      builder: (ctx) => SafeArea(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              leading: const Icon(Icons.camera_alt_outlined, color: MinaretTheme.emerald),
+              title: Text(
+                'TAKE PHOTO',
+                style: GoogleFonts.montserrat(fontSize: 11, letterSpacing: 2, fontWeight: FontWeight.bold),
+              ),
+              onTap: () => Navigator.pop(ctx, ImageSource.camera),
+            ),
+            ListTile(
+              leading: const Icon(Icons.photo_library_outlined, color: MinaretTheme.emerald),
+              title: Text(
+                'CHOOSE FROM GALLERY',
+                style: GoogleFonts.montserrat(fontSize: 11, letterSpacing: 2, fontWeight: FontWeight.bold),
+              ),
+              onTap: () => Navigator.pop(ctx, ImageSource.gallery),
+            ),
+            const SizedBox(height: 8),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _applyScannedTimes(ScannedPrayerTimes times) {
+    setState(() {
+      if (times.adhanFajr != null)    _timeControllers['adhanFajr']?.text    = times.adhanFajr!;
+      if (times.adhanDhuhr != null)   _timeControllers['adhanDhuhr']?.text   = times.adhanDhuhr!;
+      if (times.adhanAsr != null)     _timeControllers['adhanAsr']?.text     = times.adhanAsr!;
+      if (times.adhanMaghrib != null) _timeControllers['adhanMaghrib']?.text = times.adhanMaghrib!;
+      if (times.adhanIsha != null)    _timeControllers['adhanIsha']?.text    = times.adhanIsha!;
+      if (times.fajr != null)         _timeControllers['fajr']?.text         = times.fajr!;
+      if (times.dhuhr != null)        _timeControllers['dhuhr']?.text        = times.dhuhr!;
+      if (times.asr != null)          _timeControllers['asr']?.text          = times.asr!;
+      if (times.maghrib != null)      _timeControllers['maghrib']?.text      = times.maghrib!;
+      if (times.isha != null)         _timeControllers['isha']?.text         = times.isha!;
+      if (times.adhanJummah != null)  _timeControllers['adhanJummah']?.text  = times.adhanJummah!;
+      if (times.jummah != null)       _timeControllers['jummah']?.text       = times.jummah!;
+    });
   }
 
   Future<void> _selectDate(TextEditingController ctrl) async {
@@ -318,6 +408,8 @@ class _EditMosquePageState extends State<EditMosquePage> {
               // ── Azan & Iqamah ──
               const SizedBox(height: 30),
               _sectionHeader('AZAN & IQAMAH TIMES'),
+              _buildScanButton(),
+              const SizedBox(height: 20),
               _prayerPairField('FAJR', 'adhanFajr', 'fajr'),
               _prayerPairField('DHUHR', 'adhanDhuhr', 'dhuhr'),
               _prayerPairField('ASR', 'adhanAsr', 'asr'),
@@ -352,6 +444,50 @@ class _EditMosquePageState extends State<EditMosquePage> {
               const SizedBox(height: 50),
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildScanButton() {
+    return GestureDetector(
+      onTap: _isScanning ? null : _scanPrayerTimes,
+      child: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: _isScanning
+                ? MinaretTheme.dividerColor
+                : MinaretTheme.emerald.withValues(alpha: 0.6),
+          ),
+          color: MinaretTheme.emerald.withValues(alpha: 0.04),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            if (_isScanning)
+              const SizedBox(
+                width: 14,
+                height: 14,
+                child: CircularProgressIndicator(
+                  strokeWidth: 1.5,
+                  color: MinaretTheme.emerald,
+                ),
+              )
+            else
+              const Icon(Icons.camera_alt_outlined, size: 16, color: MinaretTheme.emerald),
+            const SizedBox(width: 10),
+            Text(
+              _isScanning ? 'READING PRAYER BOARD...' : 'SCAN PRAYER BOARD',
+              style: GoogleFonts.montserrat(
+                fontSize: 9,
+                letterSpacing: 3,
+                fontWeight: FontWeight.bold,
+                color: _isScanning ? Colors.black38 : MinaretTheme.emerald,
+              ),
+            ),
+          ],
         ),
       ),
     );

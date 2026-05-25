@@ -213,5 +213,61 @@
   "failedToSyncPrayer": "فشل مزامنة الصلاة. تحقق من الاتصال."
 ,
   "maintenanceTitle": "صيانة النظام",
-  "maintenanceBody": "نقوم حاليًا بإجراء تحسينات مجدولة. يُرجى التحقق مجددًا قريبًا."
+  "maintenanceBody": "نقوم حاليًا بإجراء تحسينات مجدولة. يُرجى التحقق مجددًا قريبًا.",
+  "tryAgain": "حاول مجدداً",
+  "retry": "إعادة المحاولة",
+  "notifPrefUpdateFailed": "فشل تحديث تفضيل الإشعارات. يرجى المحاولة مجدداً.",
+  "profileUpdatedSuccess": "تم تحديث الملف الشخصي بنجاح",
+  "errorSavingProfile": "خطأ في حفظ الملف الشخصي: {error}",
+  "@errorSavingProfile": {
+    "placeholders": {
+      "error": {"type": "String"}
+    }
+  },
+  "announcementPosted": "تم نشر الإعلان بنجاح.",
+  "errorPostingAnnouncement": "خطأ في نشر الإعلان: {error}",
+  "@errorPostingAnnouncement": {
+    "placeholders": {
+      "error": {"type": "String"}
+    }
+  },
+  "reportIssue": "الإبلاغ عن مشكلة",
+  "submitReport": "إرسال البلاغ",
+  "detailsOptional": "التفاصيل (اختياري)",
+  "donationNotAvailable": "معلومات التبرع غير متوفرة لهذا المسجد.",
+  "donationDetails": "تفاصيل التبرع",
+  "accountDetailsCopied": "تم نسخ تفاصيل الحساب إلى الحافظة",
+  "copyDetails": "نسخ التفاصيل",
+  "closeAction": "إغلاق",
+  "locationNotAvailable": "إحداثيات الموقع غير متوفرة لهذا المسجد.",
+  "couldNotLaunchMaps": "تعذّر فتح خرائط Google.",
+  "errorLaunchingDirections": "خطأ في فتح الاتجاهات: {error}",
+  "@errorLaunchingDirections": {
+    "placeholders": {
+      "error": {"type": "String"}
+    }
+  },
+  "testPermissions": "اختبار الأذونات",
+  "noResultsFound": "لا توجد نتائج.",
+  "shareYourStreak": "شارك سلسلتك",
+  "dayLabel": "يوم",
+  "bestShortLabel": "الأفضل",
+  "totalShortLabel": "المجموع",
+  "rateShortLabel": "المعدل",
+  "allPrayersComplete": "تمت جميع الصلوات",
+  "allPrayersCompleted": "اكتملت الصلوات الخمس",
+  "saveLabel": "حفظ",
+  "shareLabel": "مشاركة",
+  "savedToGallery": "تم الحفظ في المعرض!",
+  "couldNotSaveToGallery": "تعذّر الحفظ في المعرض.",
+  "dayStreakLabel": "سلسلة أيام",
+  "overallLabel": "إجمالي",
+  "trackPrayerHabits": "تابع عاداتك الصلاتية وسلاسلك",
+  "ofTotalCompleted": "{completed} من {total} مكتملة",
+  "@ofTotalCompleted": {
+    "placeholders": {
+      "completed": {"type": "int"},
+      "total": {"type": "int"}
+    }
+  }
 }

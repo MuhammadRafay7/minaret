@@ -596,4 +596,120 @@ class AppLocalizationsNl extends AppLocalizations {
   @override
   String get maintenanceBody =>
       'We voeren momenteel geplande verbeteringen uit. Kom binnenkort terug.';
+
+  @override
+  String get tryAgain => 'Probeer opnieuw';
+
+  @override
+  String get retry => 'Opnieuw';
+
+  @override
+  String get notifPrefUpdateFailed =>
+      'Bijwerken van meldingsvoorkeur mislukt. Probeer opnieuw.';
+
+  @override
+  String get profileUpdatedSuccess => 'Profiel succesvol bijgewerkt';
+
+  @override
+  String errorSavingProfile(String error) {
+    return 'Fout bij opslaan profiel: $error';
+  }
+
+  @override
+  String get announcementPosted => 'Aankondiging succesvol geplaatst.';
+
+  @override
+  String errorPostingAnnouncement(String error) {
+    return 'Fout bij plaatsen aankondiging: $error';
+  }
+
+  @override
+  String get reportIssue => 'PROBLEEM MELDEN';
+
+  @override
+  String get submitReport => 'RAPPORT INDIENEN';
+
+  @override
+  String get detailsOptional => 'DETAILS (OPTIONEEL)';
+
+  @override
+  String get donationNotAvailable =>
+      'Donatie-informatie niet beschikbaar voor deze moskee.';
+
+  @override
+  String get donationDetails => 'DONATIEDETAILS';
+
+  @override
+  String get accountDetailsCopied => 'Accountgegevens gekopieerd naar klembord';
+
+  @override
+  String get copyDetails => 'DETAILS KOPIËREN';
+
+  @override
+  String get closeAction => 'SLUITEN';
+
+  @override
+  String get locationNotAvailable =>
+      'Locatiecoördinaten niet beschikbaar voor deze moskee.';
+
+  @override
+  String get couldNotLaunchMaps => 'Kan Google Maps niet openen.';
+
+  @override
+  String errorLaunchingDirections(String error) {
+    return 'Fout bij openen routebeschrijving: $error';
+  }
+
+  @override
+  String get testPermissions => 'Machtigingen testen';
+
+  @override
+  String get noResultsFound => 'Geen resultaten gevonden.';
+
+  @override
+  String get shareYourStreak => 'Deel je reeks';
+
+  @override
+  String get dayLabel => 'dag';
+
+  @override
+  String get bestShortLabel => 'Best';
+
+  @override
+  String get totalShortLabel => 'Totaal';
+
+  @override
+  String get rateShortLabel => 'Percentage';
+
+  @override
+  String get allPrayersComplete => 'Alle gebeden voltooid';
+
+  @override
+  String get allPrayersCompleted => 'Alle 5 gebeden voltooid';
+
+  @override
+  String get saveLabel => 'Opslaan';
+
+  @override
+  String get shareLabel => 'Delen';
+
+  @override
+  String get savedToGallery => 'Opgeslagen in galerij!';
+
+  @override
+  String get couldNotSaveToGallery => 'Kan niet opslaan in galerij.';
+
+  @override
+  String get dayStreakLabel => 'DAAGSE REEKS';
+
+  @override
+  String get overallLabel => 'totaal';
+
+  @override
+  String get trackPrayerHabits => 'Volg je gebedgewoonten en reeksen';
+
+  @override
+  String ofTotalCompleted(int completed, int total) {
+    return '$completed van $total voltooid';
+  }
 }

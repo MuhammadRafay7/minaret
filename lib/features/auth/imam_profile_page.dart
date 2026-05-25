@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:minaret/core/constants/app_defaults.dart';
 import 'package:minaret/core/theme.dart';
+import 'package:minaret/l10n/generated/app_localizations.dart';
 import 'package:minaret/widgets/atelier_layout.dart';
 import '../prayer/prayer_stats_page.dart';
 
@@ -97,15 +98,16 @@ class _ImamProfilePageState extends State<ImamProfilePage> {
       await FirebaseFirestore.instance.collection('users').doc(user.uid).set(updateData, SetOptions(merge: true));
       
       if (mounted) {
+        final l10n = AppLocalizations.of(context)!;
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Profile updated successfully')),
+          SnackBar(content: Text(l10n.profileUpdatedSuccess)),
         );
         Navigator.pop(context);
       }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error saving profile: $e')),
+          SnackBar(content: Text(AppLocalizations.of(context)!.errorSavingProfile(e.toString()))),
         );
       }
     } finally {
@@ -218,7 +220,7 @@ class _ImamProfilePageState extends State<ImamProfilePage> {
                           style: GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.w600, color: MinaretTheme.gold)
                         ),
                         subtitle: Text(
-                          'Track your prayer habits and streaks',
+                          AppLocalizations.of(context)!.trackPrayerHabits,
                           style: GoogleFonts.lato(fontSize: 12, color: MinaretTheme.slate)
                         ),
                         trailing: Icon(Icons.arrow_forward_ios, size: 16, color: MinaretTheme.gold),

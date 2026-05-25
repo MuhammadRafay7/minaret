@@ -9,6 +9,7 @@ import '../../services/enhanced_prayer_tracker_service.dart';
 import '../../widgets/offline_banner.dart';
 import '../../widgets/premium_loading.dart';
 import '../../l10n/generated/app_localizations.dart';
+import 'qada_page.dart';
 
 class PrayerStatsPage extends StatefulWidget {
   const PrayerStatsPage({super.key});
@@ -65,7 +66,6 @@ class _PrayerStatsPageState extends State<PrayerStatsPage> {
 
     if (user == null) {
       return Scaffold(
-        backgroundColor: MinaretTheme.background,
         body: Center(
           child: Text(l10n.signInForPrayerStats),
         ),
@@ -73,7 +73,6 @@ class _PrayerStatsPageState extends State<PrayerStatsPage> {
     }
 
     return Scaffold(
-      backgroundColor: MinaretTheme.background,
       appBar: AppBar(
         backgroundColor: MinaretTheme.emerald,
         elevation: 0,
@@ -91,6 +90,14 @@ class _PrayerStatsPageState extends State<PrayerStatsPage> {
           ),
         ),
         actions: [
+          IconButton(
+            tooltip: 'Qada Prayers',
+            icon: const Icon(Icons.pending_actions, color: Colors.white),
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const QadaPage()),
+            ),
+          ),
           PopupMenuButton<String>(
             icon: const Icon(Icons.calendar_today, color: Colors.white),
             onSelected: (value) {
@@ -199,10 +206,11 @@ class _PrayerStatsPageState extends State<PrayerStatsPage> {
   }
 
   Widget _buildStatCard(String title, String value, IconData icon, Color color) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       padding: const EdgeInsets.all(AppSpacing.md),
       decoration: BoxDecoration(
-        color: MinaretTheme.background.withValues(alpha: 0.5),
+        color: isDark ? const Color(0xFF151B24) : MinaretTheme.background.withValues(alpha: 0.5),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
           color: color.withValues(alpha: 0.3),
@@ -220,7 +228,7 @@ class _PrayerStatsPageState extends State<PrayerStatsPage> {
                 title,
                 style: GoogleFonts.lato(
                   fontSize: 12,
-                  color: MinaretTheme.slate,
+                  color: isDark ? Colors.white54 : MinaretTheme.slate,
                   fontWeight: FontWeight.w500,
                 ),
               ),
@@ -241,6 +249,11 @@ class _PrayerStatsPageState extends State<PrayerStatsPage> {
   }
 
   Widget _buildStreakSection(AppLocalizations l10n) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final cardColor = isDark ? const Color(0xFF151B24) : MinaretTheme.background.withValues(alpha: 0.5);
+    final mutedText = isDark ? Colors.white54 : MinaretTheme.slate;
+    final dividerColor = isDark ? Colors.white12 : MinaretTheme.dividerColor;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -256,7 +269,7 @@ class _PrayerStatsPageState extends State<PrayerStatsPage> {
         Container(
           padding: const EdgeInsets.all(AppSpacing.md),
           decoration: BoxDecoration(
-            color: MinaretTheme.background.withValues(alpha: 0.5),
+            color: cardColor,
             borderRadius: BorderRadius.circular(12),
             border: Border.all(
               color: MinaretTheme.emerald.withValues(alpha: 0.3),
@@ -273,7 +286,7 @@ class _PrayerStatsPageState extends State<PrayerStatsPage> {
                       l10n.currentStreakLabel,
                       style: GoogleFonts.lato(
                         fontSize: 12,
-                        color: MinaretTheme.slate,
+                        color: mutedText,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -299,7 +312,7 @@ class _PrayerStatsPageState extends State<PrayerStatsPage> {
               Container(
                 width: 1,
                 height: 40,
-                color: MinaretTheme.dividerColor,
+                color: dividerColor,
               ),
               Expanded(
                 child: Column(
@@ -309,7 +322,7 @@ class _PrayerStatsPageState extends State<PrayerStatsPage> {
                       l10n.longestStreakLabel,
                       style: GoogleFonts.lato(
                         fontSize: 12,
-                        color: MinaretTheme.slate,
+                        color: mutedText,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -340,6 +353,12 @@ class _PrayerStatsPageState extends State<PrayerStatsPage> {
   }
 
   Widget _buildPrayerCountsSection(AppLocalizations l10n) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final cardColor = isDark ? const Color(0xFF151B24) : MinaretTheme.background.withValues(alpha: 0.5);
+    final textPrimary = Theme.of(context).colorScheme.onSurface;
+    final mutedText = isDark ? Colors.white54 : MinaretTheme.slate;
+    final trackColor = isDark ? Colors.white12 : MinaretTheme.dividerColor;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -355,7 +374,7 @@ class _PrayerStatsPageState extends State<PrayerStatsPage> {
         Container(
           padding: const EdgeInsets.all(AppSpacing.md),
           decoration: BoxDecoration(
-            color: MinaretTheme.background.withValues(alpha: 0.5),
+            color: cardColor,
             borderRadius: BorderRadius.circular(12),
             border: Border.all(
               color: MinaretTheme.emeraldLight.withValues(alpha: 0.3),
@@ -367,7 +386,7 @@ class _PrayerStatsPageState extends State<PrayerStatsPage> {
               final prayer = entry.key;
               final count = entry.value;
               final rate = _userStats!.prayerCompletionRates[prayer] ?? 0.0;
-              
+
               return Padding(
                 padding: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
                 child: Row(
@@ -377,7 +396,7 @@ class _PrayerStatsPageState extends State<PrayerStatsPage> {
                       style: GoogleFonts.montserrat(
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
-                        color: MinaretTheme.onyx,
+                        color: textPrimary,
                       ),
                     ),
                     const Spacer(),
@@ -385,7 +404,7 @@ class _PrayerStatsPageState extends State<PrayerStatsPage> {
                       l10n.prayersCountUnit(count),
                       style: GoogleFonts.lato(
                         fontSize: 14,
-                        color: MinaretTheme.slate,
+                        color: mutedText,
                       ),
                     ),
                     const SizedBox(width: 16),
@@ -394,7 +413,7 @@ class _PrayerStatsPageState extends State<PrayerStatsPage> {
                       height: 6,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(3),
-                        color: MinaretTheme.dividerColor,
+                        color: trackColor,
                       ),
                       child: FractionallySizedBox(
                         alignment: Alignment.centerLeft,
@@ -443,77 +462,211 @@ class _PrayerStatsPageState extends State<PrayerStatsPage> {
           ),
         ),
         const SizedBox(height: 12),
-        Container(
-          decoration: BoxDecoration(
-            color: MinaretTheme.background.withValues(alpha: 0.5),
+        Builder(builder: (context) {
+          final isDark = Theme.of(context).brightness == Brightness.dark;
+          final cardColor = isDark ? const Color(0xFF151B24) : MinaretTheme.background.withValues(alpha: 0.5);
+          final textPrimary = Theme.of(context).colorScheme.onSurface;
+          final mutedText = isDark ? Colors.white54 : MinaretTheme.slate;
+          final dividerColor = isDark ? Colors.white12 : MinaretTheme.dividerColor;
+
+          return ClipRRect(
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(
-              color: MinaretTheme.gold.withValues(alpha: 0.3),
-              width: 1,
-            ),
-          ),
-          child: Column(
-            children: _recentRecords!.take(10).map((record) {
-              return Padding(
-                padding: const EdgeInsets.all(AppSpacing.md),
-                child: Row(
-                  children: [
-                    Container(
-                      width: 40,
-                      height: 40,
-                      decoration: BoxDecoration(
-                        color: MinaretTheme.gold.withValues(alpha: 0.2),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Center(
-                        child: Text(
-                          '${record.completedPrayers.length}',
-                          style: GoogleFonts.montserrat(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w700,
-                            color: MinaretTheme.gold,
+            child: Container(
+              decoration: BoxDecoration(
+                color: cardColor,
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(
+                  color: MinaretTheme.gold.withValues(alpha: 0.3),
+                  width: 1,
+                ),
+              ),
+              child: Column(
+                children: _recentRecords!.take(10).toList().asMap().entries.map((entry) {
+                  final index = entry.key;
+                  final record = entry.value;
+                  final isLast = index == (_recentRecords!.take(10).length - 1);
+                  final allDone = record.completedPrayers.length == 5;
+
+                  return Column(
+                    children: [
+                      InkWell(
+                        onTap: () => _showDayDetailSheet(record),
+                        child: Padding(
+                          padding: const EdgeInsets.all(AppSpacing.md),
+                          child: Row(
+                            children: [
+                              Container(
+                                width: 40,
+                                height: 40,
+                                decoration: BoxDecoration(
+                                  color: (allDone ? MinaretTheme.emerald : MinaretTheme.gold)
+                                      .withValues(alpha: 0.15),
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    '${record.completedPrayers.length}',
+                                    style: GoogleFonts.montserrat(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w700,
+                                      color: allDone ? MinaretTheme.emerald : MinaretTheme.gold,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 12),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      DateFormat('EEEE, MMM d').format(record.date),
+                                      style: GoogleFonts.lato(
+                                        fontSize: 12,
+                                        color: mutedText,
+                                      ),
+                                    ),
+                                    Text(
+                                      '${record.completedPrayers.length} ${l10n.ofFivePrayers}',
+                                      style: GoogleFonts.montserrat(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w600,
+                                        color: textPrimary,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Text(
+                                '${(record.completionRate * 100).toInt()}%',
+                                style: GoogleFonts.lato(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w600,
+                                  color: allDone ? MinaretTheme.emerald : MinaretTheme.gold,
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              Icon(
+                                Icons.chevron_right,
+                                size: 16,
+                                color: mutedText.withValues(alpha: 0.5),
+                              ),
+                            ],
                           ),
                         ),
                       ),
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            DateFormat('EEEE, MMM d').format(record.date),
-                            style: GoogleFonts.lato(
-                              fontSize: 12,
-                              color: MinaretTheme.slate,
-                            ),
-                          ),
-                          Text(
-                            '${record.completedPrayers.length} ${l10n.ofFivePrayers}',
-                            style: GoogleFonts.montserrat(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
-                              color: MinaretTheme.onyx,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Text(
-                      '${(record.completionRate * 100).toInt()}%',
-                      style: GoogleFonts.lato(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w600,
-                        color: MinaretTheme.gold,
-                      ),
-                    ),
-                  ],
-                ),
-              );
-            }).toList(),
-          ),
-        ),
+                      if (!isLast)
+                        Divider(
+                          height: 1,
+                          indent: AppSpacing.md,
+                          endIndent: AppSpacing.md,
+                          color: dividerColor,
+                        ),
+                    ],
+                  );
+                }).toList(),
+              ),
+            ),
+          );
+        }),
       ],
+    );
+  }
+
+  void _showDayDetailSheet(PrayerRecord record) {
+    const allPrayers = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
+    final missed = allPrayers
+        .where((p) => !record.completedPrayers.contains(p))
+        .toList();
+
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (ctx) {
+        final isDark = Theme.of(ctx).brightness == Brightness.dark;
+        final textPrimary = Theme.of(ctx).colorScheme.onSurface;
+        final mutedText = isDark ? Colors.white54 : MinaretTheme.slate;
+        final dragHandle = isDark ? Colors.white24 : MinaretTheme.dividerColor;
+
+        return SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(24, 12, 24, 24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Center(
+                  child: Container(
+                    width: 36,
+                    height: 4,
+                    decoration: BoxDecoration(
+                      color: dragHandle,
+                      borderRadius: BorderRadius.circular(2),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  DateFormat('EEEE, MMMM d').format(record.date),
+                  style: GoogleFonts.montserrat(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w700,
+                    color: textPrimary,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  missed.isEmpty
+                      ? 'All prayers completed'
+                      : '${missed.length} prayer${missed.length == 1 ? '' : 's'} missed',
+                  style: GoogleFonts.lato(
+                    fontSize: 13,
+                    color: missed.isEmpty ? MinaretTheme.emerald : Colors.redAccent,
+                  ),
+                ),
+                const SizedBox(height: 20),
+                ...allPrayers.map((prayer) {
+                  final isDone = record.completedPrayers.contains(prayer);
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    child: Row(
+                      children: [
+                        Icon(
+                          isDone
+                              ? Icons.check_circle_rounded
+                              : Icons.cancel_outlined,
+                          color: isDone ? MinaretTheme.emerald : Colors.redAccent,
+                          size: 22,
+                        ),
+                        const SizedBox(width: 12),
+                        Text(
+                          prayer,
+                          style: GoogleFonts.montserrat(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w600,
+                            color: isDone ? textPrimary : mutedText,
+                          ),
+                        ),
+                        const Spacer(),
+                        Text(
+                          isDone ? 'Prayed' : 'Missed',
+                          style: GoogleFonts.lato(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                            color: isDone ? MinaretTheme.emerald : Colors.redAccent,
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                }),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }

@@ -17,6 +17,9 @@
     <!-- Security: Remove BACKGROUND_LOCATION to pass Play Store review unless explicitly needed -->
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" tools:node="remove" />
 
+    <!-- Gallery save support for Android 9 and below (not needed on API 29+) -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="28" />
+
     <application
         android:label="Minaret"
         android:name="${applicationName}" 
