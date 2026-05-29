@@ -6,10 +6,15 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart' as intl;
 
 import 'app_localizations_ar.dart';
+import 'app_localizations_de.dart';
 import 'app_localizations_en.dart';
 import 'app_localizations_fa.dart';
+import 'app_localizations_fr.dart';
+import 'app_localizations_id.dart';
+import 'app_localizations_ms.dart';
 import 'app_localizations_nl.dart';
 import 'app_localizations_ru.dart';
+import 'app_localizations_tr.dart';
 import 'app_localizations_ur.dart';
 import 'app_localizations_zh.dart';
 
@@ -100,10 +105,15 @@ abstract class AppLocalizations {
   /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[
     Locale('ar'),
+    Locale('de'),
     Locale('en'),
     Locale('fa'),
+    Locale('fr'),
+    Locale('id'),
+    Locale('ms'),
     Locale('nl'),
     Locale('ru'),
+    Locale('tr'),
     Locale('ur'),
     Locale('zh')
   ];
@@ -1469,6 +1479,618 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{completed} of {total} completed'**
   String ofTotalCompleted(int completed, int total);
+
+  /// No description provided for @selectLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'SELECT LOCATION'**
+  String get selectLocation;
+
+  /// No description provided for @searchCityHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search city (e.g. Lahore, Pakistan)'**
+  String get searchCityHint;
+
+  /// No description provided for @useCurrentLocationGps.
+  ///
+  /// In en, this message translates to:
+  /// **'Use Current Location (GPS)'**
+  String get useCurrentLocationGps;
+
+  /// No description provided for @confirmWithPasswordPrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your password to confirm deletion'**
+  String get confirmWithPasswordPrompt;
+
+  /// No description provided for @reAuthFailedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Re-authentication failed. Please try again.'**
+  String get reAuthFailedMessage;
+
+  /// No description provided for @initializationError.
+  ///
+  /// In en, this message translates to:
+  /// **'Initialization Error'**
+  String get initializationError;
+
+  /// No description provided for @somethingWentWrong.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong'**
+  String get somethingWentWrong;
+
+  /// No description provided for @reloadApp.
+  ///
+  /// In en, this message translates to:
+  /// **'Reload app'**
+  String get reloadApp;
+
+  /// No description provided for @prayerTimesDetected.
+  ///
+  /// In en, this message translates to:
+  /// **'PRAYER TIMES DETECTED'**
+  String get prayerTimesDetected;
+
+  /// No description provided for @iqamahBoard.
+  ///
+  /// In en, this message translates to:
+  /// **'IQAMAH BOARD'**
+  String get iqamahBoard;
+
+  /// No description provided for @azanBoard.
+  ///
+  /// In en, this message translates to:
+  /// **'AZAN BOARD'**
+  String get azanBoard;
+
+  /// No description provided for @prayerBoard.
+  ///
+  /// In en, this message translates to:
+  /// **'PRAYER BOARD'**
+  String get prayerBoard;
+
+  /// No description provided for @confidencePercent.
+  ///
+  /// In en, this message translates to:
+  /// **'{confidence}% CONFIDENCE'**
+  String confidencePercent(int confidence);
+
+  /// No description provided for @retakeAction.
+  ///
+  /// In en, this message translates to:
+  /// **'RETAKE'**
+  String get retakeAction;
+
+  /// No description provided for @applyAllAction.
+  ///
+  /// In en, this message translates to:
+  /// **'APPLY ALL'**
+  String get applyAllAction;
+
+  /// No description provided for @estimatedAbbr.
+  ///
+  /// In en, this message translates to:
+  /// **'est.'**
+  String get estimatedAbbr;
+
+  /// No description provided for @azanEstimateNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Azan times estimated: Fajr −15m · Dhuhr −10m · Asr −10m · Maghrib −5m · Isha −10m'**
+  String get azanEstimateNote;
+
+  /// No description provided for @iqamahEstimateNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Iqamah times estimated: Fajr +20m · Dhuhr +15m · Asr +15m · Maghrib +10m · Isha +20m'**
+  String get iqamahEstimateNote;
+
+  /// No description provided for @analogBoardError.
+  ///
+  /// In en, this message translates to:
+  /// **'ANALOG CLOCK BOARDS CANNOT BE SCANNED — PHOTOGRAPH A DIGITAL PRAYER TIME DISPLAY'**
+  String get analogBoardError;
+
+  /// No description provided for @noTimesFoundError.
+  ///
+  /// In en, this message translates to:
+  /// **'NO PRAYER TIMES FOUND — TRY A CLEARER PHOTO'**
+  String get noTimesFoundError;
+
+  /// No description provided for @couldNotReadTimesError.
+  ///
+  /// In en, this message translates to:
+  /// **'COULD NOT READ PRAYER TIMES — TRY A CLEARER PHOTO'**
+  String get couldNotReadTimesError;
+
+  /// No description provided for @takePhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'TAKE PHOTO'**
+  String get takePhoto;
+
+  /// No description provided for @chooseFromGallery.
+  ///
+  /// In en, this message translates to:
+  /// **'CHOOSE FROM GALLERY'**
+  String get chooseFromGallery;
+
+  /// No description provided for @registryManagementTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'REGISTRY MANAGEMENT'**
+  String get registryManagementTitle;
+
+  /// No description provided for @officialNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'OFFICIAL NAME'**
+  String get officialNameLabel;
+
+  /// No description provided for @donationSettingsHeader.
+  ///
+  /// In en, this message translates to:
+  /// **'DONATION SETTINGS'**
+  String get donationSettingsHeader;
+
+  /// No description provided for @donationBankDetailsHeader.
+  ///
+  /// In en, this message translates to:
+  /// **'DONATION BANK DETAILS'**
+  String get donationBankDetailsHeader;
+
+  /// No description provided for @bankNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'BANK NAME'**
+  String get bankNameLabel;
+
+  /// No description provided for @accountHolderLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'ACCOUNT HOLDER'**
+  String get accountHolderLabel;
+
+  /// No description provided for @accountHolderNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'ACCOUNT HOLDER NAME'**
+  String get accountHolderNameLabel;
+
+  /// No description provided for @accountNumberIbanLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'ACCOUNT NUMBER / IBAN'**
+  String get accountNumberIbanLabel;
+
+  /// No description provided for @schoolOfThoughtFiqhHeader.
+  ///
+  /// In en, this message translates to:
+  /// **'SCHOOL OF THOUGHT (FIQH)'**
+  String get schoolOfThoughtFiqhHeader;
+
+  /// No description provided for @schoolOfThoughtHeader.
+  ///
+  /// In en, this message translates to:
+  /// **'SCHOOL OF THOUGHT'**
+  String get schoolOfThoughtHeader;
+
+  /// No description provided for @azanIqamahTimesHeader.
+  ///
+  /// In en, this message translates to:
+  /// **'AZAN & IQAMAH TIMES'**
+  String get azanIqamahTimesHeader;
+
+  /// No description provided for @scanPrayerBoardAction.
+  ///
+  /// In en, this message translates to:
+  /// **'SCAN PRAYER BOARD'**
+  String get scanPrayerBoardAction;
+
+  /// No description provided for @readingPrayerBoardAction.
+  ///
+  /// In en, this message translates to:
+  /// **'READING PRAYER BOARD...'**
+  String get readingPrayerBoardAction;
+
+  /// No description provided for @specialPrayersHeader.
+  ///
+  /// In en, this message translates to:
+  /// **'SPECIAL PRAYERS'**
+  String get specialPrayersHeader;
+
+  /// No description provided for @eidPrayersHeader.
+  ///
+  /// In en, this message translates to:
+  /// **'EID PRAYERS'**
+  String get eidPrayersHeader;
+
+  /// No description provided for @eidUlFitrLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'EID UL FITR'**
+  String get eidUlFitrLabel;
+
+  /// No description provided for @eidUlAdhaLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'EID UL ADHA'**
+  String get eidUlAdhaLabel;
+
+  /// No description provided for @timeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'TIME'**
+  String get timeLabel;
+
+  /// No description provided for @dateLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'DATE'**
+  String get dateLabel;
+
+  /// No description provided for @registryUpdatedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Registry updated successfully'**
+  String get registryUpdatedMessage;
+
+  /// No description provided for @deletePermanentDialogBody.
+  ///
+  /// In en, this message translates to:
+  /// **'This action is permanent and cannot be undone. All data associated with this sanctuary will be removed from the global registry.'**
+  String get deletePermanentDialogBody;
+
+  /// No description provided for @mosqueNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'MOSQUE NAME'**
+  String get mosqueNameLabel;
+
+  /// No description provided for @imamOfficialContactHeader.
+  ///
+  /// In en, this message translates to:
+  /// **'IMAM / OFFICIAL CONTACT'**
+  String get imamOfficialContactHeader;
+
+  /// No description provided for @fullNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'FULL NAME'**
+  String get fullNameLabel;
+
+  /// No description provided for @phoneNumberLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'PHONE NUMBER'**
+  String get phoneNumberLabel;
+
+  /// No description provided for @mosqueFacilitiesHeader.
+  ///
+  /// In en, this message translates to:
+  /// **'MOSQUE FACILITIES'**
+  String get mosqueFacilitiesHeader;
+
+  /// No description provided for @janazaTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'JANAZA'**
+  String get janazaTitle;
+
+  /// No description provided for @postFuneralAnnouncement.
+  ///
+  /// In en, this message translates to:
+  /// **'POST A FUNERAL ANNOUNCEMENT'**
+  String get postFuneralAnnouncement;
+
+  /// No description provided for @nameOfDeceasedLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'NAME OF DECEASED'**
+  String get nameOfDeceasedLabel;
+
+  /// No description provided for @genderLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'GENDER'**
+  String get genderLabel;
+
+  /// No description provided for @ageOptionalLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'AGE (OPTIONAL)'**
+  String get ageOptionalLabel;
+
+  /// No description provided for @locationNoteOptionalLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'LOCATION NOTE (OPTIONAL)'**
+  String get locationNoteOptionalLabel;
+
+  /// No description provided for @janazaDateTimeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'JANAZA DATE & TIME'**
+  String get janazaDateTimeLabel;
+
+  /// No description provided for @familyDetailsOptional.
+  ///
+  /// In en, this message translates to:
+  /// **'FAMILY DETAILS (OPTIONAL)'**
+  String get familyDetailsOptional;
+
+  /// No description provided for @postAnnouncementAction.
+  ///
+  /// In en, this message translates to:
+  /// **'POST ANNOUNCEMENT'**
+  String get postAnnouncementAction;
+
+  /// No description provided for @announcementWillExpire.
+  ///
+  /// In en, this message translates to:
+  /// **'ANNOUNCEMENT WILL AUTOMATICALLY EXPIRE AFTER THE JANAZA TIME PASSES.'**
+  String get announcementWillExpire;
+
+  /// No description provided for @maleLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'MALE'**
+  String get maleLabel;
+
+  /// No description provided for @femaleLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'FEMALE'**
+  String get femaleLabel;
+
+  /// No description provided for @notSpecifiedLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'NOT SPECIFIED'**
+  String get notSpecifiedLabel;
+
+  /// No description provided for @fathersNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'FATHER\'S NAME'**
+  String get fathersNameLabel;
+
+  /// No description provided for @mothersNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'MOTHER\'S NAME'**
+  String get mothersNameLabel;
+
+  /// No description provided for @husbandsNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'HUSBAND\'S NAME'**
+  String get husbandsNameLabel;
+
+  /// No description provided for @wifesNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'WIFE\'S NAME'**
+  String get wifesNameLabel;
+
+  /// No description provided for @brothersNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'BROTHER\'S NAME'**
+  String get brothersNameLabel;
+
+  /// No description provided for @sistersNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'SISTER\'S NAME'**
+  String get sistersNameLabel;
+
+  /// No description provided for @optionalHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Optional'**
+  String get optionalHint;
+
+  /// No description provided for @ageHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. 65'**
+  String get ageHint;
+
+  /// No description provided for @locationHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Main Prayer Hall, Gate 2'**
+  String get locationHint;
+
+  /// No description provided for @selectDateLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'SELECT DATE'**
+  String get selectDateLabel;
+
+  /// No description provided for @selectTimeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'SELECT TIME'**
+  String get selectTimeLabel;
+
+  /// No description provided for @announcementPostedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'ANNOUNCEMENT POSTED'**
+  String get announcementPostedTitle;
+
+  /// No description provided for @announcementPostedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'May Allah grant them Jannah. الفاتحة'**
+  String get announcementPostedMessage;
+
+  /// No description provided for @errorEnterDeceasedName.
+  ///
+  /// In en, this message translates to:
+  /// **'ENTER THE NAME OF THE DECEASED.'**
+  String get errorEnterDeceasedName;
+
+  /// No description provided for @errorNameTooLong.
+  ///
+  /// In en, this message translates to:
+  /// **'NAME IS TOO LONG. MAX 100 CHARACTERS.'**
+  String get errorNameTooLong;
+
+  /// No description provided for @errorSelectDateAndTimeJanaza.
+  ///
+  /// In en, this message translates to:
+  /// **'SELECT BOTH DATE AND TIME FOR THE JANAZA.'**
+  String get errorSelectDateAndTimeJanaza;
+
+  /// No description provided for @errorJanazaInPast.
+  ///
+  /// In en, this message translates to:
+  /// **'JANAZA TIME CANNOT BE IN THE PAST.'**
+  String get errorJanazaInPast;
+
+  /// No description provided for @errorMustBeSignedIn.
+  ///
+  /// In en, this message translates to:
+  /// **'YOU MUST BE SIGNED IN.'**
+  String get errorMustBeSignedIn;
+
+  /// No description provided for @errorNotAuthorizedMosque.
+  ///
+  /// In en, this message translates to:
+  /// **'YOU DO NOT MANAGE THIS MOSQUE.'**
+  String get errorNotAuthorizedMosque;
+
+  /// No description provided for @errorInvalidNameLength.
+  ///
+  /// In en, this message translates to:
+  /// **'INVALID NAME. CHECK LENGTH (MAX 100).'**
+  String get errorInvalidNameLength;
+
+  /// No description provided for @errorSomethingWentWrongTryAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'SOMETHING WENT WRONG. TRY AGAIN.'**
+  String get errorSomethingWentWrongTryAgain;
+
+  /// No description provided for @editJanazaTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'EDIT JANAZA'**
+  String get editJanazaTitle;
+
+  /// No description provided for @updateAnnouncementDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'UPDATE ANNOUNCEMENT DETAILS'**
+  String get updateAnnouncementDetails;
+
+  /// No description provided for @announcementUpdatedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'ANNOUNCEMENT UPDATED'**
+  String get announcementUpdatedTitle;
+
+  /// No description provided for @changesSavedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Changes saved successfully.'**
+  String get changesSavedMessage;
+
+  /// No description provided for @couldNotUpdateError.
+  ///
+  /// In en, this message translates to:
+  /// **'COULD NOT UPDATE. TRY AGAIN.'**
+  String get couldNotUpdateError;
+
+  /// No description provided for @selectBothDateTime.
+  ///
+  /// In en, this message translates to:
+  /// **'SELECT BOTH DATE AND TIME.'**
+  String get selectBothDateTime;
+
+  /// No description provided for @qadaPrayersTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'QADA PRAYERS'**
+  String get qadaPrayersTitle;
+
+  /// No description provided for @signInForQada.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in to track Qada prayers.'**
+  String get signInForQada;
+
+  /// No description provided for @failedToLoadQada.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load Qada data.'**
+  String get failedToLoadQada;
+
+  /// No description provided for @addQadaDebtTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Qada Debt'**
+  String get addQadaDebtTitle;
+
+  /// No description provided for @addQadaDebtQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'How many {prayer} prayers do you still need to make up?'**
+  String addQadaDebtQuestion(String prayer);
+
+  /// No description provided for @qadaInfoBanner.
+  ///
+  /// In en, this message translates to:
+  /// **'Completing Qada prayers here does not affect your daily streak. Streaks only count on-time daily prayers.'**
+  String get qadaInfoBanner;
+
+  /// No description provided for @totalPendingLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Pending'**
+  String get totalPendingLabel;
+
+  /// No description provided for @madeUpLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Made Up'**
+  String get madeUpLabel;
+
+  /// No description provided for @pendingCountBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} pending'**
+  String pendingCountBadge(int count);
+
+  /// No description provided for @madeUpCountBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} made up'**
+  String madeUpCountBadge(int count);
+
+  /// No description provided for @markAsMadeUp.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark as Made Up'**
+  String get markAsMadeUp;
+
+  /// No description provided for @allCaughtUp.
+  ///
+  /// In en, this message translates to:
+  /// **'All caught up'**
+  String get allCaughtUp;
+
+  /// No description provided for @addQadaDebtTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Qada debt'**
+  String get addQadaDebtTooltip;
 }
 
 class _AppLocalizationsDelegate
@@ -1483,10 +2105,15 @@ class _AppLocalizationsDelegate
   @override
   bool isSupported(Locale locale) => <String>[
         'ar',
+        'de',
         'en',
         'fa',
+        'fr',
+        'id',
+        'ms',
         'nl',
         'ru',
+        'tr',
         'ur',
         'zh'
       ].contains(locale.languageCode);
@@ -1500,14 +2127,24 @@ AppLocalizations lookupAppLocalizations(Locale locale) {
   switch (locale.languageCode) {
     case 'ar':
       return AppLocalizationsAr();
+    case 'de':
+      return AppLocalizationsDe();
     case 'en':
       return AppLocalizationsEn();
     case 'fa':
       return AppLocalizationsFa();
+    case 'fr':
+      return AppLocalizationsFr();
+    case 'id':
+      return AppLocalizationsId();
+    case 'ms':
+      return AppLocalizationsMs();
     case 'nl':
       return AppLocalizationsNl();
     case 'ru':
       return AppLocalizationsRu();
+    case 'tr':
+      return AppLocalizationsTr();
     case 'ur':
       return AppLocalizationsUr();
     case 'zh':

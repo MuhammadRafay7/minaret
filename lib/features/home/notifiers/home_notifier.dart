@@ -18,7 +18,7 @@ import '../../../services/enhanced_prayer_tracker_service.dart';
 
 enum SortType { proximity, time, following }
 
-const int _mosqueQueryLimit = 25;
+const int _mosqueQueryLimit = 10;
 
 // ─────────────────────────────────────────────────────────────────────────────
 // HomeNotifier

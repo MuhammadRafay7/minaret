@@ -711,4 +711,330 @@ class AppLocalizationsEn extends AppLocalizations {
   String ofTotalCompleted(int completed, int total) {
     return '$completed of $total completed';
   }
+
+  @override
+  String get selectLocation => 'SELECT LOCATION';
+
+  @override
+  String get searchCityHint => 'Search city (e.g. Lahore, Pakistan)';
+
+  @override
+  String get useCurrentLocationGps => 'Use Current Location (GPS)';
+
+  @override
+  String get confirmWithPasswordPrompt =>
+      'Enter your password to confirm deletion';
+
+  @override
+  String get reAuthFailedMessage =>
+      'Re-authentication failed. Please try again.';
+
+  @override
+  String get initializationError => 'Initialization Error';
+
+  @override
+  String get somethingWentWrong => 'Something went wrong';
+
+  @override
+  String get reloadApp => 'Reload app';
+
+  @override
+  String get prayerTimesDetected => 'PRAYER TIMES DETECTED';
+
+  @override
+  String get iqamahBoard => 'IQAMAH BOARD';
+
+  @override
+  String get azanBoard => 'AZAN BOARD';
+
+  @override
+  String get prayerBoard => 'PRAYER BOARD';
+
+  @override
+  String confidencePercent(int confidence) {
+    return '$confidence% CONFIDENCE';
+  }
+
+  @override
+  String get retakeAction => 'RETAKE';
+
+  @override
+  String get applyAllAction => 'APPLY ALL';
+
+  @override
+  String get estimatedAbbr => 'est.';
+
+  @override
+  String get azanEstimateNote =>
+      'Azan times estimated: Fajr −15m · Dhuhr −10m · Asr −10m · Maghrib −5m · Isha −10m';
+
+  @override
+  String get iqamahEstimateNote =>
+      'Iqamah times estimated: Fajr +20m · Dhuhr +15m · Asr +15m · Maghrib +10m · Isha +20m';
+
+  @override
+  String get analogBoardError =>
+      'ANALOG CLOCK BOARDS CANNOT BE SCANNED — PHOTOGRAPH A DIGITAL PRAYER TIME DISPLAY';
+
+  @override
+  String get noTimesFoundError => 'NO PRAYER TIMES FOUND — TRY A CLEARER PHOTO';
+
+  @override
+  String get couldNotReadTimesError =>
+      'COULD NOT READ PRAYER TIMES — TRY A CLEARER PHOTO';
+
+  @override
+  String get takePhoto => 'TAKE PHOTO';
+
+  @override
+  String get chooseFromGallery => 'CHOOSE FROM GALLERY';
+
+  @override
+  String get registryManagementTitle => 'REGISTRY MANAGEMENT';
+
+  @override
+  String get officialNameLabel => 'OFFICIAL NAME';
+
+  @override
+  String get donationSettingsHeader => 'DONATION SETTINGS';
+
+  @override
+  String get donationBankDetailsHeader => 'DONATION BANK DETAILS';
+
+  @override
+  String get bankNameLabel => 'BANK NAME';
+
+  @override
+  String get accountHolderLabel => 'ACCOUNT HOLDER';
+
+  @override
+  String get accountHolderNameLabel => 'ACCOUNT HOLDER NAME';
+
+  @override
+  String get accountNumberIbanLabel => 'ACCOUNT NUMBER / IBAN';
+
+  @override
+  String get schoolOfThoughtFiqhHeader => 'SCHOOL OF THOUGHT (FIQH)';
+
+  @override
+  String get schoolOfThoughtHeader => 'SCHOOL OF THOUGHT';
+
+  @override
+  String get azanIqamahTimesHeader => 'AZAN & IQAMAH TIMES';
+
+  @override
+  String get scanPrayerBoardAction => 'SCAN PRAYER BOARD';
+
+  @override
+  String get readingPrayerBoardAction => 'READING PRAYER BOARD...';
+
+  @override
+  String get specialPrayersHeader => 'SPECIAL PRAYERS';
+
+  @override
+  String get eidPrayersHeader => 'EID PRAYERS';
+
+  @override
+  String get eidUlFitrLabel => 'EID UL FITR';
+
+  @override
+  String get eidUlAdhaLabel => 'EID UL ADHA';
+
+  @override
+  String get timeLabel => 'TIME';
+
+  @override
+  String get dateLabel => 'DATE';
+
+  @override
+  String get registryUpdatedMessage => 'Registry updated successfully';
+
+  @override
+  String get deletePermanentDialogBody =>
+      'This action is permanent and cannot be undone. All data associated with this sanctuary will be removed from the global registry.';
+
+  @override
+  String get mosqueNameLabel => 'MOSQUE NAME';
+
+  @override
+  String get imamOfficialContactHeader => 'IMAM / OFFICIAL CONTACT';
+
+  @override
+  String get fullNameLabel => 'FULL NAME';
+
+  @override
+  String get phoneNumberLabel => 'PHONE NUMBER';
+
+  @override
+  String get mosqueFacilitiesHeader => 'MOSQUE FACILITIES';
+
+  @override
+  String get janazaTitle => 'JANAZA';
+
+  @override
+  String get postFuneralAnnouncement => 'POST A FUNERAL ANNOUNCEMENT';
+
+  @override
+  String get nameOfDeceasedLabel => 'NAME OF DECEASED';
+
+  @override
+  String get genderLabel => 'GENDER';
+
+  @override
+  String get ageOptionalLabel => 'AGE (OPTIONAL)';
+
+  @override
+  String get locationNoteOptionalLabel => 'LOCATION NOTE (OPTIONAL)';
+
+  @override
+  String get janazaDateTimeLabel => 'JANAZA DATE & TIME';
+
+  @override
+  String get familyDetailsOptional => 'FAMILY DETAILS (OPTIONAL)';
+
+  @override
+  String get postAnnouncementAction => 'POST ANNOUNCEMENT';
+
+  @override
+  String get announcementWillExpire =>
+      'ANNOUNCEMENT WILL AUTOMATICALLY EXPIRE AFTER THE JANAZA TIME PASSES.';
+
+  @override
+  String get maleLabel => 'MALE';
+
+  @override
+  String get femaleLabel => 'FEMALE';
+
+  @override
+  String get notSpecifiedLabel => 'NOT SPECIFIED';
+
+  @override
+  String get fathersNameLabel => 'FATHER\'S NAME';
+
+  @override
+  String get mothersNameLabel => 'MOTHER\'S NAME';
+
+  @override
+  String get husbandsNameLabel => 'HUSBAND\'S NAME';
+
+  @override
+  String get wifesNameLabel => 'WIFE\'S NAME';
+
+  @override
+  String get brothersNameLabel => 'BROTHER\'S NAME';
+
+  @override
+  String get sistersNameLabel => 'SISTER\'S NAME';
+
+  @override
+  String get optionalHint => 'Optional';
+
+  @override
+  String get ageHint => 'e.g. 65';
+
+  @override
+  String get locationHint => 'e.g. Main Prayer Hall, Gate 2';
+
+  @override
+  String get selectDateLabel => 'SELECT DATE';
+
+  @override
+  String get selectTimeLabel => 'SELECT TIME';
+
+  @override
+  String get announcementPostedTitle => 'ANNOUNCEMENT POSTED';
+
+  @override
+  String get announcementPostedMessage =>
+      'May Allah grant them Jannah. الفاتحة';
+
+  @override
+  String get errorEnterDeceasedName => 'ENTER THE NAME OF THE DECEASED.';
+
+  @override
+  String get errorNameTooLong => 'NAME IS TOO LONG. MAX 100 CHARACTERS.';
+
+  @override
+  String get errorSelectDateAndTimeJanaza =>
+      'SELECT BOTH DATE AND TIME FOR THE JANAZA.';
+
+  @override
+  String get errorJanazaInPast => 'JANAZA TIME CANNOT BE IN THE PAST.';
+
+  @override
+  String get errorMustBeSignedIn => 'YOU MUST BE SIGNED IN.';
+
+  @override
+  String get errorNotAuthorizedMosque => 'YOU DO NOT MANAGE THIS MOSQUE.';
+
+  @override
+  String get errorInvalidNameLength => 'INVALID NAME. CHECK LENGTH (MAX 100).';
+
+  @override
+  String get errorSomethingWentWrongTryAgain =>
+      'SOMETHING WENT WRONG. TRY AGAIN.';
+
+  @override
+  String get editJanazaTitle => 'EDIT JANAZA';
+
+  @override
+  String get updateAnnouncementDetails => 'UPDATE ANNOUNCEMENT DETAILS';
+
+  @override
+  String get announcementUpdatedTitle => 'ANNOUNCEMENT UPDATED';
+
+  @override
+  String get changesSavedMessage => 'Changes saved successfully.';
+
+  @override
+  String get couldNotUpdateError => 'COULD NOT UPDATE. TRY AGAIN.';
+
+  @override
+  String get selectBothDateTime => 'SELECT BOTH DATE AND TIME.';
+
+  @override
+  String get qadaPrayersTitle => 'QADA PRAYERS';
+
+  @override
+  String get signInForQada => 'Sign in to track Qada prayers.';
+
+  @override
+  String get failedToLoadQada => 'Failed to load Qada data.';
+
+  @override
+  String get addQadaDebtTitle => 'Add Qada Debt';
+
+  @override
+  String addQadaDebtQuestion(String prayer) {
+    return 'How many $prayer prayers do you still need to make up?';
+  }
+
+  @override
+  String get qadaInfoBanner =>
+      'Completing Qada prayers here does not affect your daily streak. Streaks only count on-time daily prayers.';
+
+  @override
+  String get totalPendingLabel => 'Total Pending';
+
+  @override
+  String get madeUpLabel => 'Made Up';
+
+  @override
+  String pendingCountBadge(int count) {
+    return '$count pending';
+  }
+
+  @override
+  String madeUpCountBadge(int count) {
+    return '$count made up';
+  }
+
+  @override
+  String get markAsMadeUp => 'Mark as Made Up';
+
+  @override
+  String get allCaughtUp => 'All caught up';
+
+  @override
+  String get addQadaDebtTooltip => 'Add Qada debt';
 }

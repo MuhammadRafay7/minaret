@@ -702,4 +702,321 @@ class AppLocalizationsZh extends AppLocalizations {
   String ofTotalCompleted(int completed, int total) {
     return '已完成 $completed/$total';
   }
+
+  @override
+  String get selectLocation => '选择位置';
+
+  @override
+  String get searchCityHint => '搜索城市（如：上海，中国）';
+
+  @override
+  String get useCurrentLocationGps => '使用当前位置 (GPS)';
+
+  @override
+  String get confirmWithPasswordPrompt => '输入密码以确认删除';
+
+  @override
+  String get reAuthFailedMessage => '重新身份验证失败。请重试。';
+
+  @override
+  String get initializationError => '初始化错误';
+
+  @override
+  String get somethingWentWrong => '出了点问题';
+
+  @override
+  String get reloadApp => '重新加载应用';
+
+  @override
+  String get prayerTimesDetected => '检测到礼拜时间';
+
+  @override
+  String get iqamahBoard => '伊卡玛时间板';
+
+  @override
+  String get azanBoard => '阿赞时间板';
+
+  @override
+  String get prayerBoard => '礼拜时间板';
+
+  @override
+  String confidencePercent(int confidence) {
+    return '$confidence% 置信度';
+  }
+
+  @override
+  String get retakeAction => '重拍';
+
+  @override
+  String get applyAllAction => '全部应用';
+
+  @override
+  String get estimatedAbbr => '估计';
+
+  @override
+  String get azanEstimateNote =>
+      '阿赞时间估算：晨礼 −15分 · 晌礼 −10分 · 晡礼 −10分 · 昏礼 −5分 · 宵礼 −10分';
+
+  @override
+  String get iqamahEstimateNote =>
+      '伊卡玛时间估算：晨礼 +20分 · 晌礼 +15分 · 晡礼 +15分 · 昏礼 +10分 · 宵礼 +20分';
+
+  @override
+  String get analogBoardError => '无法扫描模拟时钟板 — 请拍摄数字礼拜时间显示屏';
+
+  @override
+  String get noTimesFoundError => '未找到礼拜时间 — 请尝试更清晰的照片';
+
+  @override
+  String get couldNotReadTimesError => '无法读取礼拜时间 — 请尝试更清晰的照片';
+
+  @override
+  String get takePhoto => '拍照';
+
+  @override
+  String get chooseFromGallery => '从相册选择';
+
+  @override
+  String get registryManagementTitle => '注册管理';
+
+  @override
+  String get officialNameLabel => '正式名称';
+
+  @override
+  String get donationSettingsHeader => '捐款设置';
+
+  @override
+  String get donationBankDetailsHeader => '捐款银行信息';
+
+  @override
+  String get bankNameLabel => '银行名称';
+
+  @override
+  String get accountHolderLabel => '账户持有人';
+
+  @override
+  String get accountHolderNameLabel => '账户持有人姓名';
+
+  @override
+  String get accountNumberIbanLabel => '账号 / IBAN';
+
+  @override
+  String get schoolOfThoughtFiqhHeader => '法学派（菲格赫）';
+
+  @override
+  String get schoolOfThoughtHeader => '法学派';
+
+  @override
+  String get azanIqamahTimesHeader => '阿赞与伊卡玛时间';
+
+  @override
+  String get scanPrayerBoardAction => '扫描礼拜时间板';
+
+  @override
+  String get readingPrayerBoardAction => '正在读取时间板...';
+
+  @override
+  String get specialPrayersHeader => '特殊礼拜';
+
+  @override
+  String get eidPrayersHeader => '开斋节礼拜';
+
+  @override
+  String get eidUlFitrLabel => '开斋节';
+
+  @override
+  String get eidUlAdhaLabel => '宰牲节';
+
+  @override
+  String get timeLabel => '时间';
+
+  @override
+  String get dateLabel => '日期';
+
+  @override
+  String get registryUpdatedMessage => '注册更新成功';
+
+  @override
+  String get deletePermanentDialogBody =>
+      '此操作是永久性的，无法撤销。与该清真寺相关的所有数据将从全球注册表中删除。';
+
+  @override
+  String get mosqueNameLabel => '清真寺名称';
+
+  @override
+  String get imamOfficialContactHeader => '伊玛目 / 官方联系';
+
+  @override
+  String get fullNameLabel => '全名';
+
+  @override
+  String get phoneNumberLabel => '电话号码';
+
+  @override
+  String get mosqueFacilitiesHeader => '清真寺设施';
+
+  @override
+  String get janazaTitle => '殡礼';
+
+  @override
+  String get postFuneralAnnouncement => '发布殡礼公告';
+
+  @override
+  String get nameOfDeceasedLabel => '逝者姓名';
+
+  @override
+  String get genderLabel => '性别';
+
+  @override
+  String get ageOptionalLabel => '年龄（可选）';
+
+  @override
+  String get locationNoteOptionalLabel => '位置备注（可选）';
+
+  @override
+  String get janazaDateTimeLabel => '殡礼日期和时间';
+
+  @override
+  String get familyDetailsOptional => '家庭详情（可选）';
+
+  @override
+  String get postAnnouncementAction => '发布公告';
+
+  @override
+  String get announcementWillExpire => '公告将在殡礼时间过后自动过期。';
+
+  @override
+  String get maleLabel => '男性';
+
+  @override
+  String get femaleLabel => '女性';
+
+  @override
+  String get notSpecifiedLabel => '未指定';
+
+  @override
+  String get fathersNameLabel => '父亲姓名';
+
+  @override
+  String get mothersNameLabel => '母亲姓名';
+
+  @override
+  String get husbandsNameLabel => '丈夫姓名';
+
+  @override
+  String get wifesNameLabel => '妻子姓名';
+
+  @override
+  String get brothersNameLabel => '兄弟姓名';
+
+  @override
+  String get sistersNameLabel => '姐妹姓名';
+
+  @override
+  String get optionalHint => '可选';
+
+  @override
+  String get ageHint => '例：65';
+
+  @override
+  String get locationHint => '例：主礼拜厅，门2';
+
+  @override
+  String get selectDateLabel => '选择日期';
+
+  @override
+  String get selectTimeLabel => '选择时间';
+
+  @override
+  String get announcementPostedTitle => '公告已发布';
+
+  @override
+  String get announcementPostedMessage => '愿安拉赐予他们天堂。الفاتحة';
+
+  @override
+  String get errorEnterDeceasedName => '请输入逝者姓名。';
+
+  @override
+  String get errorNameTooLong => '姓名太长。最多100个字符。';
+
+  @override
+  String get errorSelectDateAndTimeJanaza => '请选择殡礼的日期和时间。';
+
+  @override
+  String get errorJanazaInPast => '殡礼时间不能在过去。';
+
+  @override
+  String get errorMustBeSignedIn => '您必须登录。';
+
+  @override
+  String get errorNotAuthorizedMosque => '您不管理此清真寺。';
+
+  @override
+  String get errorInvalidNameLength => '姓名无效。请检查长度（最多100）。';
+
+  @override
+  String get errorSomethingWentWrongTryAgain => '出了点问题。请重试。';
+
+  @override
+  String get editJanazaTitle => '编辑殡礼';
+
+  @override
+  String get updateAnnouncementDetails => '更新公告详情';
+
+  @override
+  String get announcementUpdatedTitle => '公告已更新';
+
+  @override
+  String get changesSavedMessage => '更改已成功保存。';
+
+  @override
+  String get couldNotUpdateError => '无法更新。请重试。';
+
+  @override
+  String get selectBothDateTime => '请选择日期和时间。';
+
+  @override
+  String get qadaPrayersTitle => '补礼';
+
+  @override
+  String get signInForQada => '登录以跟踪补礼。';
+
+  @override
+  String get failedToLoadQada => '加载补礼数据失败。';
+
+  @override
+  String get addQadaDebtTitle => '添加补礼欠账';
+
+  @override
+  String addQadaDebtQuestion(String prayer) {
+    return '您还需要补几次$prayer礼？';
+  }
+
+  @override
+  String get qadaInfoBanner => '在此完成补礼不影响您的每日连续记录。连续记录仅计算按时的每日礼拜。';
+
+  @override
+  String get totalPendingLabel => '待补总数';
+
+  @override
+  String get madeUpLabel => '已补';
+
+  @override
+  String pendingCountBadge(int count) {
+    return '$count个待补';
+  }
+
+  @override
+  String madeUpCountBadge(int count) {
+    return '$count个已补';
+  }
+
+  @override
+  String get markAsMadeUp => '标记为已补';
+
+  @override
+  String get allCaughtUp => '全部补完';
+
+  @override
+  String get addQadaDebtTooltip => '添加补礼欠账';
 }

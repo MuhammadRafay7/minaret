@@ -269,5 +269,133 @@
       "completed": {"type": "int"},
       "total": {"type": "int"}
     }
-  }
+  },
+  "selectLocation": "SELECT LOCATION",
+  "searchCityHint": "Search city (e.g. Lahore, Pakistan)",
+  "useCurrentLocationGps": "Use Current Location (GPS)",
+  "confirmWithPasswordPrompt": "Enter your password to confirm deletion",
+  "reAuthFailedMessage": "Re-authentication failed. Please try again.",
+
+  "initializationError": "Initialization Error",
+  "somethingWentWrong": "Something went wrong",
+  "reloadApp": "Reload app",
+
+  "prayerTimesDetected": "PRAYER TIMES DETECTED",
+  "iqamahBoard": "IQAMAH BOARD",
+  "azanBoard": "AZAN BOARD",
+  "prayerBoard": "PRAYER BOARD",
+  "confidencePercent": "{confidence}% CONFIDENCE",
+  "@confidencePercent": {
+    "placeholders": {
+      "confidence": { "type": "int" }
+    }
+  },
+  "retakeAction": "RETAKE",
+  "applyAllAction": "APPLY ALL",
+  "estimatedAbbr": "est.",
+  "azanEstimateNote": "Azan times estimated: Fajr −15m · Dhuhr −10m · Asr −10m · Maghrib −5m · Isha −10m",
+  "iqamahEstimateNote": "Iqamah times estimated: Fajr +20m · Dhuhr +15m · Asr +15m · Maghrib +10m · Isha +20m",
+
+  "analogBoardError": "ANALOG CLOCK BOARDS CANNOT BE SCANNED — PHOTOGRAPH A DIGITAL PRAYER TIME DISPLAY",
+  "noTimesFoundError": "NO PRAYER TIMES FOUND — TRY A CLEARER PHOTO",
+  "couldNotReadTimesError": "COULD NOT READ PRAYER TIMES — TRY A CLEARER PHOTO",
+  "takePhoto": "TAKE PHOTO",
+  "chooseFromGallery": "CHOOSE FROM GALLERY",
+  "registryManagementTitle": "REGISTRY MANAGEMENT",
+  "officialNameLabel": "OFFICIAL NAME",
+  "donationSettingsHeader": "DONATION SETTINGS",
+  "donationBankDetailsHeader": "DONATION BANK DETAILS",
+  "bankNameLabel": "BANK NAME",
+  "accountHolderLabel": "ACCOUNT HOLDER",
+  "accountHolderNameLabel": "ACCOUNT HOLDER NAME",
+  "accountNumberIbanLabel": "ACCOUNT NUMBER / IBAN",
+  "schoolOfThoughtFiqhHeader": "SCHOOL OF THOUGHT (FIQH)",
+  "schoolOfThoughtHeader": "SCHOOL OF THOUGHT",
+  "azanIqamahTimesHeader": "AZAN & IQAMAH TIMES",
+  "scanPrayerBoardAction": "SCAN PRAYER BOARD",
+  "readingPrayerBoardAction": "READING PRAYER BOARD...",
+  "specialPrayersHeader": "SPECIAL PRAYERS",
+  "eidPrayersHeader": "EID PRAYERS",
+  "eidUlFitrLabel": "EID UL FITR",
+  "eidUlAdhaLabel": "EID UL ADHA",
+  "timeLabel": "TIME",
+  "dateLabel": "DATE",
+  "registryUpdatedMessage": "Registry updated successfully",
+  "deletePermanentDialogBody": "This action is permanent and cannot be undone. All data associated with this sanctuary will be removed from the global registry.",
+  "mosqueNameLabel": "MOSQUE NAME",
+  "imamOfficialContactHeader": "IMAM / OFFICIAL CONTACT",
+  "fullNameLabel": "FULL NAME",
+  "phoneNumberLabel": "PHONE NUMBER",
+  "mosqueFacilitiesHeader": "MOSQUE FACILITIES",
+
+  "janazaTitle": "JANAZA",
+  "postFuneralAnnouncement": "POST A FUNERAL ANNOUNCEMENT",
+  "nameOfDeceasedLabel": "NAME OF DECEASED",
+  "genderLabel": "GENDER",
+  "ageOptionalLabel": "AGE (OPTIONAL)",
+  "locationNoteOptionalLabel": "LOCATION NOTE (OPTIONAL)",
+  "janazaDateTimeLabel": "JANAZA DATE & TIME",
+  "familyDetailsOptional": "FAMILY DETAILS (OPTIONAL)",
+  "postAnnouncementAction": "POST ANNOUNCEMENT",
+  "announcementWillExpire": "ANNOUNCEMENT WILL AUTOMATICALLY EXPIRE AFTER THE JANAZA TIME PASSES.",
+  "maleLabel": "MALE",
+  "femaleLabel": "FEMALE",
+  "notSpecifiedLabel": "NOT SPECIFIED",
+  "fathersNameLabel": "FATHER'S NAME",
+  "mothersNameLabel": "MOTHER'S NAME",
+  "husbandsNameLabel": "HUSBAND'S NAME",
+  "wifesNameLabel": "WIFE'S NAME",
+  "brothersNameLabel": "BROTHER'S NAME",
+  "sistersNameLabel": "SISTER'S NAME",
+  "optionalHint": "Optional",
+  "ageHint": "e.g. 65",
+  "locationHint": "e.g. Main Prayer Hall, Gate 2",
+  "selectDateLabel": "SELECT DATE",
+  "selectTimeLabel": "SELECT TIME",
+  "announcementPostedTitle": "ANNOUNCEMENT POSTED",
+  "announcementPostedMessage": "May Allah grant them Jannah. الفاتحة",
+  "errorEnterDeceasedName": "ENTER THE NAME OF THE DECEASED.",
+  "errorNameTooLong": "NAME IS TOO LONG. MAX 100 CHARACTERS.",
+  "errorSelectDateAndTimeJanaza": "SELECT BOTH DATE AND TIME FOR THE JANAZA.",
+  "errorJanazaInPast": "JANAZA TIME CANNOT BE IN THE PAST.",
+  "errorMustBeSignedIn": "YOU MUST BE SIGNED IN.",
+  "errorNotAuthorizedMosque": "YOU DO NOT MANAGE THIS MOSQUE.",
+  "errorInvalidNameLength": "INVALID NAME. CHECK LENGTH (MAX 100).",
+  "errorSomethingWentWrongTryAgain": "SOMETHING WENT WRONG. TRY AGAIN.",
+
+  "editJanazaTitle": "EDIT JANAZA",
+  "updateAnnouncementDetails": "UPDATE ANNOUNCEMENT DETAILS",
+  "announcementUpdatedTitle": "ANNOUNCEMENT UPDATED",
+  "changesSavedMessage": "Changes saved successfully.",
+  "couldNotUpdateError": "COULD NOT UPDATE. TRY AGAIN.",
+  "selectBothDateTime": "SELECT BOTH DATE AND TIME.",
+
+  "qadaPrayersTitle": "QADA PRAYERS",
+  "signInForQada": "Sign in to track Qada prayers.",
+  "failedToLoadQada": "Failed to load Qada data.",
+  "addQadaDebtTitle": "Add Qada Debt",
+  "addQadaDebtQuestion": "How many {prayer} prayers do you still need to make up?",
+  "@addQadaDebtQuestion": {
+    "placeholders": {
+      "prayer": { "type": "String" }
+    }
+  },
+  "qadaInfoBanner": "Completing Qada prayers here does not affect your daily streak. Streaks only count on-time daily prayers.",
+  "totalPendingLabel": "Total Pending",
+  "madeUpLabel": "Made Up",
+  "pendingCountBadge": "{count} pending",
+  "@pendingCountBadge": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "madeUpCountBadge": "{count} made up",
+  "@madeUpCountBadge": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "markAsMadeUp": "Mark as Made Up",
+  "allCaughtUp": "All caught up",
+  "addQadaDebtTooltip": "Add Qada debt"
 }

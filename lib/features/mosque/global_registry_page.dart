@@ -77,8 +77,8 @@ class _GlobalRegistryPageState extends State<GlobalRegistryPage> {
   // location
   Position? _position;
 
-  // pagination — 20 most popular mosques per page
-  static const _pageSize = 20;
+  // pagination — 10 most popular mosques per page
+  static const _pageSize = 10;
   final _docs = <QueryDocumentSnapshot>[];
   bool _hasMore = true;
   bool _loading = false;

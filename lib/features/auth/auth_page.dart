@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -23,6 +24,7 @@ import 'settings_page.dart';
 import 'imam_profile_page.dart';
 import 'document_verification.dart';
 import 'google_imam_setup_page.dart';
+import 'edit_profile_page.dart';
 import '../../services/system_config_service.dart';
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -68,6 +70,7 @@ class _AuthPageState extends State<AuthPage> {
   bool _isCheckingVerification = false;
   AuthStep _regStep = AuthStep.phone;
   String _selectedRole = kDefaultRole;
+  String _selectedGender = 'male';
   bool _offersTeaching = false;
   String _teachingAudience = kDefaultTeachingAudience;
 
@@ -271,6 +274,15 @@ class _AuthPageState extends State<AuthPage> {
           return;
         }
 
+        if (_selectedRole == kRoleCommon) {
+          final nameValidation =
+              InputValidator.validateName(_fullNameController.text);
+          if (!nameValidation.isValid) {
+            _showStatus(nameValidation.errorMessage!);
+            return;
+          }
+        }
+
         if (_selectedRole == kRoleImam) {
           final nameValidation =
               InputValidator.validateName(_fullNameController.text);
@@ -353,6 +365,10 @@ class _AuthPageState extends State<AuthPage> {
             'namaz': true,
             'eid': true,
             'taraweeh': true,
+          },
+          if (_selectedRole == kRoleCommon) ...{
+            'displayName': _fullNameController.text.trim(),
+            'gender': _selectedGender,
           },
           if (_selectedRole == kRoleImam) ...{
             'fullName': _fullNameController.text.trim(),
@@ -825,48 +841,89 @@ class _AuthPageState extends State<AuthPage> {
         const SizedBox(height: 20),
         _buildBismillah(),
         const SizedBox(height: 60),
-        Text(
-          _displayText(l10n.profileIdentifiedAs),
-          style: MinaretTheme.detailHeader.copyWith(
-            fontSize: 7.5,
-            letterSpacing: 3,
-          ),
-        ),
-        const SizedBox(height: 10),
-        Text(
-          _displayText(user.email ?? l10n.profileAnonymous),
-          style: GoogleFonts.lato(
-            fontSize: 14,
-            fontWeight: FontWeight.w700,
-            letterSpacing: 1.2,
-            color: _textPrimary,
-          ),
-        ),
-        const SizedBox(height: 30),
         StreamBuilder<DocumentSnapshot>(
             stream: FirebaseFirestore.instance
                 .collection('users')
                 .doc(user.uid)
                 .snapshots(),
             builder: (context, snap) {
-              final role = snap.data?.data() as Map<String, dynamic>?;
-              if (role?['role'] == kRoleImam) {
-                return Center(
-                  child: _buildTextLink(
-                    _displayText(_t(
-                        en: 'Manage Personal Profile',
-                        ar: 'إدارة البيانات الشخصية',
-                        ur: 'ذاتی پروفائل کا انتظام',
-                        ru: 'Управление профилем')),
-                    () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (_) => const ImamProfilePage())),
-                    accent: true,
+              final data = snap.data?.data() as Map<String, dynamic>?;
+              final displayName = data?['displayName'] as String?;
+              final userRole = data?['role'] as String?;
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    _displayText(l10n.profileIdentifiedAs),
+                    style: MinaretTheme.detailHeader.copyWith(
+                      fontSize: 7.5,
+                      letterSpacing: 3,
+                    ),
                   ),
-                );
-              }
-              return const SizedBox.shrink();
+                  const SizedBox(height: 10),
+                  if (displayName != null && displayName.isNotEmpty) ...[
+                    Text(
+                      _displayText(displayName),
+                      style: GoogleFonts.lato(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w700,
+                        letterSpacing: 1.2,
+                        color: _textPrimary,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      user.email ?? '',
+                      style: GoogleFonts.lato(
+                        fontSize: 11,
+                        fontWeight: FontWeight.w400,
+                        color: _textSecondary,
+                      ),
+                    ),
+                  ] else ...[
+                    Text(
+                      _displayText(user.email ?? l10n.profileAnonymous),
+                      style: GoogleFonts.lato(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w700,
+                        letterSpacing: 1.2,
+                        color: _textPrimary,
+                      ),
+                    ),
+                  ],
+                  const SizedBox(height: 30),
+                  if (userRole == kRoleImam)
+                    Center(
+                      child: _buildTextLink(
+                        _displayText(_t(
+                            en: 'Manage Personal Profile',
+                            ar: 'إدارة البيانات الشخصية',
+                            ur: 'ذاتی پروفائل کا انتظام',
+                            ru: 'Управление профилем')),
+                        () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (_) => const ImamProfilePage())),
+                        accent: true,
+                      ),
+                    )
+                  else
+                    Center(
+                      child: _buildTextLink(
+                        _displayText(_t(
+                            en: 'Edit Profile',
+                            ar: 'تعديل الملف الشخصي',
+                            ur: 'پروفائل ترمیم کریں',
+                            ru: 'Редактировать профиль')),
+                        () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (_) => const EditProfilePage())),
+                        accent: true,
+                      ),
+                    ),
+                ],
+              );
             }),
         const SizedBox(height: 80),
         _buildActionButton(l10n.profileEndSession, () async {
@@ -1042,6 +1099,29 @@ class _AuthPageState extends State<AuthPage> {
       _buildSectionLabel(l10n.sectionDesignation),
       const SizedBox(height: 16),
       _buildRoleSelector(l10n),
+      if (_selectedRole == kRoleCommon) ...[
+        const SizedBox(height: 28),
+        _buildSectionLabel(
+          _t(
+            en: 'Personal Details',
+            ar: 'البيانات الشخصية',
+            ur: 'ذاتی معلومات',
+            ru: 'Личные данные',
+          ),
+        ),
+        const SizedBox(height: 16),
+        _buildModernField(
+          _t(en: 'Full Name', ar: 'الاسم الكامل', ur: 'پورا نام', ru: 'Полное имя'),
+          _fullNameController,
+          false,
+        ),
+        const SizedBox(height: 16),
+        _buildSectionLabel(
+          _t(en: 'Gender', ar: 'الجنس', ur: 'جنس', ru: 'Пол'),
+        ),
+        const SizedBox(height: 12),
+        _buildGenderSelector(),
+      ],
       if (_selectedRole == kRoleImam) ...[
         const SizedBox(height: 28),
         _buildSectionLabel(
@@ -1617,6 +1697,36 @@ class _AuthPageState extends State<AuthPage> {
                 ),
               ),
             ),
+            const SizedBox(height: 6),
+            GestureDetector(
+              onTap: () => setState(() => _verificationResult = ImamVerificationResult(
+                approved: false,
+                status: 'needs_review',
+                score: result.score,
+                reason: 'Automated check inconclusive — submitted for manual review.',
+                nameMatchConfidence: result.nameMatchConfidence,
+              )),
+              child: Padding(
+                padding: const EdgeInsets.only(left: 26),
+                child: Text(
+                  _displayText(
+                    _t(
+                      en: 'Submit for manual review instead',
+                      ar: 'إرسال للمراجعة اليدوية',
+                      ur: 'دستی جائزے کے لیے بھیجیں',
+                      ru: 'Отправить на ручную проверку',
+                    ),
+                  ),
+                  style: GoogleFonts.montserrat(
+                    fontSize: 8,
+                    letterSpacing: 1.5,
+                    color: MinaretTheme.gold,
+                    decoration: TextDecoration.underline,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ),
           ],
         ],
       ),
@@ -1677,6 +1787,55 @@ class _AuthPageState extends State<AuthPage> {
         _roleButton(l10n.roleCommunity, kRoleCommon),
         const SizedBox(width: 12),
         _roleButton(l10n.roleImam, kRoleImam),
+      ],
+    );
+  }
+
+  Widget _buildGenderSelector() {
+    final genders = [
+      ('male', _t(en: 'Male', ar: 'ذكر', ur: 'مرد', ru: 'Муж.')),
+      ('female', _t(en: 'Female', ar: 'أنثى', ur: 'عورت', ru: 'Жен.')),
+      ('other', _t(en: 'Other', ar: 'آخر', ur: 'دیگر', ru: 'Другой')),
+    ];
+    return Row(
+      children: [
+        for (int i = 0; i < genders.length; i++) ...[
+          if (i > 0) const SizedBox(width: 12),
+          Expanded(
+            child: GestureDetector(
+              onTap: () => setState(() => _selectedGender = genders[i].$1),
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.easeOutCubic,
+                padding: const EdgeInsets.symmetric(vertical: 14),
+                decoration: BoxDecoration(
+                  color: _selectedGender == genders[i].$1
+                      ? MinaretTheme.gold
+                      : Colors.transparent,
+                  border: Border.all(
+                    width: 1.5,
+                    color: _selectedGender == genders[i].$1
+                        ? MinaretTheme.gold
+                        : _lineColor,
+                  ),
+                ),
+                child: Center(
+                  child: Text(
+                    _displayText(genders[i].$2),
+                    style: GoogleFonts.montserrat(
+                      fontSize: 8,
+                      letterSpacing: 1.5,
+                      color: _selectedGender == genders[i].$1
+                          ? Colors.white
+                          : _textSecondary,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
       ],
     );
   }
@@ -1945,13 +2104,10 @@ class _AuthPageState extends State<AuthPage> {
   Future<void> _signInWithGoogle() async {
     setState(() => _isLoading = true);
     try {
+      final googleClientId = dotenv.env['GOOGLE_CLIENT_ID'] ?? '';
       final googleUser = await GoogleSignIn(
-        clientId: kIsWeb
-            ? '917799173646-jd6ebo6gsh37pljk08no9u3lm6bnu15n.apps.googleusercontent.com'
-            : null,
-        serverClientId: kIsWeb
-            ? null
-            : '917799173646-jd6ebo6gsh37pljk08no9u3lm6bnu15n.apps.googleusercontent.com',
+        clientId: kIsWeb ? googleClientId : null,
+        serverClientId: kIsWeb ? null : googleClientId,
       ).signIn();
       if (googleUser == null) {
         setState(() => _isLoading = false);

@@ -49,7 +49,15 @@ Future<void> main() async {
   runZonedGuarded(
     () async {
       WidgetsFlutterBinding.ensureInitialized();
-      if (!kIsWeb) CertificatePins.assertConfigured();
+      if (!kIsWeb) {
+        CertificatePins.assertConfigured();
+        if (kDebugMode && !CertificatePins.isConfigured()) {
+          debugPrint(
+            '\n⚠️  SSL PINNING: pinnedDomains is empty — api.minaret.app is not '
+            'yet pinned. Configure certificate_pins.dart before release.\n',
+          );
+        }
+      }
       final appConfig = await _initializeApp();
       runApp(appConfig);
     },
@@ -216,15 +224,15 @@ class _MaintenanceScreen extends StatelessWidget {
               const Icon(Icons.build_rounded, size: 80, color: Color(0xFFD4AF37)),
               const SizedBox(height: 24),
               Text(
-                'SYSTEM MAINTENANCE',
+                AppLocalizations.of(context)!.maintenanceTitle,
                 style: GoogleFonts.montserrat(fontSize: 20, fontWeight: FontWeight.w900, letterSpacing: 4),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 16),
-              const Text(
-                'We are currently performing scheduled improvements to our infrastructure. Please check back shortly.',
+              Text(
+                AppLocalizations.of(context)!.maintenanceBody,
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 14, height: 1.5),
+                style: const TextStyle(fontSize: 14, height: 1.5),
               ),
             ],
           ),

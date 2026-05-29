@@ -69,8 +69,8 @@ android {
         applicationId = "com.atelier.minaret"
         minSdk = flutter.minSdkVersion
         targetSdk = 36
-        versionCode = 16
-        versionName = "1.0.0"
+        versionCode = flutter.versionCode
+        versionName = flutter.versionName
     }
 
     buildTypes {

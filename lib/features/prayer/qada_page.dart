@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../core/app_spacing.dart';
 import '../../core/theme.dart';
+import '../../l10n/generated/app_localizations.dart';
 import '../../repositories/prayer_repository.dart';
 import '../../repositories/qada_repository.dart';
 import '../../widgets/offline_banner.dart';
@@ -59,7 +60,7 @@ class _QadaPageState extends State<QadaPage> {
           backgroundColor: isDark ? const Color(0xFF1C2330) : Colors.white,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
           title: Text(
-            'Add Qada Debt',
+            AppLocalizations.of(ctx)!.addQadaDebtTitle,
             style: GoogleFonts.montserrat(
               fontWeight: FontWeight.w700,
               color: textPrimary,
@@ -70,7 +71,7 @@ class _QadaPageState extends State<QadaPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'How many $prayer prayers do you still need to make up?',
+                AppLocalizations.of(ctx)!.addQadaDebtQuestion(prayer),
                 style: GoogleFonts.lato(color: isDark ? Colors.white70 : MinaretTheme.slate),
               ),
               const SizedBox(height: 16),
@@ -82,7 +83,7 @@ class _QadaPageState extends State<QadaPage> {
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(ctx, false),
-              child: Text('Cancel', style: GoogleFonts.lato(color: MinaretTheme.slate)),
+              child: Text(AppLocalizations.of(ctx)!.cancelAction, style: GoogleFonts.lato(color: MinaretTheme.slate)),
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
@@ -91,7 +92,7 @@ class _QadaPageState extends State<QadaPage> {
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
               ),
               onPressed: () => Navigator.pop(ctx, true),
-              child: Text('Add', style: GoogleFonts.lato(fontWeight: FontWeight.w600)),
+              child: Text(AppLocalizations.of(ctx)!.saveLabel, style: GoogleFonts.lato(fontWeight: FontWeight.w600)),
             ),
           ],
         );
@@ -111,7 +112,7 @@ class _QadaPageState extends State<QadaPage> {
     if (user == null) {
       return Scaffold(
         appBar: _appBar(),
-        body: const Center(child: Text('Sign in to track Qada prayers.')),
+        body: Center(child: Text(AppLocalizations.of(context)!.signInForQada)),
       );
     }
 
@@ -124,7 +125,7 @@ class _QadaPageState extends State<QadaPage> {
             child: _isLoading
                 ? const PremiumLoadingScreen()
                 : _data == null
-                    ? const Center(child: Text('Failed to load Qada data.'))
+                    ? Center(child: Text(AppLocalizations.of(context)!.failedToLoadQada))
                     : RefreshIndicator(
                         color: MinaretTheme.emerald,
                         onRefresh: _load,
@@ -158,7 +159,7 @@ class _QadaPageState extends State<QadaPage> {
         icon: const Icon(Icons.arrow_back_ios_new, size: 14, color: Colors.white),
       ),
       title: Text(
-        'QADA PRAYERS',
+        AppLocalizations.of(context)!.qadaPrayersTitle,
         style: MinaretTheme.heading.copyWith(
           fontSize: 20,
           color: Colors.white,
@@ -184,8 +185,7 @@ class _QadaPageState extends State<QadaPage> {
           const SizedBox(width: 10),
           Expanded(
             child: Text(
-              'Completing Qada prayers here does not affect your daily streak. '
-              'Streaks only count on-time daily prayers.',
+              AppLocalizations.of(context)!.qadaInfoBanner,
               style: GoogleFonts.lato(
                 fontSize: 12,
                 color: isDark ? Colors.white70 : MinaretTheme.slate,
@@ -214,14 +214,14 @@ class _QadaPageState extends State<QadaPage> {
       child: Row(
         children: [
           Expanded(child: _summaryItem(
-            label: 'Total Pending',
+            label: AppLocalizations.of(context)!.totalPendingLabel,
             value: '$pending',
             color: pending > 0 ? Colors.redAccent : MinaretTheme.emerald,
             icon: Icons.pending_actions,
           )),
           Container(width: 1, height: 40, color: isDark ? Colors.white12 : MinaretTheme.dividerColor),
           Expanded(child: _summaryItem(
-            label: 'Made Up',
+            label: AppLocalizations.of(context)!.madeUpLabel,
             value: '$completed',
             color: MinaretTheme.emerald,
             icon: Icons.check_circle_outline,
@@ -277,7 +277,7 @@ class _QadaPageState extends State<QadaPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'PRAYER BREAKDOWN',
+          AppLocalizations.of(context)!.prayerBreakdownSection,
           style: MinaretTheme.detailHeader.copyWith(
             color: MinaretTheme.gold,
             fontSize: 12,
@@ -331,14 +331,14 @@ class _QadaPageState extends State<QadaPage> {
                       Row(
                         children: [
                           _badge(
-                            '$pending pending',
+                            AppLocalizations.of(context)!.pendingCountBadge(pending),
                             allClear ? MinaretTheme.emerald : Colors.redAccent,
                             isDark,
                           ),
                           const SizedBox(width: 8),
                           if (completed > 0)
                             _badge(
-                              '$completed made up',
+                              AppLocalizations.of(context)!.madeUpCountBadge(completed),
                               MinaretTheme.emerald,
                               isDark,
                             ),
@@ -349,7 +349,7 @@ class _QadaPageState extends State<QadaPage> {
                 ),
                 // Add debt button
                 IconButton(
-                  tooltip: 'Add Qada debt',
+                  tooltip: AppLocalizations.of(context)!.addQadaDebtTooltip,
                   icon: Icon(
                     Icons.add_circle_outline,
                     color: isDark ? Colors.white38 : MinaretTheme.slate,
@@ -375,7 +375,7 @@ class _QadaPageState extends State<QadaPage> {
                   ),
                   icon: const Icon(Icons.check, size: 18),
                   label: Text(
-                    'Mark as Made Up',
+                    AppLocalizations.of(context)!.markAsMadeUp,
                     style: GoogleFonts.lato(fontWeight: FontWeight.w600, fontSize: 14),
                   ),
                   onPressed: () => _markMadeUp(prayer),
@@ -388,7 +388,7 @@ class _QadaPageState extends State<QadaPage> {
                   Icon(Icons.check_circle_rounded, color: MinaretTheme.emerald, size: 18),
                   const SizedBox(width: 6),
                   Text(
-                    'All caught up',
+                    AppLocalizations.of(context)!.allCaughtUp,
                     style: GoogleFonts.lato(
                       fontSize: 13,
                       color: MinaretTheme.emerald,

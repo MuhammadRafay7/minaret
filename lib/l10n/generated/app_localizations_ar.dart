@@ -706,4 +706,328 @@ class AppLocalizationsAr extends AppLocalizations {
   String ofTotalCompleted(int completed, int total) {
     return '$completed من $total مكتملة';
   }
+
+  @override
+  String get selectLocation => 'اختر الموقع';
+
+  @override
+  String get searchCityHint => 'ابحث عن مدينة (مثال: لاهور، باكستان)';
+
+  @override
+  String get useCurrentLocationGps => 'استخدام الموقع الحالي (GPS)';
+
+  @override
+  String get confirmWithPasswordPrompt => 'أدخل كلمة المرور لتأكيد الحذف';
+
+  @override
+  String get reAuthFailedMessage =>
+      'فشل إعادة المصادقة. الرجاء المحاولة مرة أخرى.';
+
+  @override
+  String get initializationError => 'خطأ في التهيئة';
+
+  @override
+  String get somethingWentWrong => 'حدث خطأ ما';
+
+  @override
+  String get reloadApp => 'إعادة تشغيل التطبيق';
+
+  @override
+  String get prayerTimesDetected => 'تم اكتشاف أوقات الصلاة';
+
+  @override
+  String get iqamahBoard => 'لوحة الإقامة';
+
+  @override
+  String get azanBoard => 'لوحة الأذان';
+
+  @override
+  String get prayerBoard => 'لوحة الصلاة';
+
+  @override
+  String confidencePercent(int confidence) {
+    return 'دقة $confidence%';
+  }
+
+  @override
+  String get retakeAction => 'إعادة التصوير';
+
+  @override
+  String get applyAllAction => 'تطبيق الكل';
+
+  @override
+  String get estimatedAbbr => 'تقريبي';
+
+  @override
+  String get azanEstimateNote =>
+      'أوقات الأذان تقريبية: فجر −15د · ظهر −10د · عصر −10د · مغرب −5د · عشاء −10د';
+
+  @override
+  String get iqamahEstimateNote =>
+      'أوقات الإقامة تقريبية: فجر +20د · ظهر +15د · عصر +15د · مغرب +10د · عشاء +20د';
+
+  @override
+  String get analogBoardError =>
+      'لا يمكن مسح لوحات الساعة التناظرية — التقط صورة لشاشة رقمية لأوقات الصلاة';
+
+  @override
+  String get noTimesFoundError =>
+      'لم يتم العثور على أوقات صلاة — حاول بصورة أوضح';
+
+  @override
+  String get couldNotReadTimesError =>
+      'تعذر قراءة أوقات الصلاة — حاول بصورة أوضح';
+
+  @override
+  String get takePhoto => 'التقاط صورة';
+
+  @override
+  String get chooseFromGallery => 'اختيار من المعرض';
+
+  @override
+  String get registryManagementTitle => 'إدارة السجل';
+
+  @override
+  String get officialNameLabel => 'الاسم الرسمي';
+
+  @override
+  String get donationSettingsHeader => 'إعدادات التبرع';
+
+  @override
+  String get donationBankDetailsHeader => 'تفاصيل البنك للتبرع';
+
+  @override
+  String get bankNameLabel => 'اسم البنك';
+
+  @override
+  String get accountHolderLabel => 'صاحب الحساب';
+
+  @override
+  String get accountHolderNameLabel => 'اسم صاحب الحساب';
+
+  @override
+  String get accountNumberIbanLabel => 'رقم الحساب / IBAN';
+
+  @override
+  String get schoolOfThoughtFiqhHeader => 'المذهب الفقهي';
+
+  @override
+  String get schoolOfThoughtHeader => 'المذهب';
+
+  @override
+  String get azanIqamahTimesHeader => 'أوقات الأذان والإقامة';
+
+  @override
+  String get scanPrayerBoardAction => 'مسح لوحة الصلاة';
+
+  @override
+  String get readingPrayerBoardAction => 'جاري قراءة اللوحة...';
+
+  @override
+  String get specialPrayersHeader => 'الصلوات الخاصة';
+
+  @override
+  String get eidPrayersHeader => 'صلوات العيد';
+
+  @override
+  String get eidUlFitrLabel => 'عيد الفطر';
+
+  @override
+  String get eidUlAdhaLabel => 'عيد الأضحى';
+
+  @override
+  String get timeLabel => 'الوقت';
+
+  @override
+  String get dateLabel => 'التاريخ';
+
+  @override
+  String get registryUpdatedMessage => 'تم تحديث السجل بنجاح';
+
+  @override
+  String get deletePermanentDialogBody =>
+      'هذا الإجراء دائم ولا يمكن التراجع عنه. سيتم حذف جميع البيانات المرتبطة بهذا المسجد من السجل العالمي.';
+
+  @override
+  String get mosqueNameLabel => 'اسم المسجد';
+
+  @override
+  String get imamOfficialContactHeader => 'الإمام / جهة الاتصال الرسمية';
+
+  @override
+  String get fullNameLabel => 'الاسم الكامل';
+
+  @override
+  String get phoneNumberLabel => 'رقم الهاتف';
+
+  @override
+  String get mosqueFacilitiesHeader => 'مرافق المسجد';
+
+  @override
+  String get janazaTitle => 'جنازة';
+
+  @override
+  String get postFuneralAnnouncement => 'نشر إعلان جنازة';
+
+  @override
+  String get nameOfDeceasedLabel => 'اسم المتوفى';
+
+  @override
+  String get genderLabel => 'الجنس';
+
+  @override
+  String get ageOptionalLabel => 'العمر (اختياري)';
+
+  @override
+  String get locationNoteOptionalLabel => 'ملاحظة الموقع (اختياري)';
+
+  @override
+  String get janazaDateTimeLabel => 'تاريخ ووقت الجنازة';
+
+  @override
+  String get familyDetailsOptional => 'تفاصيل الأسرة (اختياري)';
+
+  @override
+  String get postAnnouncementAction => 'نشر الإعلان';
+
+  @override
+  String get announcementWillExpire =>
+      'سينتهي الإعلان تلقائيًا بعد انتهاء وقت الجنازة.';
+
+  @override
+  String get maleLabel => 'ذكر';
+
+  @override
+  String get femaleLabel => 'أنثى';
+
+  @override
+  String get notSpecifiedLabel => 'غير محدد';
+
+  @override
+  String get fathersNameLabel => 'اسم الأب';
+
+  @override
+  String get mothersNameLabel => 'اسم الأم';
+
+  @override
+  String get husbandsNameLabel => 'اسم الزوج';
+
+  @override
+  String get wifesNameLabel => 'اسم الزوجة';
+
+  @override
+  String get brothersNameLabel => 'اسم الأخ';
+
+  @override
+  String get sistersNameLabel => 'اسم الأخت';
+
+  @override
+  String get optionalHint => 'اختياري';
+
+  @override
+  String get ageHint => 'مثال: 65';
+
+  @override
+  String get locationHint => 'مثال: القاعة الرئيسية، الباب 2';
+
+  @override
+  String get selectDateLabel => 'اختر التاريخ';
+
+  @override
+  String get selectTimeLabel => 'اختر الوقت';
+
+  @override
+  String get announcementPostedTitle => 'تم نشر الإعلان';
+
+  @override
+  String get announcementPostedMessage => 'رحمه الله وأسكنه الجنة. الفاتحة';
+
+  @override
+  String get errorEnterDeceasedName => 'أدخل اسم المتوفى.';
+
+  @override
+  String get errorNameTooLong => 'الاسم طويل جدًا. الحد الأقصى 100 حرف.';
+
+  @override
+  String get errorSelectDateAndTimeJanaza => 'اختر التاريخ والوقت للجنازة.';
+
+  @override
+  String get errorJanazaInPast => 'لا يمكن أن يكون وقت الجنازة في الماضي.';
+
+  @override
+  String get errorMustBeSignedIn => 'يجب تسجيل الدخول.';
+
+  @override
+  String get errorNotAuthorizedMosque => 'أنت لا تدير هذا المسجد.';
+
+  @override
+  String get errorInvalidNameLength =>
+      'اسم غير صالح. تحقق من الطول (الحد الأقصى 100).';
+
+  @override
+  String get errorSomethingWentWrongTryAgain => 'حدث خطأ ما. حاول مرة أخرى.';
+
+  @override
+  String get editJanazaTitle => 'تعديل الجنازة';
+
+  @override
+  String get updateAnnouncementDetails => 'تحديث تفاصيل الإعلان';
+
+  @override
+  String get announcementUpdatedTitle => 'تم تحديث الإعلان';
+
+  @override
+  String get changesSavedMessage => 'تم حفظ التغييرات بنجاح.';
+
+  @override
+  String get couldNotUpdateError => 'تعذر التحديث. حاول مرة أخرى.';
+
+  @override
+  String get selectBothDateTime => 'اختر التاريخ والوقت.';
+
+  @override
+  String get qadaPrayersTitle => 'صلوات القضاء';
+
+  @override
+  String get signInForQada => 'سجّل دخولك لتتبع صلوات القضاء.';
+
+  @override
+  String get failedToLoadQada => 'فشل تحميل بيانات القضاء.';
+
+  @override
+  String get addQadaDebtTitle => 'إضافة دين قضاء';
+
+  @override
+  String addQadaDebtQuestion(String prayer) {
+    return 'كم عدد صلوات $prayer التي لا تزال بحاجة إلى قضاء؟';
+  }
+
+  @override
+  String get qadaInfoBanner =>
+      'إتمام صلوات القضاء هنا لا يؤثر على سلسلة أيامك. السلاسل تُحتسب فقط للصلوات اليومية في وقتها.';
+
+  @override
+  String get totalPendingLabel => 'إجمالي المعلق';
+
+  @override
+  String get madeUpLabel => 'تم القضاء';
+
+  @override
+  String pendingCountBadge(int count) {
+    return '$count معلق';
+  }
+
+  @override
+  String madeUpCountBadge(int count) {
+    return '$count تم قضاؤها';
+  }
+
+  @override
+  String get markAsMadeUp => 'تحديد كمقضية';
+
+  @override
+  String get allCaughtUp => 'تم القضاء على الجميع';
+
+  @override
+  String get addQadaDebtTooltip => 'إضافة دين قضاء';
 }
