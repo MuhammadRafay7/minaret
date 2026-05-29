@@ -712,4 +712,333 @@ class AppLocalizationsNl extends AppLocalizations {
   String ofTotalCompleted(int completed, int total) {
     return '$completed van $total voltooid';
   }
+
+  @override
+  String get selectLocation => 'LOCATIE SELECTEREN';
+
+  @override
+  String get searchCityHint => 'Zoek stad (bijv. Amsterdam, Nederland)';
+
+  @override
+  String get useCurrentLocationGps => 'Gebruik huidige locatie (GPS)';
+
+  @override
+  String get confirmWithPasswordPrompt =>
+      'Voer uw wachtwoord in om verwijdering te bevestigen';
+
+  @override
+  String get reAuthFailedMessage =>
+      'Herverificatie mislukt. Probeer het opnieuw.';
+
+  @override
+  String get initializationError => 'Initialisatiefout';
+
+  @override
+  String get somethingWentWrong => 'Er is iets misgegaan';
+
+  @override
+  String get reloadApp => 'App herladen';
+
+  @override
+  String get prayerTimesDetected => 'GEBEDSTIJDEN GEDETECTEERD';
+
+  @override
+  String get iqamahBoard => 'IQAMAH-BORD';
+
+  @override
+  String get azanBoard => 'ADHAN-BORD';
+
+  @override
+  String get prayerBoard => 'GEBEDSBORD';
+
+  @override
+  String confidencePercent(int confidence) {
+    return '$confidence% NAUWKEURIGHEID';
+  }
+
+  @override
+  String get retakeAction => 'OPNIEUW NEMEN';
+
+  @override
+  String get applyAllAction => 'ALLES TOEPASSEN';
+
+  @override
+  String get estimatedAbbr => 'est.';
+
+  @override
+  String get azanEstimateNote =>
+      'Adhan-tijden geschat: Fajr −15m · Dhuhr −10m · Asr −10m · Maghrib −5m · Isha −10m';
+
+  @override
+  String get iqamahEstimateNote =>
+      'Iqamah-tijden geschat: Fajr +20m · Dhuhr +15m · Asr +15m · Maghrib +10m · Isha +20m';
+
+  @override
+  String get analogBoardError =>
+      'ANALOGE KLOKBORDEN KUNNEN NIET WORDEN GESCAND — FOTOGRAFEER EEN DIGITAAL GEBEDSTIJDENSCHERM';
+
+  @override
+  String get noTimesFoundError =>
+      'GEEN GEBEDSTIJDEN GEVONDEN — PROBEER EEN DUIDELIJKERE FOTO';
+
+  @override
+  String get couldNotReadTimesError =>
+      'KON GEBEDSTIJDEN NIET LEZEN — PROBEER EEN DUIDELIJKERE FOTO';
+
+  @override
+  String get takePhoto => 'FOTO MAKEN';
+
+  @override
+  String get chooseFromGallery => 'KIEZEN UIT GALERIJ';
+
+  @override
+  String get registryManagementTitle => 'REGISTERBEHEER';
+
+  @override
+  String get officialNameLabel => 'OFFICIËLE NAAM';
+
+  @override
+  String get donationSettingsHeader => 'DONATIE-INSTELLINGEN';
+
+  @override
+  String get donationBankDetailsHeader => 'BANKGEGEVENS VOOR DONATIES';
+
+  @override
+  String get bankNameLabel => 'NAAM BANK';
+
+  @override
+  String get accountHolderLabel => 'REKENINGHOUDER';
+
+  @override
+  String get accountHolderNameLabel => 'NAAM REKENINGHOUDER';
+
+  @override
+  String get accountNumberIbanLabel => 'REKENINGNUMMER / IBAN';
+
+  @override
+  String get schoolOfThoughtFiqhHeader => 'RECHTSSCHOOL (FIQH)';
+
+  @override
+  String get schoolOfThoughtHeader => 'RECHTSSCHOOL';
+
+  @override
+  String get azanIqamahTimesHeader => 'ADHAN- EN IQAMAH-TIJDEN';
+
+  @override
+  String get scanPrayerBoardAction => 'GEBEDSBORD SCANNEN';
+
+  @override
+  String get readingPrayerBoardAction => 'BORD LEZEN...';
+
+  @override
+  String get specialPrayersHeader => 'BIJZONDERE GEBEDEN';
+
+  @override
+  String get eidPrayersHeader => 'EID-GEBEDEN';
+
+  @override
+  String get eidUlFitrLabel => 'EID AL-FITR';
+
+  @override
+  String get eidUlAdhaLabel => 'EID AL-ADHA';
+
+  @override
+  String get timeLabel => 'TIJD';
+
+  @override
+  String get dateLabel => 'DATUM';
+
+  @override
+  String get registryUpdatedMessage => 'Register succesvol bijgewerkt';
+
+  @override
+  String get deletePermanentDialogBody =>
+      'Deze actie is permanent en kan niet ongedaan worden gemaakt. Alle gegevens van dit heiligdom worden uit het wereldwijde register verwijderd.';
+
+  @override
+  String get mosqueNameLabel => 'NAAM MOSKEE';
+
+  @override
+  String get imamOfficialContactHeader => 'IMAM / OFFICIEEL CONTACT';
+
+  @override
+  String get fullNameLabel => 'VOLLEDIGE NAAM';
+
+  @override
+  String get phoneNumberLabel => 'TELEFOONNUMMER';
+
+  @override
+  String get mosqueFacilitiesHeader => 'MOSKEEVOORZIENINGEN';
+
+  @override
+  String get janazaTitle => 'JANAZA';
+
+  @override
+  String get postFuneralAnnouncement => 'EEN BEGRAFENISAANKONDIGING PLAATSEN';
+
+  @override
+  String get nameOfDeceasedLabel => 'NAAM VAN OVERLEDENE';
+
+  @override
+  String get genderLabel => 'GESLACHT';
+
+  @override
+  String get ageOptionalLabel => 'LEEFTIJD (OPTIONEEL)';
+
+  @override
+  String get locationNoteOptionalLabel => 'LOCATIEOPMERKING (OPTIONEEL)';
+
+  @override
+  String get janazaDateTimeLabel => 'DATUM EN TIJD JANAZA';
+
+  @override
+  String get familyDetailsOptional => 'FAMILIEDETAILS (OPTIONEEL)';
+
+  @override
+  String get postAnnouncementAction => 'AANKONDIGING PLAATSEN';
+
+  @override
+  String get announcementWillExpire =>
+      'DE AANKONDIGING VERLOOPT AUTOMATISCH NA HET VERSTRIJKEN VAN DE JANAZA-TIJD.';
+
+  @override
+  String get maleLabel => 'MANNELIJK';
+
+  @override
+  String get femaleLabel => 'VROUWELIJK';
+
+  @override
+  String get notSpecifiedLabel => 'NIET GESPECIFICEERD';
+
+  @override
+  String get fathersNameLabel => 'NAAM VADER';
+
+  @override
+  String get mothersNameLabel => 'NAAM MOEDER';
+
+  @override
+  String get husbandsNameLabel => 'NAAM ECHTGENOOT';
+
+  @override
+  String get wifesNameLabel => 'NAAM ECHTGENOTE';
+
+  @override
+  String get brothersNameLabel => 'NAAM BROER';
+
+  @override
+  String get sistersNameLabel => 'NAAM ZUS';
+
+  @override
+  String get optionalHint => 'Optioneel';
+
+  @override
+  String get ageHint => 'bijv. 65';
+
+  @override
+  String get locationHint => 'bijv. Hoofdgebedshal, Poort 2';
+
+  @override
+  String get selectDateLabel => 'DATUM SELECTEREN';
+
+  @override
+  String get selectTimeLabel => 'TIJD SELECTEREN';
+
+  @override
+  String get announcementPostedTitle => 'AANKONDIGING GEPLAATST';
+
+  @override
+  String get announcementPostedMessage =>
+      'Moge Allah hen het Paradijs schenken. الفاتحة';
+
+  @override
+  String get errorEnterDeceasedName => 'VOER DE NAAM VAN DE OVERLEDENE IN.';
+
+  @override
+  String get errorNameTooLong => 'NAAM TE LANG. MAXIMAAL 100 TEKENS.';
+
+  @override
+  String get errorSelectDateAndTimeJanaza =>
+      'SELECTEER DATUM EN TIJD VOOR DE JANAZA.';
+
+  @override
+  String get errorJanazaInPast =>
+      'JANAZA-TIJD KAN NIET IN HET VERLEDEN LIGGEN.';
+
+  @override
+  String get errorMustBeSignedIn => 'U MOET INGELOGD ZIJN.';
+
+  @override
+  String get errorNotAuthorizedMosque => 'U BEHEERT DEZE MOSKEE NIET.';
+
+  @override
+  String get errorInvalidNameLength =>
+      'ONGELDIGE NAAM. CONTROLEER LENGTE (MAXIMAAL 100).';
+
+  @override
+  String get errorSomethingWentWrongTryAgain =>
+      'ER IS IETS MISGEGAAN. PROBEER OPNIEUW.';
+
+  @override
+  String get editJanazaTitle => 'JANAZA BEWERKEN';
+
+  @override
+  String get updateAnnouncementDetails => 'AANKONDIGINGSDETAILS BIJWERKEN';
+
+  @override
+  String get announcementUpdatedTitle => 'AANKONDIGING BIJGEWERKT';
+
+  @override
+  String get changesSavedMessage => 'Wijzigingen succesvol opgeslagen.';
+
+  @override
+  String get couldNotUpdateError => 'KON NIET BIJWERKEN. PROBEER OPNIEUW.';
+
+  @override
+  String get selectBothDateTime => 'SELECTEER DATUM EN TIJD.';
+
+  @override
+  String get qadaPrayersTitle => 'QADA-GEBEDEN';
+
+  @override
+  String get signInForQada => 'Log in om qada-gebeden bij te houden.';
+
+  @override
+  String get failedToLoadQada => 'Laden van qada-gegevens mislukt.';
+
+  @override
+  String get addQadaDebtTitle => 'Qada-schuld toevoegen';
+
+  @override
+  String addQadaDebtQuestion(String prayer) {
+    return 'Hoeveel $prayer-gebeden moet u nog inhalen?';
+  }
+
+  @override
+  String get qadaInfoBanner =>
+      'Het voltooien van qada-gebeden hier heeft geen invloed op uw dagelijkse reeks. Reeksen tellen alleen voor dagelijkse gebeden op tijd.';
+
+  @override
+  String get totalPendingLabel => 'Totaal in behandeling';
+
+  @override
+  String get madeUpLabel => 'Ingehaald';
+
+  @override
+  String pendingCountBadge(int count) {
+    return '$count in behandeling';
+  }
+
+  @override
+  String madeUpCountBadge(int count) {
+    return '$count ingehaald';
+  }
+
+  @override
+  String get markAsMadeUp => 'Markeren als ingehaald';
+
+  @override
+  String get allCaughtUp => 'Alles ingehaald';
+
+  @override
+  String get addQadaDebtTooltip => 'Qada-schuld toevoegen';
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -145,8 +146,95 @@ class _SettingsPageState extends State<SettingsPage> {
     if (mounted) setState(() => _savingKeys.remove(key));
   }
 
+  void _showError(String message) {
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: Colors.redAccent,
+        behavior: SnackBarBehavior.floating,
+      ),
+    );
+  }
+
+  Future<String?> _showPasswordDialog() async {
+    final ctrl = TextEditingController();
+    final l10n = AppLocalizations.of(context);
+    final result = await showDialog<String>(
+      context: context,
+      barrierDismissible: false,
+      builder: (ctx) => AlertDialog(
+        title: Text(l10n?.deleteAccountLabel ?? 'Delete Account'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(l10n?.confirmWithPasswordPrompt ?? 'Enter your password to confirm deletion'),
+            const SizedBox(height: 16),
+            TextField(
+              controller: ctrl,
+              obscureText: true,
+              autofocus: true,
+              decoration: InputDecoration(
+                labelText: l10n?.fieldPassword ?? 'Password',
+                border: const OutlineInputBorder(),
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: Text(l10n?.cancelAction ?? 'CANCEL'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, ctrl.text),
+            style: TextButton.styleFrom(foregroundColor: Colors.red),
+            child: Text(l10n?.deleteAction ?? 'DELETE'),
+          ),
+        ],
+      ),
+    );
+    ctrl.dispose();
+    return result;
+  }
+
+  Future<bool> _reauthenticate(User user) async {
+    final provider = user.providerData.isNotEmpty
+        ? user.providerData.first.providerId
+        : 'password';
+
+    if (provider == 'google.com') {
+      try {
+        final googleUser = await GoogleSignIn().signIn();
+        if (googleUser == null || !mounted) return false;
+        final googleAuth = await googleUser.authentication;
+        final credential = GoogleAuthProvider.credential(
+          accessToken: googleAuth.accessToken,
+          idToken: googleAuth.idToken,
+        );
+        await user.reauthenticateWithCredential(credential);
+        return true;
+      } catch (_) {
+        return false;
+      }
+    } else {
+      final password = await _showPasswordDialog();
+      if (password == null || password.isEmpty) return false;
+      try {
+        final credential = EmailAuthProvider.credential(
+          email: user.email!,
+          password: password,
+        );
+        await user.reauthenticateWithCredential(credential);
+        return true;
+      } catch (_) {
+        return false;
+      }
+    }
+  }
+
   Future<void> _deleteAccount() async {
-    final user = FirebaseAuth.instance.currentUser;
+    var user = FirebaseAuth.instance.currentUser;
     if (user == null) return;
     final l10n = AppLocalizations.of(context);
 
@@ -154,9 +242,7 @@ class _SettingsPageState extends State<SettingsPage> {
       context: context,
       builder: (ctx) => AlertDialog(
         title: Text(l10n?.deleteAccountLabel ?? 'Delete Account?'),
-        content: Text(
-          l10n?.deleteConfirmationPrompt ?? 'This action is permanent.',
-        ),
+        content: Text(l10n?.deleteAccountSub ?? 'This action is permanent.'),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx, false),
@@ -171,19 +257,37 @@ class _SettingsPageState extends State<SettingsPage> {
       ),
     );
 
-    if (confirm != true) return;
+    if (confirm != true || !mounted) return;
+
+    final uid = user.uid;
+
+    Future<void> performDeletion(User u) async {
+      await u.delete();
+      // Firestore cleanup after auth deletion succeeds
+      await FirebaseFirestore.instance.collection('users').doc(uid).delete().catchError((_) {});
+      if (mounted) Navigator.of(context).popUntil((route) => route.isFirst);
+    }
 
     try {
-      await FirebaseFirestore.instance.collection('users').doc(user.uid).delete();
-      await user.delete();
-      if (mounted) {
-        Navigator.of(context).popUntil((route) => route.isFirst);
-      }
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(AppLocalizations.of(context)!.reAuthBeforeDelete)),
-        );
+      await performDeletion(user);
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'requires-recent-login') {
+        if (!mounted) return;
+        final reauthed = await _reauthenticate(user);
+        if (!mounted) return;
+        if (!reauthed) {
+          _showError(l10n?.reAuthFailedMessage ?? 'Re-authentication failed. Please try again.');
+          return;
+        }
+        final freshUser = FirebaseAuth.instance.currentUser;
+        if (freshUser == null) return;
+        try {
+          await performDeletion(freshUser);
+        } catch (_) {
+          if (mounted) _showError(l10n?.reAuthBeforeDelete ?? 'Failed to delete account.');
+        }
+      } else {
+        _showError(e.message ?? l10n?.reAuthBeforeDelete ?? 'Failed to delete account.');
       }
     }
   }

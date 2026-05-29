@@ -100,12 +100,26 @@ const _kReplaceWithSentinel = 'REPLACE' '_WITH';
 ///     | openssl pkey -pubin -outform der \
 ///     | openssl dgst -sha256 -binary \
 ///     | base64
-// Pins are added here once api.minaret.app is deployed. Extract with:
-//   openssl s_client -connect api.minaret.app:443 </dev/null 2>/dev/null \
-//     | openssl x509 -pubkey -noout \
-//     | openssl pkey -pubin -outform der \
-//     | openssl dgst -sha256 -binary \
-//     | base64
+// TODO(before-release): api.minaret.app must be deployed and pinned before
+// submitting to the Play Store or App Store.
+//
+// Steps once the domain is live:
+//   1. Extract the primary pin:
+//        openssl s_client -connect api.minaret.app:443 </dev/null 2>/dev/null \
+//          | openssl x509 -pubkey -noout \
+//          | openssl pkey -pubin -outform der \
+//          | openssl dgst -sha256 -binary \
+//          | base64
+//   2. Generate a backup key pair offline; extract its pin the same way.
+//   3. Replace the map below with real pins:
+//        const Map<String, List<String>> pinnedDomains = {
+//          'api.minaret.app': ['<primary-pin>', '<backup-pin>'],
+//        };
+//   4. Verify no CertificatePinningException in Crashlytics after release.
+//   5. Build with --obfuscate --split-debug-info; upload symbols to Crashlytics.
+//
+// Until real pins are set, SecureHttpClient.forEnvironment() runs without
+// certificate pinning (acceptable in development, NOT for a public release).
 const Map<String, List<String>> pinnedDomains = {};
 
 // ── File-level SPKI helpers (used by both interceptors and CertificatePins) ──

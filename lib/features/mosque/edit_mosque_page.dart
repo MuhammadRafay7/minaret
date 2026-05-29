@@ -173,20 +173,23 @@ class _EditMosquePageState extends State<EditMosquePage> {
       );
     } on AnalogBoardException {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text('ANALOG CLOCK BOARDS CANNOT BE SCANNED — PHOTOGRAPH A DIGITAL PRAYER TIME DISPLAY'),
+        final l10n = AppLocalizations.of(context)!;
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(l10n.analogBoardError),
         ));
       }
     } on NoTimesFoundException {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text('NO PRAYER TIMES FOUND — TRY A CLEARER PHOTO'),
+        final l10n = AppLocalizations.of(context)!;
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(l10n.noTimesFoundError),
         ));
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text('COULD NOT READ PRAYER TIMES — TRY A CLEARER PHOTO'),
+        final l10n = AppLocalizations.of(context)!;
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(l10n.couldNotReadTimesError),
         ));
       }
     } finally {
@@ -205,7 +208,7 @@ class _EditMosquePageState extends State<EditMosquePage> {
             ListTile(
               leading: const Icon(Icons.camera_alt_outlined, color: MinaretTheme.emerald),
               title: Text(
-                'TAKE PHOTO',
+                AppLocalizations.of(ctx)!.takePhoto,
                 style: GoogleFonts.montserrat(fontSize: 11, letterSpacing: 2, fontWeight: FontWeight.bold),
               ),
               onTap: () => Navigator.pop(ctx, ImageSource.camera),
@@ -213,7 +216,7 @@ class _EditMosquePageState extends State<EditMosquePage> {
             ListTile(
               leading: const Icon(Icons.photo_library_outlined, color: MinaretTheme.emerald),
               title: Text(
-                'CHOOSE FROM GALLERY',
+                AppLocalizations.of(ctx)!.chooseFromGallery,
                 style: GoogleFonts.montserrat(fontSize: 11, letterSpacing: 2, fontWeight: FontWeight.bold),
               ),
               onTap: () => Navigator.pop(ctx, ImageSource.gallery),
@@ -305,7 +308,7 @@ class _EditMosquePageState extends State<EditMosquePage> {
         backgroundColor: MinaretTheme.background,
         title: Text(l10n.deleteRegistryTitle, style: GoogleFonts.montserrat(letterSpacing: 2, fontWeight: FontWeight.bold, fontSize: 14)),
         content: Text(
-          'This action is permanent and cannot be undone. All data associated with this sanctuary will be removed from the global registry.',
+          l10n.deletePermanentDialogBody,
           style: GoogleFonts.lato(fontSize: 13, height: 1.5),
         ),
         actions: [
@@ -347,12 +350,13 @@ class _EditMosquePageState extends State<EditMosquePage> {
   }
 
   void _triggerSuccess() async {
+    final l10n = AppLocalizations.of(context)!;
     showGeneralDialog(
       context: context,
       barrierDismissible: false,
-      pageBuilder: (ctx, _, __) => const SuccessOverlay(
-        title: 'SYNCHRONIZED',
-        message: 'Registry updated successfully',
+      pageBuilder: (ctx, _, __) => SuccessOverlay(
+        title: l10n.synchronizedStatus.toUpperCase(),
+        message: l10n.registryUpdatedMessage,
       ),
     );
     await Future.delayed(const Duration(seconds: 2));
@@ -382,7 +386,7 @@ class _EditMosquePageState extends State<EditMosquePage> {
               ),
               const SizedBox(height: 30),
               Text(
-                'REGISTRY MANAGEMENT',
+                AppLocalizations.of(context)!.registryManagementTitle,
                 style: MinaretTheme.heading.copyWith(
                   fontSize: 28,
                   letterSpacing: 4,
@@ -390,16 +394,16 @@ class _EditMosquePageState extends State<EditMosquePage> {
               ),
               const SizedBox(height: 40),
 
-              _buildField('OFFICIAL NAME', _nameController),
+              _buildField(AppLocalizations.of(context)!.officialNameLabel, _nameController),
 
               // ── Donation ──
-              _sectionHeader('DONATION SETTINGS'),
-              _buildField('BANK NAME', _bankNameController),
-              _buildField('ACCOUNT HOLDER', _accountHolderController),
-              _buildField('ACCOUNT NUMBER / IBAN', _accountNumberController),
+              _sectionHeader(AppLocalizations.of(context)!.donationSettingsHeader),
+              _buildField(AppLocalizations.of(context)!.bankNameLabel, _bankNameController),
+              _buildField(AppLocalizations.of(context)!.accountHolderLabel, _accountHolderController),
+              _buildField(AppLocalizations.of(context)!.accountNumberIbanLabel, _accountNumberController),
 
               // ── Fiqh ──
-              _sectionHeader('SCHOOL OF THOUGHT (FIQH)'),
+              _sectionHeader(AppLocalizations.of(context)!.schoolOfThoughtFiqhHeader),
               FiqhSelector(
                 selectedKey: _selectedFiqh,
                 onChanged: (key) => setState(() => _selectedFiqh = key),
@@ -407,32 +411,32 @@ class _EditMosquePageState extends State<EditMosquePage> {
 
               // ── Azan & Iqamah ──
               const SizedBox(height: 30),
-              _sectionHeader('AZAN & IQAMAH TIMES'),
+              _sectionHeader(AppLocalizations.of(context)!.azanIqamahTimesHeader),
               _buildScanButton(),
               const SizedBox(height: 20),
-              _prayerPairField('FAJR', 'adhanFajr', 'fajr'),
-              _prayerPairField('DHUHR', 'adhanDhuhr', 'dhuhr'),
-              _prayerPairField('ASR', 'adhanAsr', 'asr'),
-              _prayerPairField('MAGHRIB', 'adhanMaghrib', 'maghrib'),
-              _prayerPairField('ISHA', 'adhanIsha', 'isha'),
+              _prayerPairField(AppLocalizations.of(context)!.prayerFajr.toUpperCase(), 'adhanFajr', 'fajr'),
+              _prayerPairField(AppLocalizations.of(context)!.prayerDhuhr.toUpperCase(), 'adhanDhuhr', 'dhuhr'),
+              _prayerPairField(AppLocalizations.of(context)!.prayerAsr.toUpperCase(), 'adhanAsr', 'asr'),
+              _prayerPairField(AppLocalizations.of(context)!.prayerMaghrib.toUpperCase(), 'adhanMaghrib', 'maghrib'),
+              _prayerPairField(AppLocalizations.of(context)!.prayerIsha.toUpperCase(), 'adhanIsha', 'isha'),
 
               // ── Special prayers ──
               const SizedBox(height: 10),
-              _sectionHeader('SPECIAL PRAYERS'),
-              _prayerPairField('JUMMAH', 'adhanJummah', 'jummah'),
+              _sectionHeader(AppLocalizations.of(context)!.specialPrayersHeader),
+              _prayerPairField(AppLocalizations.of(context)!.eventJummah.toUpperCase(), 'adhanJummah', 'jummah'),
               _timeField('TARAWEEH', 'taraweeh'),
 
               // ── Eid ──
               const SizedBox(height: 10),
-              _sectionHeader('EID PRAYERS'),
+              _sectionHeader(AppLocalizations.of(context)!.eidPrayersHeader),
               _eidFields(
-                'EID UL FITR',
+                AppLocalizations.of(context)!.eidUlFitrLabel,
                 _eidAlFitrTimeController,
                 _eidAlFitrDateController,
               ),
               const SizedBox(height: 20),
               _eidFields(
-                'EID UL ADHA',
+                AppLocalizations.of(context)!.eidUlAdhaLabel,
                 _eidAlAdhaTimeController,
                 _eidAlAdhaDateController,
               ),
@@ -479,7 +483,9 @@ class _EditMosquePageState extends State<EditMosquePage> {
               const Icon(Icons.camera_alt_outlined, size: 16, color: MinaretTheme.emerald),
             const SizedBox(width: 10),
             Text(
-              _isScanning ? 'READING PRAYER BOARD...' : 'SCAN PRAYER BOARD',
+              _isScanning
+                  ? AppLocalizations.of(context)!.readingPrayerBoardAction
+                  : AppLocalizations.of(context)!.scanPrayerBoardAction,
               style: GoogleFonts.montserrat(
                 fontSize: 9,
                 letterSpacing: 3,
@@ -610,8 +616,8 @@ class _EditMosquePageState extends State<EditMosquePage> {
                 child: AbsorbPointer(
                   child: TextField(
                     controller: timeCtrl,
-                    decoration: const InputDecoration(
-                      labelText: 'TIME',
+                    decoration: InputDecoration(
+                      labelText: AppLocalizations.of(context)!.timeLabel,
                       floatingLabelBehavior: FloatingLabelBehavior.always,
                     ),
                   ),
@@ -625,8 +631,8 @@ class _EditMosquePageState extends State<EditMosquePage> {
                 child: AbsorbPointer(
                   child: TextField(
                     controller: dateCtrl,
-                    decoration: const InputDecoration(
-                      labelText: 'DATE',
+                    decoration: InputDecoration(
+                      labelText: AppLocalizations.of(context)!.dateLabel,
                       floatingLabelBehavior: FloatingLabelBehavior.always,
                     ),
                   ),

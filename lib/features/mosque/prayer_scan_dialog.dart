@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:minaret/core/theme.dart';
+import 'package:minaret/l10n/generated/app_localizations.dart';
 import 'prayer_scan_service.dart';
 
 class PrayerScanDialog extends StatelessWidget {
@@ -15,7 +16,14 @@ class PrayerScanDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final isIqamahBoard = times.timeType == 'iqamah';
+
+    final boardLabel = isIqamahBoard
+        ? l10n.iqamahBoard
+        : times.timeType == 'azan'
+            ? l10n.azanBoard
+            : l10n.prayerBoard;
 
     return AlertDialog(
       backgroundColor: MinaretTheme.background,
@@ -25,7 +33,7 @@ class PrayerScanDialog extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'PRAYER TIMES DETECTED',
+            l10n.prayerTimesDetected,
             style: GoogleFonts.montserrat(
               fontSize: 12,
               letterSpacing: 3,
@@ -35,16 +43,9 @@ class PrayerScanDialog extends StatelessWidget {
           const SizedBox(height: 8),
           Row(
             children: [
-              _chip(
-                isIqamahBoard
-                    ? 'IQAMAH BOARD'
-                    : times.timeType == 'azan'
-                        ? 'AZAN BOARD'
-                        : 'PRAYER BOARD',
-                MinaretTheme.emerald,
-              ),
+              _chip(boardLabel, MinaretTheme.emerald),
               const SizedBox(width: 8),
-              _chip('${times.confidence}% CONFIDENCE', _confidenceColor()),
+              _chip(l10n.confidencePercent(times.confidence), _confidenceColor()),
             ],
           ),
         ],
@@ -54,17 +55,17 @@ class PrayerScanDialog extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             const SizedBox(height: 16),
-            _tableHeader(),
+            _tableHeader(l10n),
             const Divider(height: 12),
-            _row('FAJR',    times.adhanFajr,    times.fajr,    isIqamahBoard),
-            _row('DHUHR',   times.adhanDhuhr,   times.dhuhr,   isIqamahBoard),
-            _row('ASR',     times.adhanAsr,      times.asr,     isIqamahBoard),
-            _row('MAGHRIB', times.adhanMaghrib,  times.maghrib, isIqamahBoard),
-            _row('ISHA',    times.adhanIsha,     times.isha,    isIqamahBoard),
+            _row(l10n.prayerFajr.toUpperCase(),    times.adhanFajr,    times.fajr,    isIqamahBoard),
+            _row(l10n.prayerDhuhr.toUpperCase(),   times.adhanDhuhr,   times.dhuhr,   isIqamahBoard),
+            _row(l10n.prayerAsr.toUpperCase(),     times.adhanAsr,     times.asr,     isIqamahBoard),
+            _row(l10n.prayerMaghrib.toUpperCase(), times.adhanMaghrib, times.maghrib, isIqamahBoard),
+            _row(l10n.prayerIsha.toUpperCase(),    times.adhanIsha,    times.isha,    isIqamahBoard),
             if (times.adhanJummah != null || times.jummah != null)
-              _row('JUMMAH', times.adhanJummah, times.jummah,  isIqamahBoard),
+              _row(l10n.eventJummah.toUpperCase(), times.adhanJummah, times.jummah, isIqamahBoard),
             const Divider(height: 16),
-            _estimateNote(isIqamahBoard),
+            _estimateNote(l10n, isIqamahBoard),
             const SizedBox(height: 4),
           ],
         ),
@@ -73,7 +74,7 @@ class PrayerScanDialog extends StatelessWidget {
         TextButton(
           onPressed: () => Navigator.pop(context),
           child: Text(
-            'RETAKE',
+            l10n.retakeAction,
             style: GoogleFonts.montserrat(
               color: Colors.black45,
               fontSize: 10,
@@ -88,7 +89,7 @@ class PrayerScanDialog extends StatelessWidget {
             onConfirm();
           },
           child: Text(
-            'APPLY ALL',
+            l10n.applyAllAction,
             style: GoogleFonts.montserrat(
               color: MinaretTheme.emerald,
               fontSize: 10,
@@ -101,15 +102,15 @@ class PrayerScanDialog extends StatelessWidget {
     );
   }
 
-  Widget _tableHeader() {
+  Widget _tableHeader(AppLocalizations l10n) {
     return Row(
       children: [
         const SizedBox(width: 72),
         Expanded(
-          child: Text('AZAN', textAlign: TextAlign.center, style: _labelStyle()),
+          child: Text(l10n.azanLabel, textAlign: TextAlign.center, style: _labelStyle()),
         ),
         Expanded(
-          child: Text('IQAMAH', textAlign: TextAlign.center, style: _labelStyle()),
+          child: Text(l10n.iqamahLabel, textAlign: TextAlign.center, style: _labelStyle()),
         ),
       ],
     );
@@ -136,11 +137,9 @@ class PrayerScanDialog extends StatelessWidget {
               ),
             ),
           ),
-          // Azan column — estimated if board was iqamah
           Expanded(
             child: _timeCell(azan, estimated: !isIqamahBoard ? false : true),
           ),
-          // Iqamah column — estimated if board was azan
           Expanded(
             child: _timeCell(iqamah, estimated: isIqamahBoard ? false : true),
           ),
@@ -176,10 +175,8 @@ class PrayerScanDialog extends StatelessWidget {
     );
   }
 
-  Widget _estimateNote(bool isIqamahBoard) {
-    final msg = isIqamahBoard
-        ? 'Azan times estimated: Fajr −15m · Dhuhr −10m · Asr −10m · Maghrib −5m · Isha −10m'
-        : 'Iqamah times estimated: Fajr +20m · Dhuhr +15m · Asr +15m · Maghrib +10m · Isha +20m';
+  Widget _estimateNote(AppLocalizations l10n, bool isIqamahBoard) {
+    final msg = isIqamahBoard ? l10n.azanEstimateNote : l10n.iqamahEstimateNote;
     return Text(
       msg,
       style: GoogleFonts.lato(

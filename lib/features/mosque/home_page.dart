@@ -11,6 +11,7 @@ import '../../core/locale_format.dart';
 import '../../core/location_service.dart';
 import '../../core/theme.dart';
 import '../../features/home/notifiers/home_notifier.dart';
+import '../../repositories/prayer_repository.dart';
 import '../../widgets/app_loading_indicator.dart';
 import '../../widgets/atelier_layout.dart';
 import '../../widgets/calculated_prayer_card.dart';
@@ -21,6 +22,7 @@ import '../../widgets/offline_banner.dart';
 import '../../widgets/premium_loading.dart';
 import '../../widgets/simple_filter_dialog.dart';
 import '../../services/system_config_service.dart';
+import '../prayer/prayer_stats_page.dart';
 
 export '../../features/home/notifiers/home_notifier.dart' show SortType;
 
@@ -186,7 +188,7 @@ class _Header extends StatelessWidget {
                 ),
                 const SizedBox(height: 20),
                 Text(
-                  'SELECT LOCATION',
+                  l10n.selectLocation,
                   style: GoogleFonts.montserrat(
                     fontSize: 12,
                     letterSpacing: 2,
@@ -201,7 +203,7 @@ class _Header extends StatelessWidget {
                   textInputAction: TextInputAction.search,
                   style: GoogleFonts.montserrat(fontSize: 14),
                   decoration: InputDecoration(
-                    hintText: 'Search city (e.g. Lahore, Pakistan)',
+                    hintText: l10n.searchCityHint,
                     prefixIcon: const Icon(Icons.search, size: 20),
                     suffixIcon: searching
                         ? const SizedBox(
@@ -280,7 +282,7 @@ class _Header extends StatelessWidget {
                   leading: const Icon(Icons.my_location,
                       color: MinaretTheme.gold),
                   title: Text(
-                    'Use Current Location (GPS)',
+                    l10n.useCurrentLocationGps,
                     style: GoogleFonts.montserrat(
                         fontSize: 14, fontWeight: FontWeight.w600),
                   ),
@@ -648,7 +650,7 @@ class _MosqueList extends StatelessWidget {
 class _ImamStreakCard extends StatelessWidget {
   const _ImamStreakCard({required this.stats});
 
-  final dynamic stats; // UserPrayerStats
+  final UserPrayerStats stats;
 
   @override
   Widget build(BuildContext context) {
@@ -662,32 +664,39 @@ class _ImamStreakCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            children: [
-              Icon(Icons.analytics_outlined,
-                  color: MinaretTheme.gold, size: 20),
-              const SizedBox(width: 8),
-              Text(
-                'PRAYER STREAK',
-                style: GoogleFonts.montserrat(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w700,
-                  color: MinaretTheme.gold,
-                  letterSpacing: 2,
-                ),
-              ),
-              const Spacer(),
-              Text(
-                'View Details',
-                style: GoogleFonts.lato(
-                    fontSize: 11,
+          GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const PrayerStatsPage()),
+            ),
+            child: Row(
+              children: [
+                Icon(Icons.analytics_outlined,
+                    color: MinaretTheme.gold, size: 20),
+                const SizedBox(width: 8),
+                Text(
+                  'PRAYER STREAK',
+                  style: GoogleFonts.montserrat(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w700,
                     color: MinaretTheme.gold,
-                    fontWeight: FontWeight.w500),
-              ),
-              const SizedBox(width: 4),
-              Icon(Icons.arrow_forward_ios,
-                  size: 12, color: MinaretTheme.gold),
-            ],
+                    letterSpacing: 2,
+                  ),
+                ),
+                const Spacer(),
+                Text(
+                  'View Details',
+                  style: GoogleFonts.lato(
+                      fontSize: 11,
+                      color: MinaretTheme.gold,
+                      fontWeight: FontWeight.w500),
+                ),
+                const SizedBox(width: 4),
+                Icon(Icons.arrow_forward_ios,
+                    size: 12, color: MinaretTheme.gold),
+              ],
+            ),
           ),
           const SizedBox(height: 16),
           Row(

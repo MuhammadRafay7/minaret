@@ -79,6 +79,11 @@ class LanguageSelector extends StatelessWidget {
       case 'nl': return 'Nederlands';
       case 'zh': return '中文';
       case 'fa': return 'فارسی';
+      case 'id': return 'Bahasa Indonesia';
+      case 'tr': return 'Türkçe';
+      case 'ms': return 'Bahasa Melayu';
+      case 'fr': return 'Français';
+      case 'de': return 'Deutsch';
       case 'en':
       default: return 'English';
     }

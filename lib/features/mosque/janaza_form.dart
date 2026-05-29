@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import '../../core/theme.dart';
+import 'package:minaret/l10n/generated/app_localizations.dart';
 import 'package:minaret/services/janaza_service.dart';
 import '../../widgets/atelier_layout.dart';
 import '../../widgets/success_overlay.dart';
@@ -107,16 +108,17 @@ class _JanazaFormPageState extends State<JanazaFormPage> {
   Future<void> _submit() async {
     final deceasedName = _nameController.text.trim();
 
+    final l10n = AppLocalizations.of(context)!;
     if (deceasedName.isEmpty) {
-      _showSnack('ENTER THE NAME OF THE DECEASED.');
+      _showSnack(l10n.errorEnterDeceasedName);
       return;
     }
     if (deceasedName.length > 100) {
-      _showSnack('NAME IS TOO LONG. MAX 100 CHARACTERS.');
+      _showSnack(l10n.errorNameTooLong);
       return;
     }
     if (_selectedDate == null || _selectedTime == null) {
-      _showSnack('SELECT BOTH DATE AND TIME FOR THE JANAZA.');
+      _showSnack(l10n.errorSelectDateAndTimeJanaza);
       return;
     }
 
@@ -129,7 +131,7 @@ class _JanazaFormPageState extends State<JanazaFormPage> {
     );
 
     if (janazaDateTime.isBefore(DateTime.now())) {
-      _showSnack('JANAZA TIME CANNOT BE IN THE PAST.');
+      _showSnack(l10n.errorJanazaInPast);
       return;
     }
 
@@ -156,12 +158,13 @@ class _JanazaFormPageState extends State<JanazaFormPage> {
 
       if (!mounted) return;
 
+      final l10nSuccess = AppLocalizations.of(context)!;
       showGeneralDialog(
         context: context,
         barrierDismissible: false,
-        pageBuilder: (ctx, _, __) => const SuccessOverlay(
-          title: 'ANNOUNCEMENT POSTED',
-          message: 'May Allah grant them Jannah. الفاتحة',
+        pageBuilder: (ctx, _, __) => SuccessOverlay(
+          title: l10nSuccess.announcementPostedTitle,
+          message: l10nSuccess.announcementPostedMessage,
         ),
       );
 
@@ -178,17 +181,18 @@ class _JanazaFormPageState extends State<JanazaFormPage> {
   }
 
   String _friendlyError(String code) {
+    final l10n = AppLocalizations.of(context)!;
     switch (code) {
       case 'NOT_AUTHENTICATED':
-        return 'YOU MUST BE SIGNED IN.';
+        return l10n.errorMustBeSignedIn;
       case 'NOT_AUTHORIZED':
-        return 'YOU DO NOT MANAGE THIS MOSQUE.';
+        return l10n.errorNotAuthorizedMosque;
       case 'TIME_IN_PAST':
-        return 'JANAZA TIME CANNOT BE IN THE PAST.';
+        return l10n.errorJanazaInPast;
       case 'INVALID_NAME':
-        return 'INVALID NAME. CHECK LENGTH (MAX 100).';
+        return l10n.errorInvalidNameLength;
       default:
-        return 'SOMETHING WENT WRONG. TRY AGAIN.';
+        return l10n.errorSomethingWentWrongTryAgain;
     }
   }
 
@@ -199,12 +203,13 @@ class _JanazaFormPageState extends State<JanazaFormPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final dateLabel = _selectedDate != null
         ? DateFormat('EEE, d MMM yyyy').format(_selectedDate!)
-        : 'SELECT DATE';
+        : l10n.selectDateLabel;
     final timeLabel = _selectedTime != null
         ? _selectedTime!.format(context)
-        : 'SELECT TIME';
+        : l10n.selectTimeLabel;
 
     return Scaffold(
       backgroundColor: MinaretTheme.background,
@@ -240,7 +245,7 @@ class _JanazaFormPageState extends State<JanazaFormPage> {
               const SizedBox(height: 30),
 
               Text(
-                'JANAZA',
+                l10n.janazaTitle,
                 style: MinaretTheme.heading.copyWith(
                   fontSize: 34,
                   letterSpacing: 8,
@@ -248,7 +253,7 @@ class _JanazaFormPageState extends State<JanazaFormPage> {
                 ),
               ),
               Text(
-                'POST A FUNERAL ANNOUNCEMENT',
+                l10n.postFuneralAnnouncement,
                 style: MinaretTheme.detailHeader.copyWith(
                   color: MinaretTheme.gold,
                 ),
@@ -266,31 +271,31 @@ class _JanazaFormPageState extends State<JanazaFormPage> {
               const SizedBox(height: 50),
 
               // ── Deceased name ─────────────────────────────────────────────
-              _buildField('NAME OF DECEASED', _nameController),
+              _buildField(l10n.nameOfDeceasedLabel, _nameController),
 
               // ── Gender selector ───────────────────────────────────────────
-              _sectionLabel('GENDER'),
+              _sectionLabel(l10n.genderLabel),
               const SizedBox(height: 12),
               _buildGenderSelector(),
               const SizedBox(height: 30),
 
               // ── Age (optional) ────────────────────────────────────────────
               _buildField(
-                'AGE (OPTIONAL)',
+                l10n.ageOptionalLabel,
                 _ageController,
-                hint: 'e.g. 65',
+                hint: l10n.ageHint,
                 keyboardType: TextInputType.number,
               ),
 
               // ── Location note ─────────────────────────────────────────────
               _buildField(
-                'LOCATION NOTE (OPTIONAL)',
+                l10n.locationNoteOptionalLabel,
                 _locationController,
-                hint: 'e.g. Main Prayer Hall, Gate 2',
+                hint: l10n.locationHint,
               ),
 
               // ── Date + Time ───────────────────────────────────────────────
-              _sectionLabel('JANAZA DATE & TIME'),
+              _sectionLabel(l10n.janazaDateTimeLabel),
               const SizedBox(height: 16),
               Row(
                 children: [
@@ -328,7 +333,7 @@ class _JanazaFormPageState extends State<JanazaFormPage> {
                     ),
                     const SizedBox(width: 8),
                     Text(
-                      'FAMILY DETAILS (OPTIONAL)',
+                      l10n.familyDetailsOptional,
                       style: GoogleFonts.montserrat(
                         fontSize: 7.5,
                         letterSpacing: 3,
@@ -379,7 +384,7 @@ class _JanazaFormPageState extends State<JanazaFormPage> {
                           ),
                         )
                       : Text(
-                          'POST ANNOUNCEMENT',
+                          l10n.postAnnouncementAction,
                           style: GoogleFonts.montserrat(
                             fontSize: 9,
                             letterSpacing: 5,
@@ -393,7 +398,7 @@ class _JanazaFormPageState extends State<JanazaFormPage> {
               const SizedBox(height: 24),
               Center(
                 child: Text(
-                  'ANNOUNCEMENT WILL AUTOMATICALLY EXPIRE\nAFTER THE JANAZA TIME PASSES.',
+                  l10n.announcementWillExpire,
                   textAlign: TextAlign.center,
                   style: GoogleFonts.montserrat(
                     fontSize: 7,
@@ -416,11 +421,11 @@ class _JanazaFormPageState extends State<JanazaFormPage> {
   Widget _buildGenderSelector() {
     return Row(
       children: [
-        _genderChip('MALE', 'male', Icons.male_rounded),
+        _genderChip(AppLocalizations.of(context)!.maleLabel, 'male', Icons.male_rounded),
         const SizedBox(width: 12),
-        _genderChip('FEMALE', 'female', Icons.female_rounded),
+        _genderChip(AppLocalizations.of(context)!.femaleLabel, 'female', Icons.female_rounded),
         const SizedBox(width: 12),
-        _genderChip('NOT SPECIFIED', '', Icons.remove),
+        _genderChip(AppLocalizations.of(context)!.notSpecifiedLabel, '', Icons.remove),
       ],
     );
   }
@@ -486,40 +491,40 @@ class _JanazaFormPageState extends State<JanazaFormPage> {
           children: [
             Expanded(
               child: _buildField(
-                'FATHER\'S NAME',
+                AppLocalizations.of(context)!.fathersNameLabel,
                 _fatherController,
-                hint: 'Optional',
+                hint: AppLocalizations.of(context)!.optionalHint,
               ),
             ),
             const SizedBox(width: 20),
             Expanded(
               child: _buildField(
-                'MOTHER\'S NAME',
+                AppLocalizations.of(context)!.mothersNameLabel,
                 _motherController,
-                hint: 'Optional',
+                hint: AppLocalizations.of(context)!.optionalHint,
               ),
             ),
           ],
         ),
         if (showHusband)
-          _buildField('HUSBAND\'S NAME', _husbandController, hint: 'Optional'),
+          _buildField(AppLocalizations.of(context)!.husbandsNameLabel, _husbandController, hint: AppLocalizations.of(context)!.optionalHint),
         if (showWife)
-          _buildField('WIFE\'S NAME', _wifeController, hint: 'Optional'),
+          _buildField(AppLocalizations.of(context)!.wifesNameLabel, _wifeController, hint: AppLocalizations.of(context)!.optionalHint),
         Row(
           children: [
             Expanded(
               child: _buildField(
-                'BROTHER\'S NAME',
+                AppLocalizations.of(context)!.brothersNameLabel,
                 _brotherController,
-                hint: 'Optional',
+                hint: AppLocalizations.of(context)!.optionalHint,
               ),
             ),
             const SizedBox(width: 20),
             Expanded(
               child: _buildField(
-                'SISTER\'S NAME',
+                AppLocalizations.of(context)!.sistersNameLabel,
                 _sisterController,
-                hint: 'Optional',
+                hint: AppLocalizations.of(context)!.optionalHint,
               ),
             ),
           ],

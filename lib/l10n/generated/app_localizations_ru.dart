@@ -715,4 +715,332 @@ class AppLocalizationsRu extends AppLocalizations {
   String ofTotalCompleted(int completed, int total) {
     return '$completed из $total выполнено';
   }
+
+  @override
+  String get selectLocation => 'ВЫБОР МЕСТОПОЛОЖЕНИЯ';
+
+  @override
+  String get searchCityHint => 'Поиск города (например, Москва, Россия)';
+
+  @override
+  String get useCurrentLocationGps =>
+      'Использовать текущее местоположение (GPS)';
+
+  @override
+  String get confirmWithPasswordPrompt =>
+      'Введите пароль для подтверждения удаления';
+
+  @override
+  String get reAuthFailedMessage =>
+      'Повторная аутентификация не удалась. Попробуйте ещё раз.';
+
+  @override
+  String get initializationError => 'Ошибка инициализации';
+
+  @override
+  String get somethingWentWrong => 'Что-то пошло не так';
+
+  @override
+  String get reloadApp => 'Перезагрузить приложение';
+
+  @override
+  String get prayerTimesDetected => 'ВРЕМЯ МОЛИТВЫ ОБНАРУЖЕНО';
+
+  @override
+  String get iqamahBoard => 'ТАБЛИЦА ИКАМЫ';
+
+  @override
+  String get azanBoard => 'ТАБЛИЦА АЗАНА';
+
+  @override
+  String get prayerBoard => 'ТАБЛИЦА МОЛИТВ';
+
+  @override
+  String confidencePercent(int confidence) {
+    return '$confidence% ТОЧНОСТЬ';
+  }
+
+  @override
+  String get retakeAction => 'ПЕРЕСНЯТЬ';
+
+  @override
+  String get applyAllAction => 'ПРИМЕНИТЬ ВСЁ';
+
+  @override
+  String get estimatedAbbr => 'ор.';
+
+  @override
+  String get azanEstimateNote =>
+      'Время азана ориентировочное: Фаджр −15м · Зухр −10м · Аср −10м · Магриб −5м · Иша −10м';
+
+  @override
+  String get iqamahEstimateNote =>
+      'Время икамы ориентировочное: Фаджр +20м · Зухр +15м · Аср +15м · Магриб +10м · Иша +20м';
+
+  @override
+  String get analogBoardError =>
+      'АНАЛОГОВЫЕ ЧАСЫ НЕ СКАНИРУЮТСЯ — СФОТОГРАФИРУЙТЕ ЦИФРОВОЙ ДИСПЛЕЙ ВРЕМЕНИ МОЛИТВЫ';
+
+  @override
+  String get noTimesFoundError =>
+      'ВРЕМЯ МОЛИТВЫ НЕ НАЙДЕНО — ПОПРОБУЙТЕ БОЛЕЕ ЧЁТКОЕ ФОТО';
+
+  @override
+  String get couldNotReadTimesError =>
+      'НЕ УДАЛОСЬ ПРОЧИТАТЬ ВРЕМЯ МОЛИТВЫ — ПОПРОБУЙТЕ БОЛЕЕ ЧЁТКОЕ ФОТО';
+
+  @override
+  String get takePhoto => 'СДЕЛАТЬ ФОТО';
+
+  @override
+  String get chooseFromGallery => 'ВЫБРАТЬ ИЗ ГАЛЕРЕИ';
+
+  @override
+  String get registryManagementTitle => 'УПРАВЛЕНИЕ РЕЕСТРОМ';
+
+  @override
+  String get officialNameLabel => 'ОФИЦИАЛЬНОЕ НАЗВАНИЕ';
+
+  @override
+  String get donationSettingsHeader => 'НАСТРОЙКИ ПОЖЕРТВОВАНИЙ';
+
+  @override
+  String get donationBankDetailsHeader =>
+      'БАНКОВСКИЕ РЕКВИЗИТЫ ДЛЯ ПОЖЕРТВОВАНИЙ';
+
+  @override
+  String get bankNameLabel => 'НАЗВАНИЕ БАНКА';
+
+  @override
+  String get accountHolderLabel => 'ВЛАДЕЛЕЦ СЧЁТА';
+
+  @override
+  String get accountHolderNameLabel => 'ИМЯ ВЛАДЕЛЬЦА СЧЁТА';
+
+  @override
+  String get accountNumberIbanLabel => 'НОМЕР СЧЁТА / IBAN';
+
+  @override
+  String get schoolOfThoughtFiqhHeader => 'ПРАВОВАЯ ШКОЛА (ФИКХ)';
+
+  @override
+  String get schoolOfThoughtHeader => 'ПРАВОВАЯ ШКОЛА';
+
+  @override
+  String get azanIqamahTimesHeader => 'ВРЕМЯ АЗАНА И ИКАМЫ';
+
+  @override
+  String get scanPrayerBoardAction => 'СКАНИРОВАТЬ ДОСКУ МОЛИТВ';
+
+  @override
+  String get readingPrayerBoardAction => 'ЧТЕНИЕ ДОСКИ...';
+
+  @override
+  String get specialPrayersHeader => 'ОСОБЫЕ МОЛИТВЫ';
+
+  @override
+  String get eidPrayersHeader => 'МОЛИТВЫ ЕИД';
+
+  @override
+  String get eidUlFitrLabel => 'ЕИД АЛЬ-ФИТР';
+
+  @override
+  String get eidUlAdhaLabel => 'ЕИД АЛЬ-АДХА';
+
+  @override
+  String get timeLabel => 'ВРЕМЯ';
+
+  @override
+  String get dateLabel => 'ДАТА';
+
+  @override
+  String get registryUpdatedMessage => 'Реестр успешно обновлён';
+
+  @override
+  String get deletePermanentDialogBody =>
+      'Это действие необратимо. Все данные, связанные с этой мечетью, будут удалены из глобального реестра.';
+
+  @override
+  String get mosqueNameLabel => 'НАЗВАНИЕ МЕЧЕТИ';
+
+  @override
+  String get imamOfficialContactHeader => 'ИМАМ / ОФИЦИАЛЬНЫЙ КОНТАКТ';
+
+  @override
+  String get fullNameLabel => 'ПОЛНОЕ ИМЯ';
+
+  @override
+  String get phoneNumberLabel => 'НОМЕР ТЕЛЕФОНА';
+
+  @override
+  String get mosqueFacilitiesHeader => 'ОБЪЕКТЫ МЕЧЕТИ';
+
+  @override
+  String get janazaTitle => 'ДЖАНАЗА';
+
+  @override
+  String get postFuneralAnnouncement => 'ОБЪЯВЛЕНИЕ О ПОХОРОНАХ';
+
+  @override
+  String get nameOfDeceasedLabel => 'ИМЯ УСОПШЕГО';
+
+  @override
+  String get genderLabel => 'ПОЛ';
+
+  @override
+  String get ageOptionalLabel => 'ВОЗРАСТ (НЕОБЯЗАТЕЛЬНО)';
+
+  @override
+  String get locationNoteOptionalLabel => 'ПРИМЕЧАНИЕ О МЕСТЕ (НЕОБЯЗАТЕЛЬНО)';
+
+  @override
+  String get janazaDateTimeLabel => 'ДАТА И ВРЕМЯ ДЖАНАЗЫ';
+
+  @override
+  String get familyDetailsOptional => 'СВЕДЕНИЯ О СЕМЬЕ (НЕОБЯЗАТЕЛЬНО)';
+
+  @override
+  String get postAnnouncementAction => 'ОПУБЛИКОВАТЬ ОБЪЯВЛЕНИЕ';
+
+  @override
+  String get announcementWillExpire =>
+      'ОБЪЯВЛЕНИЕ АВТОМАТИЧЕСКИ ИСТЕЧЁТ ПОСЛЕ ВРЕМЕНИ ДЖАНАЗЫ.';
+
+  @override
+  String get maleLabel => 'МУЖСКОЙ';
+
+  @override
+  String get femaleLabel => 'ЖЕНСКИЙ';
+
+  @override
+  String get notSpecifiedLabel => 'НЕ УКАЗАН';
+
+  @override
+  String get fathersNameLabel => 'ИМЯ ОТЦА';
+
+  @override
+  String get mothersNameLabel => 'ИМЯ МАТЕРИ';
+
+  @override
+  String get husbandsNameLabel => 'ИМЯ МУЖА';
+
+  @override
+  String get wifesNameLabel => 'ИМЯ ЖЕНЫ';
+
+  @override
+  String get brothersNameLabel => 'ИМЯ БРАТА';
+
+  @override
+  String get sistersNameLabel => 'ИМЯ СЕСТРЫ';
+
+  @override
+  String get optionalHint => 'Необязательно';
+
+  @override
+  String get ageHint => 'напр. 65';
+
+  @override
+  String get locationHint => 'напр. Главный зал, Ворота 2';
+
+  @override
+  String get selectDateLabel => 'ВЫБРАТЬ ДАТУ';
+
+  @override
+  String get selectTimeLabel => 'ВЫБРАТЬ ВРЕМЯ';
+
+  @override
+  String get announcementPostedTitle => 'ОБЪЯВЛЕНИЕ ОПУБЛИКОВАНО';
+
+  @override
+  String get announcementPostedMessage => 'Да дарует им Аллах Дженнет. الفاتحة';
+
+  @override
+  String get errorEnterDeceasedName => 'ВВЕДИТЕ ИМЯ УСОПШЕГО.';
+
+  @override
+  String get errorNameTooLong => 'ИМЯ СЛИШКОМ ДЛИННОЕ. МАКСИМУМ 100 СИМВОЛОВ.';
+
+  @override
+  String get errorSelectDateAndTimeJanaza => 'ВЫБЕРИТЕ ДАТУ И ВРЕМЯ ДЖАНАЗЫ.';
+
+  @override
+  String get errorJanazaInPast => 'ВРЕМЯ ДЖАНАЗЫ НЕ МОЖЕТ БЫТЬ В ПРОШЛОМ.';
+
+  @override
+  String get errorMustBeSignedIn => 'НЕОБХОДИМО ВОЙТИ В СИСТЕМУ.';
+
+  @override
+  String get errorNotAuthorizedMosque => 'ВЫ НЕ УПРАВЛЯЕТЕ ЭТОЙ МЕЧЕТЬЮ.';
+
+  @override
+  String get errorInvalidNameLength =>
+      'НЕДОПУСТИМОЕ ИМЯ. ПРОВЕРЬТЕ ДЛИНУ (МАКСИМУМ 100).';
+
+  @override
+  String get errorSomethingWentWrongTryAgain =>
+      'ЧТО-ТО ПОШЛО НЕ ТАК. ПОПРОБУЙТЕ СНОВА.';
+
+  @override
+  String get editJanazaTitle => 'РЕДАКТИРОВАТЬ ДЖАНАЗУ';
+
+  @override
+  String get updateAnnouncementDetails => 'ОБНОВИТЬ ДЕТАЛИ ОБЪЯВЛЕНИЯ';
+
+  @override
+  String get announcementUpdatedTitle => 'ОБЪЯВЛЕНИЕ ОБНОВЛЕНО';
+
+  @override
+  String get changesSavedMessage => 'Изменения успешно сохранены.';
+
+  @override
+  String get couldNotUpdateError => 'НЕ УДАЛОСЬ ОБНОВИТЬ. ПОПРОБУЙТЕ СНОВА.';
+
+  @override
+  String get selectBothDateTime => 'ВЫБЕРИТЕ ДАТУ И ВРЕМЯ.';
+
+  @override
+  String get qadaPrayersTitle => 'МОЛИТВЫ КАДА';
+
+  @override
+  String get signInForQada => 'Войдите, чтобы отслеживать молитвы када.';
+
+  @override
+  String get failedToLoadQada => 'Не удалось загрузить данные када.';
+
+  @override
+  String get addQadaDebtTitle => 'Добавить долг када';
+
+  @override
+  String addQadaDebtQuestion(String prayer) {
+    return 'Сколько молитв $prayer вам ещё нужно восполнить?';
+  }
+
+  @override
+  String get qadaInfoBanner =>
+      'Завершение молитв када здесь не влияет на вашу ежедневную серию. Серии считаются только за своевременные ежедневные молитвы.';
+
+  @override
+  String get totalPendingLabel => 'Всего ожидающих';
+
+  @override
+  String get madeUpLabel => 'Восполнено';
+
+  @override
+  String pendingCountBadge(int count) {
+    return '$count ожидающих';
+  }
+
+  @override
+  String madeUpCountBadge(int count) {
+    return '$count восполнено';
+  }
+
+  @override
+  String get markAsMadeUp => 'Отметить как восполнённую';
+
+  @override
+  String get allCaughtUp => 'Все восполнены';
+
+  @override
+  String get addQadaDebtTooltip => 'Добавить долг када';
 }

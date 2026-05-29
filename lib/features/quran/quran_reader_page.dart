@@ -35,6 +35,7 @@ class _QuranReaderPageState extends State<QuranReaderPage>
   List<dynamic> _filteredSurahs = [];
   bool _isLoading = true;
   String? _loadError;
+  Map<String, dynamic>? _savedPosition;
 
   final TextEditingController _searchController = TextEditingController();
 
@@ -53,6 +54,7 @@ class _QuranReaderPageState extends State<QuranReaderPage>
     _tabController = TabController(length: 2, vsync: this);
     _searchController.addListener(_onSearch);
     _loadSurahs();
+    _loadSavedPosition();
   }
 
   @override
@@ -158,6 +160,79 @@ class _QuranReaderPageState extends State<QuranReaderPage>
         }).toList();
       }
     });
+  }
+
+  Future<void> _loadSavedPosition() async {
+    final pos = await OfflineCacheService.getMap('quran_last_position');
+    if (pos != null && mounted && pos['editionId'] == widget.editionId) {
+      setState(() => _savedPosition = pos);
+    }
+  }
+
+  Widget _buildContinueReadingBanner() {
+    final pos = _savedPosition;
+    if (pos == null || _searchController.text.isNotEmpty) {
+      return const SizedBox.shrink();
+    }
+    final surahName = pos['surahName'] as String? ?? '';
+    final ayahIndex = (pos['ayahIndex'] as int?) ?? 0;
+    return GestureDetector(
+      onTap: () => Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => SurahViewPage(
+            surahNumber: pos['surahNumber'] as int,
+            surahName: surahName,
+            editionId: pos['editionId'] as String,
+            initialAyahNumber: ayahIndex + 1,
+          ),
+        ),
+      ),
+      child: Container(
+        margin: const EdgeInsets.fromLTRB(25, 8, 25, 0),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        decoration: BoxDecoration(
+          color: MinaretTheme.gold.withValues(alpha: 0.07),
+          border: Border.all(color: MinaretTheme.gold.withValues(alpha: 0.3)),
+        ),
+        child: Row(
+          children: [
+            const Icon(Icons.bookmark_outline, size: 14, color: MinaretTheme.gold),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    _t(
+                      en: 'CONTINUE READING',
+                      ar: 'متابعة القراءة',
+                      ur: 'پڑھنا جاری رکھیں',
+                      ru: 'ПРОДОЛЖИТЬ ЧТЕНИЕ',
+                    ),
+                    style: GoogleFonts.montserrat(
+                      fontSize: 8,
+                      letterSpacing: 1.5,
+                      color: MinaretTheme.gold,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    '$surahName · ${_t(en: 'Ayah', ar: 'آية', ur: 'آیت', ru: 'Аят')} ${ayahIndex + 1}',
+                    style: GoogleFonts.montserrat(
+                      fontSize: 11,
+                      color: _textSecondary,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const Icon(Icons.arrow_forward_ios, size: 12, color: MinaretTheme.gold),
+          ],
+        ),
+      ),
+    );
   }
 
   @override
@@ -380,6 +455,8 @@ class _QuranReaderPageState extends State<QuranReaderPage>
             ),
           ),
         ),
+
+        _buildContinueReadingBanner(),
 
         Expanded(
           child: _filteredSurahs.isEmpty

@@ -56,11 +56,14 @@ class NotificationRepository {
   Future<void> addNotification(Map<String, dynamic> data) =>
       _notifs.add({...data, 'createdAt': FieldValue.serverTimestamp(), 'read': false});
 
-  Stream<List<AppNotification>> getUserNotificationsStream(String uid) =>
+  Stream<List<AppNotification>> getUserNotificationsStream(
+    String uid, {
+    int limit = 20,
+  }) =>
       _notifs
           .where('userId', isEqualTo: uid)
           .orderBy('createdAt', descending: true)
-          .limit(50)
+          .limit(limit)
           .snapshots()
           .map((s) => s.docs.map(AppNotification.fromDoc).toList());
 
@@ -77,6 +80,8 @@ class NotificationRepository {
         .get();
     return snap.docs.length;
   }
+
+  Future<void> deleteNotification(String id) => _notifs.doc(id).delete();
 
   Future<void> markAsRead(String id) =>
       _notifs.doc(id).update({'read': true});

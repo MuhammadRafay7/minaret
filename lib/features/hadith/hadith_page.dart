@@ -161,11 +161,13 @@ class _HadithPageState extends State<HadithPage> {
           'editions': editions,
         };
 
+        if (editions.isEmpty) continue;
         final engEdition = editions.firstWhere(
           (e) => e['language'] == 'English',
           orElse: () => editions.first,
         );
-        _selectedEdition[id] = engEdition['editionId']!;
+        final editionId = engEdition['editionId'];
+        if (editionId != null) _selectedEdition[id] = editionId;
       }
 
       if (mounted) {
@@ -475,42 +477,72 @@ class _HadithPageState extends State<HadithPage> {
 
     if (_error != null) {
       return Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              _tr(
-                en: 'FAILED TO LOAD COLLECTIONS',
-                ar: 'فشل تحميل المجموعات',
-                ur: 'مجموعے لوڈ نہیں ہو سکے',
-                ru: 'НЕ УДАЛОСЬ ЗАГРУЗИТЬ СБОРНИКИ',
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 40),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.wifi_off_rounded,
+                size: 40,
+                color: MinaretTheme.gold.withValues(alpha: 0.35),
               ),
-              style: GoogleFonts.montserrat(
-                fontSize: 8,
-                letterSpacing: 2,
-                color: textSecondary,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-            const SizedBox(height: 16),
-            GestureDetector(
-              onTap: _fetchEditions,
-              child: Text(
+              const SizedBox(height: 20),
+              Text(
                 _tr(
-                  en: 'TAP TO RETRY',
-                  ar: 'اضغط للمحاولة مرة أخرى',
-                  ur: 'دوبارہ کوشش کے لیے ٹیپ کریں',
-                  ru: 'НАЖМИТЕ ДЛЯ ПОВТОРА',
+                  en: 'FAILED TO LOAD COLLECTIONS',
+                  ar: 'فشل تحميل المجموعات',
+                  ur: 'مجموعے لوڈ نہیں ہو سکے',
+                  ru: 'НЕ УДАЛОСЬ ЗАГРУЗИТЬ СБОРНИКИ',
                 ),
+                textAlign: TextAlign.center,
                 style: GoogleFonts.montserrat(
-                  fontSize: 8,
-                  letterSpacing: 2,
-                  color: MinaretTheme.gold,
-                  fontWeight: FontWeight.w700,
+                  fontSize: 10,
+                  letterSpacing: 2.5,
+                  color: textSecondary,
+                  fontWeight: FontWeight.w800,
                 ),
               ),
-            ),
-          ],
+              const SizedBox(height: 8),
+              Text(
+                _tr(
+                  en: 'Check your connection and try again.',
+                  ar: 'تحقق من اتصالك وحاول مرة أخرى.',
+                  ur: 'اپنا کنکشن چیک کریں اور دوبارہ کوشش کریں۔',
+                  ru: 'Проверьте соединение и повторите попытку.',
+                ),
+                textAlign: TextAlign.center,
+                style: GoogleFonts.lato(
+                  fontSize: 13,
+                  color: textSecondary.withValues(alpha: 0.6),
+                  height: 1.4,
+                ),
+              ),
+              const SizedBox(height: 28),
+              OutlinedButton.icon(
+                onPressed: _fetchEditions,
+                icon: const Icon(Icons.refresh, size: 16, color: MinaretTheme.gold),
+                label: Text(
+                  _tr(
+                    en: 'RETRY',
+                    ar: 'إعادة المحاولة',
+                    ur: 'دوبارہ کوشش',
+                    ru: 'ПОВТОР',
+                  ),
+                  style: GoogleFonts.montserrat(
+                    fontSize: 9,
+                    letterSpacing: 2,
+                    color: MinaretTheme.gold,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                style: OutlinedButton.styleFrom(
+                  side: BorderSide(color: MinaretTheme.gold.withValues(alpha: 0.5)),
+                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
+                ),
+              ),
+            ],
+          ),
         ),
       );
     }
@@ -531,11 +563,14 @@ class _HadithPageState extends State<HadithPage> {
           book['displayName'] as String,
         );
         final editions = book['editions'] as List<Map<String, String>>;
-        final selectedEditionId = _selectedEdition[bookId]!;
-        final selectedEditionData = editions.firstWhere(
-          (e) => e['editionId'] == selectedEditionId,
-          orElse: () => editions.first,
-        );
+        final selectedEditionId = _selectedEdition[bookId];
+        if (selectedEditionId == null) return const SizedBox.shrink();
+        final selectedEditionData = editions.isNotEmpty
+            ? editions.firstWhere(
+                (e) => e['editionId'] == selectedEditionId,
+                orElse: () => editions.first,
+              )
+            : <String, String>{};
 
         return GestureDetector(
           onTap: () => Navigator.push(
@@ -639,8 +674,10 @@ class _HadithPageState extends State<HadithPage> {
         final mightBeIncomplete = !_completeLanguages.contains(e['language']);
 
         return GestureDetector(
-          onTap: () =>
-              setState(() => _selectedEdition[bookId] = e['editionId']!),
+          onTap: () {
+            final eid = e['editionId'];
+            if (eid != null) setState(() => _selectedEdition[bookId] = eid);
+          },
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 180),
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
@@ -657,7 +694,7 @@ class _HadithPageState extends State<HadithPage> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  e['language']!.toUpperCase(),
+                  (e['language'] ?? 'Unknown').toUpperCase(),
                   style: GoogleFonts.montserrat(
                     fontSize: 8,
                     letterSpacing: 1.5,

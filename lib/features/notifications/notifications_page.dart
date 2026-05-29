@@ -66,7 +66,21 @@ class _NotificationsViewState extends State<_NotificationsView> {
   final bool _isDebugMode = kDebugMode;
 
   @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_onScroll);
+  }
+
+  void _onScroll() {
+    final pos = _scrollController.position;
+    if (pos.pixels >= pos.maxScrollExtent - 200) {
+      context.read<NotificationsNotifier>().loadMore();
+    }
+  }
+
+  @override
   void dispose() {
+    _scrollController.removeListener(_onScroll);
     _scrollController.dispose();
     super.dispose();
   }
@@ -241,22 +255,55 @@ class _NotificationsViewState extends State<_NotificationsView> {
       );
     }
 
+    final itemCount = notifications.length + (n.hasMore ? 1 : 0);
+
     return ListView.builder(
       controller: _scrollController,
       padding: const EdgeInsets.all(AppSpacing.md),
-      itemCount: notifications.length,
+      itemCount: itemCount,
       itemBuilder: (context, index) {
+        if (index == notifications.length) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(vertical: 16),
+            child: Center(
+              child: SizedBox(
+                width: 20,
+                height: 20,
+                child: CircularProgressIndicator(
+                  strokeWidth: 1.5,
+                  color: MinaretTheme.gold.withValues(alpha: 0.6),
+                ),
+              ),
+            ),
+          );
+        }
         final notification = notifications[index];
-        return _buildNotificationCard(
-          n: n,
-          id: notification.id,
-          title: notification.title,
-          message: notification.body ?? '',
-          type: notification.type,
-          isRead: notification.isRead,
-          createdAt: notification.createdAt,
-          mosqueName: notification.raw['mosqueName'] as String?,
-          reportReason: notification.raw['reportReason'] as String?,
+        return Dismissible(
+          key: ValueKey(notification.id),
+          direction: DismissDirection.endToStart,
+          onDismissed: (_) => n.deleteNotification(notification.id),
+          background: Container(
+            alignment: Alignment.centerRight,
+            padding: const EdgeInsets.only(right: 20),
+            margin: const EdgeInsets.only(bottom: 12),
+            decoration: BoxDecoration(
+              color: Colors.red.withValues(alpha: 0.15),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: Colors.red.withValues(alpha: 0.3)),
+            ),
+            child: const Icon(Icons.delete_outline, color: Colors.red, size: 22),
+          ),
+          child: _buildNotificationCard(
+            n: n,
+            id: notification.id,
+            title: notification.title,
+            message: notification.body ?? '',
+            type: notification.type,
+            isRead: notification.isRead,
+            createdAt: notification.createdAt,
+            mosqueName: notification.raw['mosqueName'] as String?,
+            reportReason: notification.raw['reportReason'] as String?,
+          ),
         );
       },
     );

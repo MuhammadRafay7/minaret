@@ -709,4 +709,331 @@ class AppLocalizationsUr extends AppLocalizations {
   String ofTotalCompleted(int completed, int total) {
     return '$completed / $total مکمل';
   }
+
+  @override
+  String get selectLocation => 'مقام منتخب کریں';
+
+  @override
+  String get searchCityHint => 'شہر تلاش کریں (مثلاً لاہور، پاکستان)';
+
+  @override
+  String get useCurrentLocationGps => 'موجودہ مقام استعمال کریں (GPS)';
+
+  @override
+  String get confirmWithPasswordPrompt =>
+      'حذف کی تصدیق کے لیے پاس ورڈ درج کریں';
+
+  @override
+  String get reAuthFailedMessage =>
+      'دوبارہ تصدیق ناکام ہوئی۔ دوبارہ کوشش کریں۔';
+
+  @override
+  String get initializationError => 'ابتداء میں خرابی';
+
+  @override
+  String get somethingWentWrong => 'کچھ غلط ہوا';
+
+  @override
+  String get reloadApp => 'ایپ دوبارہ لوڈ کریں';
+
+  @override
+  String get prayerTimesDetected => 'نماز کے اوقات دریافت ہوئے';
+
+  @override
+  String get iqamahBoard => 'اقامت بورڈ';
+
+  @override
+  String get azanBoard => 'اذان بورڈ';
+
+  @override
+  String get prayerBoard => 'نماز بورڈ';
+
+  @override
+  String confidencePercent(int confidence) {
+    return '$confidence% اعتماد';
+  }
+
+  @override
+  String get retakeAction => 'دوبارہ تصویر لیں';
+
+  @override
+  String get applyAllAction => 'سب لاگو کریں';
+
+  @override
+  String get estimatedAbbr => 'تخمینی';
+
+  @override
+  String get azanEstimateNote =>
+      'اذان کے اوقات تخمینی: فجر −15م · ظہر −10م · عصر −10م · مغرب −5م · عشاء −10م';
+
+  @override
+  String get iqamahEstimateNote =>
+      'اقامت کے اوقات تخمینی: فجر +20م · ظہر +15م · عصر +15م · مغرب +10م · عشاء +20م';
+
+  @override
+  String get analogBoardError =>
+      'اینالاگ گھڑی والے بورڈ اسکین نہیں ہو سکتے — ڈیجیٹل نماز ٹائم بورڈ کی تصویر لیں';
+
+  @override
+  String get noTimesFoundError =>
+      'نماز کے اوقات نہیں ملے — صاف تصویر کے ساتھ کوشش کریں';
+
+  @override
+  String get couldNotReadTimesError =>
+      'نماز کے اوقات پڑھنے میں ناکامی — صاف تصویر کے ساتھ کوشش کریں';
+
+  @override
+  String get takePhoto => 'تصویر لیں';
+
+  @override
+  String get chooseFromGallery => 'گیلری سے منتخب کریں';
+
+  @override
+  String get registryManagementTitle => 'رجسٹری مینجمنٹ';
+
+  @override
+  String get officialNameLabel => 'سرکاری نام';
+
+  @override
+  String get donationSettingsHeader => 'عطیہ کی ترتیبات';
+
+  @override
+  String get donationBankDetailsHeader => 'عطیہ کی بینک تفصیلات';
+
+  @override
+  String get bankNameLabel => 'بینک کا نام';
+
+  @override
+  String get accountHolderLabel => 'اکاؤنٹ ہولڈر';
+
+  @override
+  String get accountHolderNameLabel => 'اکاؤنٹ ہولڈر کا نام';
+
+  @override
+  String get accountNumberIbanLabel => 'اکاؤنٹ نمبر / آئی بی اے این';
+
+  @override
+  String get schoolOfThoughtFiqhHeader => 'فقہی مذہب';
+
+  @override
+  String get schoolOfThoughtHeader => 'مذہب';
+
+  @override
+  String get azanIqamahTimesHeader => 'اذان اور اقامت کے اوقات';
+
+  @override
+  String get scanPrayerBoardAction => 'نماز بورڈ اسکین کریں';
+
+  @override
+  String get readingPrayerBoardAction => 'بورڈ پڑھا جا رہا ہے...';
+
+  @override
+  String get specialPrayersHeader => 'خصوصی نمازیں';
+
+  @override
+  String get eidPrayersHeader => 'عید کی نمازیں';
+
+  @override
+  String get eidUlFitrLabel => 'عید الفطر';
+
+  @override
+  String get eidUlAdhaLabel => 'عید الاضحٰی';
+
+  @override
+  String get timeLabel => 'وقت';
+
+  @override
+  String get dateLabel => 'تاریخ';
+
+  @override
+  String get registryUpdatedMessage => 'رجسٹری کامیابی سے اپ ڈیٹ ہوئی';
+
+  @override
+  String get deletePermanentDialogBody =>
+      'یہ عمل مستقل ہے اور واپس نہیں ہو سکتا۔ اس مسجد سے وابستہ تمام ڈیٹا عالمی رجسٹری سے ہٹا دیا جائے گا۔';
+
+  @override
+  String get mosqueNameLabel => 'مسجد کا نام';
+
+  @override
+  String get imamOfficialContactHeader => 'امام / سرکاری رابطہ';
+
+  @override
+  String get fullNameLabel => 'پورا نام';
+
+  @override
+  String get phoneNumberLabel => 'فون نمبر';
+
+  @override
+  String get mosqueFacilitiesHeader => 'مسجد کی سہولیات';
+
+  @override
+  String get janazaTitle => 'جنازہ';
+
+  @override
+  String get postFuneralAnnouncement => 'جنازے کا اعلان کریں';
+
+  @override
+  String get nameOfDeceasedLabel => 'متوفی کا نام';
+
+  @override
+  String get genderLabel => 'جنس';
+
+  @override
+  String get ageOptionalLabel => 'عمر (اختیاری)';
+
+  @override
+  String get locationNoteOptionalLabel => 'مقام نوٹ (اختیاری)';
+
+  @override
+  String get janazaDateTimeLabel => 'جنازے کی تاریخ اور وقت';
+
+  @override
+  String get familyDetailsOptional => 'خاندانی تفصیلات (اختیاری)';
+
+  @override
+  String get postAnnouncementAction => 'اعلان پوسٹ کریں';
+
+  @override
+  String get announcementWillExpire =>
+      'اعلان جنازے کے وقت گزرنے کے بعد خودبخود ختم ہو جائے گا۔';
+
+  @override
+  String get maleLabel => 'مرد';
+
+  @override
+  String get femaleLabel => 'عورت';
+
+  @override
+  String get notSpecifiedLabel => 'غیر متعین';
+
+  @override
+  String get fathersNameLabel => 'والد کا نام';
+
+  @override
+  String get mothersNameLabel => 'والدہ کا نام';
+
+  @override
+  String get husbandsNameLabel => 'شوہر کا نام';
+
+  @override
+  String get wifesNameLabel => 'بیوی کا نام';
+
+  @override
+  String get brothersNameLabel => 'بھائی کا نام';
+
+  @override
+  String get sistersNameLabel => 'بہن کا نام';
+
+  @override
+  String get optionalHint => 'اختیاری';
+
+  @override
+  String get ageHint => 'مثلاً 65';
+
+  @override
+  String get locationHint => 'مثلاً مین ہال، گیٹ 2';
+
+  @override
+  String get selectDateLabel => 'تاریخ منتخب کریں';
+
+  @override
+  String get selectTimeLabel => 'وقت منتخب کریں';
+
+  @override
+  String get announcementPostedTitle => 'اعلان پوسٹ ہوا';
+
+  @override
+  String get announcementPostedMessage => 'اللہ انہیں جنت عطا فرمائے۔ الفاتحة';
+
+  @override
+  String get errorEnterDeceasedName => 'متوفی کا نام درج کریں۔';
+
+  @override
+  String get errorNameTooLong => 'نام بہت لمبا ہے۔ زیادہ سے زیادہ 100 حروف۔';
+
+  @override
+  String get errorSelectDateAndTimeJanaza =>
+      'جنازے کی تاریخ اور وقت دونوں منتخب کریں۔';
+
+  @override
+  String get errorJanazaInPast => 'جنازے کا وقت ماضی میں نہیں ہو سکتا۔';
+
+  @override
+  String get errorMustBeSignedIn => 'آپ کو سائن ان ہونا ضروری ہے۔';
+
+  @override
+  String get errorNotAuthorizedMosque => 'آپ اس مسجد کے منتظم نہیں ہیں۔';
+
+  @override
+  String get errorInvalidNameLength =>
+      'نام غلط ہے۔ لمبائی چیک کریں (زیادہ سے زیادہ 100)۔';
+
+  @override
+  String get errorSomethingWentWrongTryAgain =>
+      'کچھ غلط ہوا۔ دوبارہ کوشش کریں۔';
+
+  @override
+  String get editJanazaTitle => 'جنازہ ترمیم کریں';
+
+  @override
+  String get updateAnnouncementDetails => 'اعلان کی تفصیلات اپ ڈیٹ کریں';
+
+  @override
+  String get announcementUpdatedTitle => 'اعلان اپ ڈیٹ ہوا';
+
+  @override
+  String get changesSavedMessage => 'تبدیلیاں کامیابی سے محفوظ ہوئیں۔';
+
+  @override
+  String get couldNotUpdateError => 'اپ ڈیٹ نہیں ہو سکا۔ دوبارہ کوشش کریں۔';
+
+  @override
+  String get selectBothDateTime => 'تاریخ اور وقت دونوں منتخب کریں۔';
+
+  @override
+  String get qadaPrayersTitle => 'قضا نمازیں';
+
+  @override
+  String get signInForQada => 'قضا نمازوں کو ٹریک کرنے کے لیے سائن ان کریں۔';
+
+  @override
+  String get failedToLoadQada => 'قضا ڈیٹا لوڈ کرنے میں ناکامی۔';
+
+  @override
+  String get addQadaDebtTitle => 'قضا قرض شامل کریں';
+
+  @override
+  String addQadaDebtQuestion(String prayer) {
+    return 'آپ کو ابھی کتنی $prayer نمازوں کی قضا کرنی ہے؟';
+  }
+
+  @override
+  String get qadaInfoBanner =>
+      'یہاں قضا نمازیں ادا کرنے سے آپ کی یومیہ سیریز متاثر نہیں ہوتی۔ سیریز صرف وقت پر روزانہ کی نمازوں سے شمار ہوتی ہے۔';
+
+  @override
+  String get totalPendingLabel => 'کل زیر التواء';
+
+  @override
+  String get madeUpLabel => 'قضا ہوئی';
+
+  @override
+  String pendingCountBadge(int count) {
+    return '$count زیر التواء';
+  }
+
+  @override
+  String madeUpCountBadge(int count) {
+    return '$count قضا ہوئی';
+  }
+
+  @override
+  String get markAsMadeUp => 'قضا کے طور پر نشان لگائیں';
+
+  @override
+  String get allCaughtUp => 'سب قضا ہو گئیں';
+
+  @override
+  String get addQadaDebtTooltip => 'قضا قرض شامل کریں';
 }

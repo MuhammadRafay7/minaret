@@ -4,6 +4,10 @@ import 'package:minaret/core/constants/app_defaults.dart';
 class UserProfile {
   final String uid;
   final String role;
+  final String? displayName;
+  final String? gender;
+  final String? phoneNumber;
+  final String? city;
   final List<String> followedMosques;
   final bool notificationsEnabled;
   final Map<String, dynamic> notificationPrefs;
@@ -12,6 +16,10 @@ class UserProfile {
   UserProfile({
     required this.uid,
     required this.role,
+    this.displayName,
+    this.gender,
+    this.phoneNumber,
+    this.city,
     required this.followedMosques,
     required this.notificationsEnabled,
     required this.notificationPrefs,
@@ -23,6 +31,10 @@ class UserProfile {
     return UserProfile(
       uid: doc.id,
       role: data['role'] as String? ?? kDefaultRole,
+      displayName: data['displayName'] as String?,
+      gender: data['gender'] as String?,
+      phoneNumber: data['phoneNumber'] as String?,
+      city: data['city'] as String?,
       followedMosques:
           ((data['followedMosques'] as List?) ?? []).cast<String>(),
       notificationsEnabled: data['notificationsEnabled'] as bool? ?? true,

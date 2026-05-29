@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import '../../core/theme.dart';
+import 'package:minaret/l10n/generated/app_localizations.dart';
 import '../../widgets/atelier_layout.dart';
 import '../../widgets/success_overlay.dart';
 import 'package:minaret/services/janaza_service.dart';
@@ -125,19 +126,20 @@ class _JanazaEditFormPageState extends State<JanazaEditFormPage> {
   }
 
   Future<void> _submit() async {
+    final l10n = AppLocalizations.of(context)!;
     final user = FirebaseAuth.instance.currentUser;
     if (user == null) {
-      _showSnack('YOU MUST BE SIGNED IN.');
+      _showSnack(l10n.errorMustBeSignedIn);
       return;
     }
 
     final deceasedName = _nameController.text.trim();
     if (deceasedName.isEmpty) {
-      _showSnack('ENTER THE NAME OF THE DECEASED.');
+      _showSnack(l10n.errorEnterDeceasedName);
       return;
     }
     if (_selectedDate == null || _selectedTime == null) {
-      _showSnack('SELECT BOTH DATE AND TIME.');
+      _showSnack(l10n.selectBothDateTime);
       return;
     }
 
@@ -172,12 +174,13 @@ class _JanazaEditFormPageState extends State<JanazaEditFormPage> {
 
       if (!mounted) return;
 
+      final l10nSuccess = AppLocalizations.of(context)!;
       showGeneralDialog(
         context: context,
         barrierDismissible: false,
-        pageBuilder: (ctx, _, __) => const SuccessOverlay(
-          title: 'ANNOUNCEMENT UPDATED',
-          message: 'Changes saved successfully.',
+        pageBuilder: (ctx, _, __) => SuccessOverlay(
+          title: l10nSuccess.announcementUpdatedTitle,
+          message: l10nSuccess.changesSavedMessage,
         ),
       );
 
@@ -186,7 +189,7 @@ class _JanazaEditFormPageState extends State<JanazaEditFormPage> {
       Navigator.of(context, rootNavigator: true).pop();
       Navigator.of(context).pop();
     } catch (e) {
-      _showSnack('COULD NOT UPDATE. TRY AGAIN.');
+      _showSnack(AppLocalizations.of(context)!.couldNotUpdateError);
     } finally {
       if (mounted) setState(() => _isSaving = false);
     }
@@ -199,12 +202,13 @@ class _JanazaEditFormPageState extends State<JanazaEditFormPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final dateLabel = _selectedDate != null
         ? DateFormat('EEE, d MMM yyyy').format(_selectedDate!)
-        : 'SELECT DATE';
+        : l10n.selectDateLabel;
     final timeLabel = _selectedTime != null
         ? _selectedTime!.format(context)
-        : 'SELECT TIME';
+        : l10n.selectTimeLabel;
 
     return Scaffold(
       backgroundColor: MinaretTheme.background,
@@ -238,7 +242,7 @@ class _JanazaEditFormPageState extends State<JanazaEditFormPage> {
               const SizedBox(height: 16),
 
               Text(
-                'EDIT JANAZA',
+                l10n.editJanazaTitle,
                 style: MinaretTheme.heading.copyWith(
                   fontSize: 34,
                   letterSpacing: 8,
@@ -246,7 +250,7 @@ class _JanazaEditFormPageState extends State<JanazaEditFormPage> {
                 ),
               ),
               Text(
-                'UPDATE ANNOUNCEMENT DETAILS',
+                l10n.updateAnnouncementDetails,
                 style: GoogleFonts.montserrat(
                   fontSize: 8,
                   letterSpacing: 3,
@@ -257,31 +261,31 @@ class _JanazaEditFormPageState extends State<JanazaEditFormPage> {
               const SizedBox(height: 50),
 
               // ── Deceased name ─────────────────────────────────────────────
-              _buildField('NAME OF DECEASED', _nameController),
+              _buildField(l10n.nameOfDeceasedLabel, _nameController),
 
               // ── Gender selector ───────────────────────────────────────────
-              _sectionLabel('GENDER'),
+              _sectionLabel(l10n.genderLabel),
               const SizedBox(height: 12),
               _buildGenderSelector(),
               const SizedBox(height: 30),
 
               // ── Age ───────────────────────────────────────────────────────
               _buildField(
-                'AGE (OPTIONAL)',
+                l10n.ageOptionalLabel,
                 _ageController,
-                hint: 'e.g. 65',
+                hint: l10n.ageHint,
                 keyboardType: TextInputType.number,
               ),
 
               // ── Location note ─────────────────────────────────────────────
               _buildField(
-                'LOCATION NOTE (OPTIONAL)',
+                l10n.locationNoteOptionalLabel,
                 _locationController,
-                hint: 'e.g. Main Prayer Hall, Gate 2',
+                hint: l10n.locationHint,
               ),
 
               // ── Date + Time ───────────────────────────────────────────────
-              _sectionLabel('JANAZA DATE & TIME'),
+              _sectionLabel(l10n.janazaDateTimeLabel),
               const SizedBox(height: 16),
               Row(
                 children: [
@@ -319,7 +323,7 @@ class _JanazaEditFormPageState extends State<JanazaEditFormPage> {
                     ),
                     const SizedBox(width: 8),
                     Text(
-                      'FAMILY DETAILS (OPTIONAL)',
+                      l10n.familyDetailsOptional,
                       style: GoogleFonts.montserrat(
                         fontSize: 7.5,
                         letterSpacing: 3,
@@ -369,7 +373,7 @@ class _JanazaEditFormPageState extends State<JanazaEditFormPage> {
                           ),
                         )
                       : Text(
-                          'SAVE CHANGES',
+                          l10n.saveChangesAction,
                           style: GoogleFonts.montserrat(
                             fontSize: 9,
                             letterSpacing: 5,
@@ -391,11 +395,11 @@ class _JanazaEditFormPageState extends State<JanazaEditFormPage> {
   Widget _buildGenderSelector() {
     return Row(
       children: [
-        _genderChip('MALE', 'male', Icons.male_rounded),
+        _genderChip(AppLocalizations.of(context)!.maleLabel, 'male', Icons.male_rounded),
         const SizedBox(width: 12),
-        _genderChip('FEMALE', 'female', Icons.female_rounded),
+        _genderChip(AppLocalizations.of(context)!.femaleLabel, 'female', Icons.female_rounded),
         const SizedBox(width: 12),
-        _genderChip('NOT SPECIFIED', '', Icons.remove),
+        _genderChip(AppLocalizations.of(context)!.notSpecifiedLabel, '', Icons.remove),
       ],
     );
   }
@@ -460,40 +464,40 @@ class _JanazaEditFormPageState extends State<JanazaEditFormPage> {
           children: [
             Expanded(
               child: _buildField(
-                'FATHER\'S NAME',
+                AppLocalizations.of(context)!.fathersNameLabel,
                 _fatherController,
-                hint: 'Optional',
+                hint: AppLocalizations.of(context)!.optionalHint,
               ),
             ),
             const SizedBox(width: 20),
             Expanded(
               child: _buildField(
-                'MOTHER\'S NAME',
+                AppLocalizations.of(context)!.mothersNameLabel,
                 _motherController,
-                hint: 'Optional',
+                hint: AppLocalizations.of(context)!.optionalHint,
               ),
             ),
           ],
         ),
         if (showHusband)
-          _buildField('HUSBAND\'S NAME', _husbandController, hint: 'Optional'),
+          _buildField(AppLocalizations.of(context)!.husbandsNameLabel, _husbandController, hint: AppLocalizations.of(context)!.optionalHint),
         if (showWife)
-          _buildField('WIFE\'S NAME', _wifeController, hint: 'Optional'),
+          _buildField(AppLocalizations.of(context)!.wifesNameLabel, _wifeController, hint: AppLocalizations.of(context)!.optionalHint),
         Row(
           children: [
             Expanded(
               child: _buildField(
-                'BROTHER\'S NAME',
+                AppLocalizations.of(context)!.brothersNameLabel,
                 _brotherController,
-                hint: 'Optional',
+                hint: AppLocalizations.of(context)!.optionalHint,
               ),
             ),
             const SizedBox(width: 20),
             Expanded(
               child: _buildField(
-                'SISTER\'S NAME',
+                AppLocalizations.of(context)!.sistersNameLabel,
                 _sisterController,
-                hint: 'Optional',
+                hint: AppLocalizations.of(context)!.optionalHint,
               ),
             ),
           ],

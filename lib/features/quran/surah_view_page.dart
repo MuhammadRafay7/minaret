@@ -42,6 +42,7 @@ class _SurahViewPageState extends State<SurahViewPage> {
   bool _isPlayingFullSurah = false;
   bool _isPlayingBismillah = false;
   final Map<int, GlobalKey> _ayahKeys = {};
+  int _lastVisibleAyahIndex = 0;
 
   final String bismillahText = 'بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ';
   final String bismillahAudioUrl =
@@ -51,6 +52,7 @@ class _SurahViewPageState extends State<SurahViewPage> {
   void initState() {
     super.initState();
     _surahFuture = _fetchFullSurah();
+    _scrollController.addListener(_onScroll);
 
     _audioPlayer.playerStateStream.listen((state) {
       if (state.processingState == ProcessingState.completed &&
@@ -69,17 +71,44 @@ class _SurahViewPageState extends State<SurahViewPage> {
     if (widget.initialAyahNumber == null) return;
     final index = widget.initialAyahNumber! - 1;
     final key = _ayahKeys[index];
-    if (key?.currentContext != null) {
+    final ctx = key?.currentContext;
+    if (ctx != null) {
       Scrollable.ensureVisible(
-        key!.currentContext!,
+        ctx,
         duration: const Duration(milliseconds: 600),
         curve: Curves.easeInOut,
       );
     }
   }
 
+  void _onScroll() {
+    if (_arabicAyahs.isEmpty) return;
+    int? first;
+    _ayahKeys.forEach((i, key) {
+      final ctx = key.currentContext;
+      if (ctx == null) return;
+      final box = ctx.findRenderObject() as RenderBox?;
+      if (box == null || !box.hasSize) return;
+      final y = box.localToGlobal(Offset.zero).dy;
+      if (y >= -50 && (first == null || i < first!)) first = i;
+    });
+    if (first != null) _lastVisibleAyahIndex = first!;
+  }
+
   @override
   void dispose() {
+    _scrollController.removeListener(_onScroll);
+    if (_arabicAyahs.isNotEmpty) {
+      OfflineCacheService.setJson(
+        'quran_last_position',
+        json.encode({
+          'surahNumber': widget.surahNumber,
+          'surahName': widget.surahName,
+          'editionId': widget.editionId,
+          'ayahIndex': _lastVisibleAyahIndex,
+        }),
+      ); // fire-and-forget; Hive writes to memory immediately
+    }
     _audioPlayer.dispose();
     _scrollController.dispose();
     super.dispose();
@@ -192,10 +221,13 @@ class _SurahViewPageState extends State<SurahViewPage> {
               return _buildErrorState(snapshot.error.toString());
             }
 
-            final data = snapshot.data?['data'] as List;
-            _arabicAyahs = data[0]['ayahs'];
-            _translationAyahs = data[1]['ayahs'];
-            _audioAyahs = data[2]['ayahs'];
+            final rawData = snapshot.data?['data'];
+            if (rawData is! List || rawData.length < 3) {
+              return _buildErrorState('Unexpected response format. Please retry.');
+            }
+            _arabicAyahs = (rawData[0] as Map?)?['ayahs'] as List? ?? [];
+            _translationAyahs = (rawData[1] as Map?)?['ayahs'] as List? ?? [];
+            _audioAyahs = (rawData[2] as Map?)?['ayahs'] as List? ?? [];
 
             if (widget.initialAyahNumber != null) {
               WidgetsBinding.instance.addPostFrameCallback(
