@@ -211,8 +211,7 @@
   "azanLabel": "اذان",
   "iqamahLabel": "اقامه",
   "unableToLoadMosque": "امکان بارگذاری مسجد وجود ندارد",
-  "failedToSyncPrayer": "همگام‌سازی نماز ناموفق بود. اتصال را بررسی کنید."
-,
+  "failedToSyncPrayer": "همگام‌سازی نماز ناموفق بود. اتصال را بررسی کنید.",
   "maintenanceTitle": "نگهداری سیستم",
   "maintenanceBody": "در حال انجام بهبودهای برنامه‌ریزی شده هستیم. لطفاً بعداً دوباره بررسی کنید.",
   "tryAgain": "دوباره امتحان کنید",
@@ -222,14 +221,18 @@
   "errorSavingProfile": "خطا در ذخیره پروفایل: {error}",
   "@errorSavingProfile": {
     "placeholders": {
-      "error": {"type": "String"}
+      "error": {
+        "type": "String"
+      }
     }
   },
   "announcementPosted": "اعلان با موفقیت منتشر شد.",
   "errorPostingAnnouncement": "خطا در انتشار اعلان: {error}",
   "@errorPostingAnnouncement": {
     "placeholders": {
-      "error": {"type": "String"}
+      "error": {
+        "type": "String"
+      }
     }
   },
   "reportIssue": "گزارش مشکل",
@@ -245,7 +248,9 @@
   "errorLaunchingDirections": "خطا در باز کردن مسیر: {error}",
   "@errorLaunchingDirections": {
     "placeholders": {
-      "error": {"type": "String"}
+      "error": {
+        "type": "String"
+      }
     }
   },
   "testPermissions": "آزمایش مجوزها",
@@ -267,8 +272,12 @@
   "ofTotalCompleted": "{completed} از {total} کامل",
   "@ofTotalCompleted": {
     "placeholders": {
-      "completed": {"type": "int"},
-      "total": {"type": "int"}
+      "completed": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
     }
   },
   "selectLocation": "انتخاب مکان",
@@ -276,7 +285,6 @@
   "useCurrentLocationGps": "استفاده از مکان فعلی (GPS)",
   "confirmWithPasswordPrompt": "رمز عبور را برای تأیید حذف وارد کنید",
   "reAuthFailedMessage": "احراز هویت مجدد ناموفق بود. لطفاً دوباره امتحان کنید.",
-
   "initializationError": "خطای راه‌اندازی",
   "somethingWentWrong": "مشکلی پیش آمد",
   "reloadApp": "بارگذاری مجدد برنامه",
@@ -285,7 +293,13 @@
   "azanBoard": "تابلوی اذان",
   "prayerBoard": "تابلوی نماز",
   "confidencePercent": "دقت {confidence}٪",
-  "@confidencePercent": { "placeholders": { "confidence": { "type": "int" } } },
+  "@confidencePercent": {
+    "placeholders": {
+      "confidence": {
+        "type": "int"
+      }
+    }
+  },
   "retakeAction": "تصویر مجدد",
   "applyAllAction": "اعمال همه",
   "estimatedAbbr": "تقریبی",
@@ -367,15 +381,168 @@
   "failedToLoadQada": "بارگذاری داده‌های قضا ناموفق بود.",
   "addQadaDebtTitle": "افزودن بدهی قضا",
   "addQadaDebtQuestion": "چند نماز {prayer} هنوز باید قضا کنید؟",
-  "@addQadaDebtQuestion": { "placeholders": { "prayer": { "type": "String" } } },
+  "@addQadaDebtQuestion": {
+    "placeholders": {
+      "prayer": {
+        "type": "String"
+      }
+    }
+  },
   "qadaInfoBanner": "تکمیل نمازهای قضا اینجا بر روند روزانه شما تأثیر نمی‌گذارد. روندها فقط نمازهای روزانه به‌موقع را حساب می‌کنند.",
   "totalPendingLabel": "مجموع معوقه",
   "madeUpLabel": "قضا شده",
   "pendingCountBadge": "{count} معوقه",
-  "@pendingCountBadge": { "placeholders": { "count": { "type": "int" } } },
+  "@pendingCountBadge": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "madeUpCountBadge": "{count} قضا شده",
-  "@madeUpCountBadge": { "placeholders": { "count": { "type": "int" } } },
+  "@madeUpCountBadge": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "markAsMadeUp": "علامت‌گذاری به‌عنوان قضا",
   "allCaughtUp": "همه قضا شد",
-  "addQadaDebtTooltip": "افزودن بدهی قضا"
+  "addQadaDebtTooltip": "افزودن بدهی قضا",
+  "progressMyProgress": "پیشرفت من",
+  "progressPoints": "امتیازها",
+  "progressHowToEarn": "کسب امتیاز",
+  "progressAllLevels": "همه سطح‌ها",
+  "progressCurrentBalance": "موجودی فعلی",
+  "progressLifetimeEarned": "مجموع کسب‌شده",
+  "progressDailyPoints": "امتیاز روزانه",
+  "progressMilestoneBonuses": "پاداش دستاوردها",
+  "progressUnlockedAtLevel": "باز شده در این سطح",
+  "progressStartingLevel": "سطح شروع",
+  "progressMaxLevel": "به بالاترین سطح رسیدید",
+  "progressMaxLevelShort": "بالاترین سطح",
+  "progressLevelLabel": "سطح {level}",
+  "progressLevelUpper": "سطح {level}",
+  "progressPointsToNext": "{points} امتیاز تا سطح {level}",
+  "progressPointsEarned": "{points} امتیاز کسب شد",
+  "progressMultiplier": "ضریب {m}×",
+  "unlockBasicTracking": "پیگیری پایه نماز",
+  "unlock7DayHistory": "تاریخچه ۷ روزه نماز",
+  "unlock30DayHistory": "تاریخچه ۳۰ روزه نماز",
+  "unlock60DayHistory": "تاریخچه ۶۰ روزه نماز",
+  "unlock90DayHistory": "تاریخچه ۹۰ روزه نماز",
+  "unlockProfileBadge": "نشان در جامعه مسجد",
+  "unlockQadaAnalytics": "تحلیل قضا — ببینید کدام نمازها را بیشتر از دست می‌دهید",
+  "unlockMultiplier15": "ضریب امتیاز ۱.۵×",
+  "unlockMultiplier2": "ضریب امتیاز ۲×",
+  "unlockMultiplier25": "ضریب امتیاز ۲.۵×",
+  "unlockWeeklyReport": "گزارش هفتگی عملکرد نماز",
+  "unlockGoldBadge": "نشان طلایی ویژه",
+  "earnPrayerCompleted": "هر نماز کامل‌شده",
+  "earnFajrBonus": "پاداش فجر",
+  "earnFullDay": "هر ۵ نماز در یک روز",
+  "earnQada": "نماز قضا",
+  "earnHadith": "خواندن حدیث روزانه",
+  "earnLogin": "ورود روزانه به برنامه",
+  "earnPrayerValue": "۱۰ امتیاز × ضریب",
+  "earnFajrValue": "+۵ امتیاز",
+  "earnFullDayValue": "+۵۰ امتیاز × ضریب",
+  "earnQadaValue": "۱۵ امتیاز",
+  "earnHadithValue": "۵ امتیاز (روزی یک‌بار)",
+  "earnLoginValue": "۲ امتیاز (روزی یک‌بار)",
+  "milestone7": "زنجیره ۷ روزه",
+  "milestone40": "زنجیره ۴۰ روزه (اربعین)",
+  "milestone100": "زنجیره ۱۰۰ روزه",
+  "milestoneFirstQada": "اولین قضا",
+  "milestoneFirstFullDay": "اولین روز کامل نماز",
+  "milestone7Value": "+۱۰۰ امتیاز (یک‌بار)",
+  "milestone40Value": "+۵۰۰ امتیاز (یک‌بار)",
+  "milestone100Value": "+۱٬۰۰۰ امتیاز (یک‌بار)",
+  "milestoneFirstQadaValue": "+۵۰ امتیاز (یک‌بار)",
+  "milestoneFirstFullDayValue": "+۷۵ امتیاز (یک‌بار)",
+  "weeklyReportTitle": "گزارش هفتگی",
+  "weeklyLast7Days": "۷ روز اخیر",
+  "weeklyCompletion": "تکمیل هفتگی",
+  "weeklyDayByDay": "روز به روز",
+  "weeklyPerPrayer": "هر نماز",
+  "weeklyToday": "امروز",
+  "weeklyPerfectAttendance": "حضور کامل",
+  "weeklyDaysActive": "{days}/۷ روز فعال",
+  "weeklyPrayersCount": "{count} از ۳۵ نماز",
+  "profileTitleShort": "نمایه",
+  "profileCommunity": "جامعه",
+  "profileImam": "امام",
+  "statPrayers": "نمازها",
+  "statStreak": "زنجیره",
+  "statRate": "نرخ",
+  "sectionAccount": "حساب",
+  "signOutLabel": "خروج",
+  "signOutSub": "پایان نشست فعلی",
+  "editProfileTitle": "ویرایش نمایه",
+  "manageProfileTitle": "مدیریت نمایه",
+  "sectionPersonalDetails": "مشخصات شخصی",
+  "fieldCountry": "کشور",
+  "fieldCity": "شهر",
+  "fieldFullName": "نام کامل",
+  "fieldPhone": "شماره تلفن",
+  "fieldOptional": "اختیاری",
+  "saveChangesLabel": "ذخیره تغییرات",
+  "genderOther": "دیگر",
+  "last60Days": "۶۰ روز اخیر",
+  "weeklyReportTooltip": "گزارش هفتگی",
+  "unlockLevelMsg": "برای باز کردن تاریخچه {days} روزه به سطح {level} برسید",
+  "ramadanLabel": "رمضان",
+  "ramadanDayOf": "روز {day} از {total}",
+  "ramadanBeginsInDays": "رمضان تا {days} روز دیگر آغاز می‌شود",
+  "ramadanBeginsTomorrow": "رمضان فردا آغاز می‌شود",
+  "ramadanSuhoorEndsIn": "پایان سحر تا",
+  "ramadanIftarIn": "افطار تا",
+  "ramadanTimeToIftar": "وقت افطار است",
+  "ramadanImsak": "امساک",
+  "ramadanSuhoor": "سحری",
+  "ramadanIftar": "افطار",
+  "eidMubarak": "عید مبارک",
+  "eidInDays": "عید تا {days} روز دیگر",
+  "ramadanOpen": "باز کردن رمضان",
+  "ramadanTonightNight": "امشب · شب {day}",
+  "ramadanFastingLog": "دفتر روزه",
+  "ramadanTaraweeh": "تراویح",
+  "ramadanDidYouFast": "آیا امروز روزه گرفتید؟",
+  "ramadanFasted": "روزه گرفتم",
+  "ramadanMissed": "نگرفتم",
+  "ramadanReasonTravel": "سفر",
+  "ramadanReasonIllness": "بیماری",
+  "ramadanReasonMenstruation": "عادت ماهانه",
+  "ramadanReasonOther": "دیگر",
+  "ramadanPrayedTaraweeh": "امشب نماز تراویح خواندید؟",
+  "ramadanDaysFasted": "روزهای روزه",
+  "ramadanTaraweehNights": "شب‌های تراویح",
+  "ramadanSettings": "تنظیمات رمضان",
+  "ramadanDayAdjustment": "تنظیم روز",
+  "ramadanDayAdjustmentHint": "اگر در منطقه شما هلال زودتر یا دیرتر دیده شد، یک روز جابه‌جا کنید",
+  "ramadanImsakBuffer": "فاصله امساک (دقیقه)",
+  "ramadanThemeLabel": "پوسته رمضان",
+  "ramadanZakatReminder": "زکات فطره را پیش از نماز عید بپردازید",
+  "ramadanSuhoorNotif": "پایان سحر تا {minutes} دقیقه",
+  "ramadanIftarSoonNotif": "{minutes} دقیقه تا افطار",
+  "ramadanIftarNowNotif": "وقت افطار است",
+  "ramadanKareem": "رمضان کریم",
+  "ramadanNotFasted": "ثبت نشده",
+  "ramadanToday": "امروز",
+  "progressRamadanRewards": "پاداش‌های رمضان",
+  "earnFast": "روزه گرفته‌شده",
+  "earnFastValue": "۳۰ امتیاز × ضریب",
+  "earnTaraweeh": "تراویح خوانده‌شده",
+  "earnTaraweehValue": "۲۰ امتیاز × ضریب",
+  "milestoneRamadan10": "۱۰ روزه گرفته‌شده",
+  "milestoneRamadan20": "۲۰ روزه گرفته‌شده",
+  "milestoneRamadanMonth": "روزه کل ماه",
+  "milestoneTaraweeh10": "۱۰ شب تراویح",
+  "milestoneTaraweeh27": "۲۷ شب تراویح",
+  "milestoneRamadan10Value": "+۱۵۰ امتیاز (یک‌بار)",
+  "milestoneRamadan20Value": "+۴۰۰ امتیاز (یک‌بار)",
+  "milestoneRamadanMonthValue": "+۱٬۰۰۰ امتیاز (یک‌بار)",
+  "milestoneTaraweeh10Value": "+۱۵۰ امتیاز (یک‌بار)",
+  "milestoneTaraweeh27Value": "+۵۰۰ امتیاز (یک‌بار)"
 }

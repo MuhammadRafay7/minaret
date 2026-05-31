@@ -210,8 +210,7 @@
   "azanLabel": "AZAN",
   "iqamahLabel": "IQAMAH",
   "unableToLoadMosque": "UNABLE TO LOAD MOSQUE",
-  "failedToSyncPrayer": "Failed to sync prayer. Check connection."
-,
+  "failedToSyncPrayer": "Failed to sync prayer. Check connection.",
   "maintenanceTitle": "SYSTEM MAINTENANCE",
   "maintenanceBody": "We are currently performing scheduled improvements. Please check back shortly.",
   "tryAgain": "Try again",
@@ -221,14 +220,18 @@
   "errorSavingProfile": "Error saving profile: {error}",
   "@errorSavingProfile": {
     "placeholders": {
-      "error": {"type": "String"}
+      "error": {
+        "type": "String"
+      }
     }
   },
   "announcementPosted": "Announcement posted successfully.",
   "errorPostingAnnouncement": "Error posting announcement: {error}",
   "@errorPostingAnnouncement": {
     "placeholders": {
-      "error": {"type": "String"}
+      "error": {
+        "type": "String"
+      }
     }
   },
   "reportIssue": "REPORT ISSUE",
@@ -244,7 +247,9 @@
   "errorLaunchingDirections": "Error launching directions: {error}",
   "@errorLaunchingDirections": {
     "placeholders": {
-      "error": {"type": "String"}
+      "error": {
+        "type": "String"
+      }
     }
   },
   "testPermissions": "Test Permissions",
@@ -266,8 +271,12 @@
   "ofTotalCompleted": "{completed} of {total} completed",
   "@ofTotalCompleted": {
     "placeholders": {
-      "completed": {"type": "int"},
-      "total": {"type": "int"}
+      "completed": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
     }
   },
   "selectLocation": "SELECT LOCATION",
@@ -275,11 +284,9 @@
   "useCurrentLocationGps": "Use Current Location (GPS)",
   "confirmWithPasswordPrompt": "Enter your password to confirm deletion",
   "reAuthFailedMessage": "Re-authentication failed. Please try again.",
-
   "initializationError": "Initialization Error",
   "somethingWentWrong": "Something went wrong",
   "reloadApp": "Reload app",
-
   "prayerTimesDetected": "PRAYER TIMES DETECTED",
   "iqamahBoard": "IQAMAH BOARD",
   "azanBoard": "AZAN BOARD",
@@ -287,7 +294,9 @@
   "confidencePercent": "{confidence}% CONFIDENCE",
   "@confidencePercent": {
     "placeholders": {
-      "confidence": { "type": "int" }
+      "confidence": {
+        "type": "int"
+      }
     }
   },
   "retakeAction": "RETAKE",
@@ -295,7 +304,6 @@
   "estimatedAbbr": "est.",
   "azanEstimateNote": "Azan times estimated: Fajr −15m · Dhuhr −10m · Asr −10m · Maghrib −5m · Isha −10m",
   "iqamahEstimateNote": "Iqamah times estimated: Fajr +20m · Dhuhr +15m · Asr +15m · Maghrib +10m · Isha +20m",
-
   "analogBoardError": "ANALOG CLOCK BOARDS CANNOT BE SCANNED — PHOTOGRAPH A DIGITAL PRAYER TIME DISPLAY",
   "noTimesFoundError": "NO PRAYER TIMES FOUND — TRY A CLEARER PHOTO",
   "couldNotReadTimesError": "COULD NOT READ PRAYER TIMES — TRY A CLEARER PHOTO",
@@ -327,7 +335,6 @@
   "fullNameLabel": "FULL NAME",
   "phoneNumberLabel": "PHONE NUMBER",
   "mosqueFacilitiesHeader": "MOSQUE FACILITIES",
-
   "janazaTitle": "JANAZA",
   "postFuneralAnnouncement": "POST A FUNERAL ANNOUNCEMENT",
   "nameOfDeceasedLabel": "NAME OF DECEASED",
@@ -362,14 +369,12 @@
   "errorNotAuthorizedMosque": "YOU DO NOT MANAGE THIS MOSQUE.",
   "errorInvalidNameLength": "INVALID NAME. CHECK LENGTH (MAX 100).",
   "errorSomethingWentWrongTryAgain": "SOMETHING WENT WRONG. TRY AGAIN.",
-
   "editJanazaTitle": "EDIT JANAZA",
   "updateAnnouncementDetails": "UPDATE ANNOUNCEMENT DETAILS",
   "announcementUpdatedTitle": "ANNOUNCEMENT UPDATED",
   "changesSavedMessage": "Changes saved successfully.",
   "couldNotUpdateError": "COULD NOT UPDATE. TRY AGAIN.",
   "selectBothDateTime": "SELECT BOTH DATE AND TIME.",
-
   "qadaPrayersTitle": "QADA PRAYERS",
   "signInForQada": "Sign in to track Qada prayers.",
   "failedToLoadQada": "Failed to load Qada data.",
@@ -377,7 +382,9 @@
   "addQadaDebtQuestion": "How many {prayer} prayers do you still need to make up?",
   "@addQadaDebtQuestion": {
     "placeholders": {
-      "prayer": { "type": "String" }
+      "prayer": {
+        "type": "String"
+      }
     }
   },
   "qadaInfoBanner": "Completing Qada prayers here does not affect your daily streak. Streaks only count on-time daily prayers.",
@@ -386,16 +393,262 @@
   "pendingCountBadge": "{count} pending",
   "@pendingCountBadge": {
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   },
   "madeUpCountBadge": "{count} made up",
   "@madeUpCountBadge": {
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   },
   "markAsMadeUp": "Mark as Made Up",
   "allCaughtUp": "All caught up",
-  "addQadaDebtTooltip": "Add Qada debt"
+  "addQadaDebtTooltip": "Add Qada debt",
+  "progressMyProgress": "My Progress",
+  "progressPoints": "Points",
+  "progressHowToEarn": "HOW TO EARN POINTS",
+  "progressAllLevels": "ALL LEVELS",
+  "progressCurrentBalance": "CURRENT BALANCE",
+  "progressLifetimeEarned": "LIFETIME EARNED",
+  "progressDailyPoints": "Daily Points",
+  "progressMilestoneBonuses": "Milestone Bonuses",
+  "progressUnlockedAtLevel": "UNLOCKED AT THIS LEVEL",
+  "progressStartingLevel": "Starting level",
+  "progressMaxLevel": "Maximum level reached",
+  "progressMaxLevelShort": "Max level",
+  "progressLevelLabel": "Level {level}",
+  "@progressLevelLabel": {
+    "placeholders": {
+      "level": {
+        "type": "Object"
+      }
+    }
+  },
+  "progressLevelUpper": "LEVEL {level}",
+  "@progressLevelUpper": {
+    "placeholders": {
+      "level": {
+        "type": "Object"
+      }
+    }
+  },
+  "progressPointsToNext": "{points} pts to Level {level}",
+  "@progressPointsToNext": {
+    "placeholders": {
+      "points": {
+        "type": "Object"
+      },
+      "level": {
+        "type": "Object"
+      }
+    }
+  },
+  "progressPointsEarned": "{points} points earned",
+  "@progressPointsEarned": {
+    "placeholders": {
+      "points": {
+        "type": "Object"
+      }
+    }
+  },
+  "progressMultiplier": "{m}× multiplier",
+  "@progressMultiplier": {
+    "placeholders": {
+      "m": {
+        "type": "Object"
+      }
+    }
+  },
+  "unlockBasicTracking": "Basic prayer tracking",
+  "unlock7DayHistory": "7-day prayer history",
+  "unlock30DayHistory": "30-day prayer history",
+  "unlock60DayHistory": "60-day prayer history",
+  "unlock90DayHistory": "90-day prayer history",
+  "unlockProfileBadge": "Profile badge in mosque community",
+  "unlockQadaAnalytics": "Qada analytics — see which prayers you miss most",
+  "unlockMultiplier15": "1.5× points multiplier",
+  "unlockMultiplier2": "2× points multiplier",
+  "unlockMultiplier25": "2.5× points multiplier",
+  "unlockWeeklyReport": "Weekly prayer performance report",
+  "unlockGoldBadge": "Exclusive gold profile badge",
+  "earnPrayerCompleted": "Each prayer completed",
+  "earnFajrBonus": "Fajr bonus",
+  "earnFullDay": "All 5 prayers in a day",
+  "earnQada": "Qada makeup prayer",
+  "earnHadith": "Daily Hadith read",
+  "earnLogin": "Daily app login",
+  "earnPrayerValue": "10 pts × multiplier",
+  "earnFajrValue": "+5 pts",
+  "earnFullDayValue": "+50 pts × multiplier",
+  "earnQadaValue": "15 pts",
+  "earnHadithValue": "5 pts (once/day)",
+  "earnLoginValue": "2 pts (once/day)",
+  "milestone7": "7-day prayer streak",
+  "milestone40": "40-day streak (Arba'een)",
+  "milestone100": "100-day streak",
+  "milestoneFirstQada": "First Qada makeup",
+  "milestoneFirstFullDay": "First full prayer day",
+  "milestone7Value": "+100 pts (one time)",
+  "milestone40Value": "+500 pts (one time)",
+  "milestone100Value": "+1,000 pts (one time)",
+  "milestoneFirstQadaValue": "+50 pts (one time)",
+  "milestoneFirstFullDayValue": "+75 pts (one time)",
+  "weeklyReportTitle": "Weekly Report",
+  "weeklyLast7Days": "Last 7 Days",
+  "weeklyCompletion": "Weekly Completion",
+  "weeklyDayByDay": "DAY BY DAY",
+  "weeklyPerPrayer": "PER PRAYER",
+  "weeklyToday": "Today",
+  "weeklyPerfectAttendance": "Perfect attendance",
+  "weeklyDaysActive": "{days}/7 days active",
+  "@weeklyDaysActive": {
+    "placeholders": {
+      "days": {
+        "type": "Object"
+      }
+    }
+  },
+  "weeklyPrayersCount": "{count} of 35 prayers",
+  "@weeklyPrayersCount": {
+    "placeholders": {
+      "count": {
+        "type": "Object"
+      }
+    }
+  },
+  "profileTitleShort": "PROFILE",
+  "profileCommunity": "COMMUNITY",
+  "profileImam": "IMAM",
+  "statPrayers": "Prayers",
+  "statStreak": "Streak",
+  "statRate": "Rate",
+  "sectionAccount": "ACCOUNT",
+  "signOutLabel": "Sign Out",
+  "signOutSub": "End your current session",
+  "editProfileTitle": "Edit Profile",
+  "manageProfileTitle": "Manage Profile",
+  "sectionPersonalDetails": "PERSONAL DETAILS",
+  "fieldCountry": "Country",
+  "fieldCity": "City",
+  "fieldFullName": "Full Name",
+  "fieldPhone": "Phone Number",
+  "fieldOptional": "Optional",
+  "saveChangesLabel": "Save Changes",
+  "genderOther": "Other",
+  "last60Days": "Last 60 Days",
+  "weeklyReportTooltip": "Weekly Report",
+  "unlockLevelMsg": "Reach Level {level} to unlock {days}-day history",
+  "@unlockLevelMsg": {
+    "placeholders": {
+      "level": {
+        "type": "Object"
+      },
+      "days": {
+        "type": "Object"
+      }
+    }
+  },
+  "ramadanLabel": "RAMADAN",
+  "ramadanDayOf": "Day {day} of {total}",
+  "@ramadanDayOf": {
+    "placeholders": {
+      "day": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "ramadanBeginsInDays": "Ramadan begins in {days} days",
+  "@ramadanBeginsInDays": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "ramadanBeginsTomorrow": "Ramadan begins tomorrow",
+  "ramadanSuhoorEndsIn": "Suhoor ends in",
+  "ramadanIftarIn": "Iftar in",
+  "ramadanTimeToIftar": "Time to break your fast",
+  "ramadanImsak": "IMSAK",
+  "ramadanSuhoor": "SUHOOR",
+  "ramadanIftar": "IFTAR",
+  "eidMubarak": "Eid Mubarak",
+  "eidInDays": "Eid in {days} days",
+  "@eidInDays": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "ramadanOpen": "OPEN RAMADAN",
+  "ramadanTonightNight": "Tonight · Night {day}",
+  "@ramadanTonightNight": {
+    "placeholders": {
+      "day": {
+        "type": "int"
+      }
+    }
+  },
+  "ramadanFastingLog": "Fasting Log",
+  "ramadanTaraweeh": "Taraweeh",
+  "ramadanDidYouFast": "Did you keep today's fast?",
+  "ramadanFasted": "Fasted",
+  "ramadanMissed": "Missed",
+  "ramadanReasonTravel": "Travelling",
+  "ramadanReasonIllness": "Illness",
+  "ramadanReasonMenstruation": "Menstruation",
+  "ramadanReasonOther": "Other",
+  "ramadanPrayedTaraweeh": "Prayed Taraweeh tonight?",
+  "ramadanDaysFasted": "Days fasted",
+  "ramadanTaraweehNights": "Taraweeh nights",
+  "ramadanSettings": "Ramadan Settings",
+  "ramadanDayAdjustment": "Day adjustment",
+  "ramadanDayAdjustmentHint": "Shift by a day if your area sighted the moon earlier or later",
+  "ramadanImsakBuffer": "Imsak buffer (minutes)",
+  "ramadanThemeLabel": "Ramadan theme",
+  "ramadanZakatReminder": "Give Zakat al-Fitr before the Eid prayer",
+  "ramadanSuhoorNotif": "Suhoor ends in {minutes} minutes",
+  "@ramadanSuhoorNotif": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "ramadanIftarSoonNotif": "{minutes} minutes until iftar",
+  "@ramadanIftarSoonNotif": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "ramadanIftarNowNotif": "Time to break your fast",
+  "ramadanKareem": "Ramadan Kareem",
+  "ramadanNotFasted": "Not logged",
+  "ramadanToday": "Today",
+  "progressRamadanRewards": "Ramadan Rewards",
+  "earnFast": "Fast kept",
+  "earnFastValue": "30 pts × multiplier",
+  "earnTaraweeh": "Taraweeh prayed",
+  "earnTaraweehValue": "20 pts × multiplier",
+  "milestoneRamadan10": "10 fasts kept",
+  "milestoneRamadan20": "20 fasts kept",
+  "milestoneRamadanMonth": "Fasted the whole month",
+  "milestoneTaraweeh10": "10 nights of Taraweeh",
+  "milestoneTaraweeh27": "27 nights of Taraweeh",
+  "milestoneRamadan10Value": "+150 pts (one time)",
+  "milestoneRamadan20Value": "+400 pts (one time)",
+  "milestoneRamadanMonthValue": "+1,000 pts (one time)",
+  "milestoneTaraweeh10Value": "+150 pts (one time)",
+  "milestoneTaraweeh27Value": "+500 pts (one time)"
 }

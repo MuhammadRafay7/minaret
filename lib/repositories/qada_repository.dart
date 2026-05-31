@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'prayer_repository.dart';
+import '../services/coin_service.dart';
 
 const _prayers = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
 
@@ -82,9 +83,16 @@ class QadaRepository {
   // so it never affects streak calculations.
   Future<void> logMakeUp(String prayerName) async {
     if (_uid.isEmpty) return;
+
+    final snap = await _doc.get();
+    final isFirstEver = !snap.exists ||
+        ((snap.data() as Map<String, dynamic>?)?['completedQada'] == null);
+
     await _doc.set({
       'completedQada': {prayerName: FieldValue.increment(1)},
     }, SetOptions(merge: true));
+
+    CoinService.instance.onQadaMakeUp(isFirstEver);
   }
 
   Future<void> addManualDebt(String prayerName, int count) async {

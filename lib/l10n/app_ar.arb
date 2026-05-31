@@ -210,8 +210,7 @@
   "azanLabel": "أذان",
   "iqamahLabel": "إقامة",
   "unableToLoadMosque": "تعذّر تحميل المسجد",
-  "failedToSyncPrayer": "فشل مزامنة الصلاة. تحقق من الاتصال."
-,
+  "failedToSyncPrayer": "فشل مزامنة الصلاة. تحقق من الاتصال.",
   "maintenanceTitle": "صيانة النظام",
   "maintenanceBody": "نقوم حاليًا بإجراء تحسينات مجدولة. يُرجى التحقق مجددًا قريبًا.",
   "tryAgain": "حاول مجدداً",
@@ -221,14 +220,18 @@
   "errorSavingProfile": "خطأ في حفظ الملف الشخصي: {error}",
   "@errorSavingProfile": {
     "placeholders": {
-      "error": {"type": "String"}
+      "error": {
+        "type": "String"
+      }
     }
   },
   "announcementPosted": "تم نشر الإعلان بنجاح.",
   "errorPostingAnnouncement": "خطأ في نشر الإعلان: {error}",
   "@errorPostingAnnouncement": {
     "placeholders": {
-      "error": {"type": "String"}
+      "error": {
+        "type": "String"
+      }
     }
   },
   "reportIssue": "الإبلاغ عن مشكلة",
@@ -244,7 +247,9 @@
   "errorLaunchingDirections": "خطأ في فتح الاتجاهات: {error}",
   "@errorLaunchingDirections": {
     "placeholders": {
-      "error": {"type": "String"}
+      "error": {
+        "type": "String"
+      }
     }
   },
   "testPermissions": "اختبار الأذونات",
@@ -266,8 +271,12 @@
   "ofTotalCompleted": "{completed} من {total} مكتملة",
   "@ofTotalCompleted": {
     "placeholders": {
-      "completed": {"type": "int"},
-      "total": {"type": "int"}
+      "completed": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
     }
   },
   "selectLocation": "اختر الموقع",
@@ -275,7 +284,6 @@
   "useCurrentLocationGps": "استخدام الموقع الحالي (GPS)",
   "confirmWithPasswordPrompt": "أدخل كلمة المرور لتأكيد الحذف",
   "reAuthFailedMessage": "فشل إعادة المصادقة. الرجاء المحاولة مرة أخرى.",
-
   "initializationError": "خطأ في التهيئة",
   "somethingWentWrong": "حدث خطأ ما",
   "reloadApp": "إعادة تشغيل التطبيق",
@@ -284,7 +292,13 @@
   "azanBoard": "لوحة الأذان",
   "prayerBoard": "لوحة الصلاة",
   "confidencePercent": "دقة {confidence}%",
-  "@confidencePercent": { "placeholders": { "confidence": { "type": "int" } } },
+  "@confidencePercent": {
+    "placeholders": {
+      "confidence": {
+        "type": "int"
+      }
+    }
+  },
   "retakeAction": "إعادة التصوير",
   "applyAllAction": "تطبيق الكل",
   "estimatedAbbr": "تقريبي",
@@ -366,15 +380,168 @@
   "failedToLoadQada": "فشل تحميل بيانات القضاء.",
   "addQadaDebtTitle": "إضافة دين قضاء",
   "addQadaDebtQuestion": "كم عدد صلوات {prayer} التي لا تزال بحاجة إلى قضاء؟",
-  "@addQadaDebtQuestion": { "placeholders": { "prayer": { "type": "String" } } },
+  "@addQadaDebtQuestion": {
+    "placeholders": {
+      "prayer": {
+        "type": "String"
+      }
+    }
+  },
   "qadaInfoBanner": "إتمام صلوات القضاء هنا لا يؤثر على سلسلة أيامك. السلاسل تُحتسب فقط للصلوات اليومية في وقتها.",
   "totalPendingLabel": "إجمالي المعلق",
   "madeUpLabel": "تم القضاء",
   "pendingCountBadge": "{count} معلق",
-  "@pendingCountBadge": { "placeholders": { "count": { "type": "int" } } },
+  "@pendingCountBadge": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "madeUpCountBadge": "{count} تم قضاؤها",
-  "@madeUpCountBadge": { "placeholders": { "count": { "type": "int" } } },
+  "@madeUpCountBadge": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "markAsMadeUp": "تحديد كمقضية",
   "allCaughtUp": "تم القضاء على الجميع",
-  "addQadaDebtTooltip": "إضافة دين قضاء"
+  "addQadaDebtTooltip": "إضافة دين قضاء",
+  "progressMyProgress": "تقدمي",
+  "progressPoints": "النقاط",
+  "progressHowToEarn": "كيفية كسب النقاط",
+  "progressAllLevels": "جميع المستويات",
+  "progressCurrentBalance": "الرصيد الحالي",
+  "progressLifetimeEarned": "إجمالي المكتسب",
+  "progressDailyPoints": "النقاط اليومية",
+  "progressMilestoneBonuses": "مكافآت الإنجازات",
+  "progressUnlockedAtLevel": "مفتوح في هذا المستوى",
+  "progressStartingLevel": "المستوى الابتدائي",
+  "progressMaxLevel": "تم بلوغ أعلى مستوى",
+  "progressMaxLevelShort": "أعلى مستوى",
+  "progressLevelLabel": "المستوى {level}",
+  "progressLevelUpper": "المستوى {level}",
+  "progressPointsToNext": "{points} نقطة للمستوى {level}",
+  "progressPointsEarned": "تم كسب {points} نقطة",
+  "progressMultiplier": "مضاعف {m}×",
+  "unlockBasicTracking": "تتبع الصلاة الأساسي",
+  "unlock7DayHistory": "سجل صلاة 7 أيام",
+  "unlock30DayHistory": "سجل صلاة 30 يوماً",
+  "unlock60DayHistory": "سجل صلاة 60 يوماً",
+  "unlock90DayHistory": "سجل صلاة 90 يوماً",
+  "unlockProfileBadge": "شارة في مجتمع المسجد",
+  "unlockQadaAnalytics": "تحليلات القضاء — شاهد أكثر الصلوات فواتاً",
+  "unlockMultiplier15": "مضاعف نقاط 1.5×",
+  "unlockMultiplier2": "مضاعف نقاط 2×",
+  "unlockMultiplier25": "مضاعف نقاط 2.5×",
+  "unlockWeeklyReport": "تقرير أداء الصلاة الأسبوعي",
+  "unlockGoldBadge": "شارة ذهبية حصرية",
+  "earnPrayerCompleted": "كل صلاة مكتملة",
+  "earnFajrBonus": "مكافأة الفجر",
+  "earnFullDay": "جميع الصلوات الخمس في يوم",
+  "earnQada": "صلاة القضاء",
+  "earnHadith": "قراءة الحديث اليومي",
+  "earnLogin": "تسجيل دخول يومي",
+  "earnPrayerValue": "10 نقاط × المضاعف",
+  "earnFajrValue": "+5 نقاط",
+  "earnFullDayValue": "+50 نقطة × المضاعف",
+  "earnQadaValue": "15 نقطة",
+  "earnHadithValue": "5 نقاط (مرة/يوم)",
+  "earnLoginValue": "نقطتان (مرة/يوم)",
+  "milestone7": "سلسلة صلاة 7 أيام",
+  "milestone40": "سلسلة 40 يوماً (الأربعين)",
+  "milestone100": "سلسلة 100 يوم",
+  "milestoneFirstQada": "أول قضاء",
+  "milestoneFirstFullDay": "أول يوم صلاة كامل",
+  "milestone7Value": "+100 نقطة (مرة واحدة)",
+  "milestone40Value": "+500 نقطة (مرة واحدة)",
+  "milestone100Value": "+1,000 نقطة (مرة واحدة)",
+  "milestoneFirstQadaValue": "+50 نقطة (مرة واحدة)",
+  "milestoneFirstFullDayValue": "+75 نقطة (مرة واحدة)",
+  "weeklyReportTitle": "التقرير الأسبوعي",
+  "weeklyLast7Days": "آخر 7 أيام",
+  "weeklyCompletion": "الإنجاز الأسبوعي",
+  "weeklyDayByDay": "يوماً بيوم",
+  "weeklyPerPrayer": "لكل صلاة",
+  "weeklyToday": "اليوم",
+  "weeklyPerfectAttendance": "حضور كامل",
+  "weeklyDaysActive": "{days}/7 أيام نشطة",
+  "weeklyPrayersCount": "{count} من 35 صلاة",
+  "profileTitleShort": "الملف الشخصي",
+  "profileCommunity": "مجتمع",
+  "profileImam": "إمام",
+  "statPrayers": "الصلوات",
+  "statStreak": "السلسلة",
+  "statRate": "المعدل",
+  "sectionAccount": "الحساب",
+  "signOutLabel": "تسجيل الخروج",
+  "signOutSub": "إنهاء جلستك الحالية",
+  "editProfileTitle": "تعديل الملف الشخصي",
+  "manageProfileTitle": "إدارة الملف الشخصي",
+  "sectionPersonalDetails": "البيانات الشخصية",
+  "fieldCountry": "الدولة",
+  "fieldCity": "المدينة",
+  "fieldFullName": "الاسم الكامل",
+  "fieldPhone": "رقم الهاتف",
+  "fieldOptional": "اختياري",
+  "saveChangesLabel": "حفظ التغييرات",
+  "genderOther": "آخر",
+  "last60Days": "آخر 60 يوماً",
+  "weeklyReportTooltip": "التقرير الأسبوعي",
+  "unlockLevelMsg": "اصل إلى المستوى {level} لفتح سجل {days} يوم",
+  "ramadanLabel": "رمضان",
+  "ramadanDayOf": "اليوم {day} من {total}",
+  "ramadanBeginsInDays": "يبدأ رمضان خلال {days} أيام",
+  "ramadanBeginsTomorrow": "يبدأ رمضان غدًا",
+  "ramadanSuhoorEndsIn": "ينتهي السحور خلال",
+  "ramadanIftarIn": "الإفطار خلال",
+  "ramadanTimeToIftar": "حان وقت الإفطار",
+  "ramadanImsak": "الإمساك",
+  "ramadanSuhoor": "السحور",
+  "ramadanIftar": "الإفطار",
+  "eidMubarak": "عيد مبارك",
+  "eidInDays": "العيد خلال {days} أيام",
+  "ramadanOpen": "افتح رمضان",
+  "ramadanTonightNight": "الليلة · ليلة {day}",
+  "ramadanFastingLog": "سجل الصيام",
+  "ramadanTaraweeh": "التراويح",
+  "ramadanDidYouFast": "هل صمت اليوم؟",
+  "ramadanFasted": "صمت",
+  "ramadanMissed": "أفطرت",
+  "ramadanReasonTravel": "سفر",
+  "ramadanReasonIllness": "مرض",
+  "ramadanReasonMenstruation": "حيض",
+  "ramadanReasonOther": "أخرى",
+  "ramadanPrayedTaraweeh": "هل صليت التراويح الليلة؟",
+  "ramadanDaysFasted": "أيام الصيام",
+  "ramadanTaraweehNights": "ليالي التراويح",
+  "ramadanSettings": "إعدادات رمضان",
+  "ramadanDayAdjustment": "تعديل اليوم",
+  "ramadanDayAdjustmentHint": "عدّل يومًا إذا رُئي الهلال في منطقتك مبكرًا أو متأخرًا",
+  "ramadanImsakBuffer": "مدة الإمساك (دقائق)",
+  "ramadanThemeLabel": "مظهر رمضان",
+  "ramadanZakatReminder": "أخرج زكاة الفطر قبل صلاة العيد",
+  "ramadanSuhoorNotif": "ينتهي السحور خلال {minutes} دقيقة",
+  "ramadanIftarSoonNotif": "{minutes} دقيقة حتى الإفطار",
+  "ramadanIftarNowNotif": "حان وقت الإفطار",
+  "ramadanKareem": "رمضان كريم",
+  "ramadanNotFasted": "غير مسجل",
+  "ramadanToday": "اليوم",
+  "progressRamadanRewards": "مكافآت رمضان",
+  "earnFast": "صيام يوم",
+  "earnFastValue": "30 نقطة × المضاعف",
+  "earnTaraweeh": "صلاة التراويح",
+  "earnTaraweehValue": "20 نقطة × المضاعف",
+  "milestoneRamadan10": "صيام 10 أيام",
+  "milestoneRamadan20": "صيام 20 يوماً",
+  "milestoneRamadanMonth": "صيام الشهر كاملاً",
+  "milestoneTaraweeh10": "10 ليالٍ من التراويح",
+  "milestoneTaraweeh27": "27 ليلة من التراويح",
+  "milestoneRamadan10Value": "+150 نقطة (مرة واحدة)",
+  "milestoneRamadan20Value": "+400 نقطة (مرة واحدة)",
+  "milestoneRamadanMonthValue": "+1,000 نقطة (مرة واحدة)",
+  "milestoneTaraweeh10Value": "+150 نقطة (مرة واحدة)",
+  "milestoneTaraweeh27Value": "+500 نقطة (مرة واحدة)"
 }

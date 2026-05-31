@@ -473,7 +473,7 @@ class AppLocalizationsMs extends AppLocalizations {
   String get mosqueAlertsHere => 'Anda akan melihat amaran masjid di sini';
 
   @override
-  String get mosqueNotificationsLabel => 'Pemberitahuan Masjid';
+  String get mosqueNotificationsLabel => 'Pemberitahuan masjid';
 
   @override
   String get mosqueNotificationsSub => 'Lihat amaran dan laporan masjid';
@@ -1039,4 +1039,439 @@ class AppLocalizationsMs extends AppLocalizations {
 
   @override
   String get addQadaDebtTooltip => 'Tambah hutang qadha';
+
+  @override
+  String get progressMyProgress => 'Kemajuan Saya';
+
+  @override
+  String get progressPoints => 'Mata';
+
+  @override
+  String get progressHowToEarn => 'CARA MENDAPAT MATA';
+
+  @override
+  String get progressAllLevels => 'SEMUA TAHAP';
+
+  @override
+  String get progressCurrentBalance => 'BAKI SEMASA';
+
+  @override
+  String get progressLifetimeEarned => 'JUMLAH DIPEROLEH';
+
+  @override
+  String get progressDailyPoints => 'Mata Harian';
+
+  @override
+  String get progressMilestoneBonuses => 'Bonus Pencapaian';
+
+  @override
+  String get progressUnlockedAtLevel => 'DIBUKA DI TAHAP INI';
+
+  @override
+  String get progressStartingLevel => 'Tahap permulaan';
+
+  @override
+  String get progressMaxLevel => 'Tahap maksimum dicapai';
+
+  @override
+  String get progressMaxLevelShort => 'Tahap maks';
+
+  @override
+  String progressLevelLabel(Object level) {
+    return 'Tahap $level';
+  }
+
+  @override
+  String progressLevelUpper(Object level) {
+    return 'TAHAP $level';
+  }
+
+  @override
+  String progressPointsToNext(Object points, Object level) {
+    return '$points mata ke Tahap $level';
+  }
+
+  @override
+  String progressPointsEarned(Object points) {
+    return '$points mata diperoleh';
+  }
+
+  @override
+  String progressMultiplier(Object m) {
+    return 'pendarab $m×';
+  }
+
+  @override
+  String get unlockBasicTracking => 'Penjejakan solat asas';
+
+  @override
+  String get unlock7DayHistory => 'Sejarah solat 7 hari';
+
+  @override
+  String get unlock30DayHistory => 'Sejarah solat 30 hari';
+
+  @override
+  String get unlock60DayHistory => 'Sejarah solat 60 hari';
+
+  @override
+  String get unlock90DayHistory => 'Sejarah solat 90 hari';
+
+  @override
+  String get unlockProfileBadge => 'Lencana dalam komuniti masjid';
+
+  @override
+  String get unlockQadaAnalytics =>
+      'Analitik Qada — lihat solat yang paling kerap tertinggal';
+
+  @override
+  String get unlockMultiplier15 => 'Pendarab mata 1.5×';
+
+  @override
+  String get unlockMultiplier2 => 'Pendarab mata 2×';
+
+  @override
+  String get unlockMultiplier25 => 'Pendarab mata 2.5×';
+
+  @override
+  String get unlockWeeklyReport => 'Laporan prestasi solat mingguan';
+
+  @override
+  String get unlockGoldBadge => 'Lencana profil emas eksklusif';
+
+  @override
+  String get earnPrayerCompleted => 'Setiap solat selesai';
+
+  @override
+  String get earnFajrBonus => 'Bonus Subuh';
+
+  @override
+  String get earnFullDay => 'Semua 5 solat sehari';
+
+  @override
+  String get earnQada => 'Solat Qada';
+
+  @override
+  String get earnHadith => 'Baca Hadis harian';
+
+  @override
+  String get earnLogin => 'Log masuk aplikasi harian';
+
+  @override
+  String get earnPrayerValue => '10 mata × pendarab';
+
+  @override
+  String get earnFajrValue => '+5 mata';
+
+  @override
+  String get earnFullDayValue => '+50 mata × pendarab';
+
+  @override
+  String get earnQadaValue => '15 mata';
+
+  @override
+  String get earnHadithValue => '5 mata (sekali/hari)';
+
+  @override
+  String get earnLoginValue => '2 mata (sekali/hari)';
+
+  @override
+  String get milestone7 => 'Rentetan 7 hari';
+
+  @override
+  String get milestone40 => 'Rentetan 40 hari (Arba\'een)';
+
+  @override
+  String get milestone100 => 'Rentetan 100 hari';
+
+  @override
+  String get milestoneFirstQada => 'Qada pertama';
+
+  @override
+  String get milestoneFirstFullDay => 'Hari solat penuh pertama';
+
+  @override
+  String get milestone7Value => '+100 mata (sekali)';
+
+  @override
+  String get milestone40Value => '+500 mata (sekali)';
+
+  @override
+  String get milestone100Value => '+1,000 mata (sekali)';
+
+  @override
+  String get milestoneFirstQadaValue => '+50 mata (sekali)';
+
+  @override
+  String get milestoneFirstFullDayValue => '+75 mata (sekali)';
+
+  @override
+  String get weeklyReportTitle => 'Laporan Mingguan';
+
+  @override
+  String get weeklyLast7Days => '7 Hari Lepas';
+
+  @override
+  String get weeklyCompletion => 'Penyelesaian Mingguan';
+
+  @override
+  String get weeklyDayByDay => 'HARI DEMI HARI';
+
+  @override
+  String get weeklyPerPrayer => 'SETIAP SOLAT';
+
+  @override
+  String get weeklyToday => 'Hari ini';
+
+  @override
+  String get weeklyPerfectAttendance => 'Kehadiran sempurna';
+
+  @override
+  String weeklyDaysActive(Object days) {
+    return '$days/7 hari aktif';
+  }
+
+  @override
+  String weeklyPrayersCount(Object count) {
+    return '$count daripada 35 solat';
+  }
+
+  @override
+  String get profileTitleShort => 'PROFIL';
+
+  @override
+  String get profileCommunity => 'KOMUNITI';
+
+  @override
+  String get profileImam => 'IMAM';
+
+  @override
+  String get statPrayers => 'Solat';
+
+  @override
+  String get statStreak => 'Rentetan';
+
+  @override
+  String get statRate => 'Kadar';
+
+  @override
+  String get sectionAccount => 'AKAUN';
+
+  @override
+  String get signOutLabel => 'Log Keluar';
+
+  @override
+  String get signOutSub => 'Tamatkan sesi anda';
+
+  @override
+  String get editProfileTitle => 'Edit Profil';
+
+  @override
+  String get manageProfileTitle => 'Urus Profil';
+
+  @override
+  String get sectionPersonalDetails => 'BUTIRAN PERIBADI';
+
+  @override
+  String get fieldCountry => 'Negara';
+
+  @override
+  String get fieldCity => 'Bandar';
+
+  @override
+  String get fieldFullName => 'Nama Penuh';
+
+  @override
+  String get fieldPhone => 'Nombor Telefon';
+
+  @override
+  String get fieldOptional => 'Pilihan';
+
+  @override
+  String get saveChangesLabel => 'Simpan Perubahan';
+
+  @override
+  String get genderOther => 'Lain';
+
+  @override
+  String get last60Days => '60 Hari Lepas';
+
+  @override
+  String get weeklyReportTooltip => 'Laporan Mingguan';
+
+  @override
+  String unlockLevelMsg(Object level, Object days) {
+    return 'Capai Tahap $level untuk buka sejarah $days hari';
+  }
+
+  @override
+  String get ramadanLabel => 'RAMADAN';
+
+  @override
+  String ramadanDayOf(int day, int total) {
+    return 'Hari $day daripada $total';
+  }
+
+  @override
+  String ramadanBeginsInDays(int days) {
+    return 'Ramadan bermula dalam $days hari';
+  }
+
+  @override
+  String get ramadanBeginsTomorrow => 'Ramadan bermula esok';
+
+  @override
+  String get ramadanSuhoorEndsIn => 'Sahur tamat dalam';
+
+  @override
+  String get ramadanIftarIn => 'Berbuka dalam';
+
+  @override
+  String get ramadanTimeToIftar => 'Masa untuk berbuka puasa';
+
+  @override
+  String get ramadanImsak => 'IMSAK';
+
+  @override
+  String get ramadanSuhoor => 'SAHUR';
+
+  @override
+  String get ramadanIftar => 'BERBUKA';
+
+  @override
+  String get eidMubarak => 'Selamat Hari Raya';
+
+  @override
+  String eidInDays(int days) {
+    return 'Hari Raya dalam $days hari';
+  }
+
+  @override
+  String get ramadanOpen => 'BUKA RAMADAN';
+
+  @override
+  String ramadanTonightNight(int day) {
+    return 'Malam ini · Malam ke-$day';
+  }
+
+  @override
+  String get ramadanFastingLog => 'Rekod Puasa';
+
+  @override
+  String get ramadanTaraweeh => 'Terawih';
+
+  @override
+  String get ramadanDidYouFast => 'Adakah anda berpuasa hari ini?';
+
+  @override
+  String get ramadanFasted => 'Berpuasa';
+
+  @override
+  String get ramadanMissed => 'Tidak';
+
+  @override
+  String get ramadanReasonTravel => 'Bermusafir';
+
+  @override
+  String get ramadanReasonIllness => 'Sakit';
+
+  @override
+  String get ramadanReasonMenstruation => 'Haid';
+
+  @override
+  String get ramadanReasonOther => 'Lain-lain';
+
+  @override
+  String get ramadanPrayedTaraweeh => 'Solat Terawih malam ini?';
+
+  @override
+  String get ramadanDaysFasted => 'Hari berpuasa';
+
+  @override
+  String get ramadanTaraweehNights => 'Malam Terawih';
+
+  @override
+  String get ramadanSettings => 'Tetapan Ramadan';
+
+  @override
+  String get ramadanDayAdjustment => 'Pelarasan hari';
+
+  @override
+  String get ramadanDayAdjustmentHint =>
+      'Anjak satu hari jika kawasan anda melihat anak bulan lebih awal atau lewat';
+
+  @override
+  String get ramadanImsakBuffer => 'Tempoh imsak (minit)';
+
+  @override
+  String get ramadanThemeLabel => 'Tema Ramadan';
+
+  @override
+  String get ramadanZakatReminder => 'Tunaikan Zakat Fitrah sebelum solat Raya';
+
+  @override
+  String ramadanSuhoorNotif(int minutes) {
+    return 'Sahur tamat dalam $minutes minit';
+  }
+
+  @override
+  String ramadanIftarSoonNotif(int minutes) {
+    return '$minutes minit lagi untuk berbuka';
+  }
+
+  @override
+  String get ramadanIftarNowNotif => 'Masa untuk berbuka puasa';
+
+  @override
+  String get ramadanKareem => 'Ramadan Karim';
+
+  @override
+  String get ramadanNotFasted => 'Belum direkod';
+
+  @override
+  String get ramadanToday => 'Hari ini';
+
+  @override
+  String get progressRamadanRewards => 'Ganjaran Ramadan';
+
+  @override
+  String get earnFast => 'Puasa dilaksanakan';
+
+  @override
+  String get earnFastValue => '30 mata × pendarab';
+
+  @override
+  String get earnTaraweeh => 'Solat Terawih';
+
+  @override
+  String get earnTaraweehValue => '20 mata × pendarab';
+
+  @override
+  String get milestoneRamadan10 => '10 puasa dilaksanakan';
+
+  @override
+  String get milestoneRamadan20 => '20 puasa dilaksanakan';
+
+  @override
+  String get milestoneRamadanMonth => 'Puasa sebulan penuh';
+
+  @override
+  String get milestoneTaraweeh10 => '10 malam Terawih';
+
+  @override
+  String get milestoneTaraweeh27 => '27 malam Terawih';
+
+  @override
+  String get milestoneRamadan10Value => '+150 mata (sekali)';
+
+  @override
+  String get milestoneRamadan20Value => '+400 mata (sekali)';
+
+  @override
+  String get milestoneRamadanMonthValue => '+1,000 mata (sekali)';
+
+  @override
+  String get milestoneTaraweeh10Value => '+150 mata (sekali)';
+
+  @override
+  String get milestoneTaraweeh27Value => '+500 mata (sekali)';
 }

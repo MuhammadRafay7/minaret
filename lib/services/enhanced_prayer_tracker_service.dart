@@ -35,6 +35,9 @@ class EnhancedPrayerTrackerService {
   static Future<UserPrayerStats?> getCurrentUserStats() =>
       _repo.getCurrentUserStats();
 
+  static Future<UserPrayerStats?> refreshCurrentUserStats() =>
+      _repo.refreshCurrentUserStats();
+
   static Future<List<UserPrayerStats>> getLeaderboard({
     String sortBy = 'currentStreak',
     int limit = 10,

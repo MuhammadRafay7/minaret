@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import '../../repositories/progress_repository.dart';
 
 import '../../core/app_spacing.dart';
 import '../../core/theme.dart';
@@ -9,7 +10,7 @@ import '../../services/enhanced_prayer_tracker_service.dart';
 import '../../widgets/offline_banner.dart';
 import '../../widgets/premium_loading.dart';
 import '../../l10n/generated/app_localizations.dart';
-import 'qada_page.dart';
+import 'weekly_report_page.dart';
 
 class PrayerStatsPage extends StatefulWidget {
   const PrayerStatsPage({super.key});
@@ -22,7 +23,8 @@ class _PrayerStatsPageState extends State<PrayerStatsPage> {
   UserPrayerStats? _userStats;
   List<PrayerRecord>? _recentRecords;
   bool _isLoading = true;
-  String _selectedPeriod = '30'; // 7, 30, 90 days
+  String _selectedPeriod = '7'; // default; unlocked periods depend on level
+  int _userLevel = 1;
 
   @override
   void initState() {
@@ -30,13 +32,41 @@ class _PrayerStatsPageState extends State<PrayerStatsPage> {
     _loadData();
   }
 
+  // Returns the max history days this level is allowed to view.
+  static int _maxDaysForLevel(int level) {
+    if (level >= 5) return 90;
+    if (level >= 3) return 60;
+    if (level >= 2) return 30;
+    return 7;
+  }
+
+  // Minimum level required to select a period string.
+  static int _requiredLevelForPeriod(String period) {
+    if (period == '90') return 5;
+    if (period == '60') return 3;
+    if (period == '30') return 2;
+    return 1;
+  }
+
   Future<void> _loadData() async {
+    // Fetch level separately — a missing/inaccessible progress doc must
+    // never prevent prayer data from loading.
+    int level = 1;
+    try {
+      final progress = await ProgressRepository().getProgress();
+      level = progress.level;
+    } catch (_) {
+      // No progress doc yet or permission issue — default to level 1.
+    }
+
+    // Cap the selected period to what this level allows.
+    final maxDays = _maxDaysForLevel(level);
+    final requestedDays = int.parse(_selectedPeriod);
+    final effectiveDays = requestedDays > maxDays ? maxDays : requestedDays;
+
     try {
       final userStats = await EnhancedPrayerTrackerService.getCurrentUserStats();
-      
-      // Get recent records based on selected period
-      final days = int.parse(_selectedPeriod);
-      final startDate = DateTime.now().subtract(Duration(days: days));
+      final startDate = DateTime.now().subtract(Duration(days: effectiveDays));
       final recentRecords = await EnhancedPrayerTrackerService.getPrayerRecords(
         startDate: startDate,
         endDate: DateTime.now(),
@@ -44,6 +74,8 @@ class _PrayerStatsPageState extends State<PrayerStatsPage> {
 
       if (mounted) {
         setState(() {
+          _userLevel = level;
+          _selectedPeriod = effectiveDays.toString();
           _userStats = userStats;
           _recentRecords = recentRecords;
           _isLoading = false;
@@ -51,12 +83,30 @@ class _PrayerStatsPageState extends State<PrayerStatsPage> {
       }
     } catch (e) {
       debugPrint('Error loading prayer stats: $e');
-      if (mounted) {
-        setState(() {
-          _isLoading = false;
-        });
-      }
+      if (mounted) setState(() => _isLoading = false);
     }
+  }
+
+  static PopupMenuItem<String> _periodItem(String value, String label, int userLevel) {
+    final locked = userLevel < _requiredLevelForPeriod(value);
+    final required = _requiredLevelForPeriod(value);
+    return PopupMenuItem<String>(
+      value: value,
+      child: Row(
+        children: [
+          Expanded(child: Text(label)),
+          if (locked) ...[
+            const SizedBox(width: 8),
+            Text(
+              'Lv.$required',
+              style: const TextStyle(fontSize: 10, color: MinaretTheme.gold),
+            ),
+            const SizedBox(width: 4),
+            const Icon(Icons.lock_outline, size: 14, color: MinaretTheme.gold),
+          ],
+        ],
+      ),
+    );
   }
 
   @override
@@ -72,44 +122,59 @@ class _PrayerStatsPageState extends State<PrayerStatsPage> {
       );
     }
 
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final bg = isDark ? MinaretTheme.darkBackground : MinaretTheme.background;
+    final titleColor = isDark ? Colors.white : MinaretTheme.onyx;
+
     return Scaffold(
+      backgroundColor: bg,
       appBar: AppBar(
-        backgroundColor: MinaretTheme.emerald,
+        backgroundColor: bg,
         elevation: 0,
+        scrolledUnderElevation: 0,
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
-          icon: const Icon(Icons.arrow_back_ios_new,
-              size: 14, color: Colors.white),
+          icon: Icon(Icons.arrow_back_ios_new_rounded,
+              size: 18, color: titleColor),
         ),
         title: Text(
           l10n.prayerStatisticsTitle,
           style: MinaretTheme.heading.copyWith(
             fontSize: 20,
-            color: Colors.white,
+            color: titleColor,
             letterSpacing: 2,
           ),
         ),
         actions: [
-          IconButton(
-            tooltip: 'Qada Prayers',
-            icon: const Icon(Icons.pending_actions, color: Colors.white),
-            onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => const QadaPage()),
+          // Weekly report — Level 6+ only.
+          if (_userLevel >= 6)
+            IconButton(
+              tooltip: l10n.weeklyReportTooltip,
+              icon: const Icon(Icons.bar_chart_rounded, color: MinaretTheme.gold),
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const WeeklyReportPage()),
+              ),
             ),
-          ),
           PopupMenuButton<String>(
-            icon: const Icon(Icons.calendar_today, color: Colors.white),
+            icon: const Icon(Icons.calendar_today, color: MinaretTheme.gold),
             onSelected: (value) {
-              setState(() {
-                _selectedPeriod = value;
-              });
+              final required = _requiredLevelForPeriod(value);
+              if (_userLevel < required) {
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  content: Text(l10n.unlockLevelMsg(required, value)),
+                  behavior: SnackBarBehavior.floating,
+                ));
+                return;
+              }
+              setState(() => _selectedPeriod = value);
               _loadData();
             },
             itemBuilder: (context) => [
-              PopupMenuItem(value: '7', child: Text(l10n.last7Days)),
-              PopupMenuItem(value: '30', child: Text(l10n.last30Days)),
-              PopupMenuItem(value: '90', child: Text(l10n.last90Days)),
+              _periodItem('7', l10n.last7Days, _userLevel),
+              _periodItem('30', l10n.last30Days, _userLevel),
+              _periodItem('60', l10n.last60Days, _userLevel),
+              _periodItem('90', l10n.last90Days, _userLevel),
             ],
           ),
         ],

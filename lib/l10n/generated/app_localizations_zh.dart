@@ -1019,4 +1019,437 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get addQadaDebtTooltip => '添加补礼欠账';
+
+  @override
+  String get progressMyProgress => '我的进度';
+
+  @override
+  String get progressPoints => '积分';
+
+  @override
+  String get progressHowToEarn => '如何获得积分';
+
+  @override
+  String get progressAllLevels => '所有等级';
+
+  @override
+  String get progressCurrentBalance => '当前余额';
+
+  @override
+  String get progressLifetimeEarned => '累计获得';
+
+  @override
+  String get progressDailyPoints => '每日积分';
+
+  @override
+  String get progressMilestoneBonuses => '里程碑奖励';
+
+  @override
+  String get progressUnlockedAtLevel => '此等级已解锁';
+
+  @override
+  String get progressStartingLevel => '起始等级';
+
+  @override
+  String get progressMaxLevel => '已达最高等级';
+
+  @override
+  String get progressMaxLevelShort => '最高等级';
+
+  @override
+  String progressLevelLabel(Object level) {
+    return '等级 $level';
+  }
+
+  @override
+  String progressLevelUpper(Object level) {
+    return '等级 $level';
+  }
+
+  @override
+  String progressPointsToNext(Object points, Object level) {
+    return '距等级 $level 还差 $points 分';
+  }
+
+  @override
+  String progressPointsEarned(Object points) {
+    return '已获得 $points 分';
+  }
+
+  @override
+  String progressMultiplier(Object m) {
+    return '$m× 倍率';
+  }
+
+  @override
+  String get unlockBasicTracking => '基础祈祷记录';
+
+  @override
+  String get unlock7DayHistory => '7天祈祷记录';
+
+  @override
+  String get unlock30DayHistory => '30天祈祷记录';
+
+  @override
+  String get unlock60DayHistory => '60天祈祷记录';
+
+  @override
+  String get unlock90DayHistory => '90天祈祷记录';
+
+  @override
+  String get unlockProfileBadge => '清真寺社区徽章';
+
+  @override
+  String get unlockQadaAnalytics => '补拜分析 — 查看最常错过的祈祷';
+
+  @override
+  String get unlockMultiplier15 => '1.5倍积分倍率';
+
+  @override
+  String get unlockMultiplier2 => '2倍积分倍率';
+
+  @override
+  String get unlockMultiplier25 => '2.5倍积分倍率';
+
+  @override
+  String get unlockWeeklyReport => '每周祈祷表现报告';
+
+  @override
+  String get unlockGoldBadge => '专属金色徽章';
+
+  @override
+  String get earnPrayerCompleted => '每次完成祈祷';
+
+  @override
+  String get earnFajrBonus => '晨礼奖励';
+
+  @override
+  String get earnFullDay => '一天5次祈祷';
+
+  @override
+  String get earnQada => '补拜祈祷';
+
+  @override
+  String get earnHadith => '每日圣训阅读';
+
+  @override
+  String get earnLogin => '每日登录';
+
+  @override
+  String get earnPrayerValue => '10分 × 倍率';
+
+  @override
+  String get earnFajrValue => '+5分';
+
+  @override
+  String get earnFullDayValue => '+50分 × 倍率';
+
+  @override
+  String get earnQadaValue => '15分';
+
+  @override
+  String get earnHadithValue => '5分（每天一次）';
+
+  @override
+  String get earnLoginValue => '2分（每天一次）';
+
+  @override
+  String get milestone7 => '7天连续';
+
+  @override
+  String get milestone40 => '40天连续（阿尔巴因）';
+
+  @override
+  String get milestone100 => '100天连续';
+
+  @override
+  String get milestoneFirstQada => '首次补拜';
+
+  @override
+  String get milestoneFirstFullDay => '首个完整祈祷日';
+
+  @override
+  String get milestone7Value => '+100分（一次性）';
+
+  @override
+  String get milestone40Value => '+500分（一次性）';
+
+  @override
+  String get milestone100Value => '+1,000分（一次性）';
+
+  @override
+  String get milestoneFirstQadaValue => '+50分（一次性）';
+
+  @override
+  String get milestoneFirstFullDayValue => '+75分（一次性）';
+
+  @override
+  String get weeklyReportTitle => '每周报告';
+
+  @override
+  String get weeklyLast7Days => '最近7天';
+
+  @override
+  String get weeklyCompletion => '每周完成度';
+
+  @override
+  String get weeklyDayByDay => '逐日';
+
+  @override
+  String get weeklyPerPrayer => '按祈祷';
+
+  @override
+  String get weeklyToday => '今天';
+
+  @override
+  String get weeklyPerfectAttendance => '全勤';
+
+  @override
+  String weeklyDaysActive(Object days) {
+    return '$days/7 天活跃';
+  }
+
+  @override
+  String weeklyPrayersCount(Object count) {
+    return '35次祈祷中的$count次';
+  }
+
+  @override
+  String get profileTitleShort => '个人资料';
+
+  @override
+  String get profileCommunity => '社区';
+
+  @override
+  String get profileImam => '伊玛目';
+
+  @override
+  String get statPrayers => '祈祷';
+
+  @override
+  String get statStreak => '连续';
+
+  @override
+  String get statRate => '完成率';
+
+  @override
+  String get sectionAccount => '账户';
+
+  @override
+  String get signOutLabel => '退出登录';
+
+  @override
+  String get signOutSub => '结束当前会话';
+
+  @override
+  String get editProfileTitle => '编辑资料';
+
+  @override
+  String get manageProfileTitle => '管理资料';
+
+  @override
+  String get sectionPersonalDetails => '个人信息';
+
+  @override
+  String get fieldCountry => '国家';
+
+  @override
+  String get fieldCity => '城市';
+
+  @override
+  String get fieldFullName => '全名';
+
+  @override
+  String get fieldPhone => '电话号码';
+
+  @override
+  String get fieldOptional => '可选';
+
+  @override
+  String get saveChangesLabel => '保存更改';
+
+  @override
+  String get genderOther => '其他';
+
+  @override
+  String get last60Days => '最近60天';
+
+  @override
+  String get weeklyReportTooltip => '每周报告';
+
+  @override
+  String unlockLevelMsg(Object level, Object days) {
+    return '达到等级 $level 解锁 $days 天历史';
+  }
+
+  @override
+  String get ramadanLabel => '斋月';
+
+  @override
+  String ramadanDayOf(int day, int total) {
+    return '第 $day 天，共 $total 天';
+  }
+
+  @override
+  String ramadanBeginsInDays(int days) {
+    return '斋月将在 $days 天后开始';
+  }
+
+  @override
+  String get ramadanBeginsTomorrow => '斋月明天开始';
+
+  @override
+  String get ramadanSuhoorEndsIn => '封斋结束还有';
+
+  @override
+  String get ramadanIftarIn => '开斋还有';
+
+  @override
+  String get ramadanTimeToIftar => '开斋时间到了';
+
+  @override
+  String get ramadanImsak => '封斋';
+
+  @override
+  String get ramadanSuhoor => '封斋餐';
+
+  @override
+  String get ramadanIftar => '开斋';
+
+  @override
+  String get eidMubarak => '开斋节快乐';
+
+  @override
+  String eidInDays(int days) {
+    return '开斋节还有 $days 天';
+  }
+
+  @override
+  String get ramadanOpen => '打开斋月';
+
+  @override
+  String ramadanTonightNight(int day) {
+    return '今晚 · 第 $day 夜';
+  }
+
+  @override
+  String get ramadanFastingLog => '斋戒记录';
+
+  @override
+  String get ramadanTaraweeh => '泰拉威哈拜';
+
+  @override
+  String get ramadanDidYouFast => '你今天封斋了吗？';
+
+  @override
+  String get ramadanFasted => '已封斋';
+
+  @override
+  String get ramadanMissed => '未封斋';
+
+  @override
+  String get ramadanReasonTravel => '旅行';
+
+  @override
+  String get ramadanReasonIllness => '生病';
+
+  @override
+  String get ramadanReasonMenstruation => '经期';
+
+  @override
+  String get ramadanReasonOther => '其他';
+
+  @override
+  String get ramadanPrayedTaraweeh => '今晚做泰拉威哈拜了吗？';
+
+  @override
+  String get ramadanDaysFasted => '封斋天数';
+
+  @override
+  String get ramadanTaraweehNights => '泰拉威哈之夜';
+
+  @override
+  String get ramadanSettings => '斋月设置';
+
+  @override
+  String get ramadanDayAdjustment => '日期调整';
+
+  @override
+  String get ramadanDayAdjustmentHint => '如果你所在地区更早或更晚见到新月，可调整一天';
+
+  @override
+  String get ramadanImsakBuffer => '封斋缓冲（分钟）';
+
+  @override
+  String get ramadanThemeLabel => '斋月主题';
+
+  @override
+  String get ramadanZakatReminder => '在会礼前缴纳开斋捐';
+
+  @override
+  String ramadanSuhoorNotif(int minutes) {
+    return '封斋将在 $minutes 分钟后结束';
+  }
+
+  @override
+  String ramadanIftarSoonNotif(int minutes) {
+    return '距开斋还有 $minutes 分钟';
+  }
+
+  @override
+  String get ramadanIftarNowNotif => '开斋时间到了';
+
+  @override
+  String get ramadanKareem => '斋月吉庆';
+
+  @override
+  String get ramadanNotFasted => '未记录';
+
+  @override
+  String get ramadanToday => '今天';
+
+  @override
+  String get progressRamadanRewards => '斋月奖励';
+
+  @override
+  String get earnFast => '完成斋戒';
+
+  @override
+  String get earnFastValue => '30分 × 倍率';
+
+  @override
+  String get earnTaraweeh => '完成泰拉威哈';
+
+  @override
+  String get earnTaraweehValue => '20分 × 倍率';
+
+  @override
+  String get milestoneRamadan10 => '完成10次斋戒';
+
+  @override
+  String get milestoneRamadan20 => '完成20次斋戒';
+
+  @override
+  String get milestoneRamadanMonth => '完成整月斋戒';
+
+  @override
+  String get milestoneTaraweeh10 => '10晚泰拉威哈';
+
+  @override
+  String get milestoneTaraweeh27 => '27晚泰拉威哈';
+
+  @override
+  String get milestoneRamadan10Value => '+150分（一次性）';
+
+  @override
+  String get milestoneRamadan20Value => '+400分（一次性）';
+
+  @override
+  String get milestoneRamadanMonthValue => '+1,000分（一次性）';
+
+  @override
+  String get milestoneTaraweeh10Value => '+150分（一次性）';
+
+  @override
+  String get milestoneTaraweeh27Value => '+500分（一次性）';
 }

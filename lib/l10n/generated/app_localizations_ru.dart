@@ -1043,4 +1043,440 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get addQadaDebtTooltip => 'Добавить долг када';
+
+  @override
+  String get progressMyProgress => 'Мой прогресс';
+
+  @override
+  String get progressPoints => 'Очки';
+
+  @override
+  String get progressHowToEarn => 'КАК ЗАРАБОТАТЬ ОЧКИ';
+
+  @override
+  String get progressAllLevels => 'ВСЕ УРОВНИ';
+
+  @override
+  String get progressCurrentBalance => 'ТЕКУЩИЙ БАЛАНС';
+
+  @override
+  String get progressLifetimeEarned => 'ВСЕГО ЗАРАБОТАНО';
+
+  @override
+  String get progressDailyPoints => 'Ежедневные очки';
+
+  @override
+  String get progressMilestoneBonuses => 'Бонусы за достижения';
+
+  @override
+  String get progressUnlockedAtLevel => 'ОТКРЫТО НА ЭТОМ УРОВНЕ';
+
+  @override
+  String get progressStartingLevel => 'Начальный уровень';
+
+  @override
+  String get progressMaxLevel => 'Достигнут максимальный уровень';
+
+  @override
+  String get progressMaxLevelShort => 'Макс. уровень';
+
+  @override
+  String progressLevelLabel(Object level) {
+    return 'Уровень $level';
+  }
+
+  @override
+  String progressLevelUpper(Object level) {
+    return 'УРОВЕНЬ $level';
+  }
+
+  @override
+  String progressPointsToNext(Object points, Object level) {
+    return '$points оч. до уровня $level';
+  }
+
+  @override
+  String progressPointsEarned(Object points) {
+    return 'Заработано $points очков';
+  }
+
+  @override
+  String progressMultiplier(Object m) {
+    return 'множитель $m×';
+  }
+
+  @override
+  String get unlockBasicTracking => 'Базовый трекер молитв';
+
+  @override
+  String get unlock7DayHistory => 'История молитв за 7 дней';
+
+  @override
+  String get unlock30DayHistory => 'История молитв за 30 дней';
+
+  @override
+  String get unlock60DayHistory => 'История молитв за 60 дней';
+
+  @override
+  String get unlock90DayHistory => 'История молитв за 90 дней';
+
+  @override
+  String get unlockProfileBadge => 'Значок в сообществе мечети';
+
+  @override
+  String get unlockQadaAnalytics =>
+      'Аналитика када — какие молитвы вы пропускаете чаще';
+
+  @override
+  String get unlockMultiplier15 => 'Множитель очков 1.5×';
+
+  @override
+  String get unlockMultiplier2 => 'Множитель очков 2×';
+
+  @override
+  String get unlockMultiplier25 => 'Множитель очков 2.5×';
+
+  @override
+  String get unlockWeeklyReport => 'Еженедельный отчёт о молитвах';
+
+  @override
+  String get unlockGoldBadge => 'Эксклюзивный золотой значок';
+
+  @override
+  String get earnPrayerCompleted => 'За каждую молитву';
+
+  @override
+  String get earnFajrBonus => 'Бонус за Фаджр';
+
+  @override
+  String get earnFullDay => 'Все 5 молитв за день';
+
+  @override
+  String get earnQada => 'Восполнение молитвы (када)';
+
+  @override
+  String get earnHadith => 'Ежедневное чтение хадиса';
+
+  @override
+  String get earnLogin => 'Ежедневный вход';
+
+  @override
+  String get earnPrayerValue => '10 оч. × множитель';
+
+  @override
+  String get earnFajrValue => '+5 оч.';
+
+  @override
+  String get earnFullDayValue => '+50 оч. × множитель';
+
+  @override
+  String get earnQadaValue => '15 оч.';
+
+  @override
+  String get earnHadithValue => '5 оч. (раз/день)';
+
+  @override
+  String get earnLoginValue => '2 оч. (раз/день)';
+
+  @override
+  String get milestone7 => 'Серия молитв 7 дней';
+
+  @override
+  String get milestone40 => 'Серия 40 дней (Арбаин)';
+
+  @override
+  String get milestone100 => 'Серия 100 дней';
+
+  @override
+  String get milestoneFirstQada => 'Первое восполнение';
+
+  @override
+  String get milestoneFirstFullDay => 'Первый полный день молитв';
+
+  @override
+  String get milestone7Value => '+100 оч. (однократно)';
+
+  @override
+  String get milestone40Value => '+500 оч. (однократно)';
+
+  @override
+  String get milestone100Value => '+1 000 оч. (однократно)';
+
+  @override
+  String get milestoneFirstQadaValue => '+50 оч. (однократно)';
+
+  @override
+  String get milestoneFirstFullDayValue => '+75 оч. (однократно)';
+
+  @override
+  String get weeklyReportTitle => 'Недельный отчёт';
+
+  @override
+  String get weeklyLast7Days => 'Последние 7 дней';
+
+  @override
+  String get weeklyCompletion => 'Выполнение за неделю';
+
+  @override
+  String get weeklyDayByDay => 'ПО ДНЯМ';
+
+  @override
+  String get weeklyPerPrayer => 'ПО МОЛИТВАМ';
+
+  @override
+  String get weeklyToday => 'Сегодня';
+
+  @override
+  String get weeklyPerfectAttendance => 'Идеальная посещаемость';
+
+  @override
+  String weeklyDaysActive(Object days) {
+    return '$days/7 дней активны';
+  }
+
+  @override
+  String weeklyPrayersCount(Object count) {
+    return '$count из 35 молитв';
+  }
+
+  @override
+  String get profileTitleShort => 'ПРОФИЛЬ';
+
+  @override
+  String get profileCommunity => 'СООБЩЕСТВО';
+
+  @override
+  String get profileImam => 'ИМАМ';
+
+  @override
+  String get statPrayers => 'Молитвы';
+
+  @override
+  String get statStreak => 'Серия';
+
+  @override
+  String get statRate => 'Процент';
+
+  @override
+  String get sectionAccount => 'АККАУНТ';
+
+  @override
+  String get signOutLabel => 'Выйти';
+
+  @override
+  String get signOutSub => 'Завершить текущий сеанс';
+
+  @override
+  String get editProfileTitle => 'Редактировать профиль';
+
+  @override
+  String get manageProfileTitle => 'Управление профилем';
+
+  @override
+  String get sectionPersonalDetails => 'ЛИЧНЫЕ ДАННЫЕ';
+
+  @override
+  String get fieldCountry => 'Страна';
+
+  @override
+  String get fieldCity => 'Город';
+
+  @override
+  String get fieldFullName => 'Полное имя';
+
+  @override
+  String get fieldPhone => 'Телефон';
+
+  @override
+  String get fieldOptional => 'Необязательно';
+
+  @override
+  String get saveChangesLabel => 'Сохранить';
+
+  @override
+  String get genderOther => 'Другой';
+
+  @override
+  String get last60Days => 'Последние 60 дней';
+
+  @override
+  String get weeklyReportTooltip => 'Недельный отчёт';
+
+  @override
+  String unlockLevelMsg(Object level, Object days) {
+    return 'Достигните уровня $level, чтобы открыть историю за $days дней';
+  }
+
+  @override
+  String get ramadanLabel => 'РАМАДАН';
+
+  @override
+  String ramadanDayOf(int day, int total) {
+    return 'День $day из $total';
+  }
+
+  @override
+  String ramadanBeginsInDays(int days) {
+    return 'Рамадан начнётся через $days дн.';
+  }
+
+  @override
+  String get ramadanBeginsTomorrow => 'Рамадан начнётся завтра';
+
+  @override
+  String get ramadanSuhoorEndsIn => 'Сухур заканчивается через';
+
+  @override
+  String get ramadanIftarIn => 'Ифтар через';
+
+  @override
+  String get ramadanTimeToIftar => 'Пора разговляться';
+
+  @override
+  String get ramadanImsak => 'ИМСАК';
+
+  @override
+  String get ramadanSuhoor => 'СУХУР';
+
+  @override
+  String get ramadanIftar => 'ИФТАР';
+
+  @override
+  String get eidMubarak => 'Ид мубарак';
+
+  @override
+  String eidInDays(int days) {
+    return 'Ид через $days дн.';
+  }
+
+  @override
+  String get ramadanOpen => 'ОТКРЫТЬ РАМАДАН';
+
+  @override
+  String ramadanTonightNight(int day) {
+    return 'Сегодня · Ночь $day';
+  }
+
+  @override
+  String get ramadanFastingLog => 'Дневник поста';
+
+  @override
+  String get ramadanTaraweeh => 'Таравих';
+
+  @override
+  String get ramadanDidYouFast => 'Вы постились сегодня?';
+
+  @override
+  String get ramadanFasted => 'Постился';
+
+  @override
+  String get ramadanMissed => 'Пропущен';
+
+  @override
+  String get ramadanReasonTravel => 'Поездка';
+
+  @override
+  String get ramadanReasonIllness => 'Болезнь';
+
+  @override
+  String get ramadanReasonMenstruation => 'Менструация';
+
+  @override
+  String get ramadanReasonOther => 'Другое';
+
+  @override
+  String get ramadanPrayedTaraweeh => 'Совершили таравих этой ночью?';
+
+  @override
+  String get ramadanDaysFasted => 'Дней поста';
+
+  @override
+  String get ramadanTaraweehNights => 'Ночей таравиха';
+
+  @override
+  String get ramadanSettings => 'Настройки Рамадана';
+
+  @override
+  String get ramadanDayAdjustment => 'Корректировка дня';
+
+  @override
+  String get ramadanDayAdjustmentHint =>
+      'Сдвиньте на день, если в вашем регионе месяц увидели раньше или позже';
+
+  @override
+  String get ramadanImsakBuffer => 'Запас имсак (минуты)';
+
+  @override
+  String get ramadanThemeLabel => 'Тема Рамадана';
+
+  @override
+  String get ramadanZakatReminder =>
+      'Раздайте закят аль-фитр до праздничной молитвы';
+
+  @override
+  String ramadanSuhoorNotif(int minutes) {
+    return 'Сухур заканчивается через $minutes мин.';
+  }
+
+  @override
+  String ramadanIftarSoonNotif(int minutes) {
+    return '$minutes мин. до ифтара';
+  }
+
+  @override
+  String get ramadanIftarNowNotif => 'Пора разговляться';
+
+  @override
+  String get ramadanKareem => 'Рамадан карим';
+
+  @override
+  String get ramadanNotFasted => 'Не отмечено';
+
+  @override
+  String get ramadanToday => 'Сегодня';
+
+  @override
+  String get progressRamadanRewards => 'Награды Рамадана';
+
+  @override
+  String get earnFast => 'Соблюдён пост';
+
+  @override
+  String get earnFastValue => '30 оч. × множитель';
+
+  @override
+  String get earnTaraweeh => 'Совершён таравих';
+
+  @override
+  String get earnTaraweehValue => '20 оч. × множитель';
+
+  @override
+  String get milestoneRamadan10 => '10 постов соблюдено';
+
+  @override
+  String get milestoneRamadan20 => '20 постов соблюдено';
+
+  @override
+  String get milestoneRamadanMonth => 'Пост весь месяц';
+
+  @override
+  String get milestoneTaraweeh10 => '10 ночей таравиха';
+
+  @override
+  String get milestoneTaraweeh27 => '27 ночей таравиха';
+
+  @override
+  String get milestoneRamadan10Value => '+150 оч. (однократно)';
+
+  @override
+  String get milestoneRamadan20Value => '+400 оч. (однократно)';
+
+  @override
+  String get milestoneRamadanMonthValue => '+1 000 оч. (однократно)';
+
+  @override
+  String get milestoneTaraweeh10Value => '+150 оч. (однократно)';
+
+  @override
+  String get milestoneTaraweeh27Value => '+500 оч. (однократно)';
 }

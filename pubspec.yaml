@@ -41,6 +41,7 @@ dependencies:
   # Location
   geolocator: ^13.0.4
   geocoding: ^3.0.0
+  country_state_city: ^0.1.6 # standardized Country/State/City dataset (offline)
   web: ^1.1.0 # ← add this
 
   # Ads

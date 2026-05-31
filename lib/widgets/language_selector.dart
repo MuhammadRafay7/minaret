@@ -6,7 +6,11 @@ import '../core/language_provider.dart';
 import '../core/theme.dart';
 
 class LanguageSelector extends StatelessWidget {
-  const LanguageSelector({super.key});
+  /// When true, renders as a circular icon button (for use in app-bar corners),
+  /// matching the settings/back circular buttons. Otherwise renders a pill.
+  final bool compact;
+
+  const LanguageSelector({super.key, this.compact = false});
 
   @override
   Widget build(BuildContext context) {
@@ -15,43 +19,58 @@ class LanguageSelector extends StatelessWidget {
     final supported = AppLocalizations.supportedLocales;
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    return PopupMenuButton<String>(
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-        decoration: BoxDecoration(
-          color: isDark ? Colors.white.withValues(alpha: 0.05) : MinaretTheme.surface,
-          border: Border.all(
-            color: isDark ? Colors.white.withValues(alpha: 0.1) : MinaretTheme.dividerColor,
-            width: 0.8,
-          ),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              Icons.language_rounded,
-              size: 16,
-              color: MinaretTheme.gold.withValues(alpha: 0.7),
+    final Widget trigger = compact
+        ? Container(
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: isDark ? Colors.white.withValues(alpha: 0.06) : Colors.white,
             ),
-            const SizedBox(width: 6),
-            Text(
-              currentCode,
-              style: GoogleFonts.montserrat(
-                fontSize: 11,
-                letterSpacing: 2,
-                color: MinaretTheme.gold,
-                fontWeight: FontWeight.w900,
+            padding: const EdgeInsets.all(9),
+            child: const Icon(
+              Icons.language_rounded,
+              size: 20,
+              color: MinaretTheme.gold,
+            ),
+          )
+        : Container(
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+            decoration: BoxDecoration(
+              color: isDark ? Colors.white.withValues(alpha: 0.05) : MinaretTheme.surface,
+              border: Border.all(
+                color: isDark ? Colors.white.withValues(alpha: 0.1) : MinaretTheme.dividerColor,
+                width: 0.8,
               ),
             ),
-            const SizedBox(width: 4),
-            Icon(
-              Icons.keyboard_arrow_down_rounded,
-              size: 17,
-              color: isDark ? Colors.white38 : MinaretTheme.slate.withValues(alpha: 0.4),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  Icons.language_rounded,
+                  size: 16,
+                  color: MinaretTheme.gold.withValues(alpha: 0.7),
+                ),
+                const SizedBox(width: 6),
+                Text(
+                  currentCode,
+                  style: GoogleFonts.montserrat(
+                    fontSize: 11,
+                    letterSpacing: 2,
+                    color: MinaretTheme.gold,
+                    fontWeight: FontWeight.w900,
+                  ),
+                ),
+                const SizedBox(width: 4),
+                Icon(
+                  Icons.keyboard_arrow_down_rounded,
+                  size: 17,
+                  color: isDark ? Colors.white38 : MinaretTheme.slate.withValues(alpha: 0.4),
+                ),
+              ],
             ),
-          ],
-        ),
-      ),
+          );
+
+    return PopupMenuButton<String>(
+      tooltip: 'Language',
       offset: const Offset(0, 44),
       elevation: 6,
       shadowColor: Colors.black.withValues(alpha: 0.2),
@@ -68,6 +87,7 @@ class LanguageSelector extends StatelessWidget {
             ),
           )
           .toList(),
+      child: trigger,
     );
   }
 

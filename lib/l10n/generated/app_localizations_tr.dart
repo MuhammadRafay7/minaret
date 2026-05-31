@@ -476,7 +476,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get mosqueAlertsHere => 'Cami uyarılarını burada göreceksiniz';
 
   @override
-  String get mosqueNotificationsLabel => 'Cami Bildirimleri';
+  String get mosqueNotificationsLabel => 'Cami bildirimleri';
 
   @override
   String get mosqueNotificationsSub =>
@@ -1044,4 +1044,439 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get addQadaDebtTooltip => 'Kaza borcu ekle';
+
+  @override
+  String get progressMyProgress => 'İlerlemem';
+
+  @override
+  String get progressPoints => 'Puan';
+
+  @override
+  String get progressHowToEarn => 'PUAN NASIL KAZANILIR';
+
+  @override
+  String get progressAllLevels => 'TÜM SEVİYELER';
+
+  @override
+  String get progressCurrentBalance => 'GÜNCEL BAKİYE';
+
+  @override
+  String get progressLifetimeEarned => 'TOPLAM KAZANILAN';
+
+  @override
+  String get progressDailyPoints => 'Günlük Puan';
+
+  @override
+  String get progressMilestoneBonuses => 'Kilometre Taşı Ödülleri';
+
+  @override
+  String get progressUnlockedAtLevel => 'BU SEVİYEDE AÇILDI';
+
+  @override
+  String get progressStartingLevel => 'Başlangıç seviyesi';
+
+  @override
+  String get progressMaxLevel => 'En yüksek seviyeye ulaşıldı';
+
+  @override
+  String get progressMaxLevelShort => 'Maks seviye';
+
+  @override
+  String progressLevelLabel(Object level) {
+    return 'Seviye $level';
+  }
+
+  @override
+  String progressLevelUpper(Object level) {
+    return 'SEVİYE $level';
+  }
+
+  @override
+  String progressPointsToNext(Object points, Object level) {
+    return 'Seviye $level için $points puan';
+  }
+
+  @override
+  String progressPointsEarned(Object points) {
+    return '$points puan kazanıldı';
+  }
+
+  @override
+  String progressMultiplier(Object m) {
+    return '$m× çarpan';
+  }
+
+  @override
+  String get unlockBasicTracking => 'Temel namaz takibi';
+
+  @override
+  String get unlock7DayHistory => '7 günlük namaz geçmişi';
+
+  @override
+  String get unlock30DayHistory => '30 günlük namaz geçmişi';
+
+  @override
+  String get unlock60DayHistory => '60 günlük namaz geçmişi';
+
+  @override
+  String get unlock90DayHistory => '90 günlük namaz geçmişi';
+
+  @override
+  String get unlockProfileBadge => 'Cami topluluğunda rozet';
+
+  @override
+  String get unlockQadaAnalytics =>
+      'Kaza analizi — en çok kaçırdığın namazları gör';
+
+  @override
+  String get unlockMultiplier15 => '1.5× puan çarpanı';
+
+  @override
+  String get unlockMultiplier2 => '2× puan çarpanı';
+
+  @override
+  String get unlockMultiplier25 => '2.5× puan çarpanı';
+
+  @override
+  String get unlockWeeklyReport => 'Haftalık namaz performans raporu';
+
+  @override
+  String get unlockGoldBadge => 'Özel altın profil rozeti';
+
+  @override
+  String get earnPrayerCompleted => 'Tamamlanan her namaz';
+
+  @override
+  String get earnFajrBonus => 'Fajr bonusu';
+
+  @override
+  String get earnFullDay => 'Bir günde 5 namaz';
+
+  @override
+  String get earnQada => 'Kaza namazı';
+
+  @override
+  String get earnHadith => 'Günlük Hadis okuma';
+
+  @override
+  String get earnLogin => 'Günlük uygulama girişi';
+
+  @override
+  String get earnPrayerValue => '10 puan × çarpan';
+
+  @override
+  String get earnFajrValue => '+5 puan';
+
+  @override
+  String get earnFullDayValue => '+50 puan × çarpan';
+
+  @override
+  String get earnQadaValue => '15 puan';
+
+  @override
+  String get earnHadithValue => '5 puan (günde 1)';
+
+  @override
+  String get earnLoginValue => '2 puan (günde 1)';
+
+  @override
+  String get milestone7 => '7 günlük seri';
+
+  @override
+  String get milestone40 => '40 günlük seri (Erbain)';
+
+  @override
+  String get milestone100 => '100 günlük seri';
+
+  @override
+  String get milestoneFirstQada => 'İlk kaza';
+
+  @override
+  String get milestoneFirstFullDay => 'İlk tam namaz günü';
+
+  @override
+  String get milestone7Value => '+100 puan (tek sefer)';
+
+  @override
+  String get milestone40Value => '+500 puan (tek sefer)';
+
+  @override
+  String get milestone100Value => '+1.000 puan (tek sefer)';
+
+  @override
+  String get milestoneFirstQadaValue => '+50 puan (tek sefer)';
+
+  @override
+  String get milestoneFirstFullDayValue => '+75 puan (tek sefer)';
+
+  @override
+  String get weeklyReportTitle => 'Haftalık Rapor';
+
+  @override
+  String get weeklyLast7Days => 'Son 7 Gün';
+
+  @override
+  String get weeklyCompletion => 'Haftalık Tamamlama';
+
+  @override
+  String get weeklyDayByDay => 'GÜN GÜN';
+
+  @override
+  String get weeklyPerPrayer => 'NAMAZ BAŞINA';
+
+  @override
+  String get weeklyToday => 'Bugün';
+
+  @override
+  String get weeklyPerfectAttendance => 'Mükemmel katılım';
+
+  @override
+  String weeklyDaysActive(Object days) {
+    return '$days/7 gün aktif';
+  }
+
+  @override
+  String weeklyPrayersCount(Object count) {
+    return '35 namazdan $count';
+  }
+
+  @override
+  String get profileTitleShort => 'PROFİL';
+
+  @override
+  String get profileCommunity => 'TOPLULUK';
+
+  @override
+  String get profileImam => 'İMAM';
+
+  @override
+  String get statPrayers => 'Namazlar';
+
+  @override
+  String get statStreak => 'Seri';
+
+  @override
+  String get statRate => 'Oran';
+
+  @override
+  String get sectionAccount => 'HESAP';
+
+  @override
+  String get signOutLabel => 'Çıkış Yap';
+
+  @override
+  String get signOutSub => 'Geçerli oturumu sonlandır';
+
+  @override
+  String get editProfileTitle => 'Profili Düzenle';
+
+  @override
+  String get manageProfileTitle => 'Profili Yönet';
+
+  @override
+  String get sectionPersonalDetails => 'KİŞİSEL BİLGİLER';
+
+  @override
+  String get fieldCountry => 'Ülke';
+
+  @override
+  String get fieldCity => 'Şehir';
+
+  @override
+  String get fieldFullName => 'Tam Ad';
+
+  @override
+  String get fieldPhone => 'Telefon Numarası';
+
+  @override
+  String get fieldOptional => 'İsteğe bağlı';
+
+  @override
+  String get saveChangesLabel => 'Değişiklikleri Kaydet';
+
+  @override
+  String get genderOther => 'Diğer';
+
+  @override
+  String get last60Days => 'Son 60 Gün';
+
+  @override
+  String get weeklyReportTooltip => 'Haftalık Rapor';
+
+  @override
+  String unlockLevelMsg(Object level, Object days) {
+    return '$days günlük geçmişi açmak için Seviye $level\'e ulaşın';
+  }
+
+  @override
+  String get ramadanLabel => 'RAMAZAN';
+
+  @override
+  String ramadanDayOf(int day, int total) {
+    return '$total günün $day. günü';
+  }
+
+  @override
+  String ramadanBeginsInDays(int days) {
+    return 'Ramazan $days gün sonra başlıyor';
+  }
+
+  @override
+  String get ramadanBeginsTomorrow => 'Ramazan yarın başlıyor';
+
+  @override
+  String get ramadanSuhoorEndsIn => 'Sahurun bitmesine';
+
+  @override
+  String get ramadanIftarIn => 'İftara';
+
+  @override
+  String get ramadanTimeToIftar => 'Orucunu açma vakti';
+
+  @override
+  String get ramadanImsak => 'İMSAK';
+
+  @override
+  String get ramadanSuhoor => 'SAHUR';
+
+  @override
+  String get ramadanIftar => 'İFTAR';
+
+  @override
+  String get eidMubarak => 'Bayramınız mübarek olsun';
+
+  @override
+  String eidInDays(int days) {
+    return 'Bayrama $days gün';
+  }
+
+  @override
+  String get ramadanOpen => 'RAMAZAN\'I AÇ';
+
+  @override
+  String ramadanTonightNight(int day) {
+    return 'Bu gece · $day. gece';
+  }
+
+  @override
+  String get ramadanFastingLog => 'Oruç Kaydı';
+
+  @override
+  String get ramadanTaraweeh => 'Teravih';
+
+  @override
+  String get ramadanDidYouFast => 'Bugün oruç tuttun mu?';
+
+  @override
+  String get ramadanFasted => 'Tuttum';
+
+  @override
+  String get ramadanMissed => 'Tutmadım';
+
+  @override
+  String get ramadanReasonTravel => 'Seyahat';
+
+  @override
+  String get ramadanReasonIllness => 'Hastalık';
+
+  @override
+  String get ramadanReasonMenstruation => 'Âdet';
+
+  @override
+  String get ramadanReasonOther => 'Diğer';
+
+  @override
+  String get ramadanPrayedTaraweeh => 'Bu gece teravih kıldın mı?';
+
+  @override
+  String get ramadanDaysFasted => 'Tutulan oruç';
+
+  @override
+  String get ramadanTaraweehNights => 'Teravih geceleri';
+
+  @override
+  String get ramadanSettings => 'Ramazan Ayarları';
+
+  @override
+  String get ramadanDayAdjustment => 'Gün ayarı';
+
+  @override
+  String get ramadanDayAdjustmentHint =>
+      'Bölgenizde hilal daha erken veya geç görüldüyse bir gün kaydırın';
+
+  @override
+  String get ramadanImsakBuffer => 'İmsak payı (dakika)';
+
+  @override
+  String get ramadanThemeLabel => 'Ramazan teması';
+
+  @override
+  String get ramadanZakatReminder => 'Bayram namazından önce fitre verin';
+
+  @override
+  String ramadanSuhoorNotif(int minutes) {
+    return 'Sahurun bitmesine $minutes dakika';
+  }
+
+  @override
+  String ramadanIftarSoonNotif(int minutes) {
+    return 'İftara $minutes dakika';
+  }
+
+  @override
+  String get ramadanIftarNowNotif => 'Orucunu açma vakti';
+
+  @override
+  String get ramadanKareem => 'Ramazan Kerim';
+
+  @override
+  String get ramadanNotFasted => 'Kaydedilmedi';
+
+  @override
+  String get ramadanToday => 'Bugün';
+
+  @override
+  String get progressRamadanRewards => 'Ramazan Ödülleri';
+
+  @override
+  String get earnFast => 'Oruç tutuldu';
+
+  @override
+  String get earnFastValue => '30 puan × çarpan';
+
+  @override
+  String get earnTaraweeh => 'Teravih kılındı';
+
+  @override
+  String get earnTaraweehValue => '20 puan × çarpan';
+
+  @override
+  String get milestoneRamadan10 => '10 oruç tutuldu';
+
+  @override
+  String get milestoneRamadan20 => '20 oruç tutuldu';
+
+  @override
+  String get milestoneRamadanMonth => 'Tüm ay oruç tutuldu';
+
+  @override
+  String get milestoneTaraweeh10 => '10 gece Teravih';
+
+  @override
+  String get milestoneTaraweeh27 => '27 gece Teravih';
+
+  @override
+  String get milestoneRamadan10Value => '+150 puan (tek sefer)';
+
+  @override
+  String get milestoneRamadan20Value => '+400 puan (tek sefer)';
+
+  @override
+  String get milestoneRamadanMonthValue => '+1.000 puan (tek sefer)';
+
+  @override
+  String get milestoneTaraweeh10Value => '+150 puan (tek sefer)';
+
+  @override
+  String get milestoneTaraweeh27Value => '+500 puan (tek sefer)';
 }

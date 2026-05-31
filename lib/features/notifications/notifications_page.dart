@@ -33,15 +33,20 @@ class NotificationsPage extends StatelessWidget {
 
   Widget _buildSignedOut(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final bg = isDark ? MinaretTheme.darkBackground : MinaretTheme.background;
+    final titleColor = isDark ? Colors.white : MinaretTheme.onyx;
     return Scaffold(
-      backgroundColor: MinaretTheme.background,
+      backgroundColor: bg,
       appBar: AppBar(
-        backgroundColor: MinaretTheme.emerald,
+        backgroundColor: bg,
+        elevation: 0,
+        scrolledUnderElevation: 0,
         title: Text(
           l10n.notificationsTitle,
           style: MinaretTheme.heading.copyWith(
             fontSize: 20,
-            color: Colors.white,
+            color: titleColor,
             letterSpacing: 2,
           ),
         ),
@@ -115,21 +120,25 @@ class _NotificationsViewState extends State<_NotificationsView> {
     final n = context.watch<NotificationsNotifier>();
     final l10n = AppLocalizations.of(context)!;
 
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final bg = isDark ? MinaretTheme.darkBackground : MinaretTheme.background;
+    final titleColor = isDark ? Colors.white : MinaretTheme.onyx;
     return Scaffold(
-      backgroundColor: MinaretTheme.background,
+      backgroundColor: bg,
       appBar: AppBar(
-        backgroundColor: MinaretTheme.emerald,
+        backgroundColor: bg,
         elevation: 0,
+        scrolledUnderElevation: 0,
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
-          icon: const Icon(Icons.arrow_back_ios_new,
-              size: 14, color: Colors.white),
+          icon: Icon(Icons.arrow_back_ios_new_rounded,
+              size: 18, color: titleColor),
         ),
         title: Text(
           l10n.notificationsTitle,
           style: MinaretTheme.heading.copyWith(
             fontSize: 20,
-            color: Colors.white,
+            color: titleColor,
             letterSpacing: 2,
           ),
         ),

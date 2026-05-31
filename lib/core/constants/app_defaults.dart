@@ -21,7 +21,7 @@ const String kMadhabShafi  = 'shafii';
 const String kDefaultMadhab = kMadhabHanafi;
 
 // User role keys — used in Firestore documents, auth flows, and role checks.
-const String kRoleCommon = 'common';
+const String kRoleCommon = 'user';
 const String kRoleImam   = 'imam';
 
 // Default role assigned to newly registered users.

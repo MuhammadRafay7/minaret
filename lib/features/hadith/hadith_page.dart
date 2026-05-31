@@ -6,6 +6,7 @@ import 'package:minaret/services/offline_cache_service.dart';
 import '../../core/theme.dart';
 import '../../core/secure_http_client.dart';
 import '../../widgets/atelier_layout.dart';
+import '../../services/coin_service.dart';
 import 'hadith_chapters_page.dart';
 
 class HadithPage extends StatefulWidget {
@@ -91,6 +92,8 @@ class _HadithPageState extends State<HadithPage> {
   void initState() {
     super.initState();
     _fetchEditions();
+    // Award daily Hadith points once per day.
+    CoinService.instance.onHadithViewed().ignore();
   }
 
   @override

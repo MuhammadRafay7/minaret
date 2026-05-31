@@ -12,6 +12,7 @@ import 'package:intl/intl.dart';
 import 'package:minaret/l10n/generated/app_localizations.dart';
 import 'package:minaret/core/theme.dart';
 import 'package:minaret/services/enhanced_prayer_tracker_service.dart';
+import 'package:minaret/repositories/progress_repository.dart';
 import 'package:minaret/widgets/app_loading_indicator.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
@@ -33,6 +34,7 @@ class _EnhancedPrayerTrackerCardState extends State<EnhancedPrayerTrackerCard>
     with TickerProviderStateMixin {
   List<String> _completed = [];
   UserPrayerStats? _userStats;
+  int _userLevel = 1;
   bool _isLoading = true;
   final Set<String> _syncingKeys = {};
 
@@ -93,16 +95,23 @@ class _EnhancedPrayerTrackerCardState extends State<EnhancedPrayerTrackerCard>
 
   Future<void> _loadData() async {
     try {
-      // Get today's prayers
-      final todayPrayers = await EnhancedPrayerTrackerService.getTodayPrayers();
-      
-      // Get user stats
-      final userStats = await EnhancedPrayerTrackerService.getCurrentUserStats();
-      
+      // Start both concurrently; refreshCurrentUserStats recomputes from
+      // prayer_records so the total is never stale after reinstall / new device.
+      final todayFuture = EnhancedPrayerTrackerService.getTodayPrayers();
+      final statsFuture = EnhancedPrayerTrackerService.refreshCurrentUserStats();
+      final todayPrayers = await todayFuture;
+      final userStats = await statsFuture;
+
+      int level = 1;
+      try {
+        level = (await ProgressRepository().getProgress()).level;
+      } catch (_) {}
+
       if (mounted) {
         setState(() {
           _completed = todayPrayers;
           _userStats = userStats;
+          _userLevel = level;
           _isLoading = false;
         });
       }
@@ -176,6 +185,7 @@ class _EnhancedPrayerTrackerCardState extends State<EnhancedPrayerTrackerCard>
       builder: (ctx) => _ShareBottomSheet(
         shareCardKey: _shareCardKey,
         userStats: _userStats!,
+        userLevel: _userLevel,
         isDark: isDark,
         onShare: () => _captureAndShare(ctx),
         onSave: () => _saveToGallery(ctx),
@@ -203,7 +213,7 @@ class _EnhancedPrayerTrackerCardState extends State<EnhancedPrayerTrackerCard>
 
       await Share.shareXFiles(
         [XFile(file.path)],
-        text: '🕌 ${_userStats!.currentStreak}-day prayer streak on Minaret! Alhamdulillah!',
+        text: '🕌 Level $_userLevel · ${_userStats!.currentStreak}-day prayer streak on Minaret! Alhamdulillah!',
       );
     } catch (e) {
       if (kDebugMode) debugPrint('Share error: $e');
@@ -718,6 +728,7 @@ class _EnhancedProgressSection extends StatelessWidget {
 class _ShareBottomSheet extends StatelessWidget {
   final GlobalKey shareCardKey;
   final UserPrayerStats userStats;
+  final int userLevel;
   final bool isDark;
   final VoidCallback onShare;
   final VoidCallback onSave;
@@ -725,6 +736,7 @@ class _ShareBottomSheet extends StatelessWidget {
   const _ShareBottomSheet({
     required this.shareCardKey,
     required this.userStats,
+    required this.userLevel,
     required this.isDark,
     required this.onShare,
     required this.onSave,
@@ -762,7 +774,7 @@ class _ShareBottomSheet extends StatelessWidget {
           // The card that will be captured
           RepaintBoundary(
             key: shareCardKey,
-            child: _StreakShareCard(userStats: userStats),
+            child: _StreakShareCard(userStats: userStats, userLevel: userLevel),
           ),
           SizedBox(height: 24.h),
           Row(
@@ -822,8 +834,9 @@ class _ShareBottomSheet extends StatelessWidget {
 
 class _StreakShareCard extends StatelessWidget {
   final UserPrayerStats userStats;
+  final int userLevel;
 
-  const _StreakShareCard({required this.userStats});
+  const _StreakShareCard({required this.userStats, required this.userLevel});
 
   @override
   Widget build(BuildContext context) {
@@ -861,7 +874,34 @@ class _StreakShareCard extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: 24.h),
+          SizedBox(height: 14.h),
+          // Level badge
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 6.h),
+            decoration: BoxDecoration(
+              color: MinaretTheme.gold.withValues(alpha: 0.18),
+              borderRadius: BorderRadius.circular(20.r),
+              border: Border.all(color: MinaretTheme.gold.withValues(alpha: 0.5)),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.workspace_premium_rounded,
+                    size: 13.sp, color: MinaretTheme.gold),
+                SizedBox(width: 5.w),
+                Text(
+                  AppLocalizations.of(context)?.progressLevelUpper(userLevel) ?? 'LEVEL $userLevel',
+                  style: GoogleFonts.dmSans(
+                    fontSize: 11.sp,
+                    fontWeight: FontWeight.w800,
+                    color: MinaretTheme.gold,
+                    letterSpacing: 2,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: 18.h),
           // Streak number
           Text(
             '${userStats.currentStreak}',

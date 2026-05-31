@@ -5,8 +5,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../../core/theme.dart';
 import '../../core/input_validator.dart';
+import '../../l10n/generated/app_localizations.dart';
 import '../../widgets/atelier_layout.dart';
 import '../../widgets/premium_button.dart';
+import '../../widgets/location_picker.dart';
 
 class EditProfilePage extends StatefulWidget {
   const EditProfilePage({super.key});
@@ -18,7 +20,13 @@ class EditProfilePage extends StatefulWidget {
 class _EditProfilePageState extends State<EditProfilePage> {
   final _nameController = TextEditingController();
   final _phoneController = TextEditingController();
-  final _cityController = TextEditingController();
+
+  // Standardized location (Country → State → City). Initialized from the stored
+  // doc; emits canonical names + ISO codes via the picker.
+  LocationValue _location = const LocationValue();
+  String? _initCountryCode;
+  String? _initStateCode;
+  String? _initCityName;
 
   String _selectedGender = 'male';
   bool _isLoading = true;
@@ -34,7 +42,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
   void dispose() {
     _nameController.dispose();
     _phoneController.dispose();
-    _cityController.dispose();
     super.dispose();
   }
 
@@ -50,7 +57,16 @@ class _EditProfilePageState extends State<EditProfilePage> {
       setState(() {
         _nameController.text = data['displayName'] as String? ?? '';
         _phoneController.text = data['phoneNumber'] as String? ?? '';
-        _cityController.text = data['city'] as String? ?? '';
+        _initCountryCode = data['countryCode'] as String?;
+        _initStateCode = data['stateCode'] as String?;
+        _initCityName = data['city'] as String?;
+        _location = LocationValue(
+          countryName: data['country'] as String?,
+          countryCode: data['countryCode'] as String?,
+          stateName: data['state'] as String?,
+          stateCode: data['stateCode'] as String?,
+          cityName: data['city'] as String?,
+        );
         final g = data['gender'] as String?;
         _selectedGender = (g == 'male' || g == 'female' || g == 'other')
             ? g!
@@ -71,16 +87,25 @@ class _EditProfilePageState extends State<EditProfilePage> {
     final user = FirebaseAuth.instance.currentUser;
     if (user == null) return;
     try {
-      await FirebaseFirestore.instance
-          .collection('users')
-          .doc(user.uid)
-          .update({
+      final update = <String, dynamic>{
         'displayName': name,
         'gender': _selectedGender,
         'phoneNumber': _phoneController.text.trim(),
-        'city': _cityController.text.trim(),
         'updatedAt': FieldValue.serverTimestamp(),
-      });
+      };
+      // Only write location when one is set, so we never blank out a legacy
+      // value that the user didn't touch. Stores canonical names + ISO codes.
+      if (_location.countryName != null) {
+        update['country'] = _location.countryName;
+        update['countryCode'] = _location.countryCode;
+        update['state'] = _location.stateName;
+        update['stateCode'] = _location.stateCode;
+        update['city'] = _location.cityName;
+      }
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .update(update);
       if (mounted) {
         _showStatus(_t(
           en: 'Profile updated successfully.',
@@ -134,161 +159,209 @@ class _EditProfilePageState extends State<EditProfilePage> {
     return (locale == 'ar' || locale == 'ur') ? value : value.toUpperCase();
   }
 
+  AppLocalizations get _l => AppLocalizations.of(context)!;
   bool get _isDark => Theme.of(context).brightness == Brightness.dark;
   Color get _textPrimary => Theme.of(context).colorScheme.onSurface;
   Color get _textSecondary => _isDark ? Colors.white70 : MinaretTheme.slate;
   Color get _lineColor => _isDark ? Colors.white24 : MinaretTheme.dividerColor;
+
+  Color get _cardColor => _isDark ? const Color(0xFF1C2430) : Colors.white;
+
+  Widget _backButton() {
+    return Material(
+      color: _isDark ? Colors.white.withValues(alpha: 0.06) : Colors.white,
+      shape: const CircleBorder(),
+      child: InkWell(
+        customBorder: const CircleBorder(),
+        onTap: () => Navigator.pop(context),
+        child: Padding(
+          padding: const EdgeInsets.all(9),
+          child: Icon(Icons.arrow_back_ios_new_rounded,
+              color: _isDark ? Colors.white : MinaretTheme.onyx, size: 18),
+        ),
+      ),
+    );
+  }
+
+  Widget _sectionHeader(String title) => Padding(
+        padding: const EdgeInsets.only(left: 4, bottom: 10),
+        child: Text(
+          title,
+          style: GoogleFonts.montserrat(
+            color: MinaretTheme.gold,
+            fontSize: 10,
+            letterSpacing: 2,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+      );
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: AtelierLayout(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 40),
-          child: _isLoading
-              ? const Center(
-                  child: CircularProgressIndicator(
-                    color: MinaretTheme.gold,
-                    strokeWidth: 1,
+        child: _isLoading
+            ? const Center(
+                child: CircularProgressIndicator(
+                  color: MinaretTheme.gold,
+                  strokeWidth: 1,
+                ),
+              )
+            : Column(
+                children: [
+                  const SizedBox(height: 60),
+                  // Header
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 22),
+                    child: Row(
+                      children: [
+                        _backButton(),
+                        const SizedBox(width: 12),
+                        Text(
+_displayText(_l.editProfileTitle),
+                          style: MinaretTheme.heading
+                              .copyWith(fontSize: 22, letterSpacing: 4),
+                        ),
+                      ],
+                    ),
                   ),
-                )
-              : SingleChildScrollView(
-                  physics: const BouncingScrollPhysics(),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(height: 60),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                  const SizedBox(height: 24),
+                  Expanded(
+                    child: SingleChildScrollView(
+                      physics: const BouncingScrollPhysics(),
+                      padding: const EdgeInsets.fromLTRB(22, 0, 22, 40),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          IconButton(
-                            onPressed: () => Navigator.pop(context),
-                            icon: Icon(
-                              Icons.arrow_back_ios,
-                              size: 16,
-                              color: _textSecondary,
-                            ),
-                            padding: EdgeInsets.zero,
-                            visualDensity: VisualDensity.compact,
+_sectionHeader(_displayText(_l.sectionPersonalDetails)),
+                          _buildField(
+                            _l.fieldFullName,
+                            _nameController,
+                            icon: Icons.person_outline_rounded,
                           ),
-                          const SizedBox(width: 8),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                _displayText(_t(
-                                  en: 'Edit Profile',
-                                  ar: 'تعديل الملف الشخصي',
-                                  ur: 'پروفائل ترمیم',
-                                  ru: 'Редактировать',
-                                )),
-                                style: MinaretTheme.heading.copyWith(
-                                  fontSize: 24,
-                                  letterSpacing: 8,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                              ),
-                              const SizedBox(height: 2),
-                              Text(
-                                _t(
-                                  en: 'Update your personal information',
-                                  ar: 'تحديث معلوماتك الشخصية',
-                                  ur: 'اپنی ذاتی معلومات اپ ڈیٹ کریں',
-                                  ru: 'Обновите личные данные',
-                                ),
-                                style: MinaretTheme.label,
-                              ),
-                            ],
+                          const SizedBox(height: 12),
+                          _buildField(
+                            _l.fieldPhone,
+                            _phoneController,
+                            icon: Icons.phone_outlined,
+                            keyboardType: TextInputType.phone,
+                            hint: _l.fieldOptional,
+                          ),
+                          const SizedBox(height: 16),
+                          _sectionHeader(_displayText(_l.fieldCountry)),
+                          LocationPicker(
+                            initialCountryCode: _initCountryCode,
+                            initialStateCode: _initStateCode,
+                            initialCityName: _initCityName,
+                            countryLabel: _l.fieldCountry,
+                            cityLabel: _l.fieldCity,
+                            stateLabel: _t(
+                              en: 'State / Province',
+                              ar: 'الولاية / المحافظة',
+                              ur: 'صوبہ',
+                              ru: 'Регион',
+                            ),
+                            onChanged: (loc) => setState(() => _location = loc),
+                          ),
+                          const SizedBox(height: 26),
+                          _sectionHeader(_displayText(
+_l.genderLabel)),
+                          _buildGenderSelector(),
+                          const SizedBox(height: 40),
+                          PremiumButton(
+                            text: _displayText(_l.saveChangesLabel),
+                            onPressed: _isSaving ? null : _saveProfile,
+                            type: ButtonType.primary,
+                            isLoading: _isSaving,
+                            borderRadius: 14,
                           ),
                         ],
                       ),
-                      const SizedBox(height: 50),
-
-                      _buildField(
-                        _t(en: 'Full Name', ar: 'الاسم الكامل', ur: 'پورا نام', ru: 'Полное имя'),
-                        _nameController,
-                        false,
-                      ),
-                      const SizedBox(height: 28),
-
-                      Text(
-                        _displayText(_t(en: 'Gender', ar: 'الجنس', ur: 'جنس', ru: 'Пол')),
-                        style: MinaretTheme.label,
-                      ),
-                      const SizedBox(height: 12),
-                      _buildGenderSelector(),
-                      const SizedBox(height: 28),
-
-                      _buildField(
-                        _t(en: 'Phone Number', ar: 'رقم الهاتف', ur: 'فون نمبر', ru: 'Телефон'),
-                        _phoneController,
-                        false,
-                        keyboardType: TextInputType.phone,
-                      ),
-                      const SizedBox(height: 28),
-
-                      _buildField(
-                        _t(en: 'City', ar: 'المدينة', ur: 'شہر', ru: 'Город'),
-                        _cityController,
-                        false,
-                      ),
-                      const SizedBox(height: 50),
-
-                      PremiumButton(
-                        text: _displayText(_t(
-                          en: 'Save Changes',
-                          ar: 'حفظ التغييرات',
-                          ur: 'تبدیلیاں محفوظ کریں',
-                          ru: 'Сохранить',
-                        )),
-                        onPressed: _isSaving ? null : _saveProfile,
-                        type: ButtonType.primary,
-                        isLoading: _isSaving,
-                        borderRadius: 0,
-                      ),
-                      const SizedBox(height: 40),
-                    ],
+                    ),
                   ),
-                ),
-        ),
+                ],
+              ),
       ),
     );
   }
 
   Widget _buildField(
     String label,
-    TextEditingController controller,
-    bool isObscure, {
+    TextEditingController controller, {
+    required IconData icon,
     TextInputType? keyboardType,
+    String? hint,
   }) {
-    return TextField(
-      controller: controller,
-      obscureText: isObscure,
-      keyboardType: keyboardType,
-      cursorColor: MinaretTheme.gold,
-      cursorWidth: 1.2,
-      style: GoogleFonts.lato(
-        fontSize: 15,
-        fontWeight: FontWeight.w600,
-        color: _textPrimary,
+    return Container(
+      decoration: BoxDecoration(
+        color: _cardColor,
+        borderRadius: BorderRadius.circular(14),
+        boxShadow: MinaretTheme.cardShadow,
       ),
-      decoration: InputDecoration(
-        labelText: _displayText(label),
-        floatingLabelBehavior: FloatingLabelBehavior.always,
-        hintStyle: GoogleFonts.lato(
-          fontSize: 13,
-          color: _textSecondary.withValues(alpha: 0.7),
-        ),
+      padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Icon(icon, size: 20, color: MinaretTheme.gold),
+          const SizedBox(width: 14),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  _displayText(label),
+                  style: GoogleFonts.montserrat(
+                    fontSize: 10,
+                    letterSpacing: 1.2,
+                    fontWeight: FontWeight.w700,
+                    color: MinaretTheme.gold,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                TextField(
+                  controller: controller,
+                  keyboardType: keyboardType,
+                  cursorColor: MinaretTheme.gold,
+                  cursorWidth: 1.2,
+                  style: GoogleFonts.lato(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600,
+                    color: _textPrimary,
+                  ),
+                  decoration: InputDecoration(
+                    isDense: true,
+                    isCollapsed: true,
+                    filled: false,
+                    fillColor: Colors.transparent,
+                    contentPadding: EdgeInsets.zero,
+                    border: InputBorder.none,
+                    enabledBorder: InputBorder.none,
+                    focusedBorder: InputBorder.none,
+                    disabledBorder: InputBorder.none,
+                    errorBorder: InputBorder.none,
+                    hintText: hint,
+                    hintStyle: GoogleFonts.lato(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                      color: _textSecondary.withValues(alpha: 0.5),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
 
   Widget _buildGenderSelector() {
     final genders = [
-      ('male', _t(en: 'Male', ar: 'ذكر', ur: 'مرد', ru: 'Муж.')),
-      ('female', _t(en: 'Female', ar: 'أنثى', ur: 'عورت', ru: 'Жен.')),
-      ('other', _t(en: 'Other', ar: 'آخر', ur: 'دیگر', ru: 'Другой')),
+      ('male', _l.maleLabel),
+      ('female', _l.femaleLabel),
+      ('other', _l.genderOther),
     ];
     return Row(
       children: [
@@ -300,23 +373,27 @@ class _EditProfilePageState extends State<EditProfilePage> {
               child: AnimatedContainer(
                 duration: const Duration(milliseconds: 300),
                 curve: Curves.easeOutCubic,
-                padding: const EdgeInsets.symmetric(vertical: 14),
+                padding: const EdgeInsets.symmetric(vertical: 15),
                 decoration: BoxDecoration(
                   color: _selectedGender == genders[i].$1
                       ? MinaretTheme.gold
-                      : Colors.transparent,
+                      : _cardColor,
+                  borderRadius: BorderRadius.circular(12),
                   border: Border.all(
                     width: 1.5,
                     color: _selectedGender == genders[i].$1
                         ? MinaretTheme.gold
                         : _lineColor,
                   ),
+                  boxShadow: _selectedGender == genders[i].$1
+                      ? null
+                      : MinaretTheme.cardShadow,
                 ),
                 child: Center(
                   child: Text(
                     _displayText(genders[i].$2),
                     style: GoogleFonts.montserrat(
-                      fontSize: 8,
+                      fontSize: 9,
                       letterSpacing: 1.5,
                       color: _selectedGender == genders[i].$1
                           ? Colors.white

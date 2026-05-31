@@ -25,6 +25,7 @@ import 'package:minaret/services/notification_service.dart';
 import 'package:minaret/services/fcm_token_service.dart';
 import 'package:minaret/services/ad_service.dart';
 import 'package:minaret/services/system_config_service.dart';
+import 'package:minaret/services/coin_service.dart';
 
 class NavigationItem {
   final IconData icon;
@@ -132,6 +133,14 @@ class _MainNavigationState extends State<MainNavigation>
       if (FirebaseAuth.instance.currentUser != null) {
         await NotificationService.startForUser();
         await FcmTokenService.init();
+        // Record login time so the admin panel can count active users.
+        FirebaseFirestore.instance
+            .collection('users')
+            .doc(user.uid)
+            .update({'lastLoginAt': FieldValue.serverTimestamp()})
+            .ignore();
+        // Award daily login points (once per day, no-op if already awarded today).
+        CoinService.instance.onDailyLogin().ignore();
       }
     } else {
       await FcmTokenService.removeToken();

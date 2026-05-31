@@ -1030,4 +1030,438 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get addQadaDebtTooltip => 'إضافة دين قضاء';
+
+  @override
+  String get progressMyProgress => 'تقدمي';
+
+  @override
+  String get progressPoints => 'النقاط';
+
+  @override
+  String get progressHowToEarn => 'كيفية كسب النقاط';
+
+  @override
+  String get progressAllLevels => 'جميع المستويات';
+
+  @override
+  String get progressCurrentBalance => 'الرصيد الحالي';
+
+  @override
+  String get progressLifetimeEarned => 'إجمالي المكتسب';
+
+  @override
+  String get progressDailyPoints => 'النقاط اليومية';
+
+  @override
+  String get progressMilestoneBonuses => 'مكافآت الإنجازات';
+
+  @override
+  String get progressUnlockedAtLevel => 'مفتوح في هذا المستوى';
+
+  @override
+  String get progressStartingLevel => 'المستوى الابتدائي';
+
+  @override
+  String get progressMaxLevel => 'تم بلوغ أعلى مستوى';
+
+  @override
+  String get progressMaxLevelShort => 'أعلى مستوى';
+
+  @override
+  String progressLevelLabel(Object level) {
+    return 'المستوى $level';
+  }
+
+  @override
+  String progressLevelUpper(Object level) {
+    return 'المستوى $level';
+  }
+
+  @override
+  String progressPointsToNext(Object points, Object level) {
+    return '$points نقطة للمستوى $level';
+  }
+
+  @override
+  String progressPointsEarned(Object points) {
+    return 'تم كسب $points نقطة';
+  }
+
+  @override
+  String progressMultiplier(Object m) {
+    return 'مضاعف $m×';
+  }
+
+  @override
+  String get unlockBasicTracking => 'تتبع الصلاة الأساسي';
+
+  @override
+  String get unlock7DayHistory => 'سجل صلاة 7 أيام';
+
+  @override
+  String get unlock30DayHistory => 'سجل صلاة 30 يوماً';
+
+  @override
+  String get unlock60DayHistory => 'سجل صلاة 60 يوماً';
+
+  @override
+  String get unlock90DayHistory => 'سجل صلاة 90 يوماً';
+
+  @override
+  String get unlockProfileBadge => 'شارة في مجتمع المسجد';
+
+  @override
+  String get unlockQadaAnalytics => 'تحليلات القضاء — شاهد أكثر الصلوات فواتاً';
+
+  @override
+  String get unlockMultiplier15 => 'مضاعف نقاط 1.5×';
+
+  @override
+  String get unlockMultiplier2 => 'مضاعف نقاط 2×';
+
+  @override
+  String get unlockMultiplier25 => 'مضاعف نقاط 2.5×';
+
+  @override
+  String get unlockWeeklyReport => 'تقرير أداء الصلاة الأسبوعي';
+
+  @override
+  String get unlockGoldBadge => 'شارة ذهبية حصرية';
+
+  @override
+  String get earnPrayerCompleted => 'كل صلاة مكتملة';
+
+  @override
+  String get earnFajrBonus => 'مكافأة الفجر';
+
+  @override
+  String get earnFullDay => 'جميع الصلوات الخمس في يوم';
+
+  @override
+  String get earnQada => 'صلاة القضاء';
+
+  @override
+  String get earnHadith => 'قراءة الحديث اليومي';
+
+  @override
+  String get earnLogin => 'تسجيل دخول يومي';
+
+  @override
+  String get earnPrayerValue => '10 نقاط × المضاعف';
+
+  @override
+  String get earnFajrValue => '+5 نقاط';
+
+  @override
+  String get earnFullDayValue => '+50 نقطة × المضاعف';
+
+  @override
+  String get earnQadaValue => '15 نقطة';
+
+  @override
+  String get earnHadithValue => '5 نقاط (مرة/يوم)';
+
+  @override
+  String get earnLoginValue => 'نقطتان (مرة/يوم)';
+
+  @override
+  String get milestone7 => 'سلسلة صلاة 7 أيام';
+
+  @override
+  String get milestone40 => 'سلسلة 40 يوماً (الأربعين)';
+
+  @override
+  String get milestone100 => 'سلسلة 100 يوم';
+
+  @override
+  String get milestoneFirstQada => 'أول قضاء';
+
+  @override
+  String get milestoneFirstFullDay => 'أول يوم صلاة كامل';
+
+  @override
+  String get milestone7Value => '+100 نقطة (مرة واحدة)';
+
+  @override
+  String get milestone40Value => '+500 نقطة (مرة واحدة)';
+
+  @override
+  String get milestone100Value => '+1,000 نقطة (مرة واحدة)';
+
+  @override
+  String get milestoneFirstQadaValue => '+50 نقطة (مرة واحدة)';
+
+  @override
+  String get milestoneFirstFullDayValue => '+75 نقطة (مرة واحدة)';
+
+  @override
+  String get weeklyReportTitle => 'التقرير الأسبوعي';
+
+  @override
+  String get weeklyLast7Days => 'آخر 7 أيام';
+
+  @override
+  String get weeklyCompletion => 'الإنجاز الأسبوعي';
+
+  @override
+  String get weeklyDayByDay => 'يوماً بيوم';
+
+  @override
+  String get weeklyPerPrayer => 'لكل صلاة';
+
+  @override
+  String get weeklyToday => 'اليوم';
+
+  @override
+  String get weeklyPerfectAttendance => 'حضور كامل';
+
+  @override
+  String weeklyDaysActive(Object days) {
+    return '$days/7 أيام نشطة';
+  }
+
+  @override
+  String weeklyPrayersCount(Object count) {
+    return '$count من 35 صلاة';
+  }
+
+  @override
+  String get profileTitleShort => 'الملف الشخصي';
+
+  @override
+  String get profileCommunity => 'مجتمع';
+
+  @override
+  String get profileImam => 'إمام';
+
+  @override
+  String get statPrayers => 'الصلوات';
+
+  @override
+  String get statStreak => 'السلسلة';
+
+  @override
+  String get statRate => 'المعدل';
+
+  @override
+  String get sectionAccount => 'الحساب';
+
+  @override
+  String get signOutLabel => 'تسجيل الخروج';
+
+  @override
+  String get signOutSub => 'إنهاء جلستك الحالية';
+
+  @override
+  String get editProfileTitle => 'تعديل الملف الشخصي';
+
+  @override
+  String get manageProfileTitle => 'إدارة الملف الشخصي';
+
+  @override
+  String get sectionPersonalDetails => 'البيانات الشخصية';
+
+  @override
+  String get fieldCountry => 'الدولة';
+
+  @override
+  String get fieldCity => 'المدينة';
+
+  @override
+  String get fieldFullName => 'الاسم الكامل';
+
+  @override
+  String get fieldPhone => 'رقم الهاتف';
+
+  @override
+  String get fieldOptional => 'اختياري';
+
+  @override
+  String get saveChangesLabel => 'حفظ التغييرات';
+
+  @override
+  String get genderOther => 'آخر';
+
+  @override
+  String get last60Days => 'آخر 60 يوماً';
+
+  @override
+  String get weeklyReportTooltip => 'التقرير الأسبوعي';
+
+  @override
+  String unlockLevelMsg(Object level, Object days) {
+    return 'اصل إلى المستوى $level لفتح سجل $days يوم';
+  }
+
+  @override
+  String get ramadanLabel => 'رمضان';
+
+  @override
+  String ramadanDayOf(int day, int total) {
+    return 'اليوم $day من $total';
+  }
+
+  @override
+  String ramadanBeginsInDays(int days) {
+    return 'يبدأ رمضان خلال $days أيام';
+  }
+
+  @override
+  String get ramadanBeginsTomorrow => 'يبدأ رمضان غدًا';
+
+  @override
+  String get ramadanSuhoorEndsIn => 'ينتهي السحور خلال';
+
+  @override
+  String get ramadanIftarIn => 'الإفطار خلال';
+
+  @override
+  String get ramadanTimeToIftar => 'حان وقت الإفطار';
+
+  @override
+  String get ramadanImsak => 'الإمساك';
+
+  @override
+  String get ramadanSuhoor => 'السحور';
+
+  @override
+  String get ramadanIftar => 'الإفطار';
+
+  @override
+  String get eidMubarak => 'عيد مبارك';
+
+  @override
+  String eidInDays(int days) {
+    return 'العيد خلال $days أيام';
+  }
+
+  @override
+  String get ramadanOpen => 'افتح رمضان';
+
+  @override
+  String ramadanTonightNight(int day) {
+    return 'الليلة · ليلة $day';
+  }
+
+  @override
+  String get ramadanFastingLog => 'سجل الصيام';
+
+  @override
+  String get ramadanTaraweeh => 'التراويح';
+
+  @override
+  String get ramadanDidYouFast => 'هل صمت اليوم؟';
+
+  @override
+  String get ramadanFasted => 'صمت';
+
+  @override
+  String get ramadanMissed => 'أفطرت';
+
+  @override
+  String get ramadanReasonTravel => 'سفر';
+
+  @override
+  String get ramadanReasonIllness => 'مرض';
+
+  @override
+  String get ramadanReasonMenstruation => 'حيض';
+
+  @override
+  String get ramadanReasonOther => 'أخرى';
+
+  @override
+  String get ramadanPrayedTaraweeh => 'هل صليت التراويح الليلة؟';
+
+  @override
+  String get ramadanDaysFasted => 'أيام الصيام';
+
+  @override
+  String get ramadanTaraweehNights => 'ليالي التراويح';
+
+  @override
+  String get ramadanSettings => 'إعدادات رمضان';
+
+  @override
+  String get ramadanDayAdjustment => 'تعديل اليوم';
+
+  @override
+  String get ramadanDayAdjustmentHint =>
+      'عدّل يومًا إذا رُئي الهلال في منطقتك مبكرًا أو متأخرًا';
+
+  @override
+  String get ramadanImsakBuffer => 'مدة الإمساك (دقائق)';
+
+  @override
+  String get ramadanThemeLabel => 'مظهر رمضان';
+
+  @override
+  String get ramadanZakatReminder => 'أخرج زكاة الفطر قبل صلاة العيد';
+
+  @override
+  String ramadanSuhoorNotif(int minutes) {
+    return 'ينتهي السحور خلال $minutes دقيقة';
+  }
+
+  @override
+  String ramadanIftarSoonNotif(int minutes) {
+    return '$minutes دقيقة حتى الإفطار';
+  }
+
+  @override
+  String get ramadanIftarNowNotif => 'حان وقت الإفطار';
+
+  @override
+  String get ramadanKareem => 'رمضان كريم';
+
+  @override
+  String get ramadanNotFasted => 'غير مسجل';
+
+  @override
+  String get ramadanToday => 'اليوم';
+
+  @override
+  String get progressRamadanRewards => 'مكافآت رمضان';
+
+  @override
+  String get earnFast => 'صيام يوم';
+
+  @override
+  String get earnFastValue => '30 نقطة × المضاعف';
+
+  @override
+  String get earnTaraweeh => 'صلاة التراويح';
+
+  @override
+  String get earnTaraweehValue => '20 نقطة × المضاعف';
+
+  @override
+  String get milestoneRamadan10 => 'صيام 10 أيام';
+
+  @override
+  String get milestoneRamadan20 => 'صيام 20 يوماً';
+
+  @override
+  String get milestoneRamadanMonth => 'صيام الشهر كاملاً';
+
+  @override
+  String get milestoneTaraweeh10 => '10 ليالٍ من التراويح';
+
+  @override
+  String get milestoneTaraweeh27 => '27 ليلة من التراويح';
+
+  @override
+  String get milestoneRamadan10Value => '+150 نقطة (مرة واحدة)';
+
+  @override
+  String get milestoneRamadan20Value => '+400 نقطة (مرة واحدة)';
+
+  @override
+  String get milestoneRamadanMonthValue => '+1,000 نقطة (مرة واحدة)';
+
+  @override
+  String get milestoneTaraweeh10Value => '+150 نقطة (مرة واحدة)';
+
+  @override
+  String get milestoneTaraweeh27Value => '+500 نقطة (مرة واحدة)';
 }

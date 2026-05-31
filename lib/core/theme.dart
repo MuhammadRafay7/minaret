@@ -18,6 +18,12 @@ class MinaretTheme {
   static const Color darkBackground = Color(0xFF0D1117);
   static const Color darkSurface = Color(0xFF151B24);
 
+  // ── Ramadan seasonal palette (deeper, more devotional) ──────────────────────
+  static const Color ramadanDeep = Color(0xFF0B3D2E); // deep masjid emerald
+  static const Color ramadanGold = Color(0xFFD4AF37); // lantern gold
+  static const Color ramadanBackground = Color(0xFFECE3CE); // warmer parchment
+  static const Color ramadanDarkBackground = Color(0xFF071A12); // night green
+
   // ── Blur / Glass helpers ────────────────────────────────────────────────────
   // Usage: ClipRRect + BackdropFilter(filter: MinaretTheme.blur, child: ...)
   static ImageFilter get blur => ImageFilter.blur(sigmaX: 22, sigmaY: 22);
@@ -256,6 +262,33 @@ class MinaretTheme {
           fontWeight: FontWeight.w600,
           letterSpacing: 0.8,
         ),
+      ),
+    );
+  }
+
+  // ── Ramadan Themes (seasonal recolour of the base themes) ───────────────────
+  // Built with copyWith so they inherit every component style and only swap the
+  // palette — keeps them in lock-step with any future base-theme tweaks.
+  static ThemeData get ramadanLightTheme {
+    final base = lightTheme;
+    return base.copyWith(
+      scaffoldBackgroundColor: ramadanBackground,
+      colorScheme: base.colorScheme.copyWith(
+        primary: ramadanDeep,
+        secondary: ramadanGold,
+        surface: ramadanBackground,
+      ),
+    );
+  }
+
+  static ThemeData get ramadanDarkTheme {
+    final base = darkTheme;
+    return base.copyWith(
+      scaffoldBackgroundColor: ramadanDarkBackground,
+      colorScheme: base.colorScheme.copyWith(
+        primary: ramadanGold,
+        secondary: ramadanDeep,
+        surface: const Color(0xFF0A2218),
       ),
     );
   }

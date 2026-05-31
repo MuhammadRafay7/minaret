@@ -2091,6 +2091,816 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Add Qada debt'**
   String get addQadaDebtTooltip;
+
+  /// No description provided for @progressMyProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'My Progress'**
+  String get progressMyProgress;
+
+  /// No description provided for @progressPoints.
+  ///
+  /// In en, this message translates to:
+  /// **'Points'**
+  String get progressPoints;
+
+  /// No description provided for @progressHowToEarn.
+  ///
+  /// In en, this message translates to:
+  /// **'HOW TO EARN POINTS'**
+  String get progressHowToEarn;
+
+  /// No description provided for @progressAllLevels.
+  ///
+  /// In en, this message translates to:
+  /// **'ALL LEVELS'**
+  String get progressAllLevels;
+
+  /// No description provided for @progressCurrentBalance.
+  ///
+  /// In en, this message translates to:
+  /// **'CURRENT BALANCE'**
+  String get progressCurrentBalance;
+
+  /// No description provided for @progressLifetimeEarned.
+  ///
+  /// In en, this message translates to:
+  /// **'LIFETIME EARNED'**
+  String get progressLifetimeEarned;
+
+  /// No description provided for @progressDailyPoints.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily Points'**
+  String get progressDailyPoints;
+
+  /// No description provided for @progressMilestoneBonuses.
+  ///
+  /// In en, this message translates to:
+  /// **'Milestone Bonuses'**
+  String get progressMilestoneBonuses;
+
+  /// No description provided for @progressUnlockedAtLevel.
+  ///
+  /// In en, this message translates to:
+  /// **'UNLOCKED AT THIS LEVEL'**
+  String get progressUnlockedAtLevel;
+
+  /// No description provided for @progressStartingLevel.
+  ///
+  /// In en, this message translates to:
+  /// **'Starting level'**
+  String get progressStartingLevel;
+
+  /// No description provided for @progressMaxLevel.
+  ///
+  /// In en, this message translates to:
+  /// **'Maximum level reached'**
+  String get progressMaxLevel;
+
+  /// No description provided for @progressMaxLevelShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Max level'**
+  String get progressMaxLevelShort;
+
+  /// No description provided for @progressLevelLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Level {level}'**
+  String progressLevelLabel(Object level);
+
+  /// No description provided for @progressLevelUpper.
+  ///
+  /// In en, this message translates to:
+  /// **'LEVEL {level}'**
+  String progressLevelUpper(Object level);
+
+  /// No description provided for @progressPointsToNext.
+  ///
+  /// In en, this message translates to:
+  /// **'{points} pts to Level {level}'**
+  String progressPointsToNext(Object points, Object level);
+
+  /// No description provided for @progressPointsEarned.
+  ///
+  /// In en, this message translates to:
+  /// **'{points} points earned'**
+  String progressPointsEarned(Object points);
+
+  /// No description provided for @progressMultiplier.
+  ///
+  /// In en, this message translates to:
+  /// **'{m}× multiplier'**
+  String progressMultiplier(Object m);
+
+  /// No description provided for @unlockBasicTracking.
+  ///
+  /// In en, this message translates to:
+  /// **'Basic prayer tracking'**
+  String get unlockBasicTracking;
+
+  /// No description provided for @unlock7DayHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'7-day prayer history'**
+  String get unlock7DayHistory;
+
+  /// No description provided for @unlock30DayHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'30-day prayer history'**
+  String get unlock30DayHistory;
+
+  /// No description provided for @unlock60DayHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'60-day prayer history'**
+  String get unlock60DayHistory;
+
+  /// No description provided for @unlock90DayHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'90-day prayer history'**
+  String get unlock90DayHistory;
+
+  /// No description provided for @unlockProfileBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile badge in mosque community'**
+  String get unlockProfileBadge;
+
+  /// No description provided for @unlockQadaAnalytics.
+  ///
+  /// In en, this message translates to:
+  /// **'Qada analytics — see which prayers you miss most'**
+  String get unlockQadaAnalytics;
+
+  /// No description provided for @unlockMultiplier15.
+  ///
+  /// In en, this message translates to:
+  /// **'1.5× points multiplier'**
+  String get unlockMultiplier15;
+
+  /// No description provided for @unlockMultiplier2.
+  ///
+  /// In en, this message translates to:
+  /// **'2× points multiplier'**
+  String get unlockMultiplier2;
+
+  /// No description provided for @unlockMultiplier25.
+  ///
+  /// In en, this message translates to:
+  /// **'2.5× points multiplier'**
+  String get unlockMultiplier25;
+
+  /// No description provided for @unlockWeeklyReport.
+  ///
+  /// In en, this message translates to:
+  /// **'Weekly prayer performance report'**
+  String get unlockWeeklyReport;
+
+  /// No description provided for @unlockGoldBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'Exclusive gold profile badge'**
+  String get unlockGoldBadge;
+
+  /// No description provided for @earnPrayerCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Each prayer completed'**
+  String get earnPrayerCompleted;
+
+  /// No description provided for @earnFajrBonus.
+  ///
+  /// In en, this message translates to:
+  /// **'Fajr bonus'**
+  String get earnFajrBonus;
+
+  /// No description provided for @earnFullDay.
+  ///
+  /// In en, this message translates to:
+  /// **'All 5 prayers in a day'**
+  String get earnFullDay;
+
+  /// No description provided for @earnQada.
+  ///
+  /// In en, this message translates to:
+  /// **'Qada makeup prayer'**
+  String get earnQada;
+
+  /// No description provided for @earnHadith.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily Hadith read'**
+  String get earnHadith;
+
+  /// No description provided for @earnLogin.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily app login'**
+  String get earnLogin;
+
+  /// No description provided for @earnPrayerValue.
+  ///
+  /// In en, this message translates to:
+  /// **'10 pts × multiplier'**
+  String get earnPrayerValue;
+
+  /// No description provided for @earnFajrValue.
+  ///
+  /// In en, this message translates to:
+  /// **'+5 pts'**
+  String get earnFajrValue;
+
+  /// No description provided for @earnFullDayValue.
+  ///
+  /// In en, this message translates to:
+  /// **'+50 pts × multiplier'**
+  String get earnFullDayValue;
+
+  /// No description provided for @earnQadaValue.
+  ///
+  /// In en, this message translates to:
+  /// **'15 pts'**
+  String get earnQadaValue;
+
+  /// No description provided for @earnHadithValue.
+  ///
+  /// In en, this message translates to:
+  /// **'5 pts (once/day)'**
+  String get earnHadithValue;
+
+  /// No description provided for @earnLoginValue.
+  ///
+  /// In en, this message translates to:
+  /// **'2 pts (once/day)'**
+  String get earnLoginValue;
+
+  /// No description provided for @milestone7.
+  ///
+  /// In en, this message translates to:
+  /// **'7-day prayer streak'**
+  String get milestone7;
+
+  /// No description provided for @milestone40.
+  ///
+  /// In en, this message translates to:
+  /// **'40-day streak (Arba\'een)'**
+  String get milestone40;
+
+  /// No description provided for @milestone100.
+  ///
+  /// In en, this message translates to:
+  /// **'100-day streak'**
+  String get milestone100;
+
+  /// No description provided for @milestoneFirstQada.
+  ///
+  /// In en, this message translates to:
+  /// **'First Qada makeup'**
+  String get milestoneFirstQada;
+
+  /// No description provided for @milestoneFirstFullDay.
+  ///
+  /// In en, this message translates to:
+  /// **'First full prayer day'**
+  String get milestoneFirstFullDay;
+
+  /// No description provided for @milestone7Value.
+  ///
+  /// In en, this message translates to:
+  /// **'+100 pts (one time)'**
+  String get milestone7Value;
+
+  /// No description provided for @milestone40Value.
+  ///
+  /// In en, this message translates to:
+  /// **'+500 pts (one time)'**
+  String get milestone40Value;
+
+  /// No description provided for @milestone100Value.
+  ///
+  /// In en, this message translates to:
+  /// **'+1,000 pts (one time)'**
+  String get milestone100Value;
+
+  /// No description provided for @milestoneFirstQadaValue.
+  ///
+  /// In en, this message translates to:
+  /// **'+50 pts (one time)'**
+  String get milestoneFirstQadaValue;
+
+  /// No description provided for @milestoneFirstFullDayValue.
+  ///
+  /// In en, this message translates to:
+  /// **'+75 pts (one time)'**
+  String get milestoneFirstFullDayValue;
+
+  /// No description provided for @weeklyReportTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Weekly Report'**
+  String get weeklyReportTitle;
+
+  /// No description provided for @weeklyLast7Days.
+  ///
+  /// In en, this message translates to:
+  /// **'Last 7 Days'**
+  String get weeklyLast7Days;
+
+  /// No description provided for @weeklyCompletion.
+  ///
+  /// In en, this message translates to:
+  /// **'Weekly Completion'**
+  String get weeklyCompletion;
+
+  /// No description provided for @weeklyDayByDay.
+  ///
+  /// In en, this message translates to:
+  /// **'DAY BY DAY'**
+  String get weeklyDayByDay;
+
+  /// No description provided for @weeklyPerPrayer.
+  ///
+  /// In en, this message translates to:
+  /// **'PER PRAYER'**
+  String get weeklyPerPrayer;
+
+  /// No description provided for @weeklyToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get weeklyToday;
+
+  /// No description provided for @weeklyPerfectAttendance.
+  ///
+  /// In en, this message translates to:
+  /// **'Perfect attendance'**
+  String get weeklyPerfectAttendance;
+
+  /// No description provided for @weeklyDaysActive.
+  ///
+  /// In en, this message translates to:
+  /// **'{days}/7 days active'**
+  String weeklyDaysActive(Object days);
+
+  /// No description provided for @weeklyPrayersCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} of 35 prayers'**
+  String weeklyPrayersCount(Object count);
+
+  /// No description provided for @profileTitleShort.
+  ///
+  /// In en, this message translates to:
+  /// **'PROFILE'**
+  String get profileTitleShort;
+
+  /// No description provided for @profileCommunity.
+  ///
+  /// In en, this message translates to:
+  /// **'COMMUNITY'**
+  String get profileCommunity;
+
+  /// No description provided for @profileImam.
+  ///
+  /// In en, this message translates to:
+  /// **'IMAM'**
+  String get profileImam;
+
+  /// No description provided for @statPrayers.
+  ///
+  /// In en, this message translates to:
+  /// **'Prayers'**
+  String get statPrayers;
+
+  /// No description provided for @statStreak.
+  ///
+  /// In en, this message translates to:
+  /// **'Streak'**
+  String get statStreak;
+
+  /// No description provided for @statRate.
+  ///
+  /// In en, this message translates to:
+  /// **'Rate'**
+  String get statRate;
+
+  /// No description provided for @sectionAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'ACCOUNT'**
+  String get sectionAccount;
+
+  /// No description provided for @signOutLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign Out'**
+  String get signOutLabel;
+
+  /// No description provided for @signOutSub.
+  ///
+  /// In en, this message translates to:
+  /// **'End your current session'**
+  String get signOutSub;
+
+  /// No description provided for @editProfileTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Profile'**
+  String get editProfileTitle;
+
+  /// No description provided for @manageProfileTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage Profile'**
+  String get manageProfileTitle;
+
+  /// No description provided for @sectionPersonalDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'PERSONAL DETAILS'**
+  String get sectionPersonalDetails;
+
+  /// No description provided for @fieldCountry.
+  ///
+  /// In en, this message translates to:
+  /// **'Country'**
+  String get fieldCountry;
+
+  /// No description provided for @fieldCity.
+  ///
+  /// In en, this message translates to:
+  /// **'City'**
+  String get fieldCity;
+
+  /// No description provided for @fieldFullName.
+  ///
+  /// In en, this message translates to:
+  /// **'Full Name'**
+  String get fieldFullName;
+
+  /// No description provided for @fieldPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone Number'**
+  String get fieldPhone;
+
+  /// No description provided for @fieldOptional.
+  ///
+  /// In en, this message translates to:
+  /// **'Optional'**
+  String get fieldOptional;
+
+  /// No description provided for @saveChangesLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Save Changes'**
+  String get saveChangesLabel;
+
+  /// No description provided for @genderOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get genderOther;
+
+  /// No description provided for @last60Days.
+  ///
+  /// In en, this message translates to:
+  /// **'Last 60 Days'**
+  String get last60Days;
+
+  /// No description provided for @weeklyReportTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Weekly Report'**
+  String get weeklyReportTooltip;
+
+  /// No description provided for @unlockLevelMsg.
+  ///
+  /// In en, this message translates to:
+  /// **'Reach Level {level} to unlock {days}-day history'**
+  String unlockLevelMsg(Object level, Object days);
+
+  /// No description provided for @ramadanLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'RAMADAN'**
+  String get ramadanLabel;
+
+  /// No description provided for @ramadanDayOf.
+  ///
+  /// In en, this message translates to:
+  /// **'Day {day} of {total}'**
+  String ramadanDayOf(int day, int total);
+
+  /// No description provided for @ramadanBeginsInDays.
+  ///
+  /// In en, this message translates to:
+  /// **'Ramadan begins in {days} days'**
+  String ramadanBeginsInDays(int days);
+
+  /// No description provided for @ramadanBeginsTomorrow.
+  ///
+  /// In en, this message translates to:
+  /// **'Ramadan begins tomorrow'**
+  String get ramadanBeginsTomorrow;
+
+  /// No description provided for @ramadanSuhoorEndsIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Suhoor ends in'**
+  String get ramadanSuhoorEndsIn;
+
+  /// No description provided for @ramadanIftarIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Iftar in'**
+  String get ramadanIftarIn;
+
+  /// No description provided for @ramadanTimeToIftar.
+  ///
+  /// In en, this message translates to:
+  /// **'Time to break your fast'**
+  String get ramadanTimeToIftar;
+
+  /// No description provided for @ramadanImsak.
+  ///
+  /// In en, this message translates to:
+  /// **'IMSAK'**
+  String get ramadanImsak;
+
+  /// No description provided for @ramadanSuhoor.
+  ///
+  /// In en, this message translates to:
+  /// **'SUHOOR'**
+  String get ramadanSuhoor;
+
+  /// No description provided for @ramadanIftar.
+  ///
+  /// In en, this message translates to:
+  /// **'IFTAR'**
+  String get ramadanIftar;
+
+  /// No description provided for @eidMubarak.
+  ///
+  /// In en, this message translates to:
+  /// **'Eid Mubarak'**
+  String get eidMubarak;
+
+  /// No description provided for @eidInDays.
+  ///
+  /// In en, this message translates to:
+  /// **'Eid in {days} days'**
+  String eidInDays(int days);
+
+  /// No description provided for @ramadanOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'OPEN RAMADAN'**
+  String get ramadanOpen;
+
+  /// No description provided for @ramadanTonightNight.
+  ///
+  /// In en, this message translates to:
+  /// **'Tonight · Night {day}'**
+  String ramadanTonightNight(int day);
+
+  /// No description provided for @ramadanFastingLog.
+  ///
+  /// In en, this message translates to:
+  /// **'Fasting Log'**
+  String get ramadanFastingLog;
+
+  /// No description provided for @ramadanTaraweeh.
+  ///
+  /// In en, this message translates to:
+  /// **'Taraweeh'**
+  String get ramadanTaraweeh;
+
+  /// No description provided for @ramadanDidYouFast.
+  ///
+  /// In en, this message translates to:
+  /// **'Did you keep today\'s fast?'**
+  String get ramadanDidYouFast;
+
+  /// No description provided for @ramadanFasted.
+  ///
+  /// In en, this message translates to:
+  /// **'Fasted'**
+  String get ramadanFasted;
+
+  /// No description provided for @ramadanMissed.
+  ///
+  /// In en, this message translates to:
+  /// **'Missed'**
+  String get ramadanMissed;
+
+  /// No description provided for @ramadanReasonTravel.
+  ///
+  /// In en, this message translates to:
+  /// **'Travelling'**
+  String get ramadanReasonTravel;
+
+  /// No description provided for @ramadanReasonIllness.
+  ///
+  /// In en, this message translates to:
+  /// **'Illness'**
+  String get ramadanReasonIllness;
+
+  /// No description provided for @ramadanReasonMenstruation.
+  ///
+  /// In en, this message translates to:
+  /// **'Menstruation'**
+  String get ramadanReasonMenstruation;
+
+  /// No description provided for @ramadanReasonOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get ramadanReasonOther;
+
+  /// No description provided for @ramadanPrayedTaraweeh.
+  ///
+  /// In en, this message translates to:
+  /// **'Prayed Taraweeh tonight?'**
+  String get ramadanPrayedTaraweeh;
+
+  /// No description provided for @ramadanDaysFasted.
+  ///
+  /// In en, this message translates to:
+  /// **'Days fasted'**
+  String get ramadanDaysFasted;
+
+  /// No description provided for @ramadanTaraweehNights.
+  ///
+  /// In en, this message translates to:
+  /// **'Taraweeh nights'**
+  String get ramadanTaraweehNights;
+
+  /// No description provided for @ramadanSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Ramadan Settings'**
+  String get ramadanSettings;
+
+  /// No description provided for @ramadanDayAdjustment.
+  ///
+  /// In en, this message translates to:
+  /// **'Day adjustment'**
+  String get ramadanDayAdjustment;
+
+  /// No description provided for @ramadanDayAdjustmentHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Shift by a day if your area sighted the moon earlier or later'**
+  String get ramadanDayAdjustmentHint;
+
+  /// No description provided for @ramadanImsakBuffer.
+  ///
+  /// In en, this message translates to:
+  /// **'Imsak buffer (minutes)'**
+  String get ramadanImsakBuffer;
+
+  /// No description provided for @ramadanThemeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Ramadan theme'**
+  String get ramadanThemeLabel;
+
+  /// No description provided for @ramadanZakatReminder.
+  ///
+  /// In en, this message translates to:
+  /// **'Give Zakat al-Fitr before the Eid prayer'**
+  String get ramadanZakatReminder;
+
+  /// No description provided for @ramadanSuhoorNotif.
+  ///
+  /// In en, this message translates to:
+  /// **'Suhoor ends in {minutes} minutes'**
+  String ramadanSuhoorNotif(int minutes);
+
+  /// No description provided for @ramadanIftarSoonNotif.
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes} minutes until iftar'**
+  String ramadanIftarSoonNotif(int minutes);
+
+  /// No description provided for @ramadanIftarNowNotif.
+  ///
+  /// In en, this message translates to:
+  /// **'Time to break your fast'**
+  String get ramadanIftarNowNotif;
+
+  /// No description provided for @ramadanKareem.
+  ///
+  /// In en, this message translates to:
+  /// **'Ramadan Kareem'**
+  String get ramadanKareem;
+
+  /// No description provided for @ramadanNotFasted.
+  ///
+  /// In en, this message translates to:
+  /// **'Not logged'**
+  String get ramadanNotFasted;
+
+  /// No description provided for @ramadanToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get ramadanToday;
+
+  /// No description provided for @progressRamadanRewards.
+  ///
+  /// In en, this message translates to:
+  /// **'Ramadan Rewards'**
+  String get progressRamadanRewards;
+
+  /// No description provided for @earnFast.
+  ///
+  /// In en, this message translates to:
+  /// **'Fast kept'**
+  String get earnFast;
+
+  /// No description provided for @earnFastValue.
+  ///
+  /// In en, this message translates to:
+  /// **'30 pts × multiplier'**
+  String get earnFastValue;
+
+  /// No description provided for @earnTaraweeh.
+  ///
+  /// In en, this message translates to:
+  /// **'Taraweeh prayed'**
+  String get earnTaraweeh;
+
+  /// No description provided for @earnTaraweehValue.
+  ///
+  /// In en, this message translates to:
+  /// **'20 pts × multiplier'**
+  String get earnTaraweehValue;
+
+  /// No description provided for @milestoneRamadan10.
+  ///
+  /// In en, this message translates to:
+  /// **'10 fasts kept'**
+  String get milestoneRamadan10;
+
+  /// No description provided for @milestoneRamadan20.
+  ///
+  /// In en, this message translates to:
+  /// **'20 fasts kept'**
+  String get milestoneRamadan20;
+
+  /// No description provided for @milestoneRamadanMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'Fasted the whole month'**
+  String get milestoneRamadanMonth;
+
+  /// No description provided for @milestoneTaraweeh10.
+  ///
+  /// In en, this message translates to:
+  /// **'10 nights of Taraweeh'**
+  String get milestoneTaraweeh10;
+
+  /// No description provided for @milestoneTaraweeh27.
+  ///
+  /// In en, this message translates to:
+  /// **'27 nights of Taraweeh'**
+  String get milestoneTaraweeh27;
+
+  /// No description provided for @milestoneRamadan10Value.
+  ///
+  /// In en, this message translates to:
+  /// **'+150 pts (one time)'**
+  String get milestoneRamadan10Value;
+
+  /// No description provided for @milestoneRamadan20Value.
+  ///
+  /// In en, this message translates to:
+  /// **'+400 pts (one time)'**
+  String get milestoneRamadan20Value;
+
+  /// No description provided for @milestoneRamadanMonthValue.
+  ///
+  /// In en, this message translates to:
+  /// **'+1,000 pts (one time)'**
+  String get milestoneRamadanMonthValue;
+
+  /// No description provided for @milestoneTaraweeh10Value.
+  ///
+  /// In en, this message translates to:
+  /// **'+150 pts (one time)'**
+  String get milestoneTaraweeh10Value;
+
+  /// No description provided for @milestoneTaraweeh27Value.
+  ///
+  /// In en, this message translates to:
+  /// **'+500 pts (one time)'**
+  String get milestoneTaraweeh27Value;
 }
 
 class _AppLocalizationsDelegate
