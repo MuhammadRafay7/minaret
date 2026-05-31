@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../services/coin_service.dart';
 
 class PrayerRecord {
   final String id;
@@ -142,6 +143,9 @@ class PrayerRepository {
     final docId = '${_uid}_$dateKey';
     final ref = _records.doc(docId);
 
+    bool wasAdded = false;
+    List<String> finalCompleted = [];
+
     await _db.runTransaction((tx) async {
       final snap = await tx.get(ref);
       List<String> completed;
@@ -155,9 +159,12 @@ class PrayerRepository {
 
       if (completed.contains(prayerName)) {
         completed.remove(prayerName);
+        wasAdded = false;
       } else {
         completed.add(prayerName);
+        wasAdded = true;
       }
+      finalCompleted = List<String>.from(completed);
 
       final rate = completed.length / _prayers.length;
       tx.set(ref, {
@@ -169,7 +176,17 @@ class PrayerRepository {
       });
     });
 
-    return _updateStats();
+    final stats = await _updateStats();
+
+    if (wasAdded && stats != null) {
+      CoinService.instance.onPrayerToggled(
+        prayerName,
+        finalCompleted,
+        stats.currentStreak,
+      );
+    }
+
+    return stats;
   }
 
   Future<UserPrayerStats?> _updateStats() async {
@@ -259,7 +276,7 @@ class PrayerRepository {
       lastPrayerDate: lastPrayerDate ?? DateTime.now(),
     );
 
-    _stats.doc(_uid).set({
+    await _stats.doc(_uid).set({
       'userId': _uid,
       'totalPrayers': totalPrayers,
       'totalDaysPrayed': totalDaysPrayed,
@@ -311,6 +328,13 @@ class PrayerRepository {
   Future<UserPrayerStats?> getCurrentUserStats() async {
     if (_uid.isEmpty) return null;
     return getUserStats(_uid);
+  }
+
+  /// Recomputes stats from prayer records and persists them. Use this on
+  /// initial load to ensure the displayed total reflects actual Firestore data.
+  Future<UserPrayerStats?> refreshCurrentUserStats() async {
+    if (_uid.isEmpty) return null;
+    return _updateStats();
   }
 
   Future<List<UserPrayerStats>> getLeaderboard({

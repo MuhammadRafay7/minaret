@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:ui' show Locale;
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
@@ -13,6 +14,7 @@ import '../core/location_service.dart';
 import '../core/dependency_injection.dart';
 import '../repositories/mosque_repository.dart';
 import '../repositories/user_repository.dart';
+import '../l10n/generated/app_localizations.dart';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // SOUND SETUP — place these files in android/app/src/main/res/raw/
@@ -43,6 +45,8 @@ class NotificationService {
     'namaz': true,
     'eid': true,
     'taraweeh': true,
+    'suhoor': true,
+    'iftar': true,
   };
 
   // ── Notification channel IDs ──────────────────────────────────────────────
@@ -54,6 +58,9 @@ class NotificationService {
   static const String _taraweehChannelId = 'taraweeh_alerts';
   static const String _eidChannelId = 'eid_alerts';
   static const String _updateChannelId = 'update_alerts';
+  static const String _suhoorChannelId = 'suhoor_alerts';
+  static const String _iftarChannelId = 'iftar_alerts';
+  static const String _zakatChannelId = 'zakat_alerts';
 
   // ── Janaza verse ──────────────────────────────────────────────────────────
   static const String _janazaArabic =
@@ -141,6 +148,30 @@ class NotificationService {
   static int _eidNotifId(String mosqueId, String type) =>
       _mosqueSlot(mosqueId) + (type == 'fitr' ? 114 : 115);
 
+  // Suhoor / iftar need 30 IDs each — more than the reserved tail of the
+  // 120-wide slot — so they live in dedicated global ranges (like janaza).
+  // _mosqueSlot grows in steps of 120, and day < 30, so slot+day never
+  // collides across mosques within a range.
+  static int _suhoorNotifId(String mosqueId, int day) =>
+      20000000 + _mosqueSlot(mosqueId) + day;
+
+  static int _iftarNotifId(String mosqueId, int day) =>
+      21000000 + _mosqueSlot(mosqueId) + day;
+
+  static int _zakatNotifId(String mosqueId) =>
+      22000000 + _mosqueSlot(mosqueId);
+
+  // Loads the app's saved-locale strings for use in background notifications,
+  // so Ramadan alerts are translated like the rest of the UI.
+  static AppLocalizations? _l10nCache;
+  static Future<AppLocalizations> _l10n() async {
+    if (_l10nCache != null) return _l10nCache!;
+    final prefs = await SharedPreferences.getInstance();
+    final code = prefs.getString('app_locale_code') ?? 'en';
+    _l10nCache = await AppLocalizations.delegate.load(Locale(code));
+    return _l10nCache!;
+  }
+
   // ── Shared notification details ───────────────────────────────────────────
   // Adhan: plays adhan.mp3 from res/raw
   static AndroidNotificationDetails _adhanDetails() =>
@@ -211,17 +242,22 @@ class NotificationService {
       debugPrint('✅ Notification service initialized');
     } catch (e) {
       debugPrint('🔴 Notification initialization failed: $e');
-      // Try to request exact alarm permission if needed
-      try {
-        final androidImpl = _notifications.resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>();
-        if (androidImpl != null) {
-          await androidImpl.requestExactAlarmsPermission();
-          debugPrint('✅ Exact alarm permission requested');
-        }
-      } catch (permError) {
-        debugPrint('🔴 Exact alarm permission request failed: $permError');
+      return;
+    }
+
+    // Request both permissions proactively. These are no-ops on Android
+    // versions that don't need them (pre-13 for notifications, pre-12 for
+    // exact alarms). Without this, zonedSchedule() silently fails on Android 12+.
+    try {
+      final androidImpl = _notifications.resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin>();
+      if (androidImpl != null) {
+        await androidImpl.requestNotificationsPermission();
+        await androidImpl.requestExactAlarmsPermission();
+        debugPrint('✅ Notification permissions requested');
       }
+    } catch (permError) {
+      debugPrint('🔴 Permission request failed: $permError');
     }
   }
 
@@ -481,6 +517,9 @@ class NotificationService {
             if (_isEnabled('namaz')) await _schedulePrayersFor(newData);
             if (_isEnabled('adhan')) await _scheduleAdhanFor(newData);
             if (_isEnabled('taraweeh')) await _scheduleTaraweehFor(newData);
+            if (_isEnabled('suhoor')) await _scheduleSuhoorFor(newData);
+            if (_isEnabled('iftar')) await _scheduleIftarFor(newData);
+            await _scheduleZakatFitrFor(newData);
             if (_isEnabled('eid')) await _scheduleEidFor(newData);
             if (_isEnabled('janaza')) await _scheduleJanazaFor(newData);
             lastData = Map<String, dynamic>.from(newData);
@@ -747,6 +786,164 @@ class NotificationService {
     }
   }
 
+  // ── Suhoor ────────────────────────────────────────────────────────────────
+  // A pre-dawn wake/warning fired 45 min before Fajr (suhoor ends at Fajr).
+  static Future<void> _scheduleSuhoorFor(Map<String, dynamic> data) async {
+    final mosqueId = data['_docId'] as String? ?? '';
+    final timeStr = data['fajr'] as String?;
+    if (timeStr == null || timeStr.trim().isEmpty || timeStr == '--:--') return;
+
+    final bool isRamadan = (data['isRamadan'] as bool?) ?? _isLikelyRamadan();
+    if (!isRamadan) return;
+
+    const int warnMinutes = 45;
+    final l10n = await _l10n();
+
+    for (int day = 0; day < 30; day++) {
+      final fajr = _parseTime('fajr', timeStr).add(Duration(days: day));
+      final scheduledTime = fajr.subtract(const Duration(minutes: warnMinutes));
+      if (scheduledTime.isBefore(DateTime.now())) continue;
+
+      try {
+        await _notifications.zonedSchedule(
+          _suhoorNotifId(mosqueId, day),
+          'M I N A R E T',
+          l10n.ramadanSuhoorNotif(warnMinutes),
+          tz.TZDateTime.from(scheduledTime, tz.local),
+          NotificationDetails(
+            android: AndroidNotificationDetails(
+              _suhoorChannelId,
+              'Suhoor Alerts',
+              channelDescription: 'Pre-dawn suhoor reminders during Ramadan',
+              importance: Importance.max,
+              priority: Priority.high,
+              showWhen: true,
+            ),
+          ),
+          androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+          uiLocalNotificationDateInterpretation:
+              UILocalNotificationDateInterpretation.absoluteTime,
+        );
+      } catch (e) {
+        debugPrint('🔴 Failed scheduling suhoor: $e');
+      }
+    }
+  }
+
+  // ── Iftar ─────────────────────────────────────────────────────────────────
+  // Two alerts per day: a 15-min warning, then the iftar moment at Maghrib.
+  static Future<void> _scheduleIftarFor(Map<String, dynamic> data) async {
+    final mosqueId = data['_docId'] as String? ?? '';
+    final timeStr = data['maghrib'] as String?;
+    if (timeStr == null || timeStr.trim().isEmpty || timeStr == '--:--') return;
+
+    final bool isRamadan = (data['isRamadan'] as bool?) ?? _isLikelyRamadan();
+    if (!isRamadan) return;
+
+    const int warnMinutes = 15;
+    final l10n = await _l10n();
+    final now = DateTime.now();
+
+    for (int day = 0; day < 30; day++) {
+      final maghrib = _parseTime('maghrib', timeStr).add(Duration(days: day));
+      final warnTime = maghrib.subtract(const Duration(minutes: warnMinutes));
+
+      final details = NotificationDetails(
+        android: AndroidNotificationDetails(
+          _iftarChannelId,
+          'Iftar Alerts',
+          channelDescription: 'Iftar reminders during Ramadan',
+          importance: Importance.max,
+          priority: Priority.high,
+          showWhen: true,
+        ),
+      );
+
+      // Pre-iftar warning.
+      if (warnTime.isAfter(now)) {
+        try {
+          await _notifications.zonedSchedule(
+            _iftarNotifId(mosqueId, day),
+            'M I N A R E T',
+            l10n.ramadanIftarSoonNotif(warnMinutes),
+            tz.TZDateTime.from(warnTime, tz.local),
+            details,
+            androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+            uiLocalNotificationDateInterpretation:
+                UILocalNotificationDateInterpretation.absoluteTime,
+          );
+        } catch (e) {
+          debugPrint('🔴 Failed scheduling iftar warning: $e');
+        }
+      }
+
+      // Iftar moment (offset by +30 in the same range to keep a distinct ID).
+      if (maghrib.isAfter(now)) {
+        try {
+          await _notifications.zonedSchedule(
+            _iftarNotifId(mosqueId, day + 30),
+            'M I N A R E T',
+            l10n.ramadanIftarNowNotif,
+            tz.TZDateTime.from(maghrib, tz.local),
+            details,
+            androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+            uiLocalNotificationDateInterpretation:
+                UILocalNotificationDateInterpretation.absoluteTime,
+          );
+        } catch (e) {
+          debugPrint('🔴 Failed scheduling iftar: $e');
+        }
+      }
+    }
+  }
+
+  // ── Zakat al-Fitr ───────────────────────────────────────────────────────────
+  // One-shot reminder the day before the Eid al-Fitr prayer, if the mosque has
+  // published an Eid date.
+  static Future<void> _scheduleZakatFitrFor(Map<String, dynamic> data) async {
+    final mosqueId = data['_docId'] as String? ?? '';
+    final dateStr = data['eidFitrDate'] as String?;
+    if (dateStr == null || dateStr.trim().isEmpty) return;
+
+    DateTime? eidDate;
+    try {
+      eidDate = DateFormat('yyyy-MM-dd').parse(dateStr.trim());
+    } catch (_) {
+      eidDate = DateTime.tryParse(dateStr.trim());
+    }
+    if (eidDate == null) return;
+
+    // 10:00 the morning before Eid.
+    final remindAt =
+        DateTime(eidDate.year, eidDate.month, eidDate.day, 10).subtract(const Duration(days: 1));
+    if (remindAt.isBefore(DateTime.now())) return;
+
+    final l10n = await _l10n();
+    try {
+      await _notifications.zonedSchedule(
+        _zakatNotifId(mosqueId),
+        'M I N A R E T',
+        l10n.ramadanZakatReminder,
+        tz.TZDateTime.from(remindAt, tz.local),
+        NotificationDetails(
+          android: AndroidNotificationDetails(
+            _zakatChannelId,
+            'Zakat al-Fitr',
+            channelDescription: 'Reminder to give Zakat al-Fitr before Eid',
+            importance: Importance.high,
+            priority: Priority.high,
+            showWhen: true,
+          ),
+        ),
+        androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+        uiLocalNotificationDateInterpretation:
+            UILocalNotificationDateInterpretation.absoluteTime,
+      );
+    } catch (e) {
+      debugPrint('🔴 Failed scheduling zakat reminder: $e');
+    }
+  }
+
   /// Rough Ramadan check based on Gregorian calendar heuristic.
   /// Prefer storing an `isRamadan` bool in Firestore and toggling from admin.
   static bool _isLikelyRamadan() {
@@ -927,11 +1124,22 @@ class NotificationService {
 
   static Future<void> _cancelPrayerNotificationsFor(String mosqueId) async {
     final slot = _mosqueSlot(mosqueId);
-    for (int i = 0; i < 110; i++) {
+    // 0–113 covers namaz, adhan, taraweeh, jummah prayer, jummah adhan.
+    // Eid (114, 115) is cancelled separately below.
+    for (int i = 0; i < 114; i++) {
       await _notifications.cancel(slot + i);
     }
     await _notifications.cancel(_eidNotifId(mosqueId, 'fitr'));
     await _notifications.cancel(_eidNotifId(mosqueId, 'adha'));
+
+    // Ramadan suhoor (30) / iftar (warning 0–29 + moment 30–59) / zakat (1).
+    for (int day = 0; day < 30; day++) {
+      await _notifications.cancel(_suhoorNotifId(mosqueId, day));
+    }
+    for (int day = 0; day < 60; day++) {
+      await _notifications.cancel(_iftarNotifId(mosqueId, day));
+    }
+    await _notifications.cancel(_zakatNotifId(mosqueId));
   }
 
   // ── Update banner ─────────────────────────────────────────────────────────

@@ -160,7 +160,7 @@
   "errorLoadingNotifications": "Kesalahan memuat notifikasi",
   "noNotificationsYet": "Belum ada notifikasi",
   "mosqueAlertsHere": "Anda akan melihat peringatan masjid di sini",
-  "mosqueNotificationsLabel": "Notifikasi Masjid",
+  "mosqueNotificationsLabel": "Notifikasi masjid",
   "mosqueNotificationsSub": "Lihat peringatan dan laporan masjid",
   "unreadAlertsLabel": "{count} peringatan belum dibaca",
   "@unreadAlertsLabel": {
@@ -220,14 +220,18 @@
   "errorSavingProfile": "Kesalahan menyimpan profil: {error}",
   "@errorSavingProfile": {
     "placeholders": {
-      "error": {"type": "String"}
+      "error": {
+        "type": "String"
+      }
     }
   },
   "announcementPosted": "Pengumuman berhasil diposting.",
   "errorPostingAnnouncement": "Kesalahan memposting pengumuman: {error}",
   "@errorPostingAnnouncement": {
     "placeholders": {
-      "error": {"type": "String"}
+      "error": {
+        "type": "String"
+      }
     }
   },
   "reportIssue": "LAPORKAN MASALAH",
@@ -243,7 +247,9 @@
   "errorLaunchingDirections": "Kesalahan membuka petunjuk arah: {error}",
   "@errorLaunchingDirections": {
     "placeholders": {
-      "error": {"type": "String"}
+      "error": {
+        "type": "String"
+      }
     }
   },
   "testPermissions": "Uji Izin",
@@ -265,8 +271,12 @@
   "ofTotalCompleted": "{completed} dari {total} selesai",
   "@ofTotalCompleted": {
     "placeholders": {
-      "completed": {"type": "int"},
-      "total": {"type": "int"}
+      "completed": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
     }
   },
   "selectLocation": "PILIH LOKASI",
@@ -274,7 +284,6 @@
   "useCurrentLocationGps": "Gunakan Lokasi Saat Ini (GPS)",
   "confirmWithPasswordPrompt": "Masukkan kata sandi Anda untuk mengkonfirmasi penghapusan",
   "reAuthFailedMessage": "Autentikasi ulang gagal. Silakan coba lagi.",
-
   "initializationError": "Kesalahan Inisialisasi",
   "somethingWentWrong": "Terjadi kesalahan",
   "reloadApp": "Muat ulang aplikasi",
@@ -283,7 +292,13 @@
   "azanBoard": "PAPAN AZAN",
   "prayerBoard": "PAPAN SHALAT",
   "confidencePercent": "{confidence}% AKURASI",
-  "@confidencePercent": { "placeholders": { "confidence": { "type": "int" } } },
+  "@confidencePercent": {
+    "placeholders": {
+      "confidence": {
+        "type": "int"
+      }
+    }
+  },
   "retakeAction": "AMBIL ULANG",
   "applyAllAction": "TERAPKAN SEMUA",
   "estimatedAbbr": "perkiraan",
@@ -365,15 +380,168 @@
   "failedToLoadQada": "Gagal memuat data qadha.",
   "addQadaDebtTitle": "Tambah Hutang Qadha",
   "addQadaDebtQuestion": "Berapa shalat {prayer} yang masih perlu Anda qadha?",
-  "@addQadaDebtQuestion": { "placeholders": { "prayer": { "type": "String" } } },
+  "@addQadaDebtQuestion": {
+    "placeholders": {
+      "prayer": {
+        "type": "String"
+      }
+    }
+  },
   "qadaInfoBanner": "Menyelesaikan shalat qadha di sini tidak mempengaruhi streak harian Anda. Streak hanya dihitung untuk shalat harian tepat waktu.",
   "totalPendingLabel": "Total Tertunda",
   "madeUpLabel": "Sudah Diqadha",
   "pendingCountBadge": "{count} tertunda",
-  "@pendingCountBadge": { "placeholders": { "count": { "type": "int" } } },
+  "@pendingCountBadge": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "madeUpCountBadge": "{count} sudah diqadha",
-  "@madeUpCountBadge": { "placeholders": { "count": { "type": "int" } } },
+  "@madeUpCountBadge": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "markAsMadeUp": "Tandai sebagai Sudah Diqadha",
   "allCaughtUp": "Semua sudah diqadha",
-  "addQadaDebtTooltip": "Tambah hutang qadha"
+  "addQadaDebtTooltip": "Tambah hutang qadha",
+  "progressMyProgress": "Kemajuan Saya",
+  "progressPoints": "Poin",
+  "progressHowToEarn": "CARA MENDAPATKAN POIN",
+  "progressAllLevels": "SEMUA LEVEL",
+  "progressCurrentBalance": "SALDO SAAT INI",
+  "progressLifetimeEarned": "TOTAL DIPEROLEH",
+  "progressDailyPoints": "Poin Harian",
+  "progressMilestoneBonuses": "Bonus Pencapaian",
+  "progressUnlockedAtLevel": "TERBUKA DI LEVEL INI",
+  "progressStartingLevel": "Level awal",
+  "progressMaxLevel": "Level maksimum tercapai",
+  "progressMaxLevelShort": "Level maks",
+  "progressLevelLabel": "Level {level}",
+  "progressLevelUpper": "LEVEL {level}",
+  "progressPointsToNext": "{points} poin ke Level {level}",
+  "progressPointsEarned": "{points} poin diperoleh",
+  "progressMultiplier": "pengali {m}×",
+  "unlockBasicTracking": "Pelacakan salat dasar",
+  "unlock7DayHistory": "Riwayat salat 7 hari",
+  "unlock30DayHistory": "Riwayat salat 30 hari",
+  "unlock60DayHistory": "Riwayat salat 60 hari",
+  "unlock90DayHistory": "Riwayat salat 90 hari",
+  "unlockProfileBadge": "Lencana di komunitas masjid",
+  "unlockQadaAnalytics": "Analitik Qada — lihat salat yang paling sering terlewat",
+  "unlockMultiplier15": "Pengali poin 1,5×",
+  "unlockMultiplier2": "Pengali poin 2×",
+  "unlockMultiplier25": "Pengali poin 2,5×",
+  "unlockWeeklyReport": "Laporan kinerja salat mingguan",
+  "unlockGoldBadge": "Lencana profil emas eksklusif",
+  "earnPrayerCompleted": "Setiap salat selesai",
+  "earnFajrBonus": "Bonus Subuh",
+  "earnFullDay": "Semua 5 salat sehari",
+  "earnQada": "Salat Qada",
+  "earnHadith": "Baca Hadis harian",
+  "earnLogin": "Login aplikasi harian",
+  "earnPrayerValue": "10 poin × pengali",
+  "earnFajrValue": "+5 poin",
+  "earnFullDayValue": "+50 poin × pengali",
+  "earnQadaValue": "15 poin",
+  "earnHadithValue": "5 poin (sekali/hari)",
+  "earnLoginValue": "2 poin (sekali/hari)",
+  "milestone7": "Rentetan 7 hari",
+  "milestone40": "Rentetan 40 hari (Arba'een)",
+  "milestone100": "Rentetan 100 hari",
+  "milestoneFirstQada": "Qada pertama",
+  "milestoneFirstFullDay": "Hari salat penuh pertama",
+  "milestone7Value": "+100 poin (sekali)",
+  "milestone40Value": "+500 poin (sekali)",
+  "milestone100Value": "+1.000 poin (sekali)",
+  "milestoneFirstQadaValue": "+50 poin (sekali)",
+  "milestoneFirstFullDayValue": "+75 poin (sekali)",
+  "weeklyReportTitle": "Laporan Mingguan",
+  "weeklyLast7Days": "7 Hari Terakhir",
+  "weeklyCompletion": "Penyelesaian Mingguan",
+  "weeklyDayByDay": "HARI DEMI HARI",
+  "weeklyPerPrayer": "PER SALAT",
+  "weeklyToday": "Hari ini",
+  "weeklyPerfectAttendance": "Kehadiran sempurna",
+  "weeklyDaysActive": "{days}/7 hari aktif",
+  "weeklyPrayersCount": "{count} dari 35 salat",
+  "profileTitleShort": "PROFIL",
+  "profileCommunity": "KOMUNITAS",
+  "profileImam": "IMAM",
+  "statPrayers": "Salat",
+  "statStreak": "Rentetan",
+  "statRate": "Tingkat",
+  "sectionAccount": "AKUN",
+  "signOutLabel": "Keluar",
+  "signOutSub": "Akhiri sesi Anda",
+  "editProfileTitle": "Edit Profil",
+  "manageProfileTitle": "Kelola Profil",
+  "sectionPersonalDetails": "DATA PRIBADI",
+  "fieldCountry": "Negara",
+  "fieldCity": "Kota",
+  "fieldFullName": "Nama Lengkap",
+  "fieldPhone": "Nomor Telepon",
+  "fieldOptional": "Opsional",
+  "saveChangesLabel": "Simpan Perubahan",
+  "genderOther": "Lainnya",
+  "last60Days": "60 Hari Terakhir",
+  "weeklyReportTooltip": "Laporan Mingguan",
+  "unlockLevelMsg": "Capai Level {level} untuk membuka riwayat {days} hari",
+  "ramadanLabel": "RAMADAN",
+  "ramadanDayOf": "Hari {day} dari {total}",
+  "ramadanBeginsInDays": "Ramadan dimulai dalam {days} hari",
+  "ramadanBeginsTomorrow": "Ramadan dimulai besok",
+  "ramadanSuhoorEndsIn": "Sahur berakhir dalam",
+  "ramadanIftarIn": "Berbuka dalam",
+  "ramadanTimeToIftar": "Waktunya berbuka puasa",
+  "ramadanImsak": "IMSAK",
+  "ramadanSuhoor": "SAHUR",
+  "ramadanIftar": "BERBUKA",
+  "eidMubarak": "Selamat Idulfitri",
+  "eidInDays": "Idulfitri dalam {days} hari",
+  "ramadanOpen": "BUKA RAMADAN",
+  "ramadanTonightNight": "Malam ini · Malam ke-{day}",
+  "ramadanFastingLog": "Catatan Puasa",
+  "ramadanTaraweeh": "Tarawih",
+  "ramadanDidYouFast": "Apakah Anda berpuasa hari ini?",
+  "ramadanFasted": "Berpuasa",
+  "ramadanMissed": "Tidak",
+  "ramadanReasonTravel": "Bepergian",
+  "ramadanReasonIllness": "Sakit",
+  "ramadanReasonMenstruation": "Haid",
+  "ramadanReasonOther": "Lainnya",
+  "ramadanPrayedTaraweeh": "Salat Tarawih malam ini?",
+  "ramadanDaysFasted": "Hari berpuasa",
+  "ramadanTaraweehNights": "Malam Tarawih",
+  "ramadanSettings": "Pengaturan Ramadan",
+  "ramadanDayAdjustment": "Penyesuaian hari",
+  "ramadanDayAdjustmentHint": "Geser satu hari jika daerah Anda melihat hilal lebih awal atau lebih lambat",
+  "ramadanImsakBuffer": "Jeda imsak (menit)",
+  "ramadanThemeLabel": "Tema Ramadan",
+  "ramadanZakatReminder": "Tunaikan Zakat Fitrah sebelum salat Id",
+  "ramadanSuhoorNotif": "Sahur berakhir dalam {minutes} menit",
+  "ramadanIftarSoonNotif": "{minutes} menit menuju berbuka",
+  "ramadanIftarNowNotif": "Waktunya berbuka puasa",
+  "ramadanKareem": "Ramadan Karim",
+  "ramadanNotFasted": "Belum dicatat",
+  "ramadanToday": "Hari ini",
+  "progressRamadanRewards": "Hadiah Ramadan",
+  "earnFast": "Puasa dijalankan",
+  "earnFastValue": "30 poin × pengali",
+  "earnTaraweeh": "Salat Tarawih",
+  "earnTaraweehValue": "20 poin × pengali",
+  "milestoneRamadan10": "10 puasa dijalankan",
+  "milestoneRamadan20": "20 puasa dijalankan",
+  "milestoneRamadanMonth": "Puasa sebulan penuh",
+  "milestoneTaraweeh10": "10 malam Tarawih",
+  "milestoneTaraweeh27": "27 malam Tarawih",
+  "milestoneRamadan10Value": "+150 poin (sekali)",
+  "milestoneRamadan20Value": "+400 poin (sekali)",
+  "milestoneRamadanMonthValue": "+1.000 poin (sekali)",
+  "milestoneTaraweeh10Value": "+150 poin (sekali)",
+  "milestoneTaraweeh27Value": "+500 poin (sekali)"
 }

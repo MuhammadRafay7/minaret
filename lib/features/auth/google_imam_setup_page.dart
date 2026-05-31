@@ -10,6 +10,7 @@ import 'package:minaret/core/constants/app_defaults.dart';
 import 'package:minaret/core/theme.dart';
 import 'package:minaret/widgets/atelier_layout.dart';
 import 'package:minaret/widgets/premium_button.dart';
+import 'package:minaret/widgets/location_picker.dart';
 import '../mosque/create_mosque_page.dart';
 import 'document_verification.dart';
 
@@ -37,12 +38,15 @@ class _GoogleImamSetupPageState extends State<GoogleImamSetupPage> {
   final _phoneController = TextEditingController();
   final _teachingFeeController = TextEditingController();
   final _teachingNotesController = TextEditingController();
-  final _cityController = TextEditingController();
   final _imagePicker = ImagePicker();
 
   bool _offersTeaching = false;
   String _teachingAudience = kDefaultTeachingAudience;
   String _selectedCountry = 'PK';
+
+  // Standardized residential location (Country → State → City). Separate from
+  // `_selectedCountry`, which is the ID-document country for imam verification.
+  LocationValue _location = const LocationValue();
 
   Uint8List? _idCardImage;
   Uint8List? _idCardBackImage;
@@ -68,7 +72,6 @@ class _GoogleImamSetupPageState extends State<GoogleImamSetupPage> {
     _phoneController.dispose();
     _teachingFeeController.dispose();
     _teachingNotesController.dispose();
-    _cityController.dispose();
     super.dispose();
   }
 
@@ -152,7 +155,6 @@ class _GoogleImamSetupPageState extends State<GoogleImamSetupPage> {
     final fullName = _fullNameController.text.trim();
     final fatherName = _fatherNameController.text.trim();
     final phone = _phoneController.text.trim();
-    final city = _cityController.text.trim();
 
     if (fullName.isEmpty) {
       _showStatus(_t(en: 'Please enter your full name', ar: 'أدخل اسمك الكامل', ur: 'اپنا پورا نام درج کریں', ru: 'Введите полное имя'));
@@ -166,8 +168,8 @@ class _GoogleImamSetupPageState extends State<GoogleImamSetupPage> {
       _showStatus(_t(en: 'Please enter your phone number', ar: 'أدخل رقم هاتفك', ur: 'فون نمبر درج کریں', ru: 'Введите номер телефона'));
       return;
     }
-    if (city.isEmpty) {
-      _showStatus(_t(en: 'Please enter your city', ar: 'أدخل مدينتك', ur: 'اپنا شہر درج کریں', ru: 'Введите ваш город'));
+    if (!_location.isComplete) {
+      _showStatus(_t(en: 'Please select your country, state and city', ar: 'يرجى اختيار الدولة والولاية والمدينة', ur: 'براہ کرم اپنا ملک، صوبہ اور شہر منتخب کریں', ru: 'Выберите страну, регион и город'));
       return;
     }
     if (_idCardBase64 == null || _idCardBackBase64 == null || _sanadBase64 == null) {
@@ -204,7 +206,11 @@ class _GoogleImamSetupPageState extends State<GoogleImamSetupPage> {
         'email': widget.email,
         'displayName': widget.displayName,
         'role': kRoleImam,
-        'city': city,
+        'country': _location.countryName,
+        'countryCode': _location.countryCode,
+        'state': _location.stateName,
+        'stateCode': _location.stateCode,
+        'city': _location.cityName,
         'createdAt': FieldValue.serverTimestamp(),
         'favorites': <String>[],
         'followedMosques': <String>[],
@@ -325,7 +331,12 @@ class _GoogleImamSetupPageState extends State<GoogleImamSetupPage> {
               _field(_t(en: 'Phone Number', ar: 'رقم الهاتف', ur: 'فون نمبر', ru: 'Номер телефона'), _phoneController,
                   keyboardType: TextInputType.phone),
               const SizedBox(height: 16),
-              _field(_t(en: 'City', ar: 'المدينة', ur: 'شہر', ru: 'Город'), _cityController),
+              LocationPicker(
+                countryLabel: _t(en: 'Country', ar: 'الدولة', ur: 'ملک', ru: 'Страна'),
+                stateLabel: _t(en: 'State / Province', ar: 'الولاية / المحافظة', ur: 'صوبہ', ru: 'Регион'),
+                cityLabel: _t(en: 'City', ar: 'المدينة', ur: 'شہر', ru: 'Город'),
+                onChanged: (loc) => setState(() => _location = loc),
+              ),
               const SizedBox(height: 18),
 
               // Teaching toggle

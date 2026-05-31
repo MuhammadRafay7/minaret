@@ -163,6 +163,13 @@ match /mosques/{mosqueId} {
       allow write: if isSuperAdmin();
     }
 
+    // Legal documents (privacy policy, terms, disclaimer) — public read so the
+    // app shows admin-edited content; writes go through the Admin SDK / super admin.
+    match /legal_docs/{docId} {
+      allow read:  if true;
+      allow write: if isSuperAdmin();
+    }
+
     match /user_preferences/{userId} {
       allow read:   if isAuthenticated() && isOwner(userId);
       allow create: if isAuthenticated() && isOwner(userId);
@@ -175,6 +182,36 @@ match /mosques/{mosqueId} {
       allow create: if isAuthenticated() && isOwner(userId);
       allow update: if isAuthenticated() && isOwner(userId);
       allow delete: if isAuthenticated() && isOwner(userId);
+    }
+
+    // Ramadan fasting log — one doc per user, owner-only.
+    match /fasting_records/{userId} {
+      allow read:   if isAuthenticated() && isOwner(userId);
+      allow create: if isAuthenticated() && isOwner(userId);
+      allow update: if isAuthenticated() && isOwner(userId);
+      allow delete: if isAuthenticated() && isOwner(userId);
+    }
+
+    // Taraweeh attendance — one doc per user, owner-only.
+    match /taraweeh_records/{userId} {
+      allow read:   if isAuthenticated() && isOwner(userId);
+      allow create: if isAuthenticated() && isOwner(userId);
+      allow update: if isAuthenticated() && isOwner(userId);
+      allow delete: if isAuthenticated() && isOwner(userId);
+    }
+
+    match /user_progress/{userId} {
+      allow read:   if isAuthenticated() && isOwner(userId);
+      allow create: if isAuthenticated() && isOwner(userId);
+      allow update: if isAuthenticated() && isOwner(userId);
+      allow delete: if isAuthenticated() && isOwner(userId);
+
+      match /transactions/{txId} {
+        allow read:   if isAuthenticated() && isOwner(userId);
+        allow create: if isAuthenticated() && isOwner(userId);
+        allow update: if false;
+        allow delete: if false;
+      }
     }
 
     match /locations/{locationId} {

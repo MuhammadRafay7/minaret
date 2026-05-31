@@ -9,11 +9,9 @@ import 'package:minaret/core/constants/app_defaults.dart';
 import 'package:minaret/core/theme.dart';
 import 'package:minaret/core/theme_provider.dart';
 import 'package:minaret/widgets/atelier_layout.dart';
-import 'package:minaret/widgets/language_selector.dart';
 import 'package:minaret/services/prayer_manager.dart';
 import 'package:minaret/l10n/generated/app_localizations.dart';
 import '../notifications/notifications_page.dart';
-import '../prayer/prayer_stats_page.dart';
 import '../legal/privacy_policy_page.dart';
 import '../legal/terms_of_service_page.dart';
 
@@ -51,32 +49,37 @@ class _SettingsPageState extends State<SettingsPage> {
     Map<String, dynamic> remotePrefs = {};
     bool isMosqueAdmin = false;
     int unreadNotifications = 0;
-    
+
     if (user != null) {
-      // Check if user is mosque admin
-      final userDoc = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
-      final userData = userDoc.data();
-      remotePrefs = userData?['notificationPrefs'] as Map<String, dynamic>? ?? {};
-      
-      // Check if user manages any mosques
-      final mosquesQuery = await FirebaseFirestore.instance
-          .collection('mosques')
-          .where('adminUid', isEqualTo: user.uid)
-          .limit(1)
-          .get();
-      isMosqueAdmin = mosquesQuery.docs.isNotEmpty;
-      
-      // Get unread notifications count
-      if (isMosqueAdmin) {
-        final notificationsQuery = await FirebaseFirestore.instance
-            .collection('notifications')
-            .where('userId', isEqualTo: user.uid)
-            .where('read', isEqualTo: false)
+      try {
+        final userDoc = await FirebaseFirestore.instance
+            .collection('users')
+            .doc(user.uid)
             .get();
-        unreadNotifications = notificationsQuery.docs.length;
+        final userData = userDoc.data();
+        remotePrefs = userData?['notificationPrefs'] as Map<String, dynamic>? ?? {};
+
+        final mosquesQuery = await FirebaseFirestore.instance
+            .collection('mosques')
+            .where('adminUid', isEqualTo: user.uid)
+            .limit(1)
+            .get();
+        isMosqueAdmin = mosquesQuery.docs.isNotEmpty;
+
+        if (isMosqueAdmin) {
+          final notificationsQuery = await FirebaseFirestore.instance
+              .collection('notifications')
+              .where('userId', isEqualTo: user.uid)
+              .where('read', isEqualTo: false)
+              .get();
+          unreadNotifications = notificationsQuery.docs.length;
+        }
+      } catch (e) {
+        debugPrint('SettingsPage remote load error: $e');
       }
     }
 
+    if (!mounted) return;
     setState(() {
       _selectedMethod = prefs.getString('pref_calculation_method') ?? kDefaultCalcMethod;
       _selectedMadhab = prefs.getString('pref_madhab') ?? kDefaultMadhab;
@@ -311,15 +314,11 @@ class _SettingsPageState extends State<SettingsPage> {
           children: [
             const SizedBox(height: 60),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 25),
+              padding: const EdgeInsets.symmetric(horizontal: 22),
               child: Row(
                 children: [
-                  IconButton(
-                    onPressed: () => Navigator.pop(context),
-                    icon: Icon(Icons.arrow_back_ios_new_rounded,
-                      color: isDark ? Colors.white : MinaretTheme.onyx, size: 20),
-                  ),
-                  const SizedBox(width: 10),
+                  _backButton(isDark),
+                  const SizedBox(width: 12),
                   Text(
                     _displayText(context, l10n?.settingsTitle ?? 'SETTINGS'),
                     style: MinaretTheme.heading.copyWith(fontSize: 22, letterSpacing: 4),
@@ -327,216 +326,166 @@ class _SettingsPageState extends State<SettingsPage> {
                 ],
               ),
             ),
+            const SizedBox(height: 20),
             if (_isLoadingPrefs)
-              const Expanded(child: Center(child: CircularProgressIndicator()))
+              const Expanded(child: Center(child: CircularProgressIndicator(color: MinaretTheme.gold)))
             else
               Expanded(
                 child: ListView(
                   physics: const BouncingScrollPhysics(),
-                  padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 30),
+                  padding: const EdgeInsets.fromLTRB(22, 0, 22, 40),
                   children: [
+                    // ── APPEARANCE ──
                     _sectionHeader(_displayText(context, l10n?.sectionAppearance ?? 'APPEARANCE')),
-                    _buildSwitchTile(
-                      l10n?.darkModeLabel ?? 'Dark Mode',
-                      l10n?.darkModeSub ?? 'Use the aged dome aesthetic',
-                      themeProvider.isDark,
-                      (v) => themeProvider.toggleDark(v)
-                    ),
-                    
-                    const SizedBox(height: 30),
-                    _sectionHeader(_displayText(context, l10n?.sectionLanguage ?? 'LANGUAGE')),
-                    const Align(
-                      alignment: Alignment.centerLeft,
-                      child: LanguageSelector(),
-                    ),
+                    _card([
+                      _buildSwitchTile(
+                        Icons.dark_mode_outlined,
+                        l10n?.darkModeLabel ?? 'Dark Mode',
+                        l10n?.darkModeSub ?? 'Use the aged dome aesthetic',
+                        themeProvider.isDark,
+                        (v) => themeProvider.toggleDark(v),
+                      ),
+                    ]),
+                    const SizedBox(height: 26),
 
+                    // ── NOTIFICATIONS ──
                     if (user != null) ...[
-                      const SizedBox(height: 30),
                       _sectionHeader(_displayText(context, l10n?.sectionNotifications ?? 'NOTIFICATIONS')),
-                      if (_isMosqueAdmin) ...[
-                        ListTile(
-                          contentPadding: EdgeInsets.zero,
-                          leading: Stack(
-                            children: [
-                              Icon(Icons.notifications_outlined, color: MinaretTheme.gold),
-                              if (_unreadNotifications > 0)
-                                Positioned(
-                                  right: 0,
-                                  top: 0,
-                                  child: Container(
-                                    width: 8,
-                                    height: 8,
-                                    decoration: BoxDecoration(
-                                      color: Colors.red,
-                                      shape: BoxShape.circle,
-                                    ),
-                                  ),
-                                ),
-                            ],
-                          ),
-                          title: Text(
-                            'Mosque Notifications',
-                            style: GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.w600, color: MinaretTheme.gold)
-                          ),
-                          subtitle: Text(
-                            _unreadNotifications > 0 
+                      _card([
+                        if (_isMosqueAdmin)
+                          _navTile(
+                            icon: Icons.notifications_outlined,
+                            title: l10n?.mosqueNotificationsLabel ?? 'Mosque Notifications',
+                            subtitle: _unreadNotifications > 0
                                 ? '$_unreadNotifications unread alerts'
                                 : 'View mosque alerts and reports',
-                            style: GoogleFonts.lato(fontSize: 12, color: MinaretTheme.slate)
-                          ),
-                          trailing: Icon(Icons.arrow_forward_ios, size: 16, color: MinaretTheme.gold),
-                          onTap: () {
-                            Navigator.push(
+                            badge: _unreadNotifications > 0,
+                            onTap: () => Navigator.push(
                               context,
                               MaterialPageRoute(builder: (_) => const NotificationsPage()),
-                            );
-                          },
+                            ),
+                          ),
+                        _buildSwitchTile(
+                          Icons.volume_up_outlined,
+                          l10n?.notifAdhanLabel ?? 'Adhan Alerts',
+                          l10n?.notifAdhanSub ?? 'Notification at exact prayer time',
+                          _notifAdhan,
+                          (v) => _updateNotification('adhan', v),
+                          savingKey: 'adhan',
                         ),
-                        const SizedBox(height: 10),
-                      ],
-                      // Prayer Stats for all users
-                      ListTile(
-                        contentPadding: EdgeInsets.zero,
-                        leading: Icon(Icons.analytics_outlined, color: MinaretTheme.gold),
-                        title: Text(
-                          l10n?.prayerStatisticsLabel ?? 'Prayer Statistics',
-                          style: GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.w600, color: MinaretTheme.gold)
+                        _buildSwitchTile(
+                          Icons.access_time_rounded,
+                          l10n?.notifPrayerLabel ?? 'Prayer Reminders',
+                          l10n?.notifPrayerSub ?? '5 minutes before congregation',
+                          _notifNamaz,
+                          (v) => _updateNotification('namaz', v),
+                          savingKey: 'namaz',
                         ),
-                        subtitle: Text(
-                          l10n?.prayerStatisticsSub ?? 'View your prayer history and analytics',
-                          style: GoogleFonts.lato(fontSize: 12, color: MinaretTheme.slate)
+                        _buildSwitchTile(
+                          Icons.favorite_outline_rounded,
+                          l10n?.notifJanazaLabel ?? 'Janaza Alerts',
+                          l10n?.notifJanazaSub ?? 'Urgent local funeral notifications',
+                          _notifJanaza,
+                          (v) => _updateNotification('janaza', v),
+                          savingKey: 'janaza',
                         ),
-                        trailing: Icon(Icons.arrow_forward_ios, size: 16, color: MinaretTheme.gold),
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (_) => const PrayerStatsPage()),
-                          );
+                        _buildSwitchTile(
+                          Icons.celebration_outlined,
+                          l10n?.notifEidLabel ?? 'Eid & Taraweeh',
+                          l10n?.notifEidSub ?? 'Special prayer announcements',
+                          _notifEid,
+                          (v) => _updateNotification('eid', v),
+                          savingKey: 'eid',
+                        ),
+                      ]),
+                      const SizedBox(height: 26),
+                    ],
+
+                    // ── PRAYER CALCULATION ──
+                    _sectionHeader(_displayText(context, l10n?.sectionPrayerCalc ?? 'PRAYER CALCULATION')),
+                    _card([
+                      _buildDropdownTile(
+                        l10n?.calculationMethodLabel ?? 'Method',
+                        _selectedMethod,
+                        {
+                          kCalcMethodKarachi:   'University of Islamic Sciences, Karachi',
+                          kCalcMethodIsna:      'ISNA (North America)',
+                          kCalcMethodMwl:       'Muslim World League',
+                          kCalcMethodEgypt:     'Egyptian Authority',
+                          kCalcMethodDubai:     'Dubai',
+                          kCalcMethodQatar:     'Qatar',
+                          kCalcMethodSingapore: 'Singapore',
+                          kCalcMethodTehran:    'Tehran',
+                          kCalcMethodTurkey:    'Turkey',
+                        },
+                        (val) {
+                          if (val != null) {
+                            setState(() => _selectedMethod = val);
+                            PrayerManager.setMethod(val);
+                          }
                         },
                       ),
-                      const SizedBox(height: 10),
-                      _buildSwitchTile(
-                        l10n?.notifAdhanLabel ?? 'Adhan Alerts',
-                        l10n?.notifAdhanSub ?? 'Notification at exact prayer time',
-                        _notifAdhan,
-                        (v) => _updateNotification('adhan', v),
-                        savingKey: 'adhan',
+                      _buildDropdownTile(
+                        l10n?.madhabAsrLabel ?? 'Madhab (Asr)',
+                        _selectedMadhab,
+                        {
+                          kMadhabHanafi: 'Hanafi (Later)',
+                          kMadhabShafi:  'Shafi\'i / Maliki / Hanbali (Earlier)',
+                        },
+                        (val) {
+                          if (val != null) {
+                            setState(() => _selectedMadhab = val);
+                            PrayerManager.setMadhab(val);
+                          }
+                        },
                       ),
-                      _buildSwitchTile(
-                        l10n?.notifPrayerLabel ?? 'Prayer Reminders',
-                        l10n?.notifPrayerSub ?? '5 minutes before congregation',
-                        _notifNamaz,
-                        (v) => _updateNotification('namaz', v),
-                        savingKey: 'namaz',
-                      ),
-                      _buildSwitchTile(
-                        l10n?.notifJanazaLabel ?? 'Janaza Alerts',
-                        l10n?.notifJanazaSub ?? 'Urgent local funeral notifications',
-                        _notifJanaza,
-                        (v) => _updateNotification('janaza', v),
-                        savingKey: 'janaza',
-                      ),
-                      _buildSwitchTile(
-                        l10n?.notifEidLabel ?? 'Eid & Taraweeh',
-                        l10n?.notifEidSub ?? 'Special prayer announcements',
-                        _notifEid,
-                        (v) => _updateNotification('eid', v),
-                        savingKey: 'eid',
-                      ),
-                    ],
+                    ]),
+                    const SizedBox(height: 26),
 
-                    const SizedBox(height: 30),
-                    _sectionHeader(_displayText(context, l10n?.sectionPrayerCalc ?? 'PRAYER CALCULATION')),
-                    _buildDropdownTile(
-                      l10n?.calculationMethodLabel ?? 'Method',
-                      _selectedMethod,
-                      {
-                        kCalcMethodKarachi:   'University of Islamic Sciences, Karachi',
-                        kCalcMethodIsna:      'ISNA (North America)',
-                        kCalcMethodMwl:       'Muslim World League',
-                        kCalcMethodEgypt:     'Egyptian Authority',
-                        kCalcMethodDubai:     'Dubai',
-                        kCalcMethodQatar:     'Qatar',
-                        kCalcMethodSingapore: 'Singapore',
-                        kCalcMethodTehran:    'Tehran',
-                        kCalcMethodTurkey:    'Turkey',
-                      },
-                      (val) {
-                        if (val != null) {
-                          setState(() => _selectedMethod = val);
-                          PrayerManager.setMethod(val);
-                        }
-                      },
-                    ),
-                    _buildDropdownTile(
-                      l10n?.madhabAsrLabel ?? 'Madhab (Asr)',
-                      _selectedMadhab,
-                      {
-                        kMadhabHanafi: 'Hanafi (Later)',
-                        kMadhabShafi:  'Shafi\'i / Maliki / Hanbali (Earlier)',
-                      },
-                      (val) {
-                        if (val != null) {
-                          setState(() => _selectedMadhab = val);
-                          PrayerManager.setMadhab(val);
-                        }
-                      },
-                    ),
-
-                    if (user != null) ...[
-                      const SizedBox(height: 30),
-                      _sectionHeader(_displayText(context, l10n?.sectionDangerZone ?? 'DANGER ZONE')),
-                      ListTile(
-                        contentPadding: EdgeInsets.zero,
-                        title: Text(
-                          l10n?.deleteAccountLabel ?? 'Delete Account',
-                          style: GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.w600, color: Colors.redAccent)
-                        ),
-                        subtitle: Text(
-                          l10n?.deleteAccountSub ?? 'Permanently remove your identity and data',
-                          style: GoogleFonts.lato(fontSize: 12, color: MinaretTheme.slate)
-                        ),
-                        onTap: _deleteAccount,
-                      ),
-                    ],
-
-                    const SizedBox(height: 30),
+                    // ── LEGAL ──
                     _sectionHeader(_displayText(context, 'LEGAL')),
-                    ListTile(
-                      contentPadding: EdgeInsets.zero,
-                      leading: Icon(Icons.privacy_tip_outlined, color: MinaretTheme.gold),
-                      title: Text(
-                        'Privacy Policy',
-                        style: GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.w600),
+                    _card([
+                      _navTile(
+                        icon: Icons.privacy_tip_outlined,
+                        title: 'Privacy Policy',
+                        subtitle: 'How we handle your data',
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (_) => const PrivacyPolicyPage()),
+                        ),
                       ),
-                      subtitle: Text(
-                        'How we handle your data',
-                        style: GoogleFonts.lato(fontSize: 12, color: MinaretTheme.slate),
+                      _navTile(
+                        icon: Icons.description_outlined,
+                        title: 'Terms of Service',
+                        subtitle: 'Terms governing your use of Minaret',
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (_) => const TermsOfServicePage()),
+                        ),
                       ),
-                      trailing: Icon(Icons.arrow_forward_ios, size: 16, color: MinaretTheme.gold),
-                      onTap: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (_) => const PrivacyPolicyPage()),
+                    ]),
+
+                    // ── Sign Out + Delete ──
+                    if (user != null) ...[
+                      const SizedBox(height: 32),
+                      _signOutButton(isDark),
+                      const SizedBox(height: 16),
+                      Center(
+                        child: TextButton(
+                          onPressed: _deleteAccount,
+                          child: Text(
+                            l10n?.deleteAccountLabel ?? 'Delete Account',
+                            style: GoogleFonts.montserrat(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.redAccent.withValues(alpha: 0.8),
+                              letterSpacing: 0.5,
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
-                    ListTile(
-                      contentPadding: EdgeInsets.zero,
-                      leading: Icon(Icons.description_outlined, color: MinaretTheme.gold),
-                      title: Text(
-                        'Terms of Service',
-                        style: GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.w600),
-                      ),
-                      subtitle: Text(
-                        'Terms governing your use of Minaret',
-                        style: GoogleFonts.lato(fontSize: 12, color: MinaretTheme.slate),
-                      ),
-                      trailing: Icon(Icons.arrow_forward_ios, size: 16, color: MinaretTheme.gold),
-                      onTap: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (_) => const TermsOfServicePage()),
-                      ),
-                    ),
-                    const SizedBox(height: 100),
+                    ],
+                    const SizedBox(height: 40),
                   ],
                 ),
               ),
@@ -546,14 +495,123 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
+  // ── UI helpers ──────────────────────────────────────────────────────────────
+
+  bool get _isDark => Theme.of(context).brightness == Brightness.dark;
+  Color get _cardColor => _isDark ? const Color(0xFF1C2430) : Colors.white;
+  Color get _textPrimary => _isDark ? Colors.white : MinaretTheme.onyx;
+
+  Widget _backButton(bool isDark) {
+    return Material(
+      color: isDark ? Colors.white.withValues(alpha: 0.06) : Colors.white,
+      shape: const CircleBorder(),
+      child: InkWell(
+        customBorder: const CircleBorder(),
+        onTap: () => Navigator.pop(context),
+        child: Padding(
+          padding: const EdgeInsets.all(9),
+          child: Icon(Icons.arrow_back_ios_new_rounded,
+              color: isDark ? Colors.white : MinaretTheme.onyx, size: 18),
+        ),
+      ),
+    );
+  }
+
+  Widget _card(List<Widget> children) {
+    final withDividers = <Widget>[];
+    for (var i = 0; i < children.length; i++) {
+      withDividers.add(children[i]);
+      if (i < children.length - 1) {
+        withDividers.add(Divider(
+          height: 1,
+          thickness: 0.5,
+          indent: 54,
+          color: _isDark ? Colors.white12 : MinaretTheme.dividerColor,
+        ));
+      }
+    }
+    return Container(
+      decoration: BoxDecoration(
+        color: _cardColor,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: MinaretTheme.cardShadow,
+      ),
+      child: Column(children: withDividers),
+    );
+  }
+
   Widget _sectionHeader(String title) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 15),
-      child: Text(title, style: MinaretTheme.detailHeader.copyWith(color: MinaretTheme.gold, fontSize: 9, letterSpacing: 2)),
+      padding: const EdgeInsets.only(left: 4, bottom: 10),
+      child: Text(
+        title,
+        style: GoogleFonts.montserrat(
+          color: MinaretTheme.gold,
+          fontSize: 10,
+          letterSpacing: 2,
+          fontWeight: FontWeight.w700,
+        ),
+      ),
+    );
+  }
+
+  Widget _navTile({
+    required IconData icon,
+    required String title,
+    required String subtitle,
+    required VoidCallback onTap,
+    bool badge = false,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(16),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        child: Row(
+          children: [
+            Stack(
+              clipBehavior: Clip.none,
+              children: [
+                Icon(icon, color: MinaretTheme.gold, size: 22),
+                if (badge)
+                  Positioned(
+                    right: -2,
+                    top: -2,
+                    child: Container(
+                      width: 8,
+                      height: 8,
+                      decoration: const BoxDecoration(
+                        color: Colors.red,
+                        shape: BoxShape.circle,
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(title,
+                      style: GoogleFonts.montserrat(
+                          fontSize: 14, fontWeight: FontWeight.w600, color: _textPrimary)),
+                  const SizedBox(height: 2),
+                  Text(subtitle,
+                      style: GoogleFonts.lato(fontSize: 12, color: MinaretTheme.slate)),
+                ],
+              ),
+            ),
+            Icon(Icons.chevron_right_rounded,
+                size: 20, color: _isDark ? Colors.white38 : MinaretTheme.slate),
+          ],
+        ),
+      ),
     );
   }
 
   Widget _buildSwitchTile(
+    IconData icon,
     String title,
     String subtitle,
     bool value,
@@ -561,35 +619,88 @@ class _SettingsPageState extends State<SettingsPage> {
     String? savingKey,
   }) {
     final isSaving = savingKey != null && _savingKeys.contains(savingKey);
-    return ListTile(
-      contentPadding: EdgeInsets.zero,
-      title: Text(title, style: GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.w600)),
-      subtitle: Text(subtitle, style: GoogleFonts.lato(fontSize: 12, color: MinaretTheme.slate)),
-      trailing: isSaving
-          ? const SizedBox(
-              width: 24,
-              height: 24,
-              child: CircularProgressIndicator(strokeWidth: 2),
-            )
-          : Switch(value: value, onChanged: onChanged),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+      child: Row(
+        children: [
+          Icon(icon, color: MinaretTheme.gold, size: 22),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(title,
+                    style: GoogleFonts.montserrat(
+                        fontSize: 14, fontWeight: FontWeight.w600, color: _textPrimary)),
+                const SizedBox(height: 2),
+                Text(subtitle,
+                    style: GoogleFonts.lato(fontSize: 12, color: MinaretTheme.slate)),
+              ],
+            ),
+          ),
+          isSaving
+              ? const SizedBox(
+                  width: 24, height: 24,
+                  child: CircularProgressIndicator(strokeWidth: 2, color: MinaretTheme.gold),
+                )
+              : Switch.adaptive(
+                  value: value,
+                  onChanged: onChanged,
+                  activeThumbColor: MinaretTheme.gold,
+                ),
+        ],
+      ),
     );
   }
 
   Widget _buildDropdownTile(String title, String value, Map<String, String> items, Function(String?) onChanged) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const SizedBox(height: 10),
-        Text(title, style: GoogleFonts.montserrat(fontSize: 12, fontWeight: FontWeight.w500)),
-        DropdownButton<String>(
-          value: value,
-          isExpanded: true,
-          underline: Container(height: 1, color: MinaretTheme.dividerColor),
-          items: items.entries.map((e) => DropdownMenuItem(value: e.key, child: Text(e.value, style: GoogleFonts.lato(fontSize: 13)))).toList(),
-          onChanged: onChanged,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(title,
+              style: GoogleFonts.montserrat(
+                  fontSize: 13, fontWeight: FontWeight.w600, color: _textPrimary)),
+          const SizedBox(height: 4),
+          DropdownButton<String>(
+            value: value,
+            isExpanded: true,
+            underline: Container(height: 1, color: MinaretTheme.dividerColor),
+            style: GoogleFonts.lato(fontSize: 13, color: _textPrimary),
+            dropdownColor: _cardColor,
+            items: items.entries
+                .map((e) => DropdownMenuItem(
+                    value: e.key,
+                    child: Text(e.value, style: GoogleFonts.lato(fontSize: 13, color: _textPrimary))))
+                .toList(),
+            onChanged: onChanged,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _signOutButton(bool isDark) {
+    return SizedBox(
+      width: double.infinity,
+      child: OutlinedButton.icon(
+        onPressed: () async {
+          await FirebaseAuth.instance.signOut();
+          if (mounted) Navigator.of(context).popUntil((r) => r.isFirst);
+        },
+        icon: const Icon(Icons.logout_rounded, size: 18),
+        label: Text(
+          AppLocalizations.of(context)?.signOutLabel ?? 'Sign Out',
+          style: GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.w700, letterSpacing: 0.5),
         ),
-        const SizedBox(height: 10),
-      ],
+        style: OutlinedButton.styleFrom(
+          foregroundColor: MinaretTheme.gold,
+          side: BorderSide(color: MinaretTheme.gold.withValues(alpha: 0.5)),
+          padding: const EdgeInsets.symmetric(vertical: 14),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+        ),
+      ),
     );
   }
 }

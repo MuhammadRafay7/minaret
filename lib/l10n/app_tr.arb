@@ -160,7 +160,7 @@
   "errorLoadingNotifications": "Bildirimler yüklenirken hata",
   "noNotificationsYet": "Henüz bildirim yok",
   "mosqueAlertsHere": "Cami uyarılarını burada göreceksiniz",
-  "mosqueNotificationsLabel": "Cami Bildirimleri",
+  "mosqueNotificationsLabel": "Cami bildirimleri",
   "mosqueNotificationsSub": "Cami uyarılarını ve raporlarını görüntüle",
   "unreadAlertsLabel": "{count} okunmamış uyarı",
   "@unreadAlertsLabel": {
@@ -220,14 +220,18 @@
   "errorSavingProfile": "Profil kaydedilirken hata: {error}",
   "@errorSavingProfile": {
     "placeholders": {
-      "error": {"type": "String"}
+      "error": {
+        "type": "String"
+      }
     }
   },
   "announcementPosted": "Duyuru başarıyla yayınlandı.",
   "errorPostingAnnouncement": "Duyuru yayınlanırken hata: {error}",
   "@errorPostingAnnouncement": {
     "placeholders": {
-      "error": {"type": "String"}
+      "error": {
+        "type": "String"
+      }
     }
   },
   "reportIssue": "SORUN BİLDİR",
@@ -243,7 +247,9 @@
   "errorLaunchingDirections": "Yol tarifi açılırken hata: {error}",
   "@errorLaunchingDirections": {
     "placeholders": {
-      "error": {"type": "String"}
+      "error": {
+        "type": "String"
+      }
     }
   },
   "testPermissions": "İzinleri Test Et",
@@ -265,8 +271,12 @@
   "ofTotalCompleted": "{total} namazdan {completed} tamamlandı",
   "@ofTotalCompleted": {
     "placeholders": {
-      "completed": {"type": "int"},
-      "total": {"type": "int"}
+      "completed": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
     }
   },
   "selectLocation": "KONUM SEÇ",
@@ -274,7 +284,6 @@
   "useCurrentLocationGps": "Mevcut Konumu Kullan (GPS)",
   "confirmWithPasswordPrompt": "Silmeyi onaylamak için şifrenizi girin",
   "reAuthFailedMessage": "Yeniden kimlik doğrulama başarısız. Lütfen tekrar deneyin.",
-
   "initializationError": "Başlatma Hatası",
   "somethingWentWrong": "Bir şeyler ters gitti",
   "reloadApp": "Uygulamayı yeniden yükle",
@@ -283,7 +292,13 @@
   "azanBoard": "EZAN TABLOSU",
   "prayerBoard": "NAMAZ TABLOSU",
   "confidencePercent": "{confidence}% DOĞRULUK",
-  "@confidencePercent": { "placeholders": { "confidence": { "type": "int" } } },
+  "@confidencePercent": {
+    "placeholders": {
+      "confidence": {
+        "type": "int"
+      }
+    }
+  },
   "retakeAction": "YENİDEN ÇEK",
   "applyAllAction": "TÜMÜNÜ UYGULA",
   "estimatedAbbr": "tahmini",
@@ -365,15 +380,168 @@
   "failedToLoadQada": "Kaza verileri yüklenemedi.",
   "addQadaDebtTitle": "Kaza Borcu Ekle",
   "addQadaDebtQuestion": "Kaç tane {prayer} namazı kılmanız gerekiyor?",
-  "@addQadaDebtQuestion": { "placeholders": { "prayer": { "type": "String" } } },
+  "@addQadaDebtQuestion": {
+    "placeholders": {
+      "prayer": {
+        "type": "String"
+      }
+    }
+  },
   "qadaInfoBanner": "Burada kaza namazı kılmak günlük serinizi etkilemez. Seriler yalnızca günlük namazların zamanında kılınmasıyla sayılır.",
   "totalPendingLabel": "Toplam Bekleyen",
   "madeUpLabel": "Kılındı",
   "pendingCountBadge": "{count} bekleyen",
-  "@pendingCountBadge": { "placeholders": { "count": { "type": "int" } } },
+  "@pendingCountBadge": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "madeUpCountBadge": "{count} kılındı",
-  "@madeUpCountBadge": { "placeholders": { "count": { "type": "int" } } },
+  "@madeUpCountBadge": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "markAsMadeUp": "Kılındı Olarak İşaretle",
   "allCaughtUp": "Hepsi kılındı",
-  "addQadaDebtTooltip": "Kaza borcu ekle"
+  "addQadaDebtTooltip": "Kaza borcu ekle",
+  "progressMyProgress": "İlerlemem",
+  "progressPoints": "Puan",
+  "progressHowToEarn": "PUAN NASIL KAZANILIR",
+  "progressAllLevels": "TÜM SEVİYELER",
+  "progressCurrentBalance": "GÜNCEL BAKİYE",
+  "progressLifetimeEarned": "TOPLAM KAZANILAN",
+  "progressDailyPoints": "Günlük Puan",
+  "progressMilestoneBonuses": "Kilometre Taşı Ödülleri",
+  "progressUnlockedAtLevel": "BU SEVİYEDE AÇILDI",
+  "progressStartingLevel": "Başlangıç seviyesi",
+  "progressMaxLevel": "En yüksek seviyeye ulaşıldı",
+  "progressMaxLevelShort": "Maks seviye",
+  "progressLevelLabel": "Seviye {level}",
+  "progressLevelUpper": "SEVİYE {level}",
+  "progressPointsToNext": "Seviye {level} için {points} puan",
+  "progressPointsEarned": "{points} puan kazanıldı",
+  "progressMultiplier": "{m}× çarpan",
+  "unlockBasicTracking": "Temel namaz takibi",
+  "unlock7DayHistory": "7 günlük namaz geçmişi",
+  "unlock30DayHistory": "30 günlük namaz geçmişi",
+  "unlock60DayHistory": "60 günlük namaz geçmişi",
+  "unlock90DayHistory": "90 günlük namaz geçmişi",
+  "unlockProfileBadge": "Cami topluluğunda rozet",
+  "unlockQadaAnalytics": "Kaza analizi — en çok kaçırdığın namazları gör",
+  "unlockMultiplier15": "1.5× puan çarpanı",
+  "unlockMultiplier2": "2× puan çarpanı",
+  "unlockMultiplier25": "2.5× puan çarpanı",
+  "unlockWeeklyReport": "Haftalık namaz performans raporu",
+  "unlockGoldBadge": "Özel altın profil rozeti",
+  "earnPrayerCompleted": "Tamamlanan her namaz",
+  "earnFajrBonus": "Fajr bonusu",
+  "earnFullDay": "Bir günde 5 namaz",
+  "earnQada": "Kaza namazı",
+  "earnHadith": "Günlük Hadis okuma",
+  "earnLogin": "Günlük uygulama girişi",
+  "earnPrayerValue": "10 puan × çarpan",
+  "earnFajrValue": "+5 puan",
+  "earnFullDayValue": "+50 puan × çarpan",
+  "earnQadaValue": "15 puan",
+  "earnHadithValue": "5 puan (günde 1)",
+  "earnLoginValue": "2 puan (günde 1)",
+  "milestone7": "7 günlük seri",
+  "milestone40": "40 günlük seri (Erbain)",
+  "milestone100": "100 günlük seri",
+  "milestoneFirstQada": "İlk kaza",
+  "milestoneFirstFullDay": "İlk tam namaz günü",
+  "milestone7Value": "+100 puan (tek sefer)",
+  "milestone40Value": "+500 puan (tek sefer)",
+  "milestone100Value": "+1.000 puan (tek sefer)",
+  "milestoneFirstQadaValue": "+50 puan (tek sefer)",
+  "milestoneFirstFullDayValue": "+75 puan (tek sefer)",
+  "weeklyReportTitle": "Haftalık Rapor",
+  "weeklyLast7Days": "Son 7 Gün",
+  "weeklyCompletion": "Haftalık Tamamlama",
+  "weeklyDayByDay": "GÜN GÜN",
+  "weeklyPerPrayer": "NAMAZ BAŞINA",
+  "weeklyToday": "Bugün",
+  "weeklyPerfectAttendance": "Mükemmel katılım",
+  "weeklyDaysActive": "{days}/7 gün aktif",
+  "weeklyPrayersCount": "35 namazdan {count}",
+  "profileTitleShort": "PROFİL",
+  "profileCommunity": "TOPLULUK",
+  "profileImam": "İMAM",
+  "statPrayers": "Namazlar",
+  "statStreak": "Seri",
+  "statRate": "Oran",
+  "sectionAccount": "HESAP",
+  "signOutLabel": "Çıkış Yap",
+  "signOutSub": "Geçerli oturumu sonlandır",
+  "editProfileTitle": "Profili Düzenle",
+  "manageProfileTitle": "Profili Yönet",
+  "sectionPersonalDetails": "KİŞİSEL BİLGİLER",
+  "fieldCountry": "Ülke",
+  "fieldCity": "Şehir",
+  "fieldFullName": "Tam Ad",
+  "fieldPhone": "Telefon Numarası",
+  "fieldOptional": "İsteğe bağlı",
+  "saveChangesLabel": "Değişiklikleri Kaydet",
+  "genderOther": "Diğer",
+  "last60Days": "Son 60 Gün",
+  "weeklyReportTooltip": "Haftalık Rapor",
+  "unlockLevelMsg": "{days} günlük geçmişi açmak için Seviye {level}'e ulaşın",
+  "ramadanLabel": "RAMAZAN",
+  "ramadanDayOf": "{total} günün {day}. günü",
+  "ramadanBeginsInDays": "Ramazan {days} gün sonra başlıyor",
+  "ramadanBeginsTomorrow": "Ramazan yarın başlıyor",
+  "ramadanSuhoorEndsIn": "Sahurun bitmesine",
+  "ramadanIftarIn": "İftara",
+  "ramadanTimeToIftar": "Orucunu açma vakti",
+  "ramadanImsak": "İMSAK",
+  "ramadanSuhoor": "SAHUR",
+  "ramadanIftar": "İFTAR",
+  "eidMubarak": "Bayramınız mübarek olsun",
+  "eidInDays": "Bayrama {days} gün",
+  "ramadanOpen": "RAMAZAN'I AÇ",
+  "ramadanTonightNight": "Bu gece · {day}. gece",
+  "ramadanFastingLog": "Oruç Kaydı",
+  "ramadanTaraweeh": "Teravih",
+  "ramadanDidYouFast": "Bugün oruç tuttun mu?",
+  "ramadanFasted": "Tuttum",
+  "ramadanMissed": "Tutmadım",
+  "ramadanReasonTravel": "Seyahat",
+  "ramadanReasonIllness": "Hastalık",
+  "ramadanReasonMenstruation": "Âdet",
+  "ramadanReasonOther": "Diğer",
+  "ramadanPrayedTaraweeh": "Bu gece teravih kıldın mı?",
+  "ramadanDaysFasted": "Tutulan oruç",
+  "ramadanTaraweehNights": "Teravih geceleri",
+  "ramadanSettings": "Ramazan Ayarları",
+  "ramadanDayAdjustment": "Gün ayarı",
+  "ramadanDayAdjustmentHint": "Bölgenizde hilal daha erken veya geç görüldüyse bir gün kaydırın",
+  "ramadanImsakBuffer": "İmsak payı (dakika)",
+  "ramadanThemeLabel": "Ramazan teması",
+  "ramadanZakatReminder": "Bayram namazından önce fitre verin",
+  "ramadanSuhoorNotif": "Sahurun bitmesine {minutes} dakika",
+  "ramadanIftarSoonNotif": "İftara {minutes} dakika",
+  "ramadanIftarNowNotif": "Orucunu açma vakti",
+  "ramadanKareem": "Ramazan Kerim",
+  "ramadanNotFasted": "Kaydedilmedi",
+  "ramadanToday": "Bugün",
+  "progressRamadanRewards": "Ramazan Ödülleri",
+  "earnFast": "Oruç tutuldu",
+  "earnFastValue": "30 puan × çarpan",
+  "earnTaraweeh": "Teravih kılındı",
+  "earnTaraweehValue": "20 puan × çarpan",
+  "milestoneRamadan10": "10 oruç tutuldu",
+  "milestoneRamadan20": "20 oruç tutuldu",
+  "milestoneRamadanMonth": "Tüm ay oruç tutuldu",
+  "milestoneTaraweeh10": "10 gece Teravih",
+  "milestoneTaraweeh27": "27 gece Teravih",
+  "milestoneRamadan10Value": "+150 puan (tek sefer)",
+  "milestoneRamadan20Value": "+400 puan (tek sefer)",
+  "milestoneRamadanMonthValue": "+1.000 puan (tek sefer)",
+  "milestoneTaraweeh10Value": "+150 puan (tek sefer)",
+  "milestoneTaraweeh27Value": "+500 puan (tek sefer)"
 }

@@ -210,8 +210,7 @@
   "azanLabel": "宣礼",
   "iqamahLabel": "就礼",
   "unableToLoadMosque": "无法加载清真寺",
-  "failedToSyncPrayer": "礼拜同步失败。请检查连接。"
-,
+  "failedToSyncPrayer": "礼拜同步失败。请检查连接。",
   "maintenanceTitle": "系统维护",
   "maintenanceBody": "我们目前正在进行计划内的改进。请稍后再查看。",
   "tryAgain": "重试",
@@ -221,14 +220,18 @@
   "errorSavingProfile": "保存个人资料时出错：{error}",
   "@errorSavingProfile": {
     "placeholders": {
-      "error": {"type": "String"}
+      "error": {
+        "type": "String"
+      }
     }
   },
   "announcementPosted": "公告发布成功。",
   "errorPostingAnnouncement": "发布公告时出错：{error}",
   "@errorPostingAnnouncement": {
     "placeholders": {
-      "error": {"type": "String"}
+      "error": {
+        "type": "String"
+      }
     }
   },
   "reportIssue": "举报问题",
@@ -244,7 +247,9 @@
   "errorLaunchingDirections": "打开导航时出错：{error}",
   "@errorLaunchingDirections": {
     "placeholders": {
-      "error": {"type": "String"}
+      "error": {
+        "type": "String"
+      }
     }
   },
   "testPermissions": "测试权限",
@@ -266,8 +271,12 @@
   "ofTotalCompleted": "已完成 {completed}/{total}",
   "@ofTotalCompleted": {
     "placeholders": {
-      "completed": {"type": "int"},
-      "total": {"type": "int"}
+      "completed": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
     }
   },
   "selectLocation": "选择位置",
@@ -275,7 +284,6 @@
   "useCurrentLocationGps": "使用当前位置 (GPS)",
   "confirmWithPasswordPrompt": "输入密码以确认删除",
   "reAuthFailedMessage": "重新身份验证失败。请重试。",
-
   "initializationError": "初始化错误",
   "somethingWentWrong": "出了点问题",
   "reloadApp": "重新加载应用",
@@ -284,7 +292,13 @@
   "azanBoard": "阿赞时间板",
   "prayerBoard": "礼拜时间板",
   "confidencePercent": "{confidence}% 置信度",
-  "@confidencePercent": { "placeholders": { "confidence": { "type": "int" } } },
+  "@confidencePercent": {
+    "placeholders": {
+      "confidence": {
+        "type": "int"
+      }
+    }
+  },
   "retakeAction": "重拍",
   "applyAllAction": "全部应用",
   "estimatedAbbr": "估计",
@@ -366,15 +380,168 @@
   "failedToLoadQada": "加载补礼数据失败。",
   "addQadaDebtTitle": "添加补礼欠账",
   "addQadaDebtQuestion": "您还需要补几次{prayer}礼？",
-  "@addQadaDebtQuestion": { "placeholders": { "prayer": { "type": "String" } } },
+  "@addQadaDebtQuestion": {
+    "placeholders": {
+      "prayer": {
+        "type": "String"
+      }
+    }
+  },
   "qadaInfoBanner": "在此完成补礼不影响您的每日连续记录。连续记录仅计算按时的每日礼拜。",
   "totalPendingLabel": "待补总数",
   "madeUpLabel": "已补",
   "pendingCountBadge": "{count}个待补",
-  "@pendingCountBadge": { "placeholders": { "count": { "type": "int" } } },
+  "@pendingCountBadge": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "madeUpCountBadge": "{count}个已补",
-  "@madeUpCountBadge": { "placeholders": { "count": { "type": "int" } } },
+  "@madeUpCountBadge": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "markAsMadeUp": "标记为已补",
   "allCaughtUp": "全部补完",
-  "addQadaDebtTooltip": "添加补礼欠账"
+  "addQadaDebtTooltip": "添加补礼欠账",
+  "progressMyProgress": "我的进度",
+  "progressPoints": "积分",
+  "progressHowToEarn": "如何获得积分",
+  "progressAllLevels": "所有等级",
+  "progressCurrentBalance": "当前余额",
+  "progressLifetimeEarned": "累计获得",
+  "progressDailyPoints": "每日积分",
+  "progressMilestoneBonuses": "里程碑奖励",
+  "progressUnlockedAtLevel": "此等级已解锁",
+  "progressStartingLevel": "起始等级",
+  "progressMaxLevel": "已达最高等级",
+  "progressMaxLevelShort": "最高等级",
+  "progressLevelLabel": "等级 {level}",
+  "progressLevelUpper": "等级 {level}",
+  "progressPointsToNext": "距等级 {level} 还差 {points} 分",
+  "progressPointsEarned": "已获得 {points} 分",
+  "progressMultiplier": "{m}× 倍率",
+  "unlockBasicTracking": "基础祈祷记录",
+  "unlock7DayHistory": "7天祈祷记录",
+  "unlock30DayHistory": "30天祈祷记录",
+  "unlock60DayHistory": "60天祈祷记录",
+  "unlock90DayHistory": "90天祈祷记录",
+  "unlockProfileBadge": "清真寺社区徽章",
+  "unlockQadaAnalytics": "补拜分析 — 查看最常错过的祈祷",
+  "unlockMultiplier15": "1.5倍积分倍率",
+  "unlockMultiplier2": "2倍积分倍率",
+  "unlockMultiplier25": "2.5倍积分倍率",
+  "unlockWeeklyReport": "每周祈祷表现报告",
+  "unlockGoldBadge": "专属金色徽章",
+  "earnPrayerCompleted": "每次完成祈祷",
+  "earnFajrBonus": "晨礼奖励",
+  "earnFullDay": "一天5次祈祷",
+  "earnQada": "补拜祈祷",
+  "earnHadith": "每日圣训阅读",
+  "earnLogin": "每日登录",
+  "earnPrayerValue": "10分 × 倍率",
+  "earnFajrValue": "+5分",
+  "earnFullDayValue": "+50分 × 倍率",
+  "earnQadaValue": "15分",
+  "earnHadithValue": "5分（每天一次）",
+  "earnLoginValue": "2分（每天一次）",
+  "milestone7": "7天连续",
+  "milestone40": "40天连续（阿尔巴因）",
+  "milestone100": "100天连续",
+  "milestoneFirstQada": "首次补拜",
+  "milestoneFirstFullDay": "首个完整祈祷日",
+  "milestone7Value": "+100分（一次性）",
+  "milestone40Value": "+500分（一次性）",
+  "milestone100Value": "+1,000分（一次性）",
+  "milestoneFirstQadaValue": "+50分（一次性）",
+  "milestoneFirstFullDayValue": "+75分（一次性）",
+  "weeklyReportTitle": "每周报告",
+  "weeklyLast7Days": "最近7天",
+  "weeklyCompletion": "每周完成度",
+  "weeklyDayByDay": "逐日",
+  "weeklyPerPrayer": "按祈祷",
+  "weeklyToday": "今天",
+  "weeklyPerfectAttendance": "全勤",
+  "weeklyDaysActive": "{days}/7 天活跃",
+  "weeklyPrayersCount": "35次祈祷中的{count}次",
+  "profileTitleShort": "个人资料",
+  "profileCommunity": "社区",
+  "profileImam": "伊玛目",
+  "statPrayers": "祈祷",
+  "statStreak": "连续",
+  "statRate": "完成率",
+  "sectionAccount": "账户",
+  "signOutLabel": "退出登录",
+  "signOutSub": "结束当前会话",
+  "editProfileTitle": "编辑资料",
+  "manageProfileTitle": "管理资料",
+  "sectionPersonalDetails": "个人信息",
+  "fieldCountry": "国家",
+  "fieldCity": "城市",
+  "fieldFullName": "全名",
+  "fieldPhone": "电话号码",
+  "fieldOptional": "可选",
+  "saveChangesLabel": "保存更改",
+  "genderOther": "其他",
+  "last60Days": "最近60天",
+  "weeklyReportTooltip": "每周报告",
+  "unlockLevelMsg": "达到等级 {level} 解锁 {days} 天历史",
+  "ramadanLabel": "斋月",
+  "ramadanDayOf": "第 {day} 天，共 {total} 天",
+  "ramadanBeginsInDays": "斋月将在 {days} 天后开始",
+  "ramadanBeginsTomorrow": "斋月明天开始",
+  "ramadanSuhoorEndsIn": "封斋结束还有",
+  "ramadanIftarIn": "开斋还有",
+  "ramadanTimeToIftar": "开斋时间到了",
+  "ramadanImsak": "封斋",
+  "ramadanSuhoor": "封斋餐",
+  "ramadanIftar": "开斋",
+  "eidMubarak": "开斋节快乐",
+  "eidInDays": "开斋节还有 {days} 天",
+  "ramadanOpen": "打开斋月",
+  "ramadanTonightNight": "今晚 · 第 {day} 夜",
+  "ramadanFastingLog": "斋戒记录",
+  "ramadanTaraweeh": "泰拉威哈拜",
+  "ramadanDidYouFast": "你今天封斋了吗？",
+  "ramadanFasted": "已封斋",
+  "ramadanMissed": "未封斋",
+  "ramadanReasonTravel": "旅行",
+  "ramadanReasonIllness": "生病",
+  "ramadanReasonMenstruation": "经期",
+  "ramadanReasonOther": "其他",
+  "ramadanPrayedTaraweeh": "今晚做泰拉威哈拜了吗？",
+  "ramadanDaysFasted": "封斋天数",
+  "ramadanTaraweehNights": "泰拉威哈之夜",
+  "ramadanSettings": "斋月设置",
+  "ramadanDayAdjustment": "日期调整",
+  "ramadanDayAdjustmentHint": "如果你所在地区更早或更晚见到新月，可调整一天",
+  "ramadanImsakBuffer": "封斋缓冲（分钟）",
+  "ramadanThemeLabel": "斋月主题",
+  "ramadanZakatReminder": "在会礼前缴纳开斋捐",
+  "ramadanSuhoorNotif": "封斋将在 {minutes} 分钟后结束",
+  "ramadanIftarSoonNotif": "距开斋还有 {minutes} 分钟",
+  "ramadanIftarNowNotif": "开斋时间到了",
+  "ramadanKareem": "斋月吉庆",
+  "ramadanNotFasted": "未记录",
+  "ramadanToday": "今天",
+  "progressRamadanRewards": "斋月奖励",
+  "earnFast": "完成斋戒",
+  "earnFastValue": "30分 × 倍率",
+  "earnTaraweeh": "完成泰拉威哈",
+  "earnTaraweehValue": "20分 × 倍率",
+  "milestoneRamadan10": "完成10次斋戒",
+  "milestoneRamadan20": "完成20次斋戒",
+  "milestoneRamadanMonth": "完成整月斋戒",
+  "milestoneTaraweeh10": "10晚泰拉威哈",
+  "milestoneTaraweeh27": "27晚泰拉威哈",
+  "milestoneRamadan10Value": "+150分（一次性）",
+  "milestoneRamadan20Value": "+400分（一次性）",
+  "milestoneRamadanMonthValue": "+1,000分（一次性）",
+  "milestoneTaraweeh10Value": "+150分（一次性）",
+  "milestoneTaraweeh27Value": "+500分（一次性）"
 }

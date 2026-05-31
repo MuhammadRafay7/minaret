@@ -1049,4 +1049,439 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get addQadaDebtTooltip => 'Kada-Schuld hinzufügen';
+
+  @override
+  String get progressMyProgress => 'Mein Fortschritt';
+
+  @override
+  String get progressPoints => 'Punkte';
+
+  @override
+  String get progressHowToEarn => 'PUNKTE VERDIENEN';
+
+  @override
+  String get progressAllLevels => 'ALLE STUFEN';
+
+  @override
+  String get progressCurrentBalance => 'AKTUELLES GUTHABEN';
+
+  @override
+  String get progressLifetimeEarned => 'INSGESAMT VERDIENT';
+
+  @override
+  String get progressDailyPoints => 'Tägliche Punkte';
+
+  @override
+  String get progressMilestoneBonuses => 'Meilenstein-Boni';
+
+  @override
+  String get progressUnlockedAtLevel => 'AUF DIESER STUFE FREIGESCHALTET';
+
+  @override
+  String get progressStartingLevel => 'Startstufe';
+
+  @override
+  String get progressMaxLevel => 'Höchststufe erreicht';
+
+  @override
+  String get progressMaxLevelShort => 'Maximalstufe';
+
+  @override
+  String progressLevelLabel(Object level) {
+    return 'Stufe $level';
+  }
+
+  @override
+  String progressLevelUpper(Object level) {
+    return 'STUFE $level';
+  }
+
+  @override
+  String progressPointsToNext(Object points, Object level) {
+    return '$points Pkt. bis Stufe $level';
+  }
+
+  @override
+  String progressPointsEarned(Object points) {
+    return '$points Punkte verdient';
+  }
+
+  @override
+  String progressMultiplier(Object m) {
+    return '$m× Multiplikator';
+  }
+
+  @override
+  String get unlockBasicTracking => 'Basis-Gebetsverfolgung';
+
+  @override
+  String get unlock7DayHistory => '7-Tage-Gebetsverlauf';
+
+  @override
+  String get unlock30DayHistory => '30-Tage-Gebetsverlauf';
+
+  @override
+  String get unlock60DayHistory => '60-Tage-Gebetsverlauf';
+
+  @override
+  String get unlock90DayHistory => '90-Tage-Gebetsverlauf';
+
+  @override
+  String get unlockProfileBadge => 'Abzeichen in der Moscheegemeinschaft';
+
+  @override
+  String get unlockQadaAnalytics =>
+      'Qada-Analyse — meist verpasste Gebete sehen';
+
+  @override
+  String get unlockMultiplier15 => '1,5× Punkte-Multiplikator';
+
+  @override
+  String get unlockMultiplier2 => '2× Punkte-Multiplikator';
+
+  @override
+  String get unlockMultiplier25 => '2,5× Punkte-Multiplikator';
+
+  @override
+  String get unlockWeeklyReport => 'Wöchentlicher Gebetsbericht';
+
+  @override
+  String get unlockGoldBadge => 'Exklusives goldenes Abzeichen';
+
+  @override
+  String get earnPrayerCompleted => 'Jedes abgeschlossene Gebet';
+
+  @override
+  String get earnFajrBonus => 'Fajr-Bonus';
+
+  @override
+  String get earnFullDay => 'Alle 5 Gebete an einem Tag';
+
+  @override
+  String get earnQada => 'Nachholgebet (Qada)';
+
+  @override
+  String get earnHadith => 'Täglichen Hadith lesen';
+
+  @override
+  String get earnLogin => 'Täglicher App-Login';
+
+  @override
+  String get earnPrayerValue => '10 Pkt. × Multiplikator';
+
+  @override
+  String get earnFajrValue => '+5 Pkt.';
+
+  @override
+  String get earnFullDayValue => '+50 Pkt. × Multiplikator';
+
+  @override
+  String get earnQadaValue => '15 Pkt.';
+
+  @override
+  String get earnHadithValue => '5 Pkt. (1×/Tag)';
+
+  @override
+  String get earnLoginValue => '2 Pkt. (1×/Tag)';
+
+  @override
+  String get milestone7 => '7-Tage-Serie';
+
+  @override
+  String get milestone40 => '40-Tage-Serie (Arba\'een)';
+
+  @override
+  String get milestone100 => '100-Tage-Serie';
+
+  @override
+  String get milestoneFirstQada => 'Erstes Qada-Nachholen';
+
+  @override
+  String get milestoneFirstFullDay => 'Erster voller Gebetstag';
+
+  @override
+  String get milestone7Value => '+100 Pkt. (einmalig)';
+
+  @override
+  String get milestone40Value => '+500 Pkt. (einmalig)';
+
+  @override
+  String get milestone100Value => '+1.000 Pkt. (einmalig)';
+
+  @override
+  String get milestoneFirstQadaValue => '+50 Pkt. (einmalig)';
+
+  @override
+  String get milestoneFirstFullDayValue => '+75 Pkt. (einmalig)';
+
+  @override
+  String get weeklyReportTitle => 'Wochenbericht';
+
+  @override
+  String get weeklyLast7Days => 'Letzte 7 Tage';
+
+  @override
+  String get weeklyCompletion => 'Wöchentliche Erfüllung';
+
+  @override
+  String get weeklyDayByDay => 'TAG FÜR TAG';
+
+  @override
+  String get weeklyPerPrayer => 'PRO GEBET';
+
+  @override
+  String get weeklyToday => 'Heute';
+
+  @override
+  String get weeklyPerfectAttendance => 'Perfekte Anwesenheit';
+
+  @override
+  String weeklyDaysActive(Object days) {
+    return '$days/7 Tage aktiv';
+  }
+
+  @override
+  String weeklyPrayersCount(Object count) {
+    return '$count von 35 Gebeten';
+  }
+
+  @override
+  String get profileTitleShort => 'PROFIL';
+
+  @override
+  String get profileCommunity => 'GEMEINSCHAFT';
+
+  @override
+  String get profileImam => 'IMAM';
+
+  @override
+  String get statPrayers => 'Gebete';
+
+  @override
+  String get statStreak => 'Serie';
+
+  @override
+  String get statRate => 'Rate';
+
+  @override
+  String get sectionAccount => 'KONTO';
+
+  @override
+  String get signOutLabel => 'Abmelden';
+
+  @override
+  String get signOutSub => 'Aktuelle Sitzung beenden';
+
+  @override
+  String get editProfileTitle => 'Profil bearbeiten';
+
+  @override
+  String get manageProfileTitle => 'Profil verwalten';
+
+  @override
+  String get sectionPersonalDetails => 'PERSÖNLICHE DATEN';
+
+  @override
+  String get fieldCountry => 'Land';
+
+  @override
+  String get fieldCity => 'Stadt';
+
+  @override
+  String get fieldFullName => 'Vollständiger Name';
+
+  @override
+  String get fieldPhone => 'Telefonnummer';
+
+  @override
+  String get fieldOptional => 'Optional';
+
+  @override
+  String get saveChangesLabel => 'Änderungen speichern';
+
+  @override
+  String get genderOther => 'Andere';
+
+  @override
+  String get last60Days => 'Letzte 60 Tage';
+
+  @override
+  String get weeklyReportTooltip => 'Wochenbericht';
+
+  @override
+  String unlockLevelMsg(Object level, Object days) {
+    return 'Erreiche Stufe $level, um $days-Tage-Verlauf freizuschalten';
+  }
+
+  @override
+  String get ramadanLabel => 'RAMADAN';
+
+  @override
+  String ramadanDayOf(int day, int total) {
+    return 'Tag $day von $total';
+  }
+
+  @override
+  String ramadanBeginsInDays(int days) {
+    return 'Ramadan beginnt in $days Tagen';
+  }
+
+  @override
+  String get ramadanBeginsTomorrow => 'Ramadan beginnt morgen';
+
+  @override
+  String get ramadanSuhoorEndsIn => 'Suhoor endet in';
+
+  @override
+  String get ramadanIftarIn => 'Iftar in';
+
+  @override
+  String get ramadanTimeToIftar => 'Zeit, das Fasten zu brechen';
+
+  @override
+  String get ramadanImsak => 'IMSAK';
+
+  @override
+  String get ramadanSuhoor => 'SUHOOR';
+
+  @override
+  String get ramadanIftar => 'IFTAR';
+
+  @override
+  String get eidMubarak => 'Eid Mubarak';
+
+  @override
+  String eidInDays(int days) {
+    return 'Eid in $days Tagen';
+  }
+
+  @override
+  String get ramadanOpen => 'RAMADAN ÖFFNEN';
+
+  @override
+  String ramadanTonightNight(int day) {
+    return 'Heute Nacht · Nacht $day';
+  }
+
+  @override
+  String get ramadanFastingLog => 'Fastentagebuch';
+
+  @override
+  String get ramadanTaraweeh => 'Tarawih';
+
+  @override
+  String get ramadanDidYouFast => 'Hast du heute gefastet?';
+
+  @override
+  String get ramadanFasted => 'Gefastet';
+
+  @override
+  String get ramadanMissed => 'Verpasst';
+
+  @override
+  String get ramadanReasonTravel => 'Reise';
+
+  @override
+  String get ramadanReasonIllness => 'Krankheit';
+
+  @override
+  String get ramadanReasonMenstruation => 'Menstruation';
+
+  @override
+  String get ramadanReasonOther => 'Sonstiges';
+
+  @override
+  String get ramadanPrayedTaraweeh => 'Hast du heute Nacht Tarawih gebetet?';
+
+  @override
+  String get ramadanDaysFasted => 'Fastentage';
+
+  @override
+  String get ramadanTaraweehNights => 'Tarawih-Nächte';
+
+  @override
+  String get ramadanSettings => 'Ramadan-Einstellungen';
+
+  @override
+  String get ramadanDayAdjustment => 'Tagesanpassung';
+
+  @override
+  String get ramadanDayAdjustmentHint =>
+      'Um einen Tag verschieben, falls in deiner Region die Mondsichel früher oder später gesichtet wurde';
+
+  @override
+  String get ramadanImsakBuffer => 'Imsak-Puffer (Minuten)';
+
+  @override
+  String get ramadanThemeLabel => 'Ramadan-Design';
+
+  @override
+  String get ramadanZakatReminder => 'Gib Zakat al-Fitr vor dem Eid-Gebet';
+
+  @override
+  String ramadanSuhoorNotif(int minutes) {
+    return 'Suhoor endet in $minutes Minuten';
+  }
+
+  @override
+  String ramadanIftarSoonNotif(int minutes) {
+    return '$minutes Minuten bis zum Iftar';
+  }
+
+  @override
+  String get ramadanIftarNowNotif => 'Zeit, das Fasten zu brechen';
+
+  @override
+  String get ramadanKareem => 'Ramadan Karim';
+
+  @override
+  String get ramadanNotFasted => 'Nicht erfasst';
+
+  @override
+  String get ramadanToday => 'Heute';
+
+  @override
+  String get progressRamadanRewards => 'Ramadan-Belohnungen';
+
+  @override
+  String get earnFast => 'Fasten gehalten';
+
+  @override
+  String get earnFastValue => '30 Pkt. × Multiplikator';
+
+  @override
+  String get earnTaraweeh => 'Tarawih gebetet';
+
+  @override
+  String get earnTaraweehValue => '20 Pkt. × Multiplikator';
+
+  @override
+  String get milestoneRamadan10 => '10 Fastentage';
+
+  @override
+  String get milestoneRamadan20 => '20 Fastentage';
+
+  @override
+  String get milestoneRamadanMonth => 'Den ganzen Monat gefastet';
+
+  @override
+  String get milestoneTaraweeh10 => '10 Nächte Tarawih';
+
+  @override
+  String get milestoneTaraweeh27 => '27 Nächte Tarawih';
+
+  @override
+  String get milestoneRamadan10Value => '+150 Pkt. (einmalig)';
+
+  @override
+  String get milestoneRamadan20Value => '+400 Pkt. (einmalig)';
+
+  @override
+  String get milestoneRamadanMonthValue => '+1.000 Pkt. (einmalig)';
+
+  @override
+  String get milestoneTaraweeh10Value => '+150 Pkt. (einmalig)';
+
+  @override
+  String get milestoneTaraweeh27Value => '+500 Pkt. (einmalig)';
 }

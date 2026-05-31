@@ -210,8 +210,7 @@
   "azanLabel": "АЗАН",
   "iqamahLabel": "ИКАМАТ",
   "unableToLoadMosque": "НЕ УДАЛОСЬ ЗАГРУЗИТЬ МЕЧЕТЬ",
-  "failedToSyncPrayer": "Не удалось синхронизировать молитву. Проверьте подключение."
-,
+  "failedToSyncPrayer": "Не удалось синхронизировать молитву. Проверьте подключение.",
   "maintenanceTitle": "ТЕХНИЧЕСКОЕ ОБСЛУЖИВАНИЕ",
   "maintenanceBody": "В настоящее время выполняются плановые улучшения. Пожалуйста, зайдите позже.",
   "tryAgain": "Попробовать снова",
@@ -221,14 +220,18 @@
   "errorSavingProfile": "Ошибка сохранения профиля: {error}",
   "@errorSavingProfile": {
     "placeholders": {
-      "error": {"type": "String"}
+      "error": {
+        "type": "String"
+      }
     }
   },
   "announcementPosted": "Объявление успешно опубликовано.",
   "errorPostingAnnouncement": "Ошибка публикации объявления: {error}",
   "@errorPostingAnnouncement": {
     "placeholders": {
-      "error": {"type": "String"}
+      "error": {
+        "type": "String"
+      }
     }
   },
   "reportIssue": "СООБЩИТЬ О ПРОБЛЕМЕ",
@@ -244,7 +247,9 @@
   "errorLaunchingDirections": "Ошибка открытия маршрута: {error}",
   "@errorLaunchingDirections": {
     "placeholders": {
-      "error": {"type": "String"}
+      "error": {
+        "type": "String"
+      }
     }
   },
   "testPermissions": "Проверить разрешения",
@@ -266,8 +271,12 @@
   "ofTotalCompleted": "{completed} из {total} выполнено",
   "@ofTotalCompleted": {
     "placeholders": {
-      "completed": {"type": "int"},
-      "total": {"type": "int"}
+      "completed": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
     }
   },
   "selectLocation": "ВЫБОР МЕСТОПОЛОЖЕНИЯ",
@@ -275,7 +284,6 @@
   "useCurrentLocationGps": "Использовать текущее местоположение (GPS)",
   "confirmWithPasswordPrompt": "Введите пароль для подтверждения удаления",
   "reAuthFailedMessage": "Повторная аутентификация не удалась. Попробуйте ещё раз.",
-
   "initializationError": "Ошибка инициализации",
   "somethingWentWrong": "Что-то пошло не так",
   "reloadApp": "Перезагрузить приложение",
@@ -284,7 +292,13 @@
   "azanBoard": "ТАБЛИЦА АЗАНА",
   "prayerBoard": "ТАБЛИЦА МОЛИТВ",
   "confidencePercent": "{confidence}% ТОЧНОСТЬ",
-  "@confidencePercent": { "placeholders": { "confidence": { "type": "int" } } },
+  "@confidencePercent": {
+    "placeholders": {
+      "confidence": {
+        "type": "int"
+      }
+    }
+  },
   "retakeAction": "ПЕРЕСНЯТЬ",
   "applyAllAction": "ПРИМЕНИТЬ ВСЁ",
   "estimatedAbbr": "ор.",
@@ -366,15 +380,168 @@
   "failedToLoadQada": "Не удалось загрузить данные када.",
   "addQadaDebtTitle": "Добавить долг када",
   "addQadaDebtQuestion": "Сколько молитв {prayer} вам ещё нужно восполнить?",
-  "@addQadaDebtQuestion": { "placeholders": { "prayer": { "type": "String" } } },
+  "@addQadaDebtQuestion": {
+    "placeholders": {
+      "prayer": {
+        "type": "String"
+      }
+    }
+  },
   "qadaInfoBanner": "Завершение молитв када здесь не влияет на вашу ежедневную серию. Серии считаются только за своевременные ежедневные молитвы.",
   "totalPendingLabel": "Всего ожидающих",
   "madeUpLabel": "Восполнено",
   "pendingCountBadge": "{count} ожидающих",
-  "@pendingCountBadge": { "placeholders": { "count": { "type": "int" } } },
+  "@pendingCountBadge": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "madeUpCountBadge": "{count} восполнено",
-  "@madeUpCountBadge": { "placeholders": { "count": { "type": "int" } } },
+  "@madeUpCountBadge": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "markAsMadeUp": "Отметить как восполнённую",
   "allCaughtUp": "Все восполнены",
-  "addQadaDebtTooltip": "Добавить долг када"
+  "addQadaDebtTooltip": "Добавить долг када",
+  "progressMyProgress": "Мой прогресс",
+  "progressPoints": "Очки",
+  "progressHowToEarn": "КАК ЗАРАБОТАТЬ ОЧКИ",
+  "progressAllLevels": "ВСЕ УРОВНИ",
+  "progressCurrentBalance": "ТЕКУЩИЙ БАЛАНС",
+  "progressLifetimeEarned": "ВСЕГО ЗАРАБОТАНО",
+  "progressDailyPoints": "Ежедневные очки",
+  "progressMilestoneBonuses": "Бонусы за достижения",
+  "progressUnlockedAtLevel": "ОТКРЫТО НА ЭТОМ УРОВНЕ",
+  "progressStartingLevel": "Начальный уровень",
+  "progressMaxLevel": "Достигнут максимальный уровень",
+  "progressMaxLevelShort": "Макс. уровень",
+  "progressLevelLabel": "Уровень {level}",
+  "progressLevelUpper": "УРОВЕНЬ {level}",
+  "progressPointsToNext": "{points} оч. до уровня {level}",
+  "progressPointsEarned": "Заработано {points} очков",
+  "progressMultiplier": "множитель {m}×",
+  "unlockBasicTracking": "Базовый трекер молитв",
+  "unlock7DayHistory": "История молитв за 7 дней",
+  "unlock30DayHistory": "История молитв за 30 дней",
+  "unlock60DayHistory": "История молитв за 60 дней",
+  "unlock90DayHistory": "История молитв за 90 дней",
+  "unlockProfileBadge": "Значок в сообществе мечети",
+  "unlockQadaAnalytics": "Аналитика када — какие молитвы вы пропускаете чаще",
+  "unlockMultiplier15": "Множитель очков 1.5×",
+  "unlockMultiplier2": "Множитель очков 2×",
+  "unlockMultiplier25": "Множитель очков 2.5×",
+  "unlockWeeklyReport": "Еженедельный отчёт о молитвах",
+  "unlockGoldBadge": "Эксклюзивный золотой значок",
+  "earnPrayerCompleted": "За каждую молитву",
+  "earnFajrBonus": "Бонус за Фаджр",
+  "earnFullDay": "Все 5 молитв за день",
+  "earnQada": "Восполнение молитвы (када)",
+  "earnHadith": "Ежедневное чтение хадиса",
+  "earnLogin": "Ежедневный вход",
+  "earnPrayerValue": "10 оч. × множитель",
+  "earnFajrValue": "+5 оч.",
+  "earnFullDayValue": "+50 оч. × множитель",
+  "earnQadaValue": "15 оч.",
+  "earnHadithValue": "5 оч. (раз/день)",
+  "earnLoginValue": "2 оч. (раз/день)",
+  "milestone7": "Серия молитв 7 дней",
+  "milestone40": "Серия 40 дней (Арбаин)",
+  "milestone100": "Серия 100 дней",
+  "milestoneFirstQada": "Первое восполнение",
+  "milestoneFirstFullDay": "Первый полный день молитв",
+  "milestone7Value": "+100 оч. (однократно)",
+  "milestone40Value": "+500 оч. (однократно)",
+  "milestone100Value": "+1 000 оч. (однократно)",
+  "milestoneFirstQadaValue": "+50 оч. (однократно)",
+  "milestoneFirstFullDayValue": "+75 оч. (однократно)",
+  "weeklyReportTitle": "Недельный отчёт",
+  "weeklyLast7Days": "Последние 7 дней",
+  "weeklyCompletion": "Выполнение за неделю",
+  "weeklyDayByDay": "ПО ДНЯМ",
+  "weeklyPerPrayer": "ПО МОЛИТВАМ",
+  "weeklyToday": "Сегодня",
+  "weeklyPerfectAttendance": "Идеальная посещаемость",
+  "weeklyDaysActive": "{days}/7 дней активны",
+  "weeklyPrayersCount": "{count} из 35 молитв",
+  "profileTitleShort": "ПРОФИЛЬ",
+  "profileCommunity": "СООБЩЕСТВО",
+  "profileImam": "ИМАМ",
+  "statPrayers": "Молитвы",
+  "statStreak": "Серия",
+  "statRate": "Процент",
+  "sectionAccount": "АККАУНТ",
+  "signOutLabel": "Выйти",
+  "signOutSub": "Завершить текущий сеанс",
+  "editProfileTitle": "Редактировать профиль",
+  "manageProfileTitle": "Управление профилем",
+  "sectionPersonalDetails": "ЛИЧНЫЕ ДАННЫЕ",
+  "fieldCountry": "Страна",
+  "fieldCity": "Город",
+  "fieldFullName": "Полное имя",
+  "fieldPhone": "Телефон",
+  "fieldOptional": "Необязательно",
+  "saveChangesLabel": "Сохранить",
+  "genderOther": "Другой",
+  "last60Days": "Последние 60 дней",
+  "weeklyReportTooltip": "Недельный отчёт",
+  "unlockLevelMsg": "Достигните уровня {level}, чтобы открыть историю за {days} дней",
+  "ramadanLabel": "РАМАДАН",
+  "ramadanDayOf": "День {day} из {total}",
+  "ramadanBeginsInDays": "Рамадан начнётся через {days} дн.",
+  "ramadanBeginsTomorrow": "Рамадан начнётся завтра",
+  "ramadanSuhoorEndsIn": "Сухур заканчивается через",
+  "ramadanIftarIn": "Ифтар через",
+  "ramadanTimeToIftar": "Пора разговляться",
+  "ramadanImsak": "ИМСАК",
+  "ramadanSuhoor": "СУХУР",
+  "ramadanIftar": "ИФТАР",
+  "eidMubarak": "Ид мубарак",
+  "eidInDays": "Ид через {days} дн.",
+  "ramadanOpen": "ОТКРЫТЬ РАМАДАН",
+  "ramadanTonightNight": "Сегодня · Ночь {day}",
+  "ramadanFastingLog": "Дневник поста",
+  "ramadanTaraweeh": "Таравих",
+  "ramadanDidYouFast": "Вы постились сегодня?",
+  "ramadanFasted": "Постился",
+  "ramadanMissed": "Пропущен",
+  "ramadanReasonTravel": "Поездка",
+  "ramadanReasonIllness": "Болезнь",
+  "ramadanReasonMenstruation": "Менструация",
+  "ramadanReasonOther": "Другое",
+  "ramadanPrayedTaraweeh": "Совершили таравих этой ночью?",
+  "ramadanDaysFasted": "Дней поста",
+  "ramadanTaraweehNights": "Ночей таравиха",
+  "ramadanSettings": "Настройки Рамадана",
+  "ramadanDayAdjustment": "Корректировка дня",
+  "ramadanDayAdjustmentHint": "Сдвиньте на день, если в вашем регионе месяц увидели раньше или позже",
+  "ramadanImsakBuffer": "Запас имсак (минуты)",
+  "ramadanThemeLabel": "Тема Рамадана",
+  "ramadanZakatReminder": "Раздайте закят аль-фитр до праздничной молитвы",
+  "ramadanSuhoorNotif": "Сухур заканчивается через {minutes} мин.",
+  "ramadanIftarSoonNotif": "{minutes} мин. до ифтара",
+  "ramadanIftarNowNotif": "Пора разговляться",
+  "ramadanKareem": "Рамадан карим",
+  "ramadanNotFasted": "Не отмечено",
+  "ramadanToday": "Сегодня",
+  "progressRamadanRewards": "Награды Рамадана",
+  "earnFast": "Соблюдён пост",
+  "earnFastValue": "30 оч. × множитель",
+  "earnTaraweeh": "Совершён таравих",
+  "earnTaraweehValue": "20 оч. × множитель",
+  "milestoneRamadan10": "10 постов соблюдено",
+  "milestoneRamadan20": "20 постов соблюдено",
+  "milestoneRamadanMonth": "Пост весь месяц",
+  "milestoneTaraweeh10": "10 ночей таравиха",
+  "milestoneTaraweeh27": "27 ночей таравиха",
+  "milestoneRamadan10Value": "+150 оч. (однократно)",
+  "milestoneRamadan20Value": "+400 оч. (однократно)",
+  "milestoneRamadanMonthValue": "+1 000 оч. (однократно)",
+  "milestoneTaraweeh10Value": "+150 оч. (однократно)",
+  "milestoneTaraweeh27Value": "+500 оч. (однократно)"
 }

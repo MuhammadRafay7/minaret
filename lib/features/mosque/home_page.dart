@@ -11,6 +11,7 @@ import '../../core/locale_format.dart';
 import '../../core/location_service.dart';
 import '../../core/theme.dart';
 import '../../features/home/notifiers/home_notifier.dart';
+import '../../features/ramadan/widgets/ramadan_dashboard_card.dart';
 import '../../repositories/prayer_repository.dart';
 import '../../widgets/app_loading_indicator.dart';
 import '../../widgets/atelier_layout.dart';
@@ -21,8 +22,11 @@ import '../../widgets/mosque_card.dart';
 import '../../widgets/offline_banner.dart';
 import '../../widgets/premium_loading.dart';
 import '../../widgets/simple_filter_dialog.dart';
+import '../../widgets/islamic_calendar_sheet.dart';
 import '../../services/system_config_service.dart';
+import '../../repositories/progress_repository.dart';
 import '../prayer/prayer_stats_page.dart';
+import '../progress/widgets/level_badge.dart';
 
 export '../../features/home/notifiers/home_notifier.dart' show SortType;
 
@@ -83,6 +87,12 @@ class _HomeViewState extends State<_HomeView> {
                     physics: const BouncingScrollPhysics(),
                     padding: EdgeInsets.zero,
                     children: [
+                      // Ramadan dashboard — renders only in/around Ramadan,
+                      // otherwise collapses to nothing.
+                      const Padding(
+                        padding: EdgeInsets.only(top: 18),
+                        child: RamadanDashboardCard(),
+                      ),
                       if (features?.enableHadith ?? true)
                         const Padding(
                           padding: EdgeInsets.fromLTRB(25, 28, 25, 10),
@@ -316,14 +326,21 @@ class _Header extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                display(_greeting()),
-                style: GoogleFonts.montserrat(
-                  fontSize: 10,
-                  letterSpacing: 3,
-                  color: MinaretTheme.gold,
-                  fontWeight: FontWeight.w700,
-                ),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    display(_greeting()),
+                    style: GoogleFonts.montserrat(
+                      fontSize: 10,
+                      letterSpacing: 3,
+                      color: MinaretTheme.gold,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  const _HomeLevelBadge(),
+                ],
               ),
               GestureDetector(
                 onTap: () => _showCityPicker(context),
@@ -364,13 +381,27 @@ class _Header extends StatelessWidget {
               color: isDark ? Colors.white : MinaretTheme.onyx,
             ),
           ),
-          Text(
-            _hijriLine(context),
-            style: GoogleFonts.montserrat(
-              fontSize: 9,
-              letterSpacing: 1.6,
-              color: subtitleColor,
-              fontWeight: FontWeight.w600,
+          GestureDetector(
+            onTap: () => showIslamicCalendar(context),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  _hijriLine(context),
+                  style: GoogleFonts.montserrat(
+                    fontSize: 9,
+                    letterSpacing: 1.6,
+                    color: subtitleColor,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                const SizedBox(width: 6),
+                Icon(
+                  Icons.calendar_month_outlined,
+                  size: 11,
+                  color: subtitleColor,
+                ),
+              ],
             ),
           ),
         ],
@@ -775,6 +806,38 @@ class _Stat extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+// Stable StatefulWidget so the Firestore listener is created once per widget lifetime.
+// Showing a level badge in the home header for Level 2+ users.
+class _HomeLevelBadge extends StatefulWidget {
+  const _HomeLevelBadge();
+
+  @override
+  State<_HomeLevelBadge> createState() => _HomeLevelBadgeState();
+}
+
+class _HomeLevelBadgeState extends State<_HomeLevelBadge> {
+  final _repo = ProgressRepository();
+  late final Stream<UserProgress> _stream;
+
+  @override
+  void initState() {
+    super.initState();
+    _stream = _repo.progressStream();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<UserProgress>(
+      stream: _stream,
+      builder: (_, snap) {
+        final lvl = snap.data?.level ?? 1;
+        if (lvl < 2) return const SizedBox.shrink();
+        return LevelBadge(level: lvl);
+      },
     );
   }
 }

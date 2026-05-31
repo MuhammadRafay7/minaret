@@ -23,31 +23,37 @@ class FcmTokenService {
     final user = FirebaseAuth.instance.currentUser;
     if (user == null) return;
 
-    final settings = await _messaging.requestPermission(
-      alert: true,
-      badge: true,
-      sound: true,
-    );
+    try {
+      final settings = await _messaging.requestPermission(
+        alert: true,
+        badge: true,
+        sound: true,
+      );
 
-    if (settings.authorizationStatus == AuthorizationStatus.denied) {
-      debugPrint('🔴 FCM: permission denied');
-      return;
-    }
-
-    final token = await _messaging.getToken();
-    if (token != null) {
-      await _repo.saveFcmToken(user.uid, token);
-    }
-
-    await _tokenRefreshSub?.cancel();
-    _tokenRefreshSub = _messaging.onTokenRefresh.listen((newToken) async {
-      final currentUser = FirebaseAuth.instance.currentUser;
-      if (currentUser != null) {
-        await _repo.saveFcmToken(currentUser.uid, newToken);
+      if (settings.authorizationStatus == AuthorizationStatus.denied ||
+          settings.authorizationStatus == AuthorizationStatus.notDetermined) {
+        debugPrint('🔴 FCM: notification permission not granted');
+        return;
       }
-    });
 
-    await _initMessageHandlers();
+      final token = await _messaging.getToken();
+      if (token != null) {
+        await _repo.saveFcmToken(user.uid, token);
+      }
+
+      await _tokenRefreshSub?.cancel();
+      _tokenRefreshSub = _messaging.onTokenRefresh.listen((newToken) async {
+        final currentUser = FirebaseAuth.instance.currentUser;
+        if (currentUser != null) {
+          await _repo.saveFcmToken(currentUser.uid, newToken);
+        }
+      });
+
+      await _initMessageHandlers();
+    } catch (e) {
+      // Notification permission blocked by browser/OS — not fatal, app continues normally.
+      debugPrint('🔴 FCM init skipped: $e');
+    }
   }
 
   static Future<void> removeToken() async {

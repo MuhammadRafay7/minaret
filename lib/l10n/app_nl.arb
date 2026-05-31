@@ -210,8 +210,7 @@
   "azanLabel": "AZAN",
   "iqamahLabel": "IQAMAH",
   "unableToLoadMosque": "KAN MOSKEE NIET LADEN",
-  "failedToSyncPrayer": "Synchroniseren van gebed mislukt. Controleer verbinding."
-,
+  "failedToSyncPrayer": "Synchroniseren van gebed mislukt. Controleer verbinding.",
   "maintenanceTitle": "SYSTEEMONDERHOUD",
   "maintenanceBody": "We voeren momenteel geplande verbeteringen uit. Kom binnenkort terug.",
   "tryAgain": "Probeer opnieuw",
@@ -221,14 +220,18 @@
   "errorSavingProfile": "Fout bij opslaan profiel: {error}",
   "@errorSavingProfile": {
     "placeholders": {
-      "error": {"type": "String"}
+      "error": {
+        "type": "String"
+      }
     }
   },
   "announcementPosted": "Aankondiging succesvol geplaatst.",
   "errorPostingAnnouncement": "Fout bij plaatsen aankondiging: {error}",
   "@errorPostingAnnouncement": {
     "placeholders": {
-      "error": {"type": "String"}
+      "error": {
+        "type": "String"
+      }
     }
   },
   "reportIssue": "PROBLEEM MELDEN",
@@ -244,7 +247,9 @@
   "errorLaunchingDirections": "Fout bij openen routebeschrijving: {error}",
   "@errorLaunchingDirections": {
     "placeholders": {
-      "error": {"type": "String"}
+      "error": {
+        "type": "String"
+      }
     }
   },
   "testPermissions": "Machtigingen testen",
@@ -266,8 +271,12 @@
   "ofTotalCompleted": "{completed} van {total} voltooid",
   "@ofTotalCompleted": {
     "placeholders": {
-      "completed": {"type": "int"},
-      "total": {"type": "int"}
+      "completed": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
     }
   },
   "selectLocation": "LOCATIE SELECTEREN",
@@ -275,7 +284,6 @@
   "useCurrentLocationGps": "Gebruik huidige locatie (GPS)",
   "confirmWithPasswordPrompt": "Voer uw wachtwoord in om verwijdering te bevestigen",
   "reAuthFailedMessage": "Herverificatie mislukt. Probeer het opnieuw.",
-
   "initializationError": "Initialisatiefout",
   "somethingWentWrong": "Er is iets misgegaan",
   "reloadApp": "App herladen",
@@ -284,7 +292,13 @@
   "azanBoard": "ADHAN-BORD",
   "prayerBoard": "GEBEDSBORD",
   "confidencePercent": "{confidence}% NAUWKEURIGHEID",
-  "@confidencePercent": { "placeholders": { "confidence": { "type": "int" } } },
+  "@confidencePercent": {
+    "placeholders": {
+      "confidence": {
+        "type": "int"
+      }
+    }
+  },
   "retakeAction": "OPNIEUW NEMEN",
   "applyAllAction": "ALLES TOEPASSEN",
   "estimatedAbbr": "est.",
@@ -366,15 +380,168 @@
   "failedToLoadQada": "Laden van qada-gegevens mislukt.",
   "addQadaDebtTitle": "Qada-schuld toevoegen",
   "addQadaDebtQuestion": "Hoeveel {prayer}-gebeden moet u nog inhalen?",
-  "@addQadaDebtQuestion": { "placeholders": { "prayer": { "type": "String" } } },
+  "@addQadaDebtQuestion": {
+    "placeholders": {
+      "prayer": {
+        "type": "String"
+      }
+    }
+  },
   "qadaInfoBanner": "Het voltooien van qada-gebeden hier heeft geen invloed op uw dagelijkse reeks. Reeksen tellen alleen voor dagelijkse gebeden op tijd.",
   "totalPendingLabel": "Totaal in behandeling",
   "madeUpLabel": "Ingehaald",
   "pendingCountBadge": "{count} in behandeling",
-  "@pendingCountBadge": { "placeholders": { "count": { "type": "int" } } },
+  "@pendingCountBadge": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "madeUpCountBadge": "{count} ingehaald",
-  "@madeUpCountBadge": { "placeholders": { "count": { "type": "int" } } },
+  "@madeUpCountBadge": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "markAsMadeUp": "Markeren als ingehaald",
   "allCaughtUp": "Alles ingehaald",
-  "addQadaDebtTooltip": "Qada-schuld toevoegen"
+  "addQadaDebtTooltip": "Qada-schuld toevoegen",
+  "progressMyProgress": "Mijn voortgang",
+  "progressPoints": "Punten",
+  "progressHowToEarn": "PUNTEN VERDIENEN",
+  "progressAllLevels": "ALLE NIVEAUS",
+  "progressCurrentBalance": "HUIDIG SALDO",
+  "progressLifetimeEarned": "TOTAAL VERDIEND",
+  "progressDailyPoints": "Dagelijkse punten",
+  "progressMilestoneBonuses": "Mijlpaalbonussen",
+  "progressUnlockedAtLevel": "ONTGRENDELD OP DIT NIVEAU",
+  "progressStartingLevel": "Startniveau",
+  "progressMaxLevel": "Maximaal niveau bereikt",
+  "progressMaxLevelShort": "Max niveau",
+  "progressLevelLabel": "Niveau {level}",
+  "progressLevelUpper": "NIVEAU {level}",
+  "progressPointsToNext": "{points} ptn tot niveau {level}",
+  "progressPointsEarned": "{points} punten verdiend",
+  "progressMultiplier": "{m}× vermenigvuldiger",
+  "unlockBasicTracking": "Basis gebedsregistratie",
+  "unlock7DayHistory": "7-daagse gebedsgeschiedenis",
+  "unlock30DayHistory": "30-daagse gebedsgeschiedenis",
+  "unlock60DayHistory": "60-daagse gebedsgeschiedenis",
+  "unlock90DayHistory": "90-daagse gebedsgeschiedenis",
+  "unlockProfileBadge": "Badge in moskeegemeenschap",
+  "unlockQadaAnalytics": "Qada-analyse — zie welke gebeden je het meest mist",
+  "unlockMultiplier15": "1,5× puntenvermenigvuldiger",
+  "unlockMultiplier2": "2× puntenvermenigvuldiger",
+  "unlockMultiplier25": "2,5× puntenvermenigvuldiger",
+  "unlockWeeklyReport": "Wekelijks gebedsrapport",
+  "unlockGoldBadge": "Exclusieve gouden badge",
+  "earnPrayerCompleted": "Elk voltooid gebed",
+  "earnFajrBonus": "Fajr-bonus",
+  "earnFullDay": "Alle 5 gebeden op een dag",
+  "earnQada": "Inhaalgebed (Qada)",
+  "earnHadith": "Dagelijkse Hadith gelezen",
+  "earnLogin": "Dagelijkse app-login",
+  "earnPrayerValue": "10 ptn × vermenigvuldiger",
+  "earnFajrValue": "+5 ptn",
+  "earnFullDayValue": "+50 ptn × vermenigvuldiger",
+  "earnQadaValue": "15 ptn",
+  "earnHadithValue": "5 ptn (1×/dag)",
+  "earnLoginValue": "2 ptn (1×/dag)",
+  "milestone7": "7-daagse reeks",
+  "milestone40": "40-daagse reeks (Arba'een)",
+  "milestone100": "100-daagse reeks",
+  "milestoneFirstQada": "Eerste Qada-inhaal",
+  "milestoneFirstFullDay": "Eerste volledige gebedsdag",
+  "milestone7Value": "+100 ptn (eenmalig)",
+  "milestone40Value": "+500 ptn (eenmalig)",
+  "milestone100Value": "+1.000 ptn (eenmalig)",
+  "milestoneFirstQadaValue": "+50 ptn (eenmalig)",
+  "milestoneFirstFullDayValue": "+75 ptn (eenmalig)",
+  "weeklyReportTitle": "Weekrapport",
+  "weeklyLast7Days": "Laatste 7 dagen",
+  "weeklyCompletion": "Wekelijkse voltooiing",
+  "weeklyDayByDay": "DAG VOOR DAG",
+  "weeklyPerPrayer": "PER GEBED",
+  "weeklyToday": "Vandaag",
+  "weeklyPerfectAttendance": "Perfecte aanwezigheid",
+  "weeklyDaysActive": "{days}/7 dagen actief",
+  "weeklyPrayersCount": "{count} van 35 gebeden",
+  "profileTitleShort": "PROFIEL",
+  "profileCommunity": "GEMEENSCHAP",
+  "profileImam": "IMAM",
+  "statPrayers": "Gebeden",
+  "statStreak": "Reeks",
+  "statRate": "Percentage",
+  "sectionAccount": "ACCOUNT",
+  "signOutLabel": "Uitloggen",
+  "signOutSub": "Beëindig je huidige sessie",
+  "editProfileTitle": "Profiel bewerken",
+  "manageProfileTitle": "Profiel beheren",
+  "sectionPersonalDetails": "PERSOONLIJKE GEGEVENS",
+  "fieldCountry": "Land",
+  "fieldCity": "Stad",
+  "fieldFullName": "Volledige naam",
+  "fieldPhone": "Telefoonnummer",
+  "fieldOptional": "Optioneel",
+  "saveChangesLabel": "Wijzigingen opslaan",
+  "genderOther": "Anders",
+  "last60Days": "Laatste 60 dagen",
+  "weeklyReportTooltip": "Weekrapport",
+  "unlockLevelMsg": "Bereik niveau {level} om {days}-daagse geschiedenis te ontgrendelen",
+  "ramadanLabel": "RAMADAN",
+  "ramadanDayOf": "Dag {day} van {total}",
+  "ramadanBeginsInDays": "Ramadan begint over {days} dagen",
+  "ramadanBeginsTomorrow": "Ramadan begint morgen",
+  "ramadanSuhoorEndsIn": "Suhoor eindigt over",
+  "ramadanIftarIn": "Iftar over",
+  "ramadanTimeToIftar": "Tijd om het vasten te verbreken",
+  "ramadanImsak": "IMSAK",
+  "ramadanSuhoor": "SUHOOR",
+  "ramadanIftar": "IFTAR",
+  "eidMubarak": "Eid Moebarak",
+  "eidInDays": "Eid over {days} dagen",
+  "ramadanOpen": "RAMADAN OPENEN",
+  "ramadanTonightNight": "Vanavond · Nacht {day}",
+  "ramadanFastingLog": "Vastenlogboek",
+  "ramadanTaraweeh": "Taraweeh",
+  "ramadanDidYouFast": "Heb je vandaag gevast?",
+  "ramadanFasted": "Gevast",
+  "ramadanMissed": "Gemist",
+  "ramadanReasonTravel": "Reizen",
+  "ramadanReasonIllness": "Ziekte",
+  "ramadanReasonMenstruation": "Menstruatie",
+  "ramadanReasonOther": "Overig",
+  "ramadanPrayedTaraweeh": "Heb je vanavond Taraweeh gebeden?",
+  "ramadanDaysFasted": "Vastendagen",
+  "ramadanTaraweehNights": "Taraweeh-nachten",
+  "ramadanSettings": "Ramadan-instellingen",
+  "ramadanDayAdjustment": "Dagaanpassing",
+  "ramadanDayAdjustmentHint": "Verschuif een dag als jouw regio de maansikkel eerder of later zag",
+  "ramadanImsakBuffer": "Imsak-marge (minuten)",
+  "ramadanThemeLabel": "Ramadan-thema",
+  "ramadanZakatReminder": "Geef Zakat al-Fitr vóór het Eid-gebed",
+  "ramadanSuhoorNotif": "Suhoor eindigt over {minutes} minuten",
+  "ramadanIftarSoonNotif": "{minutes} minuten tot iftar",
+  "ramadanIftarNowNotif": "Tijd om het vasten te verbreken",
+  "ramadanKareem": "Ramadan Kariem",
+  "ramadanNotFasted": "Niet vastgelegd",
+  "ramadanToday": "Vandaag",
+  "progressRamadanRewards": "Ramadan-beloningen",
+  "earnFast": "Vasten volbracht",
+  "earnFastValue": "30 ptn × vermenigvuldiger",
+  "earnTaraweeh": "Taraweeh gebeden",
+  "earnTaraweehValue": "20 ptn × vermenigvuldiger",
+  "milestoneRamadan10": "10 vastendagen",
+  "milestoneRamadan20": "20 vastendagen",
+  "milestoneRamadanMonth": "De hele maand gevast",
+  "milestoneTaraweeh10": "10 nachten Taraweeh",
+  "milestoneTaraweeh27": "27 nachten Taraweeh",
+  "milestoneRamadan10Value": "+150 ptn (eenmalig)",
+  "milestoneRamadan20Value": "+400 ptn (eenmalig)",
+  "milestoneRamadanMonthValue": "+1.000 ptn (eenmalig)",
+  "milestoneTaraweeh10Value": "+150 ptn (eenmalig)",
+  "milestoneTaraweeh27Value": "+500 ptn (eenmalig)"
 }

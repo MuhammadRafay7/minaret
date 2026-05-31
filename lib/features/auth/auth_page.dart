@@ -18,14 +18,23 @@ import '../../core/input_validator.dart';
 import '../../core/error_handler.dart';
 import '../../widgets/premium_button.dart';
 import '../../widgets/atelier_layout.dart';
+import '../../widgets/location_picker.dart';
 import '../mosque/edit_mosque_page.dart';
 import '../mosque/create_mosque_page.dart';
 import 'settings_page.dart';
-import 'imam_profile_page.dart';
 import 'document_verification.dart';
 import 'google_imam_setup_page.dart';
-import 'edit_profile_page.dart';
 import '../../services/system_config_service.dart';
+import '../../repositories/progress_repository.dart';
+import '../../repositories/prayer_repository.dart';
+import '../progress/progress_page.dart';
+import '../progress/widgets/level_badge.dart';
+import '../progress/widgets/coin_counter.dart';
+import '../prayer/prayer_stats_page.dart';
+import '../prayer/qada_page.dart';
+import 'edit_profile_page.dart';
+import 'imam_profile_page.dart';
+import '../../widgets/language_selector.dart';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Auth Page
@@ -47,7 +56,6 @@ class _AuthPageState extends State<AuthPage> {
   final _fullNameController = TextEditingController();
   final _fatherNameController = TextEditingController();
   final _phoneNumberController = TextEditingController();
-  final _cityController = TextEditingController();
   final _teachingFeeController = TextEditingController();
   final _teachingNotesController = TextEditingController();
 
@@ -62,12 +70,18 @@ class _AuthPageState extends State<AuthPage> {
 
   String _selectedCountry = 'PK';
 
+  // Standardized residential location (Country → State → City) chosen via the
+  // picker. Stored alongside ISO codes. `_selectedCountry` above is separate —
+  // it is the country of the ID document used for imam verification.
+  LocationValue _location = const LocationValue();
+
   ImamVerificationResult? _verificationResult;
   bool _isVerifying = false;
 
   bool _isLogin = true;
   bool _isLoading = false;
   bool _isCheckingVerification = false;
+  bool _passwordVisible = false;
   AuthStep _regStep = AuthStep.phone;
   String _selectedRole = kDefaultRole;
   String _selectedGender = 'male';
@@ -89,7 +103,6 @@ class _AuthPageState extends State<AuthPage> {
     _fullNameController.dispose();
     _fatherNameController.dispose();
     _phoneNumberController.dispose();
-    _cityController.dispose();
     _teachingFeeController.dispose();
     _teachingNotesController.dispose();
     super.dispose();
@@ -103,6 +116,18 @@ class _AuthPageState extends State<AuthPage> {
   Color get _lineColor => _isDark ? Colors.white24 : MinaretTheme.dividerColor;
   Color get _surfaceColor =>
       _isDark ? const Color(0xFF151B24) : Colors.white.withValues(alpha: 0.45);
+  Color get _cardColor => _isDark ? const Color(0xFF1C2430) : Colors.white;
+
+  // Picks a sensible leading icon from the field label/type when none is given.
+  IconData _fieldIcon(String label, bool isObscure, TextInputType? kt) {
+    if (isObscure) return Icons.lock_outline_rounded;
+    if (kt == TextInputType.emailAddress) return Icons.mail_outline_rounded;
+    if (kt == TextInputType.phone) return Icons.phone_outlined;
+    final l = label.toLowerCase();
+    if (l.contains('city') || l.contains('مدين') || l.contains('شہر')) return Icons.location_city_outlined;
+    if (l.contains('name') || l.contains('اسم') || l.contains('نام')) return Icons.person_outline_rounded;
+    return Icons.edit_outlined;
+  }
 
   String _displayText(String value) {
     final locale = Localizations.localeOf(context).languageCode;
@@ -207,7 +232,6 @@ class _AuthPageState extends State<AuthPage> {
     if (l10n == null) return;
     final email = _emailController.text.trim();
     final password = _passwordController.text.trim();
-    final city = _cityController.text.trim();
 
     if (email.isEmpty) {
       _showStatus(l10n.authErrorFillFields);
@@ -260,8 +284,8 @@ class _AuthPageState extends State<AuthPage> {
             _showStatus(emailValidation.errorMessage!);
             return;
           }
-          if (city.isEmpty) {
-            _showStatus(_t(en: 'Please enter your city', ar: 'يرجى إدخال مدينتك', ur: 'براہ کرم اپنا شہر درج کریں', ru: 'Введите ваш город'));
+          if (!_location.isComplete) {
+            _showStatus(_t(en: 'Please select your country, state and city', ar: 'يرجى اختيار الدولة والولاية والمدينة', ur: 'براہ کرم اپنا ملک، صوبہ اور شہر منتخب کریں', ru: 'Выберите страну, регион и город'));
             return;
           }
           setState(() => _regStep = AuthStep.setup);
@@ -353,7 +377,11 @@ class _AuthPageState extends State<AuthPage> {
             .doc(cred.user!.uid)
             .set({
           'email': email,
-          'city': city,
+          'country': _location.countryName,
+          'countryCode': _location.countryCode,
+          'state': _location.stateName,
+          'stateCode': _location.stateCode,
+          'city': _location.cityName,
           'role': _selectedRole,
           'createdAt': FieldValue.serverTimestamp(),
           'favorites': <String>[],
@@ -610,7 +638,7 @@ class _AuthPageState extends State<AuthPage> {
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           body: AtelierLayout(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 40),
+              padding: EdgeInsets.symmetric(horizontal: showProfile ? 20 : 40),
               child: AnimatedSwitcher(
                 duration: const Duration(milliseconds: 600),
                 switchInCurve: Curves.easeInOutQuart,
@@ -799,143 +827,9 @@ class _AuthPageState extends State<AuthPage> {
   // ── Profile view ──────────────────────────────────────────────────────────
 
   Widget _buildProfileView(User user, AppLocalizations l10n) {
-    return Column(
+    return _SocialProfileView(
       key: const ValueKey('profile'),
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    _displayText(l10n.profileHeader),
-                    style: MinaretTheme.heading.copyWith(
-                      fontSize: 32,
-                      letterSpacing: 10,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    _displayText(l10n.profileSessionActive),
-                    style: MinaretTheme.label,
-                  ),
-                ],
-              ),
-            ),
-            IconButton(
-              onPressed: () => Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => const SettingsPage()),
-              ),
-              icon: Icon(Icons.settings_outlined, color: MinaretTheme.gold),
-              tooltip: 'Settings',
-            ),
-          ],
-        ),
-        const SizedBox(height: 20),
-        _buildBismillah(),
-        const SizedBox(height: 60),
-        StreamBuilder<DocumentSnapshot>(
-            stream: FirebaseFirestore.instance
-                .collection('users')
-                .doc(user.uid)
-                .snapshots(),
-            builder: (context, snap) {
-              final data = snap.data?.data() as Map<String, dynamic>?;
-              final displayName = data?['displayName'] as String?;
-              final userRole = data?['role'] as String?;
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    _displayText(l10n.profileIdentifiedAs),
-                    style: MinaretTheme.detailHeader.copyWith(
-                      fontSize: 7.5,
-                      letterSpacing: 3,
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  if (displayName != null && displayName.isNotEmpty) ...[
-                    Text(
-                      _displayText(displayName),
-                      style: GoogleFonts.lato(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w700,
-                        letterSpacing: 1.2,
-                        color: _textPrimary,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      user.email ?? '',
-                      style: GoogleFonts.lato(
-                        fontSize: 11,
-                        fontWeight: FontWeight.w400,
-                        color: _textSecondary,
-                      ),
-                    ),
-                  ] else ...[
-                    Text(
-                      _displayText(user.email ?? l10n.profileAnonymous),
-                      style: GoogleFonts.lato(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w700,
-                        letterSpacing: 1.2,
-                        color: _textPrimary,
-                      ),
-                    ),
-                  ],
-                  const SizedBox(height: 30),
-                  if (userRole == kRoleImam)
-                    Center(
-                      child: _buildTextLink(
-                        _displayText(_t(
-                            en: 'Manage Personal Profile',
-                            ar: 'إدارة البيانات الشخصية',
-                            ur: 'ذاتی پروفائل کا انتظام',
-                            ru: 'Управление профилем')),
-                        () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (_) => const ImamProfilePage())),
-                        accent: true,
-                      ),
-                    )
-                  else
-                    Center(
-                      child: _buildTextLink(
-                        _displayText(_t(
-                            en: 'Edit Profile',
-                            ar: 'تعديل الملف الشخصي',
-                            ur: 'پروفائل ترمیم کریں',
-                            ru: 'Редактировать профиль')),
-                        () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (_) => const EditProfilePage())),
-                        accent: true,
-                      ),
-                    ),
-                ],
-              );
-            }),
-        const SizedBox(height: 80),
-        _buildActionButton(l10n.profileEndSession, () async {
-          await FirebaseAuth.instance.signOut();
-          if (mounted)
-            setState(() {
-              _isLogin = true;
-              _regStep = AuthStep.phone;
-            });
-        }),
-        const SizedBox(height: 40),
-      ],
+      user: user,
     );
   }
 
@@ -1054,7 +948,7 @@ class _AuthPageState extends State<AuthPage> {
                 _regStep = AuthStep.phone;
                 _emailController.clear();
                 _passwordController.clear();
-                _cityController.clear();
+                _location = const LocationValue();
               }),
             ),
           ),
@@ -1073,7 +967,7 @@ class _AuthPageState extends State<AuthPage> {
           false,
           keyboardType: TextInputType.emailAddress,
         ),
-        const SizedBox(height: 36),
+        const SizedBox(height: 14),
         _buildModernField(l10n.fieldPassword, _passwordController, true),
       ];
     }
@@ -1085,11 +979,12 @@ class _AuthPageState extends State<AuthPage> {
           false,
           keyboardType: TextInputType.emailAddress,
         ),
-        const SizedBox(height: 36),
-        _buildModernField(
-          _t(en: 'City', ar: 'المدينة', ur: 'شہر', ru: 'Город'),
-          _cityController,
-          false,
+        const SizedBox(height: 14),
+        LocationPicker(
+          countryLabel: _t(en: 'Country', ar: 'الدولة', ur: 'ملک', ru: 'Страна'),
+          stateLabel: _t(en: 'State / Province', ar: 'الولاية / المحافظة', ur: 'صوبہ', ru: 'Регион'),
+          cityLabel: _t(en: 'City', ar: 'المدينة', ur: 'شہر', ru: 'Город'),
+          onChanged: (loc) => setState(() => _location = loc),
         ),
       ];
     }
@@ -1878,24 +1773,76 @@ class _AuthPageState extends State<AuthPage> {
     bool isObscure, {
     TextInputType? keyboardType,
   }) {
-    return TextField(
-      controller: controller,
-      obscureText: isObscure,
-      keyboardType: keyboardType,
-      cursorColor: MinaretTheme.gold,
-      cursorWidth: 1.2,
-      style: GoogleFonts.lato(
-        fontSize: 15,
-        fontWeight: FontWeight.w600,
-        color: _textPrimary,
+    final obscured = isObscure && !_passwordVisible;
+    return Container(
+      decoration: BoxDecoration(
+        color: _cardColor,
+        borderRadius: BorderRadius.circular(14),
+        boxShadow: MinaretTheme.cardShadow,
       ),
-      decoration: InputDecoration(
-        labelText: _displayText(label),
-        floatingLabelBehavior: FloatingLabelBehavior.always,
-        hintStyle: GoogleFonts.lato(
-          fontSize: 13,
-          color: _textSecondary.withValues(alpha: 0.7),
-        ),
+      padding: const EdgeInsets.fromLTRB(16, 12, 12, 12),
+      child: Row(
+        children: [
+          Icon(_fieldIcon(label, isObscure, keyboardType),
+              size: 20, color: MinaretTheme.gold),
+          const SizedBox(width: 14),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  _displayText(label),
+                  style: GoogleFonts.montserrat(
+                    fontSize: 10,
+                    letterSpacing: 1.2,
+                    fontWeight: FontWeight.w700,
+                    color: MinaretTheme.gold,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                TextField(
+                  controller: controller,
+                  obscureText: obscured,
+                  keyboardType: keyboardType,
+                  cursorColor: MinaretTheme.gold,
+                  cursorWidth: 1.2,
+                  style: GoogleFonts.lato(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600,
+                    color: _textPrimary,
+                  ),
+                  decoration: const InputDecoration(
+                    isDense: true,
+                    isCollapsed: true,
+                    filled: false,
+                    fillColor: Colors.transparent,
+                    contentPadding: EdgeInsets.zero,
+                    border: InputBorder.none,
+                    enabledBorder: InputBorder.none,
+                    focusedBorder: InputBorder.none,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          // Password visibility toggle
+          if (isObscure)
+            GestureDetector(
+              onTap: () => setState(() => _passwordVisible = !_passwordVisible),
+              behavior: HitTestBehavior.opaque,
+              child: Padding(
+                padding: const EdgeInsets.all(4),
+                child: Icon(
+                  _passwordVisible
+                      ? Icons.visibility_off_outlined
+                      : Icons.visibility_outlined,
+                  size: 20,
+                  color: _textSecondary,
+                ),
+              ),
+            ),
+        ],
       ),
     );
   }
@@ -2219,6 +2166,571 @@ class _AuthPageState extends State<AuthPage> {
         margin: const EdgeInsets.all(24),
         content: Text(_displayText(message)),
       ),
+    );
+  }
+}
+
+// ── Social-media-style profile view ───────────────────────────────────────────
+
+class _SocialProfileView extends StatefulWidget {
+  final User user;
+  const _SocialProfileView({super.key, required this.user});
+
+  @override
+  State<_SocialProfileView> createState() => _SocialProfileViewState();
+}
+
+class _SocialProfileViewState extends State<_SocialProfileView> {
+  UserPrayerStats? _stats;
+  late final Stream<DocumentSnapshot> _userStream;
+
+  @override
+  void initState() {
+    super.initState();
+    // Cache the stream here so build() never creates a new Firestore listener.
+    // Creating snapshots() inline in build() causes a race condition in the
+    // Firestore Web SDK where didUpdateWidget cancels the subscription before
+    // onSnapshot has fired, triggering LateInitializationError.
+    _userStream = FirebaseFirestore.instance
+        .collection('users')
+        .doc(widget.user.uid)
+        .snapshots();
+    _loadStats();
+  }
+
+  Future<void> _loadStats() async {
+    try {
+      final stats = await PrayerRepository().getCurrentUserStats();
+      if (mounted) setState(() => _stats = stats);
+    } catch (_) {}
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final textPrimary = isDark ? Colors.white : MinaretTheme.onyx;
+    final textSecondary = isDark ? Colors.white54 : MinaretTheme.slate;
+    final cardColor = isDark ? const Color(0xFF1C2430) : Colors.white;
+
+    return SingleChildScrollView(
+      physics: const BouncingScrollPhysics(),
+      child: Column(
+        children: [
+          // ── Top bar: title + settings gear ────────────────────────────
+          Padding(
+            padding: const EdgeInsets.only(top: 4, bottom: 8),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  l10n.profileTitleShort,
+                  style: GoogleFonts.montserrat(
+                    fontSize: 11,
+                    letterSpacing: 3,
+                    fontWeight: FontWeight.w700,
+                    color: MinaretTheme.gold,
+                  ),
+                ),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Material(
+                      color: Colors.transparent,
+                      shape: const CircleBorder(),
+                      child: const LanguageSelector(compact: true),
+                    ),
+                    const SizedBox(width: 8),
+                    _circleIconButton(
+                      icon: Icons.settings_outlined,
+                      isDark: isDark,
+                      tooltip: 'Settings',
+                      onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => const SettingsPage()),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+
+          const SizedBox(height: 12),
+
+          // ── Identity (centered avatar, name, role) ─────────────────────
+          StreamBuilder<DocumentSnapshot>(
+            stream: _userStream,
+            builder: (context, snap) {
+              final data = snap.data?.data() as Map<String, dynamic>?;
+              final displayName = data?['displayName'] as String?;
+              final userRole = data?['role'] as String?;
+              final initial = (displayName?.isNotEmpty == true
+                      ? displayName![0]
+                      : (widget.user.email?.isNotEmpty == true
+                          ? widget.user.email![0]
+                          : '?'))
+                  .toUpperCase();
+              final isImam = userRole == kRoleImam;
+              final accent = isImam ? MinaretTheme.emerald : MinaretTheme.gold;
+
+              return Column(
+                children: [
+                  // Avatar with glow ring + edit pencil badge
+                  Stack(
+                    clipBehavior: Clip.none,
+                    children: [
+                      Container(
+                        width: 96,
+                        height: 96,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          gradient: LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                            colors: [
+                              accent.withValues(alpha: 0.18),
+                              accent.withValues(alpha: 0.06),
+                            ],
+                          ),
+                          border: Border.all(color: accent.withValues(alpha: 0.5), width: 2),
+                          boxShadow: [
+                            BoxShadow(
+                              color: accent.withValues(alpha: 0.18),
+                              blurRadius: 18,
+                              offset: const Offset(0, 6),
+                            ),
+                          ],
+                        ),
+                        child: Center(
+                          child: Text(
+                            initial,
+                            style: GoogleFonts.amiri(
+                              fontSize: 42,
+                              color: accent,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ),
+                      ),
+                      // Edit pencil badge
+                      Positioned(
+                        right: -2,
+                        bottom: -2,
+                        child: Material(
+                          color: accent,
+                          shape: const CircleBorder(),
+                          elevation: 2,
+                          child: InkWell(
+                            customBorder: const CircleBorder(),
+                            onTap: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => isImam
+                                    ? const ImamProfilePage()
+                                    : const EditProfilePage(),
+                              ),
+                            ),
+                            child: Container(
+                              padding: const EdgeInsets.all(7),
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: Theme.of(context).scaffoldBackgroundColor,
+                                  width: 2,
+                                ),
+                              ),
+                              child: const Icon(Icons.edit_rounded,
+                                  size: 14, color: Colors.white),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  // Name
+                  Text(
+                    displayName?.isNotEmpty == true
+                        ? displayName!
+                        : (widget.user.email ?? 'User'),
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.lato(
+                      fontSize: 19,
+                      fontWeight: FontWeight.w800,
+                      color: textPrimary,
+                    ),
+                  ),
+                  if (widget.user.email?.isNotEmpty == true) ...[
+                    const SizedBox(height: 3),
+                    Text(
+                      widget.user.email!,
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.lato(fontSize: 13, color: textSecondary),
+                    ),
+                  ],
+                  const SizedBox(height: 12),
+                  // Role chip
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+                    decoration: BoxDecoration(
+                      color: accent.withValues(alpha: 0.12),
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(color: accent.withValues(alpha: 0.3)),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(isImam ? Icons.mosque_rounded : Icons.people_alt_rounded,
+                            size: 11, color: accent),
+                        const SizedBox(width: 5),
+                        Text(
+                          isImam ? l10n.profileImam : l10n.profileCommunity,
+                          style: GoogleFonts.montserrat(
+                            fontSize: 9,
+                            fontWeight: FontWeight.w700,
+                            letterSpacing: 1.4,
+                            color: accent,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              );
+            },
+          ),
+
+          const SizedBox(height: 28),
+
+          // ── Stats card ─────────────────────────────────────────────────
+          Container(
+            decoration: BoxDecoration(
+              color: cardColor,
+              borderRadius: BorderRadius.circular(18),
+              boxShadow: MinaretTheme.cardShadow,
+            ),
+            padding: const EdgeInsets.symmetric(vertical: 18),
+            child: Row(
+              children: [
+                Expanded(
+                  child: _StatColumn(
+                    value: _stats != null ? '${_stats!.totalPrayers}' : '—',
+                    label: l10n.statPrayers,
+                    textPrimary: textPrimary,
+                    textSecondary: textSecondary,
+                  ),
+                ),
+                _statDivider(isDark),
+                Expanded(
+                  child: _StatColumn(
+                    value: _stats != null ? '${_stats!.currentStreak}' : '—',
+                    label: l10n.statStreak,
+                    textPrimary: textPrimary,
+                    textSecondary: textSecondary,
+                  ),
+                ),
+                _statDivider(isDark),
+                Expanded(
+                  child: _StatColumn(
+                    value: _stats != null
+                        ? '${(_stats!.overallCompletionRate * 100).round()}%'
+                        : '—',
+                    label: l10n.statRate,
+                    textPrimary: textPrimary,
+                    textSecondary: textSecondary,
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          const SizedBox(height: 14),
+
+          // ── Progress card ──────────────────────────────────────────────
+          _ProfileProgressTile(uid: widget.user.uid),
+
+          const SizedBox(height: 14),
+
+          // ── Quick actions ──────────────────────────────────────────────
+          Container(
+            decoration: BoxDecoration(
+              color: cardColor,
+              borderRadius: BorderRadius.circular(18),
+              boxShadow: MinaretTheme.cardShadow,
+            ),
+            child: Column(
+              children: [
+                _ProfileMenuRow(
+                  icon: Icons.analytics_outlined,
+                  label: l10n.prayerStatisticsLabel,
+                  isDark: isDark,
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const PrayerStatsPage()),
+                  ),
+                ),
+                _menuDivider(isDark),
+                _ProfileMenuRow(
+                  icon: Icons.pending_actions_outlined,
+                  label: l10n.qadaPrayersTitle,
+                  isDark: isDark,
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const QadaPage()),
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          const SizedBox(height: 40),
+        ],
+      ),
+    );
+  }
+
+  Widget _statDivider(bool isDark) => Container(
+        width: 1,
+        height: 34,
+        color: isDark ? Colors.white12 : MinaretTheme.dividerColor,
+      );
+
+  Widget _menuDivider(bool isDark) => Divider(
+        height: 1,
+        thickness: 0.5,
+        indent: 54,
+        color: isDark ? Colors.white12 : MinaretTheme.dividerColor,
+      );
+
+  Widget _circleIconButton({
+    required IconData icon,
+    required bool isDark,
+    required String tooltip,
+    required VoidCallback onTap,
+  }) {
+    return Material(
+      color: isDark ? Colors.white.withValues(alpha: 0.06) : Colors.white,
+      shape: const CircleBorder(),
+      child: InkWell(
+        customBorder: const CircleBorder(),
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.all(9),
+          child: Icon(icon, size: 20, color: MinaretTheme.gold),
+        ),
+      ),
+    );
+  }
+}
+
+// ── Profile menu row (quick action) ───────────────────────────────────────────
+
+class _ProfileMenuRow extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final bool isDark;
+  final VoidCallback onTap;
+
+  const _ProfileMenuRow({
+    required this.icon,
+    required this.label,
+    required this.isDark,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final textPrimary = isDark ? Colors.white : MinaretTheme.onyx;
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(18),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 16),
+        child: Row(
+          children: [
+            Icon(icon, size: 20, color: MinaretTheme.gold),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Text(
+                label,
+                style: GoogleFonts.montserrat(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                  color: textPrimary,
+                ),
+              ),
+            ),
+            Icon(Icons.chevron_right_rounded,
+                size: 20, color: isDark ? Colors.white38 : MinaretTheme.slate),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// ── Stat column (Prayers / Streak / Rate) ─────────────────────────────────────
+
+class _StatColumn extends StatelessWidget {
+  final String value;
+  final String label;
+  final Color textPrimary;
+  final Color textSecondary;
+
+  const _StatColumn({
+    required this.value,
+    required this.label,
+    required this.textPrimary,
+    required this.textSecondary,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text(
+          value,
+          style: GoogleFonts.montserrat(
+            fontSize: 20,
+            fontWeight: FontWeight.w800,
+            color: textPrimary,
+          ),
+        ),
+        const SizedBox(height: 3),
+        Text(
+          label,
+          style: GoogleFonts.lato(
+            fontSize: 11,
+            color: textSecondary,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+// ── Progress tile shown on the profile screen ─────────────────────────────────
+//
+// Must be StatefulWidget so the ProgressRepository and its Firestore listener
+// are created once and reused across parent rebuilds. Creating a new stream on
+// every build() call causes rapid listener open/cancel cycles that trigger
+// Firestore Web SDK internal assertion failures.
+
+class _ProfileProgressTile extends StatefulWidget {
+  final String uid;
+  const _ProfileProgressTile({required this.uid});
+
+  @override
+  State<_ProfileProgressTile> createState() => _ProfileProgressTileState();
+}
+
+class _ProfileProgressTileState extends State<_ProfileProgressTile> {
+  final _repo = ProgressRepository();
+  late final Stream<UserProgress> _stream;
+
+  @override
+  void initState() {
+    super.initState();
+    _stream = _repo.progressStream();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final surface = isDark ? const Color(0xFF1C2430) : Colors.white;
+    final textPrimary = isDark ? Colors.white : MinaretTheme.onyx;
+    final textSecondary = isDark ? Colors.white54 : MinaretTheme.slate;
+
+    return StreamBuilder<UserProgress>(
+      stream: _stream,
+      builder: (context, snap) {
+        final progress = snap.data ?? UserProgress.empty(widget.uid);
+        final atMax = progress.level >= 7;
+
+        return Material(
+          color: surface,
+          borderRadius: BorderRadius.circular(18),
+          elevation: 0,
+          child: InkWell(
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const ProgressPage()),
+            ),
+            borderRadius: BorderRadius.circular(18),
+            child: Ink(
+              decoration: BoxDecoration(
+                color: surface,
+                borderRadius: BorderRadius.circular(18),
+                boxShadow: MinaretTheme.cardShadow,
+              ),
+              padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 16),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      LevelBadge(level: progress.level),
+                      const SizedBox(width: 12),
+                      Text(
+                        l10n.progressMyProgress,
+                        style: GoogleFonts.montserrat(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                          color: textPrimary,
+                        ),
+                      ),
+                      const Spacer(),
+                      CoinCounter(coins: progress.currentCoins, compact: true),
+                      const SizedBox(width: 6),
+                      Icon(Icons.chevron_right_rounded,
+                          color: textSecondary, size: 20),
+                    ],
+                  ),
+                  const SizedBox(height: 14),
+                  if (!atMax) ...[
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(4),
+                      child: LinearProgressIndicator(
+                        value: progress.levelProgress.clamp(0.0, 1.0),
+                        minHeight: 6,
+                        backgroundColor: MinaretTheme.gold.withValues(alpha: 0.12),
+                        valueColor: const AlwaysStoppedAnimation<Color>(MinaretTheme.gold),
+                      ),
+                    ),
+                    const SizedBox(height: 6),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: Text(
+                        l10n.progressPointsToNext(progress.coinsToNextLevel, progress.level + 1),
+                        style: GoogleFonts.lato(
+                          fontSize: 11,
+                          color: textSecondary,
+                        ),
+                      ),
+                    ),
+                  ] else
+                    Row(
+                      children: [
+                        Icon(Icons.workspace_premium_rounded,
+                            size: 14, color: MinaretTheme.gold),
+                        const SizedBox(width: 6),
+                        Text(
+                          l10n.progressMaxLevel,
+                          style: GoogleFonts.cairo(
+                            color: MinaretTheme.gold,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ],
+                    ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }

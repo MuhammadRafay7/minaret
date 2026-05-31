@@ -101,12 +101,17 @@ class _ReportFormPageState extends State<ReportFormPage> {
         final reportRef =
             FirebaseFirestore.instance.collection('reports').doc();
         transaction.set(reportRef, {
-          'userId': user.uid, // ← ADDED
+          'userId': user.uid,
           'mosqueId': widget.mosqueId,
           'mosqueName': widget.mosqueName,
           'reportedBy': user.uid,
+          // Admin-panel-compatible fields
+          'targetId': widget.mosqueId,
+          'targetType': 'mosque',
+          'description': _detailsController.text.trim(),
           'reason': _selectedReason!.code,
           'details': _detailsController.text.trim(),
+          'status': 'pending',
           'resolved': false,
           'createdAt': FieldValue.serverTimestamp(),
         });

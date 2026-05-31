@@ -7,6 +7,7 @@ import '../../core/theme.dart';
 import '../../l10n/generated/app_localizations.dart';
 import '../../repositories/prayer_repository.dart';
 import '../../repositories/qada_repository.dart';
+import '../../repositories/progress_repository.dart';
 import '../../widgets/offline_banner.dart';
 import '../../widgets/premium_loading.dart';
 
@@ -25,6 +26,7 @@ class _QadaPageState extends State<QadaPage> {
 
   QadaData? _data;
   bool _isLoading = true;
+  int _userLevel = 1;
 
   @override
   void initState() {
@@ -35,9 +37,21 @@ class _QadaPageState extends State<QadaPage> {
   Future<void> _load() async {
     setState(() => _isLoading = true);
     try {
+      int level = 1;
+      try {
+        final progress = await ProgressRepository().getProgress();
+        level = progress.level;
+      } catch (_) {}
+
       final records = await _prayerRepo.getPrayerRecords();
       final data = await _repo.getQadaData(records);
-      if (mounted) setState(() { _data = data; _isLoading = false; });
+      if (mounted) {
+        setState(() {
+          _userLevel = level;
+          _data = data;
+          _isLoading = false;
+        });
+      }
     } catch (e) {
       debugPrint('QadaPage load error: $e');
       if (mounted) setState(() => _isLoading = false);
@@ -109,14 +123,19 @@ class _QadaPageState extends State<QadaPage> {
   Widget build(BuildContext context) {
     final user = FirebaseAuth.instance.currentUser;
 
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final bg = isDark ? MinaretTheme.darkBackground : MinaretTheme.background;
+
     if (user == null) {
       return Scaffold(
+        backgroundColor: bg,
         appBar: _appBar(),
         body: Center(child: Text(AppLocalizations.of(context)!.signInForQada)),
       );
     }
 
     return Scaffold(
+      backgroundColor: bg,
       appBar: _appBar(),
       body: Column(
         children: [
@@ -139,7 +158,9 @@ class _QadaPageState extends State<QadaPage> {
                               const SizedBox(height: 16),
                               _buildSummaryRow(),
                               const SizedBox(height: 24),
-                              _buildPrayerList(),
+                              _userLevel >= 4
+                                  ? _buildPrayerList()
+                                  : _buildLockedBreakdown(),
                             ],
                           ),
                         ),
@@ -151,18 +172,22 @@ class _QadaPageState extends State<QadaPage> {
   }
 
   PreferredSizeWidget _appBar() {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final bg = isDark ? MinaretTheme.darkBackground : MinaretTheme.background;
+    final titleColor = isDark ? Colors.white : MinaretTheme.onyx;
     return AppBar(
-      backgroundColor: MinaretTheme.emerald,
+      backgroundColor: bg,
       elevation: 0,
+      scrolledUnderElevation: 0,
       leading: IconButton(
         onPressed: () => Navigator.pop(context),
-        icon: const Icon(Icons.arrow_back_ios_new, size: 14, color: Colors.white),
+        icon: Icon(Icons.arrow_back_ios_new_rounded, size: 18, color: titleColor),
       ),
       title: Text(
         AppLocalizations.of(context)!.qadaPrayersTitle,
         style: MinaretTheme.heading.copyWith(
           fontSize: 20,
-          color: Colors.white,
+          color: titleColor,
           letterSpacing: 2,
         ),
       ),
@@ -263,6 +288,59 @@ class _QadaPageState extends State<QadaPage> {
               fontSize: 22,
               fontWeight: FontWeight.w700,
               color: color,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildLockedBreakdown() {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 28, horizontal: 20),
+      decoration: BoxDecoration(
+        color: isDark ? const Color(0xFF151B24) : MinaretTheme.background.withValues(alpha: 0.5),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: MinaretTheme.gold.withValues(alpha: 0.3)),
+      ),
+      child: Column(
+        children: [
+          Icon(Icons.lock_outline_rounded, color: MinaretTheme.gold, size: 32),
+          const SizedBox(height: 12),
+          Text(
+            'Prayer Breakdown',
+            style: GoogleFonts.montserrat(
+              fontSize: 14,
+              fontWeight: FontWeight.w700,
+              color: isDark ? Colors.white : MinaretTheme.onyx,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'See which prayers you miss most and track each one individually. Unlocks at Level 4.',
+            textAlign: TextAlign.center,
+            style: GoogleFonts.lato(
+              fontSize: 12,
+              color: isDark ? Colors.white54 : MinaretTheme.slate,
+              height: 1.5,
+            ),
+          ),
+          const SizedBox(height: 16),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
+            decoration: BoxDecoration(
+              color: MinaretTheme.gold.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(color: MinaretTheme.gold.withValues(alpha: 0.3)),
+            ),
+            child: Text(
+              'Level $_userLevel → Level 4 required',
+              style: GoogleFonts.montserrat(
+                fontSize: 11,
+                fontWeight: FontWeight.w700,
+                color: MinaretTheme.gold,
+              ),
             ),
           ),
         ],

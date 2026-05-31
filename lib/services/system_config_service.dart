@@ -31,12 +31,14 @@ class GlobalSettings {
   final String calculationMethod;
   final String madhab;
   final FeatureConfig features;
+  final RamadanConfig ramadan;
 
   GlobalSettings({
     required this.allowNewRegistrations,
     required this.calculationMethod,
     required this.madhab,
     required this.features,
+    required this.ramadan,
   });
 
   factory GlobalSettings.fromMap(Map<String, dynamic> map) {
@@ -47,6 +49,36 @@ class GlobalSettings {
       calculationMethod: prayer['method'] ?? 'MuslimWorldLeague',
       madhab: prayer['madhab'] ?? 'Hanafi',
       features: FeatureConfig.fromMap(Map<String, dynamic>.from(feats)),
+      ramadan: RamadanConfig.fromMap(
+          map['ramadan'] is Map ? Map<String, dynamic>.from(map['ramadan']) : const {}),
+    );
+  }
+}
+
+/// Admin-controlled Ramadan switch stored at app_settings/global → `ramadan`.
+///   mode: 'auto' (calendar/mosque-driven) | 'on' (force) | 'off' (force off)
+/// Used by the app to override the local Ramadan detection — handy for testing.
+class RamadanConfig {
+  final String mode; // 'auto' | 'on' | 'off'
+  final DateTime? startDate;
+  final DateTime? eidDate;
+
+  const RamadanConfig({this.mode = 'auto', this.startDate, this.eidDate});
+
+  bool get forcedOn => mode == 'on';
+  bool get forcedOff => mode == 'off';
+
+  factory RamadanConfig.fromMap(Map<String, dynamic> map) {
+    DateTime? parse(dynamic v) {
+      if (v is String && v.trim().isNotEmpty) return DateTime.tryParse(v.trim());
+      return null;
+    }
+
+    final raw = (map['mode'] as String?)?.toLowerCase();
+    return RamadanConfig(
+      mode: (raw == 'on' || raw == 'off') ? raw! : 'auto',
+      startDate: parse(map['startDate'] ?? map['ramadanStartDate']),
+      eidDate: parse(map['eidDate'] ?? map['eidFitrDate']),
     );
   }
 }
@@ -109,6 +141,7 @@ class SystemConfigService {
             enablePrayerTracking: true,
             enableJanazaAnnouncements: true,
           ),
+          ramadan: const RamadanConfig(),
         );
       }
       return GlobalSettings.fromMap(doc.data() as Map<String, dynamic>);

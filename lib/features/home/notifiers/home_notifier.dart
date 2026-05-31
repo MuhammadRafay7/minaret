@@ -18,7 +18,8 @@ import '../../../services/enhanced_prayer_tracker_service.dart';
 
 enum SortType { proximity, time, following }
 
-const int _mosqueQueryLimit = 10;
+const int _mosqueQueryLimit = 50; // fallback when position is unavailable
+const double _posGridDeg = 0.09; // ~10 km coarse grid — avoids stream rebuilds on minor GPS jitter
 
 // ─────────────────────────────────────────────────────────────────────────────
 // HomeNotifier
@@ -215,8 +216,17 @@ class HomeNotifier extends ChangeNotifier {
 
   // ── Mosque stream ─────────────────────────────────────────────────────────
 
-  String _streamKey() =>
-      'mosques:${_user?.uid ?? "anon"}:$_role:$_selectedFiqh';
+  String _streamKey() {
+    // Position and radius are part of the key so the stream restarts when they
+    // change meaningfully (coarse grid avoids restarts on every GPS tick).
+    String posKey = 'nopos';
+    if (_position != null && _activeSort != SortType.following) {
+      final latGrid = (_position!.latitude / _posGridDeg).round();
+      final lngGrid = (_position!.longitude / _posGridDeg).round();
+      posKey = '${latGrid}_${lngGrid}_${_selectedRadiusKm.toInt()}';
+    }
+    return 'mosques:${_user?.uid ?? "anon"}:$_role:$_selectedFiqh:${_activeSort.name}:$posKey';
+  }
 
   void _ensureMosqueStream() {
     final key = _streamKey();
@@ -227,15 +237,28 @@ class HomeNotifier extends ChangeNotifier {
 
     Query<Map<String, dynamic>> query =
         FirebaseFirestore.instance.collection('mosques');
-    if (_selectedFiqh != null) {
-      query = query.where('fiqh', isEqualTo: _selectedFiqh);
+
+    if (_activeSort == SortType.following) {
+      // Following mode: no geo-bound (user's followed mosques can be anywhere)
+      query = query.limit(200);
+    } else if (_position != null && _selectedFiqh == null) {
+      // Geo-bounded query: lat bounding box in Firestore, lng filtered client-side
+      final delta = _selectedRadiusKm / 111.0;
+      query = query
+          .where('lat', isGreaterThan: _position!.latitude - delta)
+          .where('lat', isLessThan: _position!.latitude + delta);
+    } else if (_selectedFiqh != null) {
+      // Fiqh filter without a geo-compound (avoids composite-index requirement)
+      query = query.where('fiqh', isEqualTo: _selectedFiqh).limit(150);
+    } else {
+      query = query.limit(_mosqueQueryLimit);
     }
 
     _isLoadingMosques = true;
     _hasError = false;
     notifyListeners();
 
-    _mosquesSub = query.limit(_mosqueQueryLimit).snapshots().listen(
+    _mosquesSub = query.snapshots().listen(
       (snapshot) {
         _rawMosques = snapshot.docs;
         _isLoadingMosques = false;
@@ -271,6 +294,7 @@ class HomeNotifier extends ChangeNotifier {
     ).listen(
       (pos) {
         _position = pos;
+        _ensureMosqueStream(); // restarts only if coarse-grid cell changed
         notifyListeners();
       },
       onError: (Object e) => debugPrint('HomeNotifier: location error: $e'),
@@ -308,13 +332,15 @@ class HomeNotifier extends ChangeNotifier {
   void setActiveSort(SortType sort) {
     if (_activeSort == sort) return;
     _activeSort = sort;
-    notifyListeners();
+    _activeStreamKey = null;
+    _ensureMosqueStream();
   }
 
   void setRadiusKm(double km) {
     if (_selectedRadiusKm == km) return;
     _selectedRadiusKm = km;
-    notifyListeners();
+    _activeStreamKey = null;
+    _ensureMosqueStream();
   }
 
   void setFiqh(String? fiqh) {

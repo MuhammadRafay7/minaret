@@ -160,7 +160,7 @@
   "errorLoadingNotifications": "Erreur lors du chargement des notifications",
   "noNotificationsYet": "Aucune notification pour l'instant",
   "mosqueAlertsHere": "Vous verrez les alertes de mosquée ici",
-  "mosqueNotificationsLabel": "Notifications de Mosquée",
+  "mosqueNotificationsLabel": "Notifications de la mosquée",
   "mosqueNotificationsSub": "Voir les alertes et rapports de mosquée",
   "unreadAlertsLabel": "{count} alertes non lues",
   "@unreadAlertsLabel": {
@@ -220,14 +220,18 @@
   "errorSavingProfile": "Erreur lors de la sauvegarde du profil : {error}",
   "@errorSavingProfile": {
     "placeholders": {
-      "error": {"type": "String"}
+      "error": {
+        "type": "String"
+      }
     }
   },
   "announcementPosted": "Annonce publiée avec succès.",
   "errorPostingAnnouncement": "Erreur lors de la publication de l'annonce : {error}",
   "@errorPostingAnnouncement": {
     "placeholders": {
-      "error": {"type": "String"}
+      "error": {
+        "type": "String"
+      }
     }
   },
   "reportIssue": "SIGNALER UN PROBLÈME",
@@ -243,7 +247,9 @@
   "errorLaunchingDirections": "Erreur lors de l'ouverture de l'itinéraire : {error}",
   "@errorLaunchingDirections": {
     "placeholders": {
-      "error": {"type": "String"}
+      "error": {
+        "type": "String"
+      }
     }
   },
   "testPermissions": "Tester les Permissions",
@@ -265,8 +271,12 @@
   "ofTotalCompleted": "{completed} sur {total} complétés",
   "@ofTotalCompleted": {
     "placeholders": {
-      "completed": {"type": "int"},
-      "total": {"type": "int"}
+      "completed": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
     }
   },
   "selectLocation": "SÉLECTIONNER LA LOCALISATION",
@@ -274,7 +284,6 @@
   "useCurrentLocationGps": "Utiliser la Position Actuelle (GPS)",
   "confirmWithPasswordPrompt": "Entrez votre mot de passe pour confirmer la suppression",
   "reAuthFailedMessage": "La ré-authentification a échoué. Veuillez réessayer.",
-
   "initializationError": "Erreur d'initialisation",
   "somethingWentWrong": "Quelque chose s'est mal passé",
   "reloadApp": "Recharger l'application",
@@ -283,7 +292,13 @@
   "azanBoard": "TABLEAU ADHAN",
   "prayerBoard": "TABLEAU DE PRIÈRE",
   "confidencePercent": "{confidence}% DE CONFIANCE",
-  "@confidencePercent": { "placeholders": { "confidence": { "type": "int" } } },
+  "@confidencePercent": {
+    "placeholders": {
+      "confidence": {
+        "type": "int"
+      }
+    }
+  },
   "retakeAction": "REPRENDRE",
   "applyAllAction": "TOUT APPLIQUER",
   "estimatedAbbr": "est.",
@@ -365,15 +380,168 @@
   "failedToLoadQada": "Échec du chargement des données qada.",
   "addQadaDebtTitle": "Ajouter une dette qada",
   "addQadaDebtQuestion": "Combien de prières {prayer} devez-vous encore rattraper ?",
-  "@addQadaDebtQuestion": { "placeholders": { "prayer": { "type": "String" } } },
+  "@addQadaDebtQuestion": {
+    "placeholders": {
+      "prayer": {
+        "type": "String"
+      }
+    }
+  },
   "qadaInfoBanner": "Effectuer des prières qada ici n'affecte pas votre série quotidienne. Les séries comptent uniquement pour les prières quotidiennes à l'heure.",
   "totalPendingLabel": "Total en attente",
   "madeUpLabel": "Rattrapé",
   "pendingCountBadge": "{count} en attente",
-  "@pendingCountBadge": { "placeholders": { "count": { "type": "int" } } },
+  "@pendingCountBadge": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "madeUpCountBadge": "{count} rattrapé",
-  "@madeUpCountBadge": { "placeholders": { "count": { "type": "int" } } },
+  "@madeUpCountBadge": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "markAsMadeUp": "Marquer comme rattrapé",
   "allCaughtUp": "Tout rattrapé",
-  "addQadaDebtTooltip": "Ajouter une dette qada"
+  "addQadaDebtTooltip": "Ajouter une dette qada",
+  "progressMyProgress": "Ma progression",
+  "progressPoints": "Points",
+  "progressHowToEarn": "COMMENT GAGNER DES POINTS",
+  "progressAllLevels": "TOUS LES NIVEAUX",
+  "progressCurrentBalance": "SOLDE ACTUEL",
+  "progressLifetimeEarned": "TOTAL GAGNÉ",
+  "progressDailyPoints": "Points quotidiens",
+  "progressMilestoneBonuses": "Bonus d'étapes",
+  "progressUnlockedAtLevel": "DÉBLOQUÉ À CE NIVEAU",
+  "progressStartingLevel": "Niveau de départ",
+  "progressMaxLevel": "Niveau maximum atteint",
+  "progressMaxLevelShort": "Niveau max",
+  "progressLevelLabel": "Niveau {level}",
+  "progressLevelUpper": "NIVEAU {level}",
+  "progressPointsToNext": "{points} pts pour niveau {level}",
+  "progressPointsEarned": "{points} points gagnés",
+  "progressMultiplier": "multiplicateur {m}×",
+  "unlockBasicTracking": "Suivi de prière de base",
+  "unlock7DayHistory": "Historique de 7 jours",
+  "unlock30DayHistory": "Historique de 30 jours",
+  "unlock60DayHistory": "Historique de 60 jours",
+  "unlock90DayHistory": "Historique de 90 jours",
+  "unlockProfileBadge": "Badge dans la communauté de la mosquée",
+  "unlockQadaAnalytics": "Analyse Qada — voyez les prières les plus manquées",
+  "unlockMultiplier15": "Multiplicateur de points 1,5×",
+  "unlockMultiplier2": "Multiplicateur de points 2×",
+  "unlockMultiplier25": "Multiplicateur de points 2,5×",
+  "unlockWeeklyReport": "Rapport hebdomadaire de prière",
+  "unlockGoldBadge": "Badge de profil or exclusif",
+  "earnPrayerCompleted": "Chaque prière accomplie",
+  "earnFajrBonus": "Bonus Fajr",
+  "earnFullDay": "Les 5 prières en un jour",
+  "earnQada": "Prière de rattrapage (Qada)",
+  "earnHadith": "Lecture du Hadith quotidien",
+  "earnLogin": "Connexion quotidienne",
+  "earnPrayerValue": "10 pts × multiplicateur",
+  "earnFajrValue": "+5 pts",
+  "earnFullDayValue": "+50 pts × multiplicateur",
+  "earnQadaValue": "15 pts",
+  "earnHadithValue": "5 pts (1×/jour)",
+  "earnLoginValue": "2 pts (1×/jour)",
+  "milestone7": "Série de 7 jours",
+  "milestone40": "Série de 40 jours (Arba'een)",
+  "milestone100": "Série de 100 jours",
+  "milestoneFirstQada": "Premier rattrapage Qada",
+  "milestoneFirstFullDay": "Première journée complète",
+  "milestone7Value": "+100 pts (unique)",
+  "milestone40Value": "+500 pts (unique)",
+  "milestone100Value": "+1 000 pts (unique)",
+  "milestoneFirstQadaValue": "+50 pts (unique)",
+  "milestoneFirstFullDayValue": "+75 pts (unique)",
+  "weeklyReportTitle": "Rapport hebdomadaire",
+  "weeklyLast7Days": "7 derniers jours",
+  "weeklyCompletion": "Achèvement hebdomadaire",
+  "weeklyDayByDay": "JOUR PAR JOUR",
+  "weeklyPerPrayer": "PAR PRIÈRE",
+  "weeklyToday": "Aujourd'hui",
+  "weeklyPerfectAttendance": "Présence parfaite",
+  "weeklyDaysActive": "{days}/7 jours actifs",
+  "weeklyPrayersCount": "{count} sur 35 prières",
+  "profileTitleShort": "PROFIL",
+  "profileCommunity": "COMMUNAUTÉ",
+  "profileImam": "IMAM",
+  "statPrayers": "Prières",
+  "statStreak": "Série",
+  "statRate": "Taux",
+  "sectionAccount": "COMPTE",
+  "signOutLabel": "Déconnexion",
+  "signOutSub": "Terminer votre session",
+  "editProfileTitle": "Modifier le profil",
+  "manageProfileTitle": "Gérer le profil",
+  "sectionPersonalDetails": "DÉTAILS PERSONNELS",
+  "fieldCountry": "Pays",
+  "fieldCity": "Ville",
+  "fieldFullName": "Nom complet",
+  "fieldPhone": "Numéro de téléphone",
+  "fieldOptional": "Facultatif",
+  "saveChangesLabel": "Enregistrer",
+  "genderOther": "Autre",
+  "last60Days": "60 derniers jours",
+  "weeklyReportTooltip": "Rapport hebdomadaire",
+  "unlockLevelMsg": "Atteignez le niveau {level} pour débloquer l'historique de {days} jours",
+  "ramadanLabel": "RAMADAN",
+  "ramadanDayOf": "Jour {day} sur {total}",
+  "ramadanBeginsInDays": "Le Ramadan commence dans {days} jours",
+  "ramadanBeginsTomorrow": "Le Ramadan commence demain",
+  "ramadanSuhoorEndsIn": "Fin du suhoor dans",
+  "ramadanIftarIn": "Iftar dans",
+  "ramadanTimeToIftar": "Il est l'heure de rompre le jeûne",
+  "ramadanImsak": "IMSAK",
+  "ramadanSuhoor": "SUHOOR",
+  "ramadanIftar": "IFTAR",
+  "eidMubarak": "Aïd Moubarak",
+  "eidInDays": "Aïd dans {days} jours",
+  "ramadanOpen": "OUVRIR RAMADAN",
+  "ramadanTonightNight": "Ce soir · {day}e nuit",
+  "ramadanFastingLog": "Journal de jeûne",
+  "ramadanTaraweeh": "Tarawih",
+  "ramadanDidYouFast": "Avez-vous jeûné aujourd'hui ?",
+  "ramadanFasted": "Jeûné",
+  "ramadanMissed": "Manqué",
+  "ramadanReasonTravel": "Voyage",
+  "ramadanReasonIllness": "Maladie",
+  "ramadanReasonMenstruation": "Menstruation",
+  "ramadanReasonOther": "Autre",
+  "ramadanPrayedTaraweeh": "Avez-vous prié le Tarawih ce soir ?",
+  "ramadanDaysFasted": "Jours de jeûne",
+  "ramadanTaraweehNights": "Nuits de Tarawih",
+  "ramadanSettings": "Paramètres du Ramadan",
+  "ramadanDayAdjustment": "Ajustement du jour",
+  "ramadanDayAdjustmentHint": "Décalez d'un jour si votre région a vu le croissant plus tôt ou plus tard",
+  "ramadanImsakBuffer": "Marge d'imsak (minutes)",
+  "ramadanThemeLabel": "Thème Ramadan",
+  "ramadanZakatReminder": "Donnez la Zakat al-Fitr avant la prière de l'Aïd",
+  "ramadanSuhoorNotif": "Fin du suhoor dans {minutes} minutes",
+  "ramadanIftarSoonNotif": "{minutes} minutes avant l'iftar",
+  "ramadanIftarNowNotif": "Il est l'heure de rompre le jeûne",
+  "ramadanKareem": "Ramadan Karim",
+  "ramadanNotFasted": "Non enregistré",
+  "ramadanToday": "Aujourd'hui",
+  "progressRamadanRewards": "Récompenses du Ramadan",
+  "earnFast": "Jeûne observé",
+  "earnFastValue": "30 pts × multiplicateur",
+  "earnTaraweeh": "Tarawih accompli",
+  "earnTaraweehValue": "20 pts × multiplicateur",
+  "milestoneRamadan10": "10 jeûnes observés",
+  "milestoneRamadan20": "20 jeûnes observés",
+  "milestoneRamadanMonth": "Jeûné tout le mois",
+  "milestoneTaraweeh10": "10 nuits de Tarawih",
+  "milestoneTaraweeh27": "27 nuits de Tarawih",
+  "milestoneRamadan10Value": "+150 pts (unique)",
+  "milestoneRamadan20Value": "+400 pts (unique)",
+  "milestoneRamadanMonthValue": "+1 000 pts (unique)",
+  "milestoneTaraweeh10Value": "+150 pts (unique)",
+  "milestoneTaraweeh27Value": "+500 pts (unique)"
 }

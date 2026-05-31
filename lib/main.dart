@@ -26,6 +26,7 @@ import 'package:minaret/main_navigation.dart';
 import 'package:minaret/core/theme.dart';
 import 'package:minaret/core/language_provider.dart';
 import 'package:minaret/core/theme_provider.dart';
+import 'package:minaret/features/ramadan/ramadan_service.dart';
 import 'package:minaret/services/quran_download_service.dart';
 import 'package:minaret/services/prayer_tracker_service.dart';
 import 'package:minaret/services/offline_cache_service.dart';
@@ -132,6 +133,7 @@ Future<Widget> _initializeApp() async {
         ChangeNotifierProvider.value(value: languageProvider),
         ChangeNotifierProvider.value(value: themeProvider),
         ChangeNotifierProvider(create: (_) => QuranDownloadService()),
+        ChangeNotifierProvider(create: (_) => RamadanService()..init()),
         StreamProvider<SystemConfig?>(
           create: (_) => SystemConfigService.systemConfigStream(),
           initialData: null,
@@ -161,15 +163,23 @@ class MinaretApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ScreenUtilInit(
       designSize: const Size(390, 844),
-      builder: (context, child) => Consumer2<LanguageProvider, ThemeProvider>(
-        builder: (context, lang, theme, _) {
+      builder: (context, child) =>
+          Consumer3<LanguageProvider, ThemeProvider, RamadanService>(
+        builder: (context, lang, theme, ramadan, _) {
+          // During Ramadan (and only then) the app auto-swaps to the seasonal
+          // emerald/gold palette, unless the user has switched it off.
+          final bool ramadanLook = ramadan.themeActive;
           return MaterialApp(
             debugShowCheckedModeBanner: false,
             locale: lang.currentLocale,
             supportedLocales: AppLocalizations.supportedLocales,
             localizationsDelegates: AppLocalizations.localizationsDelegates,
-            theme: MinaretTheme.lightTheme,
-            darkTheme: MinaretTheme.darkTheme,
+            theme: ramadanLook
+                ? MinaretTheme.ramadanLightTheme
+                : MinaretTheme.lightTheme,
+            darkTheme: ramadanLook
+                ? MinaretTheme.ramadanDarkTheme
+                : MinaretTheme.darkTheme,
             themeMode: theme.themeMode,
             builder: (context, child) {
               // child is null only during the brief MaterialApp init window
