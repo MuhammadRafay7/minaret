@@ -22,6 +22,7 @@
   "managementInterfaceSub": "واجهة الإدارة",
   "quranTitle": "القرآن الكريم",
   "hadithTitle": "الأحاديث النبوية",
+  "nav_qibla": "القبلة",
   "collectionHeader": "المجموعة",
   "indexingArchive": "فهرسة الأرشيف",
   "backToCollection": "العودة إلى المجموعة",
@@ -543,5 +544,10 @@
   "milestoneRamadan20Value": "+400 نقطة (مرة واحدة)",
   "milestoneRamadanMonthValue": "+1,000 نقطة (مرة واحدة)",
   "milestoneTaraweeh10Value": "+150 نقطة (مرة واحدة)",
-  "milestoneTaraweeh27Value": "+500 نقطة (مرة واحدة)"
+  "milestoneTaraweeh27Value": "+500 نقطة (مرة واحدة)",
+  "qiblaTitle": "القبلة",
+  "qiblaCompass": "بوصلة القبلة",
+  "distanceToMecca": "المسافة إلى مكة",
+  "yourLocation": "موقعك",
+  "retry": "إعادة محاولة"
 }

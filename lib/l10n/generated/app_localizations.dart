@@ -250,6 +250,12 @@ abstract class AppLocalizations {
   /// **'Prophetic Hadiths'**
   String get hadithTitle;
 
+  /// No description provided for @nav_qibla.
+  ///
+  /// In en, this message translates to:
+  /// **'QIBLA'**
+  String get nav_qibla;
+
   /// No description provided for @collectionHeader.
   ///
   /// In en, this message translates to:
@@ -2901,6 +2907,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'+500 pts (one time)'**
   String get milestoneTaraweeh27Value;
+
+  /// No description provided for @qiblaTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Qibla'**
+  String get qiblaTitle;
+
+  /// No description provided for @qiblaCompass.
+  ///
+  /// In en, this message translates to:
+  /// **'Qibla Compass'**
+  String get qiblaCompass;
+
+  /// No description provided for @distanceToMecca.
+  ///
+  /// In en, this message translates to:
+  /// **'Distance to Mecca'**
+  String get distanceToMecca;
+
+  /// No description provided for @yourLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Location'**
+  String get yourLocation;
 }
 
 class _AppLocalizationsDelegate

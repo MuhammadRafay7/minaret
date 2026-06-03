@@ -2077,20 +2077,22 @@ class _AuthPageState extends State<AuthPage> {
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );
+
+      setState(() => _isLoading = false);
+      final chosenRole = await _showGoogleRoleSheet();
+      if (!mounted) return;
+      if (chosenRole == null) {
+        return;
+      }
+
+      setState(() => _isLoading = true);
       final userCred = await FirebaseAuth.instance.signInWithCredential(credential);
       final uid = userCred.user!.uid;
       final userDoc = await FirebaseFirestore.instance.collection('users').doc(uid).get();
       if (!userDoc.exists) {
-        // New Google user — ask whether they are an imam or community member
-        setState(() => _isLoading = false);
-        final chosenRole = await _showGoogleRoleSheet();
-        if (!mounted) return;
-        if (chosenRole == null) {
-          // User dismissed without choosing — sign them out and stay on auth page
-          await FirebaseAuth.instance.signOut();
-          return;
-        }
         if (chosenRole == kRoleImam) {
+          setState(() => _isLoading = false);
+          if (!mounted) return;
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
@@ -2105,7 +2107,6 @@ class _AuthPageState extends State<AuthPage> {
           return;
         }
         // Common user — create doc and proceed
-        setState(() => _isLoading = true);
         await FirebaseFirestore.instance.collection('users').doc(uid).set({
           'email': userCred.user!.email ?? '',
           'displayName': userCred.user!.displayName ?? '',

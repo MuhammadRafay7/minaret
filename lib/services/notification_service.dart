@@ -38,6 +38,11 @@ class NotificationService {
   static StreamSubscription? _realtimeLocationSub;
   static String? _currentNearestId;
   static bool _isInitialized = false;
+  // Whether the OS currently lets us schedule EXACT alarms. On Android 14+
+  // SCHEDULE_EXACT_ALARM is revoked by default for non-alarm apps; when false
+  // we fall back to inexact scheduling so zonedSchedule() never throws and
+  // silently drops the notification.
+  static bool _canScheduleExact = false;
   static bool _notificationsEnabled = true;
   static Map<String, dynamic> _notificationPrefs = const {
     'janaza': true,
@@ -242,23 +247,165 @@ class NotificationService {
       debugPrint('✅ Notification service initialized');
     } catch (e) {
       debugPrint('🔴 Notification initialization failed: $e');
-      return;
     }
 
     // Request both permissions proactively. These are no-ops on Android
     // versions that don't need them (pre-13 for notifications, pre-12 for
     // exact alarms). Without this, zonedSchedule() silently fails on Android 12+.
+    // This must happen regardless of whether init() succeeded.
     try {
       final androidImpl = _notifications.resolvePlatformSpecificImplementation<
           AndroidFlutterLocalNotificationsPlugin>();
       if (androidImpl != null) {
-        await androidImpl.requestNotificationsPermission();
+        // Create channels up front so they exist with the correct sound and
+        // importance, appear in the system notification settings, and don't
+        // depend on the first notification's timing to be created.
+        await _createChannels(androidImpl);
+
+        final bool? notifGranted =
+            await androidImpl.requestNotificationsPermission();
         await androidImpl.requestExactAlarmsPermission();
-        debugPrint('✅ Notification permissions requested');
+
+        // Detect whether exact alarms are actually allowed. If not, every
+        // zonedSchedule() with exactAllowWhileIdle would throw and the
+        // notification would be silently dropped — so we fall back to inexact.
+        _canScheduleExact =
+            await androidImpl.canScheduleExactNotifications() ?? false;
+        final bool? enabled = await androidImpl.areNotificationsEnabled();
+
+        debugPrint('✅ Notifications: requested=$notifGranted '
+            'enabled=$enabled exactAlarms=$_canScheduleExact');
       }
     } catch (permError) {
-      debugPrint('🔴 Permission request failed: $permError');
+      debugPrint('🔴 Permission/channel setup failed: $permError');
     }
+  }
+
+  /// Picks the schedule mode based on whether the OS grants exact alarms.
+  /// Falls back to inexact (which never throws) on Android 14+ where exact
+  /// alarms are off by default for non-alarm apps.
+  static AndroidScheduleMode _scheduleMode() => _canScheduleExact
+      ? AndroidScheduleMode.exactAllowWhileIdle
+      : AndroidScheduleMode.inexactAllowWhileIdle;
+
+  /// Explicitly create every notification channel so they exist with the right
+  /// importance/sound regardless of when the first notification fires, and so
+  /// the user can see/toggle them in Android's system settings.
+  static Future<void> _createChannels(
+    AndroidFlutterLocalNotificationsPlugin androidImpl,
+  ) async {
+    const channels = <AndroidNotificationChannel>[
+      AndroidNotificationChannel(
+        _adhanChannelId,
+        'Adhan Alerts',
+        description: 'Adhan time reminders with adhan sound',
+        importance: Importance.max,
+        playSound: true,
+        sound: RawResourceAndroidNotificationSound('adhan'),
+      ),
+      AndroidNotificationChannel(
+        _janazaChannelId,
+        'Janaza Alerts',
+        description: 'Janaza prayer reminders with recitation',
+        importance: Importance.max,
+        playSound: true,
+        sound: RawResourceAndroidNotificationSound('janaza'),
+      ),
+      AndroidNotificationChannel(
+        _prayerChannelId,
+        'Prayer Alerts',
+        description: 'Reminders 5 minutes before prayer',
+        importance: Importance.max,
+      ),
+      AndroidNotificationChannel(
+        _taraweehChannelId,
+        'Taraweeh Alerts',
+        description: 'Ramadan Taraweeh reminders',
+        importance: Importance.max,
+      ),
+      AndroidNotificationChannel(
+        _eidChannelId,
+        'Eid Alerts',
+        description: 'Eid prayer reminders',
+        importance: Importance.max,
+      ),
+      AndroidNotificationChannel(
+        _updateChannelId,
+        'Time Updates',
+        description: 'When Imam changes prayer times',
+        importance: Importance.max,
+      ),
+      AndroidNotificationChannel(
+        _suhoorChannelId,
+        'Suhoor Alerts',
+        description: 'Pre-dawn suhoor reminders during Ramadan',
+        importance: Importance.max,
+      ),
+      AndroidNotificationChannel(
+        _iftarChannelId,
+        'Iftar Alerts',
+        description: 'Iftar reminders during Ramadan',
+        importance: Importance.max,
+      ),
+      AndroidNotificationChannel(
+        _zakatChannelId,
+        'Zakat al-Fitr',
+        description: 'Reminder to give Zakat al-Fitr before Eid',
+        importance: Importance.high,
+      ),
+    ];
+    for (final channel in channels) {
+      await androidImpl.createNotificationChannel(channel);
+    }
+  }
+
+  /// Fires a notification immediately so the user can confirm notifications are
+  /// permitted and rendering on this device, independent of mosque data.
+  static Future<void> sendTestNotification() async {
+    if (!_isInitialized) await init();
+    try {
+      await _notifications.show(
+        12345,
+        'M I N A R E T',
+        'Test notification — if you see this, notifications are working ✅',
+        NotificationDetails(
+          android: AndroidNotificationDetails(
+            _prayerChannelId,
+            'Prayer Alerts',
+            channelDescription: 'Reminders 5 minutes before prayer',
+            importance: Importance.max,
+            priority: Priority.high,
+          ),
+        ),
+      );
+      debugPrint('🔔 Test notification sent');
+    } catch (e) {
+      debugPrint('🔴 Test notification failed: $e');
+    }
+  }
+
+  /// Snapshot of the notification subsystem for diagnosing
+  /// "I'm not getting notifications" reports.
+  static Future<Map<String, dynamic>> debugStatus() async {
+    if (!_isInitialized) await init();
+    final androidImpl = _notifications.resolvePlatformSpecificImplementation<
+        AndroidFlutterLocalNotificationsPlugin>();
+    final pending = await _notifications.pendingNotificationRequests();
+    final status = {
+      'initialized': _isInitialized,
+      'osNotificationsEnabled':
+          await androidImpl?.areNotificationsEnabled() ?? false,
+      'canScheduleExact':
+          await androidImpl?.canScheduleExactNotifications() ?? false,
+      'pendingScheduledCount': pending.length,
+      'prefsMasterEnabled': _notificationsEnabled,
+      'prefs': _notificationPrefs,
+      'watchedMosques': _mosqueListeners.keys.toList(),
+      'nearestMosque': _currentNearestId,
+      'timezone': tz.local.name,
+    };
+    debugPrint('🔍 Notification status: $status');
+    return status;
   }
 
   // ── Entry point ───────────────────────────────────────────────────────────
@@ -269,12 +416,10 @@ class NotificationService {
     User? user;
     try {
       user = FirebaseAuth.instance.currentUser;
-      if (user == null) {
-        user = await FirebaseAuth.instance.authStateChanges().first.timeout(
-              const Duration(seconds: 5),
-              onTimeout: () => null,
-            );
-      }
+      user ??= await FirebaseAuth.instance.authStateChanges().first.timeout(
+            const Duration(seconds: 5),
+            onTimeout: () => null,
+          );
     } catch (e) {
       debugPrint('🔴 startForUser: could not read currentUser — $e');
       return;
@@ -521,7 +666,15 @@ class NotificationService {
             if (_isEnabled('iftar')) await _scheduleIftarFor(newData);
             await _scheduleZakatFitrFor(newData);
             if (_isEnabled('eid')) await _scheduleEidFor(newData);
-            if (_isEnabled('janaza')) await _scheduleJanazaFor(newData);
+            if (_isEnabled('janaza')) {
+              // Only flag a *newly* posted janaza — skip on the first snapshot
+              // (lastData == null), otherwise an already-existing janaza fires
+              // a false "New Janaza Posted" alert on every app launch.
+              if (lastData != null) {
+                await _checkAndNotifyJanazaPosted(mosqueId, newData, lastData);
+              }
+              await _scheduleJanazaFor(newData);
+            }
             lastData = Map<String, dynamic>.from(newData);
 
             try {
@@ -604,7 +757,7 @@ class NotificationService {
                 showWhen: true,
               ),
             ),
-            androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+            androidScheduleMode: _scheduleMode(),
             uiLocalNotificationDateInterpretation:
                 UILocalNotificationDateInterpretation.absoluteTime,
           );
@@ -641,7 +794,7 @@ class NotificationService {
                     showWhen: true,
                   ),
                 ),
-                androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+                androidScheduleMode: _scheduleMode(),
                 uiLocalNotificationDateInterpretation:
                     UILocalNotificationDateInterpretation.absoluteTime,
               );
@@ -690,7 +843,7 @@ class NotificationService {
             tz.TZDateTime.from(adhanTime, tz.local),
             // ← Adhan sound channel
             NotificationDetails(android: _adhanDetails()),
-            androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+            androidScheduleMode: _scheduleMode(),
             uiLocalNotificationDateInterpretation:
                 UILocalNotificationDateInterpretation.absoluteTime,
           );
@@ -724,7 +877,7 @@ class NotificationService {
                 tz.TZDateTime.from(jummahAdhanTime, tz.local),
                 // ← Adhan sound channel
                 NotificationDetails(android: _adhanDetails()),
-                androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+                androidScheduleMode: _scheduleMode(),
                 uiLocalNotificationDateInterpretation:
                     UILocalNotificationDateInterpretation.absoluteTime,
               );
@@ -776,7 +929,7 @@ class NotificationService {
               showWhen: true,
             ),
           ),
-          androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+          androidScheduleMode: _scheduleMode(),
           uiLocalNotificationDateInterpretation:
               UILocalNotificationDateInterpretation.absoluteTime,
         );
@@ -820,7 +973,7 @@ class NotificationService {
               showWhen: true,
             ),
           ),
-          androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+          androidScheduleMode: _scheduleMode(),
           uiLocalNotificationDateInterpretation:
               UILocalNotificationDateInterpretation.absoluteTime,
         );
@@ -868,7 +1021,7 @@ class NotificationService {
             l10n.ramadanIftarSoonNotif(warnMinutes),
             tz.TZDateTime.from(warnTime, tz.local),
             details,
-            androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+            androidScheduleMode: _scheduleMode(),
             uiLocalNotificationDateInterpretation:
                 UILocalNotificationDateInterpretation.absoluteTime,
           );
@@ -886,7 +1039,7 @@ class NotificationService {
             l10n.ramadanIftarNowNotif,
             tz.TZDateTime.from(maghrib, tz.local),
             details,
-            androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+            androidScheduleMode: _scheduleMode(),
             uiLocalNotificationDateInterpretation:
                 UILocalNotificationDateInterpretation.absoluteTime,
           );
@@ -935,7 +1088,7 @@ class NotificationService {
             showWhen: true,
           ),
         ),
-        androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+        androidScheduleMode: _scheduleMode(),
         uiLocalNotificationDateInterpretation:
             UILocalNotificationDateInterpretation.absoluteTime,
       );
@@ -1011,7 +1164,9 @@ class NotificationService {
         dateStr.trim().isEmpty ||
         timeStr == null ||
         timeStr.trim().isEmpty ||
-        timeStr == '--:--') return;
+        timeStr == '--:--') {
+      return;
+    }
 
     try {
       final date = DateTime.parse(dateStr.trim());
@@ -1038,12 +1193,101 @@ class NotificationService {
             priority: Priority.high,
           ),
         ),
-        androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+        androidScheduleMode: _scheduleMode(),
         uiLocalNotificationDateInterpretation:
             UILocalNotificationDateInterpretation.absoluteTime,
       );
     } catch (e) {
       debugPrint('🔴 Error scheduling Eid: $e');
+    }
+  }
+
+  // ── Janaza immediate alert (when newly posted) ────────────────────────────
+  // Detects when janaza is first posted and sends immediate alert.
+  static Future<void> _checkAndNotifyJanazaPosted(
+    String mosqueId,
+    Map<String, dynamic> newData,
+    Map<String, dynamic>? lastData,
+  ) async {
+    final newJanazaTime = newData['janazaTime'] as String?;
+    final newJanazaDate = newData['janazaDate'] as String?;
+
+    if (newJanazaTime == null || newJanazaTime.isEmpty || newJanazaTime == '--:--') {
+      return;
+    }
+
+    final lastJanazaTime = lastData?['janazaTime'] as String?;
+    final lastJanazaDate = lastData?['janazaDate'] as String?;
+
+    final isNewJanaza = lastJanazaTime != newJanazaTime ||
+                        lastJanazaDate != newJanazaDate;
+
+    if (!isNewJanaza) return;
+
+    try {
+      final label = newData['janazaLabel'] as String? ?? 'Janaza prayer';
+      final mosqueName = newData['name']?.toString() ?? 'your mosque';
+
+      DateTime baseDate;
+      final dateStr = newJanazaDate;
+      if (dateStr != null && dateStr.trim().isNotEmpty) {
+        baseDate = DateTime.parse(dateStr.trim());
+      } else {
+        baseDate = DateTime.now();
+      }
+
+      final parsed = _parseTime('janazaTime', newJanazaTime);
+      final janazaDateTime = DateTime(
+        baseDate.year,
+        baseDate.month,
+        baseDate.day,
+        parsed.hour,
+        parsed.minute,
+      );
+
+      if (janazaDateTime.isBefore(DateTime.now())) {
+        debugPrint('⏭️ Janaza already passed, skipping immediate alert');
+        return;
+      }
+
+      final timeUntilJanaza = janazaDateTime.difference(DateTime.now());
+      final hours = timeUntilJanaza.inHours;
+      final minutes = timeUntilJanaza.inMinutes % 60;
+
+      String timeStr;
+      if (hours > 0) {
+        timeStr = 'in $hours hour${hours == 1 ? '' : 's'} ${minutes}m';
+      } else {
+        timeStr = 'in $minutes minutes';
+      }
+
+      final id = ('$mosqueId-janaza-posted-${janazaDateTime.toIso8601String()}')
+                  .hashCode
+                  .abs() %
+              1000000 +
+          10000001;
+
+      await _notifications.show(
+        id,
+        '🕌 New Janaza Posted',
+        '$label at $mosqueName — $timeStr',
+        NotificationDetails(
+          android: AndroidNotificationDetails(
+            _janazaChannelId,
+            'Janaza Alerts',
+            channelDescription: 'Janaza prayer reminders',
+            importance: Importance.max,
+            priority: Priority.high,
+            showWhen: true,
+            playSound: true,
+            sound: const RawResourceAndroidNotificationSound('janaza'),
+          ),
+        ),
+      );
+
+      debugPrint('🔔 Immediate janaza alert sent for $mosqueName: $label');
+    } catch (e) {
+      debugPrint('🔴 Error sending immediate janaza alert: $e');
     }
   }
 
@@ -1110,7 +1354,7 @@ class NotificationService {
         NotificationDetails(
           android: _janazaDetails(label: label, mosqueName: mosqueName),
         ),
-        androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+        androidScheduleMode: _scheduleMode(),
         uiLocalNotificationDateInterpretation:
             UILocalNotificationDateInterpretation.absoluteTime,
       );

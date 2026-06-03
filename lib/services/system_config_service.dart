@@ -89,6 +89,7 @@ class FeatureConfig {
   final bool enableMosqueDiscovery;
   final bool enablePrayerTracking;
   final bool enableJanazaAnnouncements;
+  final bool enableQibla;
 
   FeatureConfig({
     required this.enableHadith,
@@ -96,6 +97,7 @@ class FeatureConfig {
     required this.enableMosqueDiscovery,
     required this.enablePrayerTracking,
     required this.enableJanazaAnnouncements,
+    required this.enableQibla,
   });
 
   factory FeatureConfig.fromMap(Map<String, dynamic> map) {
@@ -105,6 +107,7 @@ class FeatureConfig {
       enableMosqueDiscovery: map['enableMosqueDiscovery'] ?? true,
       enablePrayerTracking: map['enablePrayerTracking'] ?? true,
       enableJanazaAnnouncements: map['enableJanazaAnnouncements'] ?? true,
+      enableQibla: map['enableQibla'] ?? true,
     );
   }
 }
@@ -140,6 +143,7 @@ class SystemConfigService {
             enableMosqueDiscovery: true,
             enablePrayerTracking: true,
             enableJanazaAnnouncements: true,
+            enableQibla: true,
           ),
           ramadan: const RamadanConfig(),
         );

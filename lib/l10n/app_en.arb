@@ -22,6 +22,7 @@
   "managementInterfaceSub": "Management Interface",
   "quranTitle": "The Holy Quran",
   "hadithTitle": "Prophetic Hadiths",
+  "nav_qibla": "QIBLA",
   "collectionHeader": "Collection",
   "indexingArchive": "Indexing Archive",
   "backToCollection": "Back to Collection",
@@ -650,5 +651,10 @@
   "milestoneRamadan20Value": "+400 pts (one time)",
   "milestoneRamadanMonthValue": "+1,000 pts (one time)",
   "milestoneTaraweeh10Value": "+150 pts (one time)",
-  "milestoneTaraweeh27Value": "+500 pts (one time)"
+  "milestoneTaraweeh27Value": "+500 pts (one time)",
+  "qiblaTitle": "Qibla",
+  "qiblaCompass": "Qibla Compass",
+  "distanceToMecca": "Distance to Mecca",
+  "yourLocation": "Your Location",
+  "retry": "Retry"
 }

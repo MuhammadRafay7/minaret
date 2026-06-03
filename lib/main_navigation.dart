@@ -19,8 +19,9 @@ import 'package:minaret/core/animation_constants.dart';
 import 'package:minaret/features/mosque/home_page.dart';
 import 'package:minaret/features/auth/auth_page.dart';
 import 'package:minaret/features/mosque/global_registry_page.dart';
-import 'package:minaret/features/quran/quran_language_page.dart';
-import 'package:minaret/features/hadith/hadith_page.dart';
+import 'package:minaret/features/quran/quran_swipe_reader_page.dart';
+import 'package:minaret/features/hadith/hadith_reader_page.dart';
+import 'package:minaret/features/qibla/qibla_page.dart';
 import 'package:minaret/services/notification_service.dart';
 import 'package:minaret/services/fcm_token_service.dart';
 import 'package:minaret/services/ad_service.dart';
@@ -223,26 +224,33 @@ class _MainNavigationState extends State<MainNavigation>
         icon: Icons.menu_book_rounded, 
         labelKey: 'nav_quran', 
         fallbackLabel: l10n?.quranTitle ?? 'Quran',
-        page: const QuranLanguagePage(),
+        page: const QuranSwipeReaderPage(),
         isEnabled: features?.enableQuran ?? true,
       ),
       NavigationItem(
         icon: Icons.auto_stories_outlined, 
         labelKey: 'nav_hadith', 
         fallbackLabel: l10n?.hadithTitle ?? 'Hadith',
-        page: const HadithPage(),
+        page: const HadithBookCarouselPage(),
         isEnabled: features?.enableHadith ?? true,
       ),
       NavigationItem(
-        icon: Icons.public_rounded, 
-        labelKey: 'nav_global', 
+        icon: Icons.public_rounded,
+        labelKey: 'nav_global',
         fallbackLabel: l10n?.globalHeader ?? 'Global',
         page: const GlobalRegistryPage(),
         isEnabled: features?.enableMosqueDiscovery ?? true,
       ),
       NavigationItem(
-        icon: Icons.person_outline_rounded, 
-        labelKey: 'nav_account', 
+        icon: Icons.compass_calibration_rounded,
+        labelKey: 'nav_qibla',
+        fallbackLabel: l10n?.qiblaTitle ?? 'Qibla',
+        page: const QiblaPage(),
+        isEnabled: features?.enableQibla ?? true,
+      ),
+      NavigationItem(
+        icon: Icons.person_outline_rounded,
+        labelKey: 'nav_account',
         fallbackLabel: l10n?.profileHeader ?? 'Account',
         page: AuthPage(onLoginSuccess: _onLoginSuccess),
         isEnabled: true,

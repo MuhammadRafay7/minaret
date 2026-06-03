@@ -75,6 +75,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get hadithTitle => 'Prophetische Hadithe';
 
   @override
+  String get nav_qibla => 'KIBLAH';
+
+  @override
   String get collectionHeader => 'Sammlung';
 
   @override
@@ -1484,4 +1487,16 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get milestoneTaraweeh27Value => '+500 Pkt. (einmalig)';
+
+  @override
+  String get qiblaTitle => 'Qibla';
+
+  @override
+  String get qiblaCompass => 'Qibla Compass';
+
+  @override
+  String get distanceToMecca => 'Distance to Mecca';
+
+  @override
+  String get yourLocation => 'Your Location';
 }

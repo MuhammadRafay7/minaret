@@ -5,7 +5,7 @@ import 'package:minaret/core/secure_http_client.dart';
 
 import 'package:minaret/core/theme.dart';
 import 'package:minaret/widgets/app_loading_indicator.dart';
-import 'package:minaret/features/hadith/hadith_chapters_page.dart';
+import 'package:minaret/features/hadith/hadith_reader_page.dart';
 
 // ── Module-level cache so the hadith survives widget rebuilds ────────────────
 // Cache is keyed by slot index (0–4) so each of the 5 daily slots is stored.
@@ -109,16 +109,9 @@ class _DailyHadithCardState extends State<DailyHadithCard> {
   }
 
   void _openHadith(Map<String, dynamic> hadith) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (_) => HadithChaptersPage(
-          bookId: 'eng-bukhari',
-          bookName: 'Sahih Al-Bukhari',
-          initialHadithNumber: hadith['hadithnumber']?.toString(),
-        ),
-      ),
-    );
+    final number = int.tryParse(hadith['hadithnumber']?.toString() ?? '');
+    if (number == null) return;
+    openHadithByNumber(context, bookId: 'bukhari', hadithNumber: number);
   }
 
   @override

@@ -75,6 +75,9 @@ class AppLocalizationsTr extends AppLocalizations {
   String get hadithTitle => 'Peygamber Hadisleri';
 
   @override
+  String get nav_qibla => 'KİBLE';
+
+  @override
   String get collectionHeader => 'Koleksiyon';
 
   @override
@@ -1479,4 +1482,16 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get milestoneTaraweeh27Value => '+500 puan (tek sefer)';
+
+  @override
+  String get qiblaTitle => 'Qibla';
+
+  @override
+  String get qiblaCompass => 'Qibla Compass';
+
+  @override
+  String get distanceToMecca => 'Distance to Mecca';
+
+  @override
+  String get yourLocation => 'Your Location';
 }
