@@ -75,6 +75,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get hadithTitle => 'الأحاديث النبوية';
 
   @override
+  String get nav_qibla => 'القبلة';
+
+  @override
   String get collectionHeader => 'المجموعة';
 
   @override
@@ -597,7 +600,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get tryAgain => 'حاول مجدداً';
 
   @override
-  String get retry => 'إعادة المحاولة';
+  String get retry => 'إعادة محاولة';
 
   @override
   String get notifPrefUpdateFailed =>
@@ -1464,4 +1467,16 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get milestoneTaraweeh27Value => '+500 نقطة (مرة واحدة)';
+
+  @override
+  String get qiblaTitle => 'القبلة';
+
+  @override
+  String get qiblaCompass => 'بوصلة القبلة';
+
+  @override
+  String get distanceToMecca => 'المسافة إلى مكة';
+
+  @override
+  String get yourLocation => 'موقعك';
 }

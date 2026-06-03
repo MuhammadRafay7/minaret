@@ -8,8 +8,7 @@ import 'package:minaret/core/theme.dart';
 import 'package:minaret/core/secure_http_client.dart';
 import 'package:minaret/core/locale_text.dart';
 import 'package:minaret/widgets/atelier_layout.dart';
-import 'package:minaret/features/quran/surah_view_page.dart';
-import 'package:minaret/features/quran/juz_view_page.dart';
+import 'package:minaret/features/quran/mushaf_view_page.dart';
 import 'package:minaret/widgets/offline_banner.dart';
 import 'package:minaret/widgets/app_loading_indicator.dart';
 
@@ -175,16 +174,15 @@ class _QuranReaderPageState extends State<QuranReaderPage>
       return const SizedBox.shrink();
     }
     final surahName = pos['surahName'] as String? ?? '';
-    final ayahIndex = (pos['ayahIndex'] as int?) ?? 0;
+    final page = (pos['page'] as int?) ?? 1;
     return GestureDetector(
       onTap: () => Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (_) => SurahViewPage(
-            surahNumber: pos['surahNumber'] as int,
-            surahName: surahName,
-            editionId: pos['editionId'] as String,
-            initialAyahNumber: ayahIndex + 1,
+          builder: (_) => MushafViewPage(
+            initialPage: page,
+            editionId: pos['editionId'] as String? ?? widget.editionId,
+            title: surahName,
           ),
         ),
       ),
@@ -219,7 +217,7 @@ class _QuranReaderPageState extends State<QuranReaderPage>
                   ),
                   const SizedBox(height: 2),
                   Text(
-                    '$surahName · ${_t(en: 'Ayah', ar: 'آية', ur: 'آیت', ru: 'Аят')} ${ayahIndex + 1}',
+                    '$surahName · ${_t(en: 'Page', ar: 'صفحة', ur: 'صفحہ', ru: 'Стр')} $page',
                     style: GoogleFonts.montserrat(
                       fontSize: 11,
                       color: _textSecondary,
@@ -487,10 +485,10 @@ class _QuranReaderPageState extends State<QuranReaderPage>
                       onTap: () => Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (_) => SurahViewPage(
-                            surahNumber: number,
-                            surahName: s['englishName'],
+                          builder: (_) => MushafViewPage(
+                            initialPage: kSurahStartPages[number - 1],
                             editionId: widget.editionId,
+                            title: s['englishName'],
                           ),
                         ),
                       ),
@@ -518,8 +516,11 @@ class _QuranReaderPageState extends State<QuranReaderPage>
           onTap: () => Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (_) =>
-                  JuzViewPage(juzNumber: juzNo, editionId: widget.editionId),
+              builder: (_) => MushafViewPage(
+                initialPage: kJuzStartPages[juzNo - 1],
+                editionId: widget.editionId,
+                title: 'Juz $juzNo',
+              ),
             ),
           ),
           child: Container(

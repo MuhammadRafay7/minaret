@@ -10,6 +10,7 @@ import 'package:minaret/core/theme.dart';
 import 'package:minaret/core/theme_provider.dart';
 import 'package:minaret/widgets/atelier_layout.dart';
 import 'package:minaret/services/prayer_manager.dart';
+import 'package:minaret/services/notification_service.dart';
 import 'package:minaret/l10n/generated/app_localizations.dart';
 import '../notifications/notifications_page.dart';
 import '../legal/privacy_policy_page.dart';
@@ -147,6 +148,25 @@ class _SettingsPageState extends State<SettingsPage> {
     }
 
     if (mounted) setState(() => _savingKeys.remove(key));
+  }
+
+  Future<void> _sendTestNotification() async {
+    final status = await NotificationService.debugStatus();
+    await NotificationService.sendTestNotification();
+    if (!mounted) return;
+
+    final bool osEnabled = status['osNotificationsEnabled'] == true;
+    final String message = osEnabled
+        ? 'Test sent — check your notification shade.'
+        : 'Notifications are disabled for Minaret in system settings. '
+            'Enable them to receive alerts.';
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: osEnabled ? null : Colors.redAccent,
+        behavior: SnackBarBehavior.floating,
+      ),
+    );
   }
 
   void _showError(String message) {
@@ -396,6 +416,13 @@ class _SettingsPageState extends State<SettingsPage> {
                           _notifEid,
                           (v) => _updateNotification('eid', v),
                           savingKey: 'eid',
+                        ),
+                        _navTile(
+                          icon: Icons.notifications_active_outlined,
+                          title: 'Send Test Notification',
+                          subtitle:
+                              'Tap to confirm notifications work on this device',
+                          onTap: _sendTestNotification,
                         ),
                       ]),
                       const SizedBox(height: 26),
