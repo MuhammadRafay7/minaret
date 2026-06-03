@@ -241,7 +241,7 @@ class _MushafViewPageState extends State<MushafViewPage> {
 
     final surahNo = data.ayahs[index].surah;
     final isFirstAyah = data.ayahs[index].numberInSurah == 1;
-    final shouldPlayBismillah = isFirstAyah && surahNo != 1 && surahNo != 9;
+    final shouldPlayBismillah = isFirstAyah && surahNo != 9;
 
     setState(() {
       _isPlaying = true;
@@ -611,7 +611,7 @@ class _MushafPageContentState extends State<_MushafPageContent>
   }
 
   Widget _surahHeader(_SurahInfo? info, int surahNo) {
-    final showBismillah = surahNo != 1 && surahNo != 9;
+    final showBismillah = surahNo != 9;
     return Padding(
       padding: const EdgeInsets.fromLTRB(0, 10, 0, 6),
       child: Column(
@@ -666,7 +666,7 @@ class _MushafPageContentState extends State<_MushafPageContent>
       var text = ayah.text;
       // The first ayah of most surahs carries Bismillah in the Uthmani text;
       // it is already shown in the header, so strip it here.
-      if (j == 0 && stripBismillah && ayah.surah != 1 && ayah.surah != 9) {
+      if (j == 0 && stripBismillah && ayah.surah != 9) {
         text = text.replaceFirst(_kBismillah, '').trim();
       }
       final isPlaying = widget.playingAyahNumber == ayah.number;
