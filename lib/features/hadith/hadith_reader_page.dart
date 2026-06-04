@@ -741,21 +741,21 @@ class __HadithReaderPageState extends State<_HadithReaderPage> {
             ),
           ),
           SizedBox(
-            width: 120,
-            height: 40,
+            width: 160,
+            height: 42,
             child: TextField(
               controller: _searchController,
               keyboardType: TextInputType.number,
               cursorColor: MinaretTheme.gold,
-              style: GoogleFonts.ibmPlexMono(fontSize: 13),
+              style: GoogleFonts.ibmPlexMono(fontSize: 14, fontWeight: FontWeight.w600),
               textAlign: TextAlign.center,
               decoration: InputDecoration(
-                hintText: _t(en: 'Find', ar: 'ابحث', ur: 'تلاش', ru: 'Найти'),
+                hintText: _t(en: 'Hadith #', ar: 'حديث #', ur: 'حدیث #', ru: 'Хадис #'),
                 hintStyle: GoogleFonts.lato(
-                    fontSize: 12,
-                    color: MinaretTheme.slate.withValues(alpha: 0.6)),
+                    fontSize: 13,
+                    color: MinaretTheme.slate.withValues(alpha: 0.7)),
                 prefixIcon: Icon(Icons.search_rounded,
-                    size: 16, color: MinaretTheme.gold.withValues(alpha: 0.6)),
+                    size: 18, color: MinaretTheme.gold.withValues(alpha: 0.7)),
                 suffixIcon: _searchController.text.isNotEmpty
                     ? InkWell(
                         onTap: () {
@@ -763,23 +763,23 @@ class __HadithReaderPageState extends State<_HadithReaderPage> {
                           setState(() {});
                         },
                         child: Icon(Icons.close_rounded,
-                            size: 16,
-                            color: MinaretTheme.gold.withValues(alpha: 0.6)),
+                            size: 18,
+                            color: MinaretTheme.gold.withValues(alpha: 0.7)),
                       )
                     : null,
                 filled: true,
                 fillColor: fieldFill,
                 isDense: true,
                 contentPadding:
-                    const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
+                    const EdgeInsets.symmetric(vertical: 11, horizontal: 6),
                 enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                  borderSide: BorderSide(color: MinaretTheme.dividerColor),
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide(color: MinaretTheme.gold.withValues(alpha: 0.3), width: 1),
                 ),
                 focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(10),
                   borderSide:
-                      BorderSide(color: MinaretTheme.gold.withValues(alpha: 0.5)),
+                      BorderSide(color: MinaretTheme.gold.withValues(alpha: 0.8), width: 1.5),
                 ),
               ),
               onChanged: (value) => setState(() {}),
@@ -793,7 +793,7 @@ class __HadithReaderPageState extends State<_HadithReaderPage> {
               },
             ),
           ),
-          const SizedBox(width: 8),
+          const SizedBox(width: 12),
         ],
       ),
     );
@@ -951,16 +951,22 @@ class _LangCardState extends State<_LangCard> {
       );
       return;
     }
-    if (attempt >= 14) return; // give up gracefully rather than spin forever
-    // Estimate the offset from the index fraction (+1 for the header row), then
-    // sweep alternately below/above it by growing steps so an off estimate
-    // still drags the target tile into the lazy build window within a few tries.
     final max = _scroll.position.maxScrollExtent;
-    final base = ((hlIndex + 1) / (total + 1)) * max;
     final viewport = _scroll.position.viewportDimension;
-    final step = ((attempt + 1) ~/ 2) * viewport * 0.8;
+    final step = viewport * 0.8;
+    // Sweep outward from the index estimate (base, +step, -step, +2·step …)
+    // until the highlighted tile lands in the lazy build window. The budget is
+    // sized to the section's length so even a wildly off estimate still covers
+    // the whole list — long Bukhari chapters with tall, uneven tiles routinely
+    // sit far past a fixed handful of viewports, so a small cap would give up
+    // mid-chapter and leave the reader on the wrong hadith.
+    final maxAttempts = (max <= 0 || step <= 0) ? 4 : 2 * (max / step).ceil() + 4;
+    if (attempt > maxAttempts) return;
+    // Estimate the offset from the index fraction (+1 for the header row).
+    final base = ((hlIndex + 1) / (total + 1)) * max;
+    final ring = (attempt + 1) ~/ 2;
     final dir = attempt.isEven ? 1 : -1;
-    _scroll.jumpTo((base + dir * step).clamp(0.0, max));
+    _scroll.jumpTo((base + dir * ring * step).clamp(0.0, max));
     WidgetsBinding.instance
         .addPostFrameCallback((_) => _settleScroll(hlIndex, total, attempt + 1));
   }

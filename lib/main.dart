@@ -9,6 +9,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 // UI and Framework
 import 'package:google_fonts/google_fonts.dart';
@@ -31,6 +32,7 @@ import 'package:minaret/services/quran_download_service.dart';
 import 'package:minaret/services/prayer_tracker_service.dart';
 import 'package:minaret/services/offline_cache_service.dart';
 import 'package:minaret/services/system_config_service.dart';
+import 'package:minaret/services/notification_service.dart';
 import 'package:minaret/features/onboarding/onboarding_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -41,8 +43,28 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
+    await NotificationService.init();
+
+    final notif = message.notification;
+    if (notif != null) {
+      await FlutterLocalNotificationsPlugin().show(
+        DateTime.now().millisecondsSinceEpoch ~/ 1000,
+        notif.title ?? 'Minaret',
+        notif.body ?? '',
+        const NotificationDetails(
+          android: AndroidNotificationDetails(
+            'push_alerts',
+            'Push Notifications',
+            channelDescription: 'Remote push notifications',
+            importance: Importance.max,
+            priority: Priority.high,
+          ),
+        ),
+      );
+      debugPrint('🔔 Background notification displayed: ${notif.title}');
+    }
   } catch (e) {
-    debugPrint('Firebase background handler error: $e');
+    debugPrint('🔴 Firebase background handler error: $e');
   }
 }
 

@@ -36,9 +36,17 @@ class FcmTokenService {
         return;
       }
 
+      // iOS: Show notifications even when app is in foreground
+      await _messaging.setForegroundNotificationPresentationOptions(
+        alert: true,
+        badge: true,
+        sound: true,
+      );
+
       final token = await _messaging.getToken();
       if (token != null) {
         await _repo.saveFcmToken(user.uid, token);
+        debugPrint('✅ FCM token saved: ${token.substring(0, 20)}...');
       }
 
       await _tokenRefreshSub?.cancel();
@@ -46,12 +54,12 @@ class FcmTokenService {
         final currentUser = FirebaseAuth.instance.currentUser;
         if (currentUser != null) {
           await _repo.saveFcmToken(currentUser.uid, newToken);
+          debugPrint('✅ FCM token refreshed');
         }
       });
 
       await _initMessageHandlers();
     } catch (e) {
-      // Notification permission blocked by browser/OS — not fatal, app continues normally.
       debugPrint('🔴 FCM init skipped: $e');
     }
   }
@@ -71,6 +79,7 @@ class FcmTokenService {
       _handlersReady = true;
     }
 
+    // Handle foreground messages
     await _onMessageSub?.cancel();
     _onMessageSub = FirebaseMessaging.onMessage.listen((message) async {
       final notif = message.notification;
@@ -89,6 +98,13 @@ class FcmTokenService {
           ),
         ),
       );
+      debugPrint('🔔 Foreground notification shown: ${notif.title}');
     });
+
+    // Handle message when app is opened from terminated state via notification tap
+    final initialMessage = await _messaging.getInitialMessage();
+    if (initialMessage != null) {
+      debugPrint('🔔 Initial message (app was closed): ${initialMessage.notification?.title}');
+    }
   }
 }

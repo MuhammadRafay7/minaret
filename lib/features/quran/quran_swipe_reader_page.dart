@@ -112,6 +112,7 @@ class _QuranSwipeReaderPageState extends State<QuranSwipeReaderPage> {
   List<int> _globals = []; // ordered global ayah numbers of current surah
   int? _playingGlobal;
   bool _isPlaying = false;
+  bool _isPlayingBismillah = false;
 
   // Offline downloads — full editions cached in one request via /quran/{edition}.
   final Set<String> _downloadedEditions = {};
@@ -125,7 +126,12 @@ class _QuranSwipeReaderPageState extends State<QuranSwipeReaderPage> {
     _bootstrap();
     _audioPlayer.playerStateStream.listen((s) {
       if (s.processingState == ProcessingState.completed && _isPlaying) {
-        _advance();
+        if (_isPlayingBismillah) {
+          _isPlayingBismillah = false;
+          _playGlobal(_globals.first);
+        } else {
+          _advance();
+        }
       }
     });
   }
@@ -363,9 +369,32 @@ class _QuranSwipeReaderPageState extends State<QuranSwipeReaderPage> {
     setState(() {
       _playingGlobal = global;
       _isPlaying = true;
+      _isPlayingBismillah = false;
     });
     try {
       await _audioPlayer.setUrl(_audioUrl(_reciter.id, global));
+      _audioPlayer.play();
+    } catch (_) {
+      if (mounted) setState(() => _isPlaying = false);
+    }
+  }
+
+  /// Start full-surah playback. Prepends Bismillah (global ayah 1) for every
+  /// surah except At-Tawbah (9) and Al-Fatiha (1, whose first ayah already is
+  /// the Bismillah).
+  Future<void> _playSurah() async {
+    if (_globals.isEmpty) return;
+    if (_surahNumber == 1 || _surahNumber == 9) {
+      _playGlobal(_globals.first);
+      return;
+    }
+    setState(() {
+      _playingGlobal = _globals.first;
+      _isPlaying = true;
+      _isPlayingBismillah = true;
+    });
+    try {
+      await _audioPlayer.setUrl(_audioUrl(_reciter.id, 1));
       _audioPlayer.play();
     } catch (_) {
       if (mounted) setState(() => _isPlaying = false);
@@ -387,6 +416,7 @@ class _QuranSwipeReaderPageState extends State<QuranSwipeReaderPage> {
     setState(() {
       _isPlaying = false;
       _playingGlobal = null;
+      _isPlayingBismillah = false;
     });
   }
 
@@ -398,7 +428,7 @@ class _QuranSwipeReaderPageState extends State<QuranSwipeReaderPage> {
       _audioPlayer.play();
       setState(() => _isPlaying = true);
     } else if (_globals.isNotEmpty) {
-      _playGlobal(_globals.first);
+      _playSurah();
     }
   }
 
@@ -1353,6 +1383,7 @@ class _FullSurahReaderPageState extends State<_FullSurahReaderPage> {
   List<int> _globals = [];
   int? _playingGlobal;
   bool _isPlaying = false;
+  bool _isPlayingBismillah = false;
 
   @override
   void initState() {
@@ -1363,7 +1394,12 @@ class _FullSurahReaderPageState extends State<_FullSurahReaderPage> {
     });
     _audioPlayer.playerStateStream.listen((s) {
       if (s.processingState == ProcessingState.completed && _isPlaying) {
-        _advance();
+        if (_isPlayingBismillah) {
+          _isPlayingBismillah = false;
+          _playGlobal(_globals.first);
+        } else {
+          _advance();
+        }
       }
     });
   }
@@ -1394,10 +1430,32 @@ class _FullSurahReaderPageState extends State<_FullSurahReaderPage> {
     setState(() {
       _playingGlobal = global;
       _isPlaying = true;
+      _isPlayingBismillah = false;
     });
     try {
-      await _audioPlayer.setUrl(
-          'https://cdn.islamic.network/quran/audio/128/${widget.reciterId}/$global.mp3');
+      await _audioPlayer.setUrl(_audioUrl(widget.reciterId, global));
+      _audioPlayer.play();
+    } catch (_) {
+      if (mounted) setState(() => _isPlaying = false);
+    }
+  }
+
+  /// Start full-surah playback. Prepends Bismillah (global ayah 1) for every
+  /// surah except At-Tawbah (9) and Al-Fatiha (1, whose first ayah already is
+  /// the Bismillah).
+  Future<void> _playSurah() async {
+    if (_globals.isEmpty) return;
+    if (widget.surah == 1 || widget.surah == 9) {
+      _playGlobal(_globals.first);
+      return;
+    }
+    setState(() {
+      _playingGlobal = _globals.first;
+      _isPlaying = true;
+      _isPlayingBismillah = true;
+    });
+    try {
+      await _audioPlayer.setUrl(_audioUrl(widget.reciterId, 1));
       _audioPlayer.play();
     } catch (_) {
       if (mounted) setState(() => _isPlaying = false);
@@ -1413,6 +1471,7 @@ class _FullSurahReaderPageState extends State<_FullSurahReaderPage> {
       setState(() {
         _isPlaying = false;
         _playingGlobal = null;
+        _isPlayingBismillah = false;
       });
     }
   }
@@ -1425,7 +1484,7 @@ class _FullSurahReaderPageState extends State<_FullSurahReaderPage> {
       _audioPlayer.play();
       setState(() => _isPlaying = true);
     } else if (_globals.isNotEmpty) {
-      _playGlobal(_globals.first);
+      _playSurah();
     }
   }
 
