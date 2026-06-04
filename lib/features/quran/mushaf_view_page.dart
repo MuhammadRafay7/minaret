@@ -143,7 +143,7 @@ class _MushafViewPageState extends State<MushafViewPage> {
       if (state.processingState == ProcessingState.completed && _isPlaying) {
         if (_isPlayingBismillah) {
           _isPlayingBismillah = false;
-          _playFrom(_playingPage!, _playingIndex);
+          _playFrom(_playingPage!, _playingIndex, skipBismillah: true);
         } else {
           _advance();
         }
@@ -235,13 +235,13 @@ class _MushafViewPageState extends State<MushafViewPage> {
   }
 
   // ── Audio ──────────────────────────────────────────────────────────────
-  Future<void> _playFrom(int page, int index) async {
+  Future<void> _playFrom(int page, int index, {bool skipBismillah = false}) async {
     final data = _mem[page] ?? await _getPage(page);
     if (index < 0 || index >= data.ayahs.length) return;
 
     final surahNo = data.ayahs[index].surah;
     final isFirstAyah = data.ayahs[index].numberInSurah == 1;
-    final shouldPlayBismillah = isFirstAyah && surahNo != 9;
+    final shouldPlayBismillah = !skipBismillah && isFirstAyah && surahNo != 9;
 
     setState(() {
       _isPlaying = true;
