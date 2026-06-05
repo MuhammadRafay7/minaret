@@ -415,10 +415,31 @@ class _MushafViewPageState extends State<MushafViewPage> {
               overflow: TextOverflow.ellipsis,
             ),
           ),
-          const SizedBox(width: 40),
+          IconButton(
+            tooltip: _reciter.name,
+            onPressed: _pickReciter,
+            icon: const Icon(
+              Icons.record_voice_over_rounded,
+              size: 18,
+              color: MinaretTheme.gold,
+            ),
+          ),
         ],
       ),
     );
+  }
+
+  Future<void> _pickReciter() async {
+    final picked = await showModalBottomSheet<Reciter>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: _isDark ? MinaretTheme.darkSurface : Colors.white,
+      builder: (ctx) => _ReciterSheet(current: _reciter),
+    );
+    if (picked == null || picked.id == _reciter.id) return;
+    _stop();
+    setState(() => _reciter = picked);
+    OfflineCacheService.setJson(_kReciterPrefKey, picked.id);
   }
 
   Widget _buildBottomBar() {
@@ -884,6 +905,116 @@ class _AyahSheetState extends State<_AyahSheet> {
               ),
             ),
         ],
+      ),
+    );
+  }
+}
+
+class _ReciterSheet extends StatelessWidget {
+  final Reciter current;
+  const _ReciterSheet({required this.current});
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: SingleChildScrollView(
+        child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            width: 40,
+            height: 4,
+            margin: const EdgeInsets.only(top: 10, bottom: 14),
+            decoration: BoxDecoration(
+              color: MinaretTheme.slate.withValues(alpha: 0.3),
+              borderRadius: BorderRadius.circular(2),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(22, 4, 22, 14),
+            child: Row(
+              children: [
+                Text(
+                  context.localText(
+                    en: 'SELECT RECITER',
+                    ar: 'اختر القارئ',
+                    ur: 'قاری منتخب کریں',
+                    ru: 'ВЫБЕРИТЕ ЧТЕЦА',
+                  ),
+                  style: GoogleFonts.cairo(
+                    fontSize: 11,
+                    letterSpacing: 2,
+                    fontWeight: FontWeight.w800,
+                    color: MinaretTheme.gold,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const Divider(height: 1),
+          ...kReciters.map((r) {
+            final sel = r.id == current.id;
+            return InkWell(
+              onTap: () => Navigator.pop(context, r),
+              child: Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 22, vertical: 14),
+                decoration: BoxDecoration(
+                  color: sel
+                      ? MinaretTheme.gold.withValues(alpha: 0.07)
+                      : null,
+                  border: Border(
+                    bottom: BorderSide(
+                      color: MinaretTheme.dividerColor,
+                      width: 0.5,
+                    ),
+                  ),
+                ),
+                child: Row(
+                  children: [
+                    Icon(
+                      sel
+                          ? Icons.radio_button_checked
+                          : Icons.radio_button_off,
+                      size: 16,
+                      color: sel
+                          ? MinaretTheme.gold
+                          : MinaretTheme.slate.withValues(alpha: 0.5),
+                    ),
+                    const SizedBox(width: 14),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            r.name,
+                            style: GoogleFonts.montserrat(
+                              fontSize: 13.5,
+                              fontWeight:
+                                  sel ? FontWeight.w800 : FontWeight.w700,
+                              color: sel ? MinaretTheme.gold : null,
+                            ),
+                          ),
+                          const SizedBox(height: 3),
+                          Text(
+                            r.arabicName,
+                            style: GoogleFonts.amiriQuran(
+                              fontSize: 16,
+                              color:
+                                  MinaretTheme.gold.withValues(alpha: 0.75),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          }),
+          const SizedBox(height: 10),
+        ],
+        ),
       ),
     );
   }
