@@ -40,27 +40,28 @@ class Reciter {
   // cdn.islamic.network serves each reciter at a specific bitrate; mismatched
   // bitrates 403. Abdul Basit and Sudais are only available at 64 kbps.
   final int bitrate;
-  // Most reciters' first-ayah audio for surahs 2..114 already begins with
-  // the Basmala. Prepending another Bismillah produces a double recital.
-  // Maher Al-Muaiqly is the one exception in our list.
+  // Some reciters' first-ayah audio for surahs 2..114 already begins with
+  // the Basmala — in that case we must NOT prepend a separate Bismillah,
+  // or the listener hears it twice. Verified by ear: only Abdul Basit's
+  // recording includes the Basmala inline; the rest need it prepended.
   final bool includesBismillah;
   const Reciter(
     this.id,
     this.name,
     this.arabicName, {
     this.bitrate = 128,
-    this.includesBismillah = true,
+    this.includesBismillah = false,
   });
 }
 
 const List<Reciter> kReciters = [
   Reciter('ar.alafasy', 'Mishary Alafasy', 'مشاري العفاسي'),
   Reciter('ar.husary', 'Mahmoud Al-Husary', 'محمود الحصري'),
-  Reciter('ar.abdulsamad', 'Abdul Basit', 'عبد الباسط', bitrate: 64),
+  Reciter('ar.abdulsamad', 'Abdul Basit', 'عبد الباسط',
+      bitrate: 64, includesBismillah: true),
   Reciter('ar.abdurrahmaansudais', 'Abdurrahman As-Sudais',
       'عبد الرحمن السديس', bitrate: 64),
-  Reciter('ar.mahermuaiqly', 'Maher Al-Muaiqly', 'ماهر المعيقلي',
-      includesBismillah: false),
+  Reciter('ar.mahermuaiqly', 'Maher Al-Muaiqly', 'ماهر المعيقلي'),
   Reciter('ar.shaatree', 'Abu Bakr Ash-Shaatree', 'أبو بكر الشاطري'),
   Reciter('ar.hudhaify', 'Ali Al-Hudhaify', 'علي الحذيفي'),
 ];
