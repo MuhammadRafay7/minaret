@@ -33,10 +33,13 @@ class _SurahViewPageState extends State<SurahViewPage> {
   late Future<Map<String, dynamic>> _surahFuture;
   final AudioPlayer _audioPlayer = AudioPlayer();
   final ScrollController _scrollController = ScrollController();
+  final TextEditingController _searchController = TextEditingController();
 
   List<dynamic> _arabicAyahs = [];
   List<dynamic> _translationAyahs = [];
   List<dynamic> _audioAyahs = [];
+  List<int> _filteredIndices = [];
+  String _searchQuery = '';
 
   int _currentPlayingIndex = -1;
   bool _isPlayingFullSurah = false;
@@ -102,16 +105,41 @@ class _SurahViewPageState extends State<SurahViewPage> {
       OfflineCacheService.setJson(
         'quran_last_position',
         json.encode({
+          'mode': 'surah',
           'surahNumber': widget.surahNumber,
           'surahName': widget.surahName,
           'editionId': widget.editionId,
           'ayahIndex': _lastVisibleAyahIndex,
+          'updatedAt': DateTime.now().millisecondsSinceEpoch,
         }),
       ); // fire-and-forget; Hive writes to memory immediately
     }
     _audioPlayer.dispose();
     _scrollController.dispose();
+    _searchController.dispose();
     super.dispose();
+  }
+
+  void _onSearchChanged(String value) {
+    final q = value.trim().toLowerCase();
+    setState(() {
+      _searchQuery = q;
+      if (q.isEmpty) {
+        _filteredIndices = List.generate(_arabicAyahs.length, (i) => i);
+      } else {
+        _filteredIndices = [];
+        for (var i = 0; i < _arabicAyahs.length; i++) {
+          final arabic = (_arabicAyahs[i]['text'] ?? '').toString().toLowerCase();
+          final translation = i < _translationAyahs.length
+              ? (_translationAyahs[i]['text'] ?? '').toString().toLowerCase()
+              : '';
+          final number = (i + 1).toString();
+          if (arabic.contains(q) || translation.contains(q) || number == q) {
+            _filteredIndices.add(i);
+          }
+        }
+      }
+    });
   }
 
   Future<Map<String, dynamic>> _fetchFullSurah() async {
@@ -161,6 +189,17 @@ class _SurahViewPageState extends State<SurahViewPage> {
       _currentPlayingIndex = index;
       if (!isSequence) _isPlayingFullSurah = false;
     });
+
+    OfflineCacheService.setJson(
+      'quran_last_listen',
+      json.encode({
+        'surahNumber': widget.surahNumber,
+        'surahName': widget.surahName,
+        'editionId': widget.editionId,
+        'ayahIndex': index,
+        'updatedAt': DateTime.now().millisecondsSinceEpoch,
+      }),
+    );
 
     await _audioPlayer.setUrl(_audioAyahs[index]['audio']);
     _audioPlayer.play();
@@ -228,6 +267,9 @@ class _SurahViewPageState extends State<SurahViewPage> {
             _arabicAyahs = (rawData[0] as Map?)?['ayahs'] as List? ?? [];
             _translationAyahs = (rawData[1] as Map?)?['ayahs'] as List? ?? [];
             _audioAyahs = (rawData[2] as Map?)?['ayahs'] as List? ?? [];
+            if (_filteredIndices.length != _arabicAyahs.length && _searchQuery.isEmpty) {
+              _filteredIndices = List.generate(_arabicAyahs.length, (i) => i);
+            }
 
             if (widget.initialAyahNumber != null) {
               WidgetsBinding.instance.addPostFrameCallback(
@@ -254,6 +296,62 @@ class _SurahViewPageState extends State<SurahViewPage> {
                       ),
                     ),
                     centerTitle: true,
+                  ),
+                ),
+
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(28, 8, 28, 4),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).brightness == Brightness.dark
+                            ? const Color(0xFF151B24)
+                            : MinaretTheme.surface,
+                        border: Border.all(color: MinaretTheme.dividerColor),
+                      ),
+                      child: TextField(
+                        controller: _searchController,
+                        onChanged: _onSearchChanged,
+                        style: GoogleFonts.lato(
+                          fontSize: 14,
+                          color: Theme.of(context).colorScheme.onSurface,
+                        ),
+                        cursorColor: MinaretTheme.gold,
+                        cursorWidth: 1,
+                        decoration: InputDecoration(
+                          hintText: 'Search ayah by number or text...',
+                          hintStyle: GoogleFonts.lato(
+                            color: (isDark ? Colors.white70 : MinaretTheme.slate)
+                                .withValues(alpha: 0.6),
+                            fontSize: 13,
+                          ),
+                          prefixIcon: Icon(
+                            Icons.search_rounded,
+                            color: MinaretTheme.gold.withValues(alpha: 0.5),
+                            size: 18,
+                          ),
+                          suffixIcon: _searchController.text.isNotEmpty
+                              ? IconButton(
+                                  icon: Icon(
+                                    Icons.clear_rounded,
+                                    size: 16,
+                                    color: (isDark
+                                            ? Colors.white70
+                                            : MinaretTheme.slate)
+                                        .withValues(alpha: 0.5),
+                                  ),
+                                  onPressed: () {
+                                    _searchController.clear();
+                                    _onSearchChanged('');
+                                  },
+                                )
+                              : null,
+                          contentPadding:
+                              const EdgeInsets.symmetric(vertical: 16),
+                          border: InputBorder.none,
+                        ),
+                      ),
+                    ),
                   ),
                 ),
 
@@ -314,8 +412,26 @@ class _SurahViewPageState extends State<SurahViewPage> {
                     ),
                   ),
 
+                if (_searchQuery.isNotEmpty && _filteredIndices.isEmpty)
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 40),
+                      child: Center(
+                        child: Text(
+                          'No ayah found',
+                          style: GoogleFonts.montserrat(
+                            fontSize: 11,
+                            color: (isDark ? Colors.white70 : MinaretTheme.slate)
+                                .withValues(alpha: 0.6),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+
                 SliverList(
-                  delegate: SliverChildBuilderDelegate((context, index) {
+                  delegate: SliverChildBuilderDelegate((context, i) {
+                    final index = _filteredIndices[i];
                     _ayahKeys[index] ??= GlobalKey();
                     String cleanText = _arabicAyahs[index]['text'];
 
@@ -391,7 +507,7 @@ class _SurahViewPageState extends State<SurahViewPage> {
                         ],
                       ),
                     );
-                  }, childCount: _arabicAyahs.length),
+                  }, childCount: _filteredIndices.length),
                 ),
               ],
             );

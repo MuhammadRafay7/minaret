@@ -22,7 +22,7 @@ class Mosque {
   Map<String, dynamic> get raw => _raw;
   String get adminUid => _raw['adminUid'] as String? ?? '';
 
-  Map<String, dynamic> toScheduleMap() => {'id': id, ..._raw};
+  Map<String, dynamic> toScheduleMap() => {'id': id, '_docId': id, ..._raw};
 }
 
 class MosqueRepository {
