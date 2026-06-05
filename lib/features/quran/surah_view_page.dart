@@ -14,8 +14,8 @@ import 'package:minaret/features/quran/mushaf_view_page.dart' show Reciter, kRec
 
 const String _kReciterPrefKey = 'mushaf_reciter';
 
-String _audioUrl(String reciterId, int globalAyahNumber) =>
-    'https://cdn.islamic.network/quran/audio/128/$reciterId/$globalAyahNumber.mp3';
+String _audioUrl(Reciter r, int globalAyahNumber) =>
+    'https://cdn.islamic.network/quran/audio/${r.bitrate}/${r.id}/$globalAyahNumber.mp3';
 
 class SurahViewPage extends StatefulWidget {
   final int surahNumber;
@@ -212,7 +212,7 @@ class _SurahViewPageState extends State<SurahViewPage> {
             ? _audioAyahs[index]['number']
             : null) ??
         _arabicAyahs[index]['number'];
-    await _audioPlayer.setUrl(_audioUrl(_reciter.id, globalNumber as int));
+    await _audioPlayer.setUrl(_audioUrl(_reciter, globalNumber as int));
     _audioPlayer.play();
   }
 
@@ -264,9 +264,11 @@ class _SurahViewPageState extends State<SurahViewPage> {
     } else {
       setState(() => _isPlayingFullSurah = true);
 
-      if (widget.surahNumber != 1 && widget.surahNumber != 9) {
+      if (widget.surahNumber != 1 &&
+          widget.surahNumber != 9 &&
+          !_reciter.includesBismillah) {
         setState(() => _isPlayingBismillah = true);
-        await _audioPlayer.setUrl(_audioUrl(_reciter.id, 1));
+        await _audioPlayer.setUrl(_audioUrl(_reciter, 1));
         _audioPlayer.play();
       } else {
         _playAyah(0, isSequence: true);

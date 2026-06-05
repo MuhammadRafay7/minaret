@@ -37,17 +37,30 @@ class Reciter {
   final String id;
   final String name;
   final String arabicName;
-  const Reciter(this.id, this.name, this.arabicName);
+  // cdn.islamic.network serves each reciter at a specific bitrate; mismatched
+  // bitrates 403. Abdul Basit and Sudais are only available at 64 kbps.
+  final int bitrate;
+  // Most reciters' first-ayah audio for surahs 2..114 already begins with
+  // the Basmala. Prepending another Bismillah produces a double recital.
+  // Maher Al-Muaiqly is the one exception in our list.
+  final bool includesBismillah;
+  const Reciter(
+    this.id,
+    this.name,
+    this.arabicName, {
+    this.bitrate = 128,
+    this.includesBismillah = true,
+  });
 }
 
-/// Curated set of verse-by-verse reciters available at 128 kbps on
-/// cdn.islamic.network. Audio URLs are deterministic, so no API call is needed.
 const List<Reciter> kReciters = [
   Reciter('ar.alafasy', 'Mishary Alafasy', 'مشاري العفاسي'),
   Reciter('ar.husary', 'Mahmoud Al-Husary', 'محمود الحصري'),
-  Reciter('ar.abdulsamad', 'Abdul Basit', 'عبد الباسط'),
-  Reciter('ar.abdurrahmaansudais', 'Abdurrahman As-Sudais', 'عبد الرحمن السديس'),
-  Reciter('ar.mahermuaiqly', 'Maher Al-Muaiqly', 'ماهر المعيقلي'),
+  Reciter('ar.abdulsamad', 'Abdul Basit', 'عبد الباسط', bitrate: 64),
+  Reciter('ar.abdurrahmaansudais', 'Abdurrahman As-Sudais',
+      'عبد الرحمن السديس', bitrate: 64),
+  Reciter('ar.mahermuaiqly', 'Maher Al-Muaiqly', 'ماهر المعيقلي',
+      includesBismillah: false),
   Reciter('ar.shaatree', 'Abu Bakr Ash-Shaatree', 'أبو بكر الشاطري'),
   Reciter('ar.hudhaify', 'Ali Al-Hudhaify', 'علي الحذيفي'),
 ];
@@ -55,8 +68,8 @@ const List<Reciter> kReciters = [
 const String _kReciterPrefKey = 'mushaf_reciter';
 const String _kBismillah = 'بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ';
 
-String _audioUrl(String reciterId, int globalAyahNumber) =>
-    'https://cdn.islamic.network/quran/audio/128/$reciterId/$globalAyahNumber.mp3';
+String _audioUrl(Reciter r, int globalAyahNumber) =>
+    'https://cdn.islamic.network/quran/audio/${r.bitrate}/${r.id}/$globalAyahNumber.mp3';
 
 String _toArabicDigits(int n) {
   const western = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
@@ -171,12 +184,19 @@ class _MushafViewPageState extends State<MushafViewPage> {
 
   void _savePosition() {
     final data = _mem[_currentPage];
-    final surahName = data?.ayahs.isNotEmpty == true
-        ? data!.surahs[data.ayahs.first.surah]?.englishName ?? ''
+    // Pick the ayah on this page to anchor the position to: the one currently
+    // being recited if playback is on this page, otherwise the first ayah on
+    // the page (where the reader's eye lands when the page opens).
+    final anchor = (_playingPage == _currentPage &&
+            data != null &&
+            _playingIndex < data.ayahs.length)
+        ? data.ayahs[_playingIndex]
+        : (data?.ayahs.isNotEmpty == true ? data!.ayahs.first : null);
+    final surahName = anchor != null
+        ? data!.surahs[anchor.surah]?.englishName ?? ''
         : '';
-    final surahNumber = data?.ayahs.isNotEmpty == true
-        ? data!.ayahs.first.surah
-        : null;
+    final surahNumber = anchor?.surah;
+    final ayahIndex = anchor != null ? anchor.numberInSurah - 1 : null;
     OfflineCacheService.setJson(
       'quran_last_position',
       json.encode({
@@ -185,6 +205,7 @@ class _MushafViewPageState extends State<MushafViewPage> {
         'page': _currentPage,
         'surahName': surahName,
         if (surahNumber != null) 'surahNumber': surahNumber,
+        if (ayahIndex != null) 'ayahIndex': ayahIndex,
         'updatedAt': DateTime.now().millisecondsSinceEpoch,
       }),
     );
@@ -247,7 +268,11 @@ class _MushafViewPageState extends State<MushafViewPage> {
 
     final surahNo = data.ayahs[index].surah;
     final isFirstAyah = data.ayahs[index].numberInSurah == 1;
-    final shouldPlayBismillah = !skipBismillah && isFirstAyah && surahNo != 9;
+    final shouldPlayBismillah = !skipBismillah &&
+        isFirstAyah &&
+        surahNo != 1 &&
+        surahNo != 9 &&
+        !_reciter.includesBismillah;
 
     setState(() {
       _isPlaying = true;
@@ -255,11 +280,22 @@ class _MushafViewPageState extends State<MushafViewPage> {
       _playingIndex = index;
       _isPlayingBismillah = shouldPlayBismillah;
     });
+    final ayah = data.ayahs[index];
+    OfflineCacheService.setJson(
+      'quran_last_listen',
+      json.encode({
+        'surahNumber': ayah.surah,
+        'surahName': data.surahs[ayah.surah]?.englishName ?? '',
+        'editionId': widget.editionId,
+        'ayahIndex': ayah.numberInSurah - 1,
+        'updatedAt': DateTime.now().millisecondsSinceEpoch,
+      }),
+    );
     try {
       if (shouldPlayBismillah) {
-        await _audioPlayer.setUrl(_audioUrl(_reciter.id, 1));
+        await _audioPlayer.setUrl(_audioUrl(_reciter, 1));
       } else {
-        await _audioPlayer.setUrl(_audioUrl(_reciter.id, data.ayahs[index].number));
+        await _audioPlayer.setUrl(_audioUrl(_reciter, ayah.number));
       }
       _audioPlayer.play();
     } catch (_) {

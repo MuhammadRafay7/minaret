@@ -232,13 +232,16 @@ class _QuranReaderPageState extends State<QuranReaderPage>
 
   String _readingSubtitle(Map<String, dynamic> pos) {
     final surahName = pos['surahName'] as String? ?? '';
+    final ayahLabel = _t(en: 'Ayah', ar: 'آية', ur: 'آیت', ru: 'Аят');
+    final ayahIdx = pos['ayahIndex'] as int?;
     if (pos['mode'] == 'surah') {
-      final ayahIndex = pos['ayahIndex'] as int? ?? 0;
-      final ayahLabel = _t(en: 'Ayah', ar: 'آية', ur: 'آیت', ru: 'Аят');
-      return '$surahName · $ayahLabel ${ayahIndex + 1}';
+      return '$surahName · $ayahLabel ${(ayahIdx ?? 0) + 1}';
     }
     final page = (pos['page'] as int?) ?? 1;
     final pageLabel = _t(en: 'Page', ar: 'صفحة', ur: 'صفحہ', ru: 'Стр');
+    if (ayahIdx != null) {
+      return '$surahName · $pageLabel $page · $ayahLabel ${ayahIdx + 1}';
+    }
     return '$surahName · $pageLabel $page';
   }
 
