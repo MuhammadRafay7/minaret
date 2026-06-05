@@ -33,21 +33,33 @@ const List<String> _kDefaultDeck = [
 class Reciter {
   final String id;
   final String name;
-  const Reciter(this.id, this.name);
+  // cdn.islamic.network serves each reciter at a specific bitrate; mismatched
+  // bitrates 403. Abdul Basit and Sudais are only available at 64 kbps.
+  final int bitrate;
+  // Most reciters' first-ayah audio for surahs 2..114 already begins with
+  // the Basmala. Prepending another Bismillah produces a double recital.
+  // Maher Al-Muaiqly is the one exception in our list.
+  final bool includesBismillah;
+  const Reciter(
+    this.id,
+    this.name, {
+    this.bitrate = 128,
+    this.includesBismillah = true,
+  });
 }
 
 const List<Reciter> kReciters = [
   Reciter('ar.alafasy', 'Mishary Alafasy'),
   Reciter('ar.husary', 'Mahmoud Al-Husary'),
-  Reciter('ar.abdulsamad', 'Abdul Basit'),
-  Reciter('ar.abdurrahmaansudais', 'Abdurrahman As-Sudais'),
-  Reciter('ar.mahermuaiqly', 'Maher Al-Muaiqly'),
+  Reciter('ar.abdulsamad', 'Abdul Basit', bitrate: 64),
+  Reciter('ar.abdurrahmaansudais', 'Abdurrahman As-Sudais', bitrate: 64),
+  Reciter('ar.mahermuaiqly', 'Maher Al-Muaiqly', includesBismillah: false),
   Reciter('ar.shaatree', 'Abu Bakr Ash-Shaatree'),
   Reciter('ar.hudhaify', 'Ali Al-Hudhaify'),
 ];
 
-String _audioUrl(String reciterId, int globalAyah) =>
-    'https://cdn.islamic.network/quran/audio/128/$reciterId/$globalAyah.mp3';
+String _audioUrl(Reciter r, int globalAyah) =>
+    'https://cdn.islamic.network/quran/audio/${r.bitrate}/${r.id}/$globalAyah.mp3';
 
 String _stripControl(String s) =>
     s.replaceAll('﻿', '').replaceAll('‏', '').trim();
@@ -169,10 +181,55 @@ class _QuranSwipeReaderPageState extends State<QuranSwipeReaderPage> {
     });
   }
 
+  Map<String, dynamic> _resumeRecord() {
+    // Pick a real translation edition (the resume handler opens SurahViewPage
+    // which needs one) — skip the Arabic-only sentinel if it's the active card.
+    String editionId = 'en.sahih';
+    if (_deck.isNotEmpty) {
+      final cur = _deck[_langIndex];
+      if (!cur.isArabicOnly) {
+        editionId = cur.editionId;
+      } else {
+        final fallback = _deck.firstWhere(
+          (l) => !l.isArabicOnly,
+          orElse: () => cur,
+        );
+        if (!fallback.isArabicOnly) editionId = fallback.editionId;
+      }
+    }
+    String surahName = '';
+    for (final entry in _mem.entries) {
+      if (entry.key.startsWith('qsr_${_surahNumber}_')) {
+        surahName = entry.value.surahEnglishName;
+        break;
+      }
+    }
+    int ayahIndex = 0;
+    if (_playingGlobal != null && _globals.isNotEmpty) {
+      final i = _globals.indexOf(_playingGlobal!);
+      if (i >= 0) ayahIndex = i;
+    }
+    return {
+      'mode': 'surah',
+      'editionId': editionId,
+      'surahNumber': _surahNumber,
+      'surahName': surahName,
+      'ayahIndex': ayahIndex,
+      'updatedAt': DateTime.now().millisecondsSinceEpoch,
+    };
+  }
+
   void _savePosition() {
     OfflineCacheService.setJson(
       'quran_last_position',
-      json.encode({'surahNumber': _surahNumber}),
+      json.encode(_resumeRecord()),
+    );
+  }
+
+  void _saveListen() {
+    OfflineCacheService.setJson(
+      'quran_last_listen',
+      json.encode(_resumeRecord()),
     );
   }
 
@@ -371,8 +428,10 @@ class _QuranSwipeReaderPageState extends State<QuranSwipeReaderPage> {
       _isPlaying = true;
       _isPlayingBismillah = false;
     });
+    _savePosition();
+    _saveListen();
     try {
-      await _audioPlayer.setUrl(_audioUrl(_reciter.id, global));
+      await _audioPlayer.setUrl(_audioUrl(_reciter, global));
       _audioPlayer.play();
     } catch (_) {
       if (mounted) setState(() => _isPlaying = false);
@@ -384,7 +443,9 @@ class _QuranSwipeReaderPageState extends State<QuranSwipeReaderPage> {
   /// the Bismillah).
   Future<void> _playSurah() async {
     if (_globals.isEmpty) return;
-    if (_surahNumber == 1 || _surahNumber == 9) {
+    if (_surahNumber == 1 ||
+        _surahNumber == 9 ||
+        _reciter.includesBismillah) {
       _playGlobal(_globals.first);
       return;
     }
@@ -394,7 +455,7 @@ class _QuranSwipeReaderPageState extends State<QuranSwipeReaderPage> {
       _isPlayingBismillah = true;
     });
     try {
-      await _audioPlayer.setUrl(_audioUrl(_reciter.id, 1));
+      await _audioPlayer.setUrl(_audioUrl(_reciter, 1));
       _audioPlayer.play();
     } catch (_) {
       if (mounted) setState(() => _isPlaying = false);
@@ -450,7 +511,7 @@ class _QuranSwipeReaderPageState extends State<QuranSwipeReaderPage> {
           surah: _surahNumber,
           lang: l,
           loader: _load,
-          reciterId: _reciter.id,
+          reciter: _reciter,
         ),
       ),
     );
@@ -602,7 +663,7 @@ class _QuranSwipeReaderPageState extends State<QuranSwipeReaderPage> {
                   loader: _load,
                   playingGlobal: _playingGlobal,
                   isPlaying: _isPlaying,
-                  reciterId: _reciter.id,
+                  reciter: _reciter,
                   onPlay: _onAyahTap,
                   onLoaded: (surah, globals) {
                     if (surah == _surahNumber && _globals.isEmpty) {
@@ -835,7 +896,7 @@ class _LanguageReadingView extends StatefulWidget {
   final Future<_ReadingData> Function(int surah, _Lang lang) loader;
   final int? playingGlobal;
   final bool isPlaying;
-  final String reciterId;
+  final Reciter reciter;
   final void Function(int global) onPlay;
   final void Function(int surah, List<int> globals) onLoaded;
 
@@ -846,7 +907,7 @@ class _LanguageReadingView extends StatefulWidget {
     required this.loader,
     required this.playingGlobal,
     required this.isPlaying,
-    required this.reciterId,
+    required this.reciter,
     required this.onPlay,
     required this.onLoaded,
   });
@@ -1386,13 +1447,13 @@ class _FullSurahReaderPage extends StatefulWidget {
   final int surah;
   final _Lang lang;
   final Future<_ReadingData> Function(int surah, _Lang lang) loader;
-  final String reciterId;
+  final Reciter reciter;
 
   const _FullSurahReaderPage({
     required this.surah,
     required this.lang,
     required this.loader,
-    required this.reciterId,
+    required this.reciter,
   });
 
   @override
@@ -1455,7 +1516,7 @@ class _FullSurahReaderPageState extends State<_FullSurahReaderPage> {
       _isPlayingBismillah = false;
     });
     try {
-      await _audioPlayer.setUrl(_audioUrl(widget.reciterId, global));
+      await _audioPlayer.setUrl(_audioUrl(widget.reciter, global));
       _audioPlayer.play();
     } catch (_) {
       if (mounted) setState(() => _isPlaying = false);
@@ -1467,7 +1528,9 @@ class _FullSurahReaderPageState extends State<_FullSurahReaderPage> {
   /// the Bismillah).
   Future<void> _playSurah() async {
     if (_globals.isEmpty) return;
-    if (widget.surah == 1 || widget.surah == 9) {
+    if (widget.surah == 1 ||
+        widget.surah == 9 ||
+        widget.reciter.includesBismillah) {
       _playGlobal(_globals.first);
       return;
     }
@@ -1477,7 +1540,7 @@ class _FullSurahReaderPageState extends State<_FullSurahReaderPage> {
       _isPlayingBismillah = true;
     });
     try {
-      await _audioPlayer.setUrl(_audioUrl(widget.reciterId, 1));
+      await _audioPlayer.setUrl(_audioUrl(widget.reciter, 1));
       _audioPlayer.play();
     } catch (_) {
       if (mounted) setState(() => _isPlaying = false);
