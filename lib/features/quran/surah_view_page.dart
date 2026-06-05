@@ -10,6 +10,12 @@ import 'package:minaret/widgets/atelier_layout.dart';
 import 'package:minaret/core/locale_format.dart';
 import 'package:minaret/services/quran_download_service.dart';
 import 'package:minaret/services/offline_cache_service.dart';
+import 'package:minaret/features/quran/mushaf_view_page.dart' show Reciter, kReciters;
+
+const String _kReciterPrefKey = 'mushaf_reciter';
+
+String _audioUrl(String reciterId, int globalAyahNumber) =>
+    'https://cdn.islamic.network/quran/audio/128/$reciterId/$globalAyahNumber.mp3';
 
 class SurahViewPage extends StatefulWidget {
   final int surahNumber;
@@ -48,14 +54,15 @@ class _SurahViewPageState extends State<SurahViewPage> {
   int _lastVisibleAyahIndex = 0;
 
   final String bismillahText = 'بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ';
-  final String bismillahAudioUrl =
-      'https://cdn.islamic.network/quran/audio/128/ar.alafasy/1.mp3';
+
+  Reciter _reciter = kReciters.first;
 
   @override
   void initState() {
     super.initState();
     _surahFuture = _fetchFullSurah();
     _scrollController.addListener(_onScroll);
+    _loadReciter();
 
     _audioPlayer.playerStateStream.listen((state) {
       if (state.processingState == ProcessingState.completed &&
@@ -201,8 +208,38 @@ class _SurahViewPageState extends State<SurahViewPage> {
       }),
     );
 
-    await _audioPlayer.setUrl(_audioAyahs[index]['audio']);
+    final globalNumber = (_audioAyahs[index] is Map
+            ? _audioAyahs[index]['number']
+            : null) ??
+        _arabicAyahs[index]['number'];
+    await _audioPlayer.setUrl(_audioUrl(_reciter.id, globalNumber as int));
     _audioPlayer.play();
+  }
+
+  Future<void> _loadReciter() async {
+    final saved = await OfflineCacheService.getJson(_kReciterPrefKey);
+    if (saved == null || !mounted) return;
+    final match = kReciters.where((r) => r.id == saved);
+    if (match.isNotEmpty) setState(() => _reciter = match.first);
+  }
+
+  Future<void> _pickReciter() async {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final picked = await showModalBottomSheet<Reciter>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: isDark ? MinaretTheme.darkSurface : Colors.white,
+      builder: (ctx) => _ReciterSheet(current: _reciter),
+    );
+    if (picked == null || picked.id == _reciter.id) return;
+    await _audioPlayer.stop();
+    setState(() {
+      _reciter = picked;
+      _isPlayingFullSurah = false;
+      _isPlayingBismillah = false;
+      _currentPlayingIndex = -1;
+    });
+    OfflineCacheService.setJson(_kReciterPrefKey, picked.id);
   }
 
   void _playNextAyah() {
@@ -229,7 +266,7 @@ class _SurahViewPageState extends State<SurahViewPage> {
 
       if (widget.surahNumber != 1 && widget.surahNumber != 9) {
         setState(() => _isPlayingBismillah = true);
-        await _audioPlayer.setUrl(bismillahAudioUrl);
+        await _audioPlayer.setUrl(_audioUrl(_reciter.id, 1));
         _audioPlayer.play();
       } else {
         _playAyah(0, isSequence: true);
@@ -361,28 +398,60 @@ class _SurahViewPageState extends State<SurahViewPage> {
                       horizontal: 28,
                       vertical: 10,
                     ),
-                    child: OutlinedButton.icon(
-                      onPressed: _toggleFullSurah,
-                      icon: Icon(
-                        _isPlayingFullSurah
-                            ? Icons.stop_circle
-                            : Icons.play_circle_fill,
-                        color: MinaretTheme.gold,
-                      ),
-                      label: Text(
-                        _isPlayingFullSurah ? "STOP SURAH" : "PLAY FULL SURAH",
-                        style: const TextStyle(
-                          color: MinaretTheme.gold,
-                          letterSpacing: 2,
-                          fontSize: 12,
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: OutlinedButton.icon(
+                            onPressed: _toggleFullSurah,
+                            icon: Icon(
+                              _isPlayingFullSurah
+                                  ? Icons.stop_circle
+                                  : Icons.play_circle_fill,
+                              color: MinaretTheme.gold,
+                            ),
+                            label: Text(
+                              _isPlayingFullSurah
+                                  ? "STOP SURAH"
+                                  : "PLAY FULL SURAH",
+                              style: const TextStyle(
+                                color: MinaretTheme.gold,
+                                letterSpacing: 2,
+                                fontSize: 12,
+                              ),
+                            ),
+                            style: OutlinedButton.styleFrom(
+                              side: BorderSide(
+                                color:
+                                    MinaretTheme.gold.withValues(alpha: 0.4),
+                              ),
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: AppSpacing.md),
+                            ),
+                          ),
                         ),
-                      ),
-                      style: OutlinedButton.styleFrom(
-                        side: BorderSide(
-                          color: MinaretTheme.gold.withValues(alpha: 0.4),
+                        const SizedBox(width: 10),
+                        Tooltip(
+                          message: _reciter.name,
+                          child: OutlinedButton(
+                            onPressed: _pickReciter,
+                            style: OutlinedButton.styleFrom(
+                              side: BorderSide(
+                                color:
+                                    MinaretTheme.gold.withValues(alpha: 0.4),
+                              ),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 14,
+                                vertical: AppSpacing.md,
+                              ),
+                            ),
+                            child: const Icon(
+                              Icons.record_voice_over_rounded,
+                              size: 18,
+                              color: MinaretTheme.gold,
+                            ),
+                          ),
                         ),
-                        padding: const EdgeInsets.symmetric(vertical: AppSpacing.md),
-                      ),
+                      ],
                     ),
                   ),
                 ),
@@ -574,6 +643,111 @@ class _SurahViewPageState extends State<SurahViewPage> {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _ReciterSheet extends StatelessWidget {
+  final Reciter current;
+  const _ReciterSheet({required this.current});
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: SingleChildScrollView(
+        child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            width: 40,
+            height: 4,
+            margin: const EdgeInsets.only(top: 10, bottom: 14),
+            decoration: BoxDecoration(
+              color: MinaretTheme.slate.withValues(alpha: 0.3),
+              borderRadius: BorderRadius.circular(2),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(22, 4, 22, 14),
+            child: Row(
+              children: [
+                Text(
+                  'SELECT RECITER',
+                  style: GoogleFonts.montserrat(
+                    fontSize: 11,
+                    letterSpacing: 2,
+                    fontWeight: FontWeight.w800,
+                    color: MinaretTheme.gold,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const Divider(height: 1),
+          ...kReciters.map((r) {
+            final sel = r.id == current.id;
+            return InkWell(
+              onTap: () => Navigator.pop(context, r),
+              child: Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 22, vertical: 14),
+                decoration: BoxDecoration(
+                  color: sel
+                      ? MinaretTheme.gold.withValues(alpha: 0.07)
+                      : null,
+                  border: Border(
+                    bottom: BorderSide(
+                      color: MinaretTheme.dividerColor,
+                      width: 0.5,
+                    ),
+                  ),
+                ),
+                child: Row(
+                  children: [
+                    Icon(
+                      sel
+                          ? Icons.radio_button_checked
+                          : Icons.radio_button_off,
+                      size: 16,
+                      color: sel
+                          ? MinaretTheme.gold
+                          : MinaretTheme.slate.withValues(alpha: 0.5),
+                    ),
+                    const SizedBox(width: 14),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            r.name,
+                            style: GoogleFonts.montserrat(
+                              fontSize: 13.5,
+                              fontWeight:
+                                  sel ? FontWeight.w800 : FontWeight.w700,
+                              color: sel ? MinaretTheme.gold : null,
+                            ),
+                          ),
+                          const SizedBox(height: 3),
+                          Text(
+                            r.arabicName,
+                            style: GoogleFonts.amiri(
+                              fontSize: 16,
+                              color:
+                                  MinaretTheme.gold.withValues(alpha: 0.75),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          }),
+          const SizedBox(height: 10),
+        ],
+        ),
       ),
     );
   }
