@@ -53,6 +53,8 @@ class _SurahViewPageState extends State<SurahViewPage> {
   final Map<int, GlobalKey> _ayahKeys = {};
   int _lastVisibleAyahIndex = 0;
 
+  Map<String, dynamic>? _lastListen;
+
   final String bismillahText = 'بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ';
 
   Reciter _reciter = kReciters.first;
@@ -63,6 +65,7 @@ class _SurahViewPageState extends State<SurahViewPage> {
     _surahFuture = _fetchFullSurah();
     _scrollController.addListener(_onScroll);
     _loadReciter();
+    _loadLastListen();
 
     _audioPlayer.playerStateStream.listen((state) {
       if (state.processingState == ProcessingState.completed &&
@@ -197,16 +200,7 @@ class _SurahViewPageState extends State<SurahViewPage> {
       if (!isSequence) _isPlayingFullSurah = false;
     });
 
-    OfflineCacheService.setJson(
-      'quran_last_listen',
-      json.encode({
-        'surahNumber': widget.surahNumber,
-        'surahName': widget.surahName,
-        'editionId': widget.editionId,
-        'ayahIndex': index,
-        'updatedAt': DateTime.now().millisecondsSinceEpoch,
-      }),
-    );
+    _saveListen(index);
 
     final globalNumber = (_audioAyahs[index] is Map
             ? _audioAyahs[index]['number']
@@ -214,6 +208,55 @@ class _SurahViewPageState extends State<SurahViewPage> {
         _arabicAyahs[index]['number'];
     await _audioPlayer.setUrl(_audioUrl(_reciter, globalNumber as int));
     _audioPlayer.play();
+  }
+
+  void _saveListen(int index) {
+    final record = {
+      'surahNumber': widget.surahNumber,
+      'surahName': widget.surahName,
+      'editionId': widget.editionId,
+      'ayahIndex': index,
+      'updatedAt': DateTime.now().millisecondsSinceEpoch,
+    };
+    OfflineCacheService.setJson('quran_last_listen', json.encode(record));
+    if (mounted) setState(() => _lastListen = record);
+  }
+
+  Future<void> _loadLastListen() async {
+    final l = await OfflineCacheService.getMap('quran_last_listen');
+    if (mounted) setState(() => _lastListen = l);
+  }
+
+  void _resumeFromLastListen() {
+    final l = _lastListen;
+    if (l == null) return;
+    final savedSurah = (l['surahNumber'] as int?) ?? 1;
+    final savedAyahIdx = (l['ayahIndex'] as int?) ?? 0;
+    if (savedSurah == widget.surahNumber &&
+        savedAyahIdx < _audioAyahs.length) {
+      _playAyah(savedAyahIdx);
+      final key = _ayahKeys[savedAyahIdx];
+      final ctx = key?.currentContext;
+      if (ctx != null) {
+        Scrollable.ensureVisible(
+          ctx,
+          duration: const Duration(milliseconds: 500),
+          curve: Curves.easeInOut,
+        );
+      }
+    } else {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => SurahViewPage(
+            surahNumber: savedSurah,
+            surahName: (l['surahName'] as String?) ?? '',
+            editionId: widget.editionId,
+            initialAyahNumber: savedAyahIdx + 1,
+          ),
+        ),
+      );
+    }
   }
 
   Future<void> _loadReciter() async {
@@ -393,6 +436,8 @@ class _SurahViewPageState extends State<SurahViewPage> {
                     ),
                   ),
                 ),
+
+                SliverToBoxAdapter(child: _buildLastPausedBanner()),
 
                 SliverToBoxAdapter(
                   child: Padding(
@@ -583,6 +628,67 @@ class _SurahViewPageState extends State<SurahViewPage> {
               ],
             );
           },
+        ),
+      ),
+    );
+  }
+
+  Widget _buildLastPausedBanner() {
+    final l = _lastListen;
+    if (l == null) return const SizedBox.shrink();
+    final savedSurah = (l['surahNumber'] as int?) ?? 0;
+    final savedAyahIdx = (l['ayahIndex'] as int?) ?? 0;
+    final surahName = (l['surahName'] as String? ?? '').trim();
+    if (surahName.isEmpty) return const SizedBox.shrink();
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(28, 0, 28, 4),
+      child: Material(
+        color: MinaretTheme.gold.withValues(alpha: 0.08),
+        borderRadius: BorderRadius.circular(8),
+        child: InkWell(
+          onTap: _resumeFromLastListen,
+          borderRadius: BorderRadius.circular(8),
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(12, 10, 10, 10),
+            child: Row(
+              children: [
+                const Icon(Icons.headphones_rounded,
+                    size: 16, color: MinaretTheme.gold),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'LAST PAUSED',
+                        style: GoogleFonts.montserrat(
+                          fontSize: 9,
+                          letterSpacing: 1.5,
+                          fontWeight: FontWeight.w800,
+                          color: MinaretTheme.gold,
+                        ),
+                      ),
+                      const SizedBox(height: 3),
+                      Text(
+                        '$surahName · Ayah ${savedAyahIdx + 1}',
+                        style: GoogleFonts.lato(
+                          fontSize: 12.5,
+                          color: Theme.of(context).colorScheme.onSurface,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Icon(
+                  savedSurah == widget.surahNumber
+                      ? Icons.play_arrow_rounded
+                      : Icons.chevron_right_rounded,
+                  color: MinaretTheme.gold,
+                  size: 22,
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );

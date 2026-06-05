@@ -36,24 +36,26 @@ class Reciter {
   // cdn.islamic.network serves each reciter at a specific bitrate; mismatched
   // bitrates 403. Abdul Basit and Sudais are only available at 64 kbps.
   final int bitrate;
-  // Most reciters' first-ayah audio for surahs 2..114 already begins with
-  // the Basmala. Prepending another Bismillah produces a double recital.
-  // Maher Al-Muaiqly is the one exception in our list.
+  // Some reciters' first-ayah audio for surahs 2..114 already begins with
+  // the Basmala — in that case we must NOT prepend a separate Bismillah,
+  // or the listener hears it twice. Verified by ear: only Abdul Basit's
+  // recording includes the Basmala inline; the rest need it prepended.
   final bool includesBismillah;
   const Reciter(
     this.id,
     this.name, {
     this.bitrate = 128,
-    this.includesBismillah = true,
+    this.includesBismillah = false,
   });
 }
 
 const List<Reciter> kReciters = [
   Reciter('ar.alafasy', 'Mishary Alafasy'),
   Reciter('ar.husary', 'Mahmoud Al-Husary'),
-  Reciter('ar.abdulsamad', 'Abdul Basit', bitrate: 64),
+  Reciter('ar.abdulsamad', 'Abdul Basit',
+      bitrate: 64, includesBismillah: true),
   Reciter('ar.abdurrahmaansudais', 'Abdurrahman As-Sudais', bitrate: 64),
-  Reciter('ar.mahermuaiqly', 'Maher Al-Muaiqly', includesBismillah: false),
+  Reciter('ar.mahermuaiqly', 'Maher Al-Muaiqly'),
   Reciter('ar.shaatree', 'Abu Bakr Ash-Shaatree'),
   Reciter('ar.hudhaify', 'Ali Al-Hudhaify'),
 ];
@@ -126,6 +128,12 @@ class _QuranSwipeReaderPageState extends State<QuranSwipeReaderPage> {
   bool _isPlaying = false;
   bool _isPlayingBismillah = false;
 
+  // Last paused audio (for the "LAST PAUSED" banner).
+  Map<String, dynamic>? _lastListen;
+  // Set when the user taps the banner for a different surah — consumed by the
+  // language view's onLoaded callback to auto-play once the surah loads.
+  int? _pendingPlayAyahIdx;
+
   // Offline downloads — full editions cached in one request via /quran/{edition}.
   final Set<String> _downloadedEditions = {};
   final Set<String> _downloadingEditions = {};
@@ -164,6 +172,7 @@ class _QuranSwipeReaderPageState extends State<QuranSwipeReaderPage> {
     await _loadDeck();
     final reciter = await OfflineCacheService.getJson(_kReciterPrefKey);
     final pos = await OfflineCacheService.getMap('quran_last_position');
+    final listen = await OfflineCacheService.getMap('quran_last_listen');
     final dl = await OfflineCacheService.getMap('quran_downloaded_editions');
     if (!mounted) return;
     setState(() {
@@ -174,10 +183,30 @@ class _QuranSwipeReaderPageState extends State<QuranSwipeReaderPage> {
       if (pos != null && pos['surahNumber'] is int) {
         _surahNumber = (pos['surahNumber'] as int).clamp(1, 114);
       }
+      _lastListen = listen;
       if (dl != null && dl['ids'] is List) {
         _downloadedEditions.addAll((dl['ids'] as List).cast<String>());
       }
       _pageController = PageController(initialPage: _langIndex, viewportFraction: 0.88);
+    });
+  }
+
+  void _resumeFromLastListen() {
+    final l = _lastListen;
+    if (l == null) return;
+    final savedSurah = (l['surahNumber'] as int?) ?? 1;
+    final savedAyahIdx = (l['ayahIndex'] as int?) ?? 0;
+    if (savedSurah == _surahNumber &&
+        _globals.isNotEmpty &&
+        savedAyahIdx < _globals.length) {
+      _playGlobal(_globals[savedAyahIdx]);
+      return;
+    }
+    _stop();
+    setState(() {
+      _surahNumber = savedSurah;
+      _globals = [];
+      _pendingPlayAyahIdx = savedAyahIdx;
     });
   }
 
@@ -227,10 +256,12 @@ class _QuranSwipeReaderPageState extends State<QuranSwipeReaderPage> {
   }
 
   void _saveListen() {
+    final record = _resumeRecord();
     OfflineCacheService.setJson(
       'quran_last_listen',
-      json.encode(_resumeRecord()),
+      json.encode(record),
     );
+    if (mounted) setState(() => _lastListen = record);
   }
 
   // ── Edition metadata + deck ──────────────────────────────────────────────
@@ -531,6 +562,7 @@ class _QuranSwipeReaderPageState extends State<QuranSwipeReaderPage> {
           children: [
             const OfflineBanner(),
             _buildTopBar(),
+            _buildLastPausedBanner(),
             Expanded(
               child: PageView.builder(
                 controller: _pageController,
@@ -541,6 +573,74 @@ class _QuranSwipeReaderPageState extends State<QuranSwipeReaderPage> {
             ),
             _buildBottomBar(),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildLastPausedBanner() {
+    final l = _lastListen;
+    if (l == null) return const SizedBox.shrink();
+    final savedSurah = (l['surahNumber'] as int?) ?? 0;
+    final savedAyahIdx = (l['ayahIndex'] as int?) ?? 0;
+    final surahName = (l['surahName'] as String? ?? '').trim();
+    if (surahName.isEmpty) return const SizedBox.shrink();
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 2, 16, 6),
+      child: Material(
+        color: MinaretTheme.gold.withValues(alpha: 0.08),
+        borderRadius: BorderRadius.circular(8),
+        child: InkWell(
+          onTap: _resumeFromLastListen,
+          borderRadius: BorderRadius.circular(8),
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(12, 9, 10, 9),
+            child: Row(
+              children: [
+                const Icon(Icons.headphones_rounded,
+                    size: 16, color: MinaretTheme.gold),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        _t(
+                          en: 'LAST PAUSED',
+                          ar: 'آخر إيقاف',
+                          ur: 'آخری مقام',
+                          ru: 'ОСТАНОВКА',
+                        ),
+                        style: GoogleFonts.montserrat(
+                          fontSize: 9,
+                          letterSpacing: 1.5,
+                          fontWeight: FontWeight.w800,
+                          color: MinaretTheme.gold,
+                        ),
+                      ),
+                      const SizedBox(height: 3),
+                      Text(
+                        '$surahName · '
+                        '${_t(en: 'Ayah', ar: 'آية', ur: 'آیت', ru: 'Аят')} '
+                        '${savedAyahIdx + 1}',
+                        style: GoogleFonts.lato(
+                          fontSize: 12.5,
+                          color: Theme.of(context).colorScheme.onSurface,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Icon(
+                  savedSurah == _surahNumber
+                      ? Icons.play_arrow_rounded
+                      : Icons.chevron_right_rounded,
+                  color: MinaretTheme.gold,
+                  size: 22,
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );
@@ -668,6 +768,12 @@ class _QuranSwipeReaderPageState extends State<QuranSwipeReaderPage> {
                   onLoaded: (surah, globals) {
                     if (surah == _surahNumber && _globals.isEmpty) {
                       _globals = globals;
+                      final pending = _pendingPlayAyahIdx;
+                      if (pending != null && pending < globals.length) {
+                        _pendingPlayAyahIdx = null;
+                        Future.microtask(
+                            () => _playGlobal(globals[pending]));
+                      }
                     }
                   },
                 ),
@@ -1468,13 +1574,20 @@ class _FullSurahReaderPageState extends State<_FullSurahReaderPage> {
   bool _isPlaying = false;
   bool _isPlayingBismillah = false;
 
+  final TextEditingController _searchController = TextEditingController();
+  String _searchQuery = '';
+  Map<String, dynamic>? _lastListen;
+  String _surahEnglishName = '';
+
   @override
   void initState() {
     super.initState();
     _future = widget.loader(widget.surah, widget.lang).then((d) {
       _globals = d.ayahs.map((a) => a.number).toList();
+      _surahEnglishName = d.surahEnglishName;
       return d;
     });
+    _loadLastListen();
     _audioPlayer.playerStateStream.listen((s) {
       if (s.processingState == ProcessingState.completed && _isPlaying) {
         if (_isPlayingBismillah) {
@@ -1487,9 +1600,27 @@ class _FullSurahReaderPageState extends State<_FullSurahReaderPage> {
     });
   }
 
+  Future<void> _loadLastListen() async {
+    final l = await OfflineCacheService.getMap('quran_last_listen');
+    if (mounted) setState(() => _lastListen = l);
+  }
+
+  void _onSearchChanged(String v) {
+    setState(() => _searchQuery = v.trim().toLowerCase());
+  }
+
+  void _resumeFromLastListen() {
+    final l = _lastListen;
+    if (l == null) return;
+    final savedAyahIdx = l['ayahIndex'] as int? ?? 0;
+    if (_globals.isEmpty || savedAyahIdx >= _globals.length) return;
+    _playGlobal(_globals[savedAyahIdx]);
+  }
+
   @override
   void dispose() {
     _audioPlayer.dispose();
+    _searchController.dispose();
     super.dispose();
   }
 
@@ -1515,12 +1646,28 @@ class _FullSurahReaderPageState extends State<_FullSurahReaderPage> {
       _isPlaying = true;
       _isPlayingBismillah = false;
     });
+    _saveListen(global);
     try {
       await _audioPlayer.setUrl(_audioUrl(widget.reciter, global));
       _audioPlayer.play();
     } catch (_) {
       if (mounted) setState(() => _isPlaying = false);
     }
+  }
+
+  void _saveListen(int global) {
+    final idx = _globals.indexOf(global);
+    if (idx < 0) return;
+    final record = {
+      'surahNumber': widget.surah,
+      'surahName': _surahEnglishName,
+      'editionId':
+          widget.lang.isArabicOnly ? 'en.sahih' : widget.lang.editionId,
+      'ayahIndex': idx,
+      'updatedAt': DateTime.now().millisecondsSinceEpoch,
+    };
+    OfflineCacheService.setJson('quran_last_listen', json.encode(record));
+    if (mounted) setState(() => _lastListen = record);
   }
 
   /// Start full-surah playback. Prepends Bismillah (global ayah 1) for every
@@ -1594,48 +1741,208 @@ class _FullSurahReaderPageState extends State<_FullSurahReaderPage> {
               );
             }
             final data = snap.data!;
-            final showBismillah = widget.surah != 1 && widget.surah != 9;
+            final searching = _searchQuery.isNotEmpty;
+            final ayahs = searching
+                ? data.ayahs.where((a) {
+                    final q = _searchQuery;
+                    if (a.numberInSurah.toString() == q) return true;
+                    if ('${widget.surah}:${a.numberInSurah}' == q) return true;
+                    if (a.arabic.toLowerCase().contains(q)) return true;
+                    final tr = a.translation;
+                    if (tr != null && tr.toLowerCase().contains(q)) {
+                      return true;
+                    }
+                    return false;
+                  }).toList()
+                : data.ayahs;
+            final showBismillah =
+                !searching && widget.surah != 1 && widget.surah != 9;
             return Column(
               children: [
                 _header(data, isDark),
+                _searchBar(isDark),
+                _lastPausedBanner(isDark),
                 Expanded(
-                  child: ListView.builder(
-                    physics: const BouncingScrollPhysics(),
-                    padding: const EdgeInsets.fromLTRB(24, 8, 24, 28),
-                    itemCount: data.ayahs.length + (showBismillah ? 1 : 0),
-                    itemBuilder: (context, i) {
-                      if (showBismillah && i == 0) {
-                        return Padding(
-                          padding: const EdgeInsets.only(top: 6, bottom: 14),
+                  child: searching && ayahs.isEmpty
+                      ? Center(
                           child: Text(
-                            _kBismillah,
-                            textAlign: TextAlign.center,
-                            style: GoogleFonts.amiriQuran(
-                              fontSize: 24,
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .onSurface
-                                  .withValues(alpha: 0.8),
+                            context.localText(
+                              en: 'No ayah found',
+                              ar: 'لم يتم العثور على آية',
+                              ur: 'کوئی آیت نہیں ملی',
+                              ru: 'Аят не найден',
+                            ),
+                            style: GoogleFonts.lato(
+                              fontSize: 13,
+                              color: (isDark
+                                      ? Colors.white70
+                                      : MinaretTheme.slate)
+                                  .withValues(alpha: 0.6),
                             ),
                           ),
-                        );
-                      }
-                      final ayah = data.ayahs[i - (showBismillah ? 1 : 0)];
-                      return _VerseTile(
-                        ayah: ayah,
-                        lang: widget.lang,
-                        surah: widget.surah,
-                        highlighted: _playingGlobal == ayah.number,
-                        playing: _playingGlobal == ayah.number && _isPlaying,
-                        onTap: () => _onAyahTap(ayah.number),
-                      );
-                    },
-                  ),
+                        )
+                      : ListView.builder(
+                          physics: const BouncingScrollPhysics(),
+                          padding: const EdgeInsets.fromLTRB(24, 8, 24, 28),
+                          itemCount: ayahs.length + (showBismillah ? 1 : 0),
+                          itemBuilder: (context, i) {
+                            if (showBismillah && i == 0) {
+                              return Padding(
+                                padding:
+                                    const EdgeInsets.only(top: 6, bottom: 14),
+                                child: Text(
+                                  _kBismillah,
+                                  textAlign: TextAlign.center,
+                                  style: GoogleFonts.amiriQuran(
+                                    fontSize: 24,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onSurface
+                                        .withValues(alpha: 0.8),
+                                  ),
+                                ),
+                              );
+                            }
+                            final ayah = ayahs[i - (showBismillah ? 1 : 0)];
+                            return _VerseTile(
+                              ayah: ayah,
+                              lang: widget.lang,
+                              surah: widget.surah,
+                              highlighted: _playingGlobal == ayah.number,
+                              playing: _playingGlobal == ayah.number &&
+                                  _isPlaying,
+                              onTap: () => _onAyahTap(ayah.number),
+                            );
+                          },
+                        ),
                 ),
                 _bottomBar(),
               ],
             );
           },
+        ),
+      ),
+    );
+  }
+
+  Widget _lastPausedBanner(bool isDark) {
+    final l = _lastListen;
+    if (l == null) return const SizedBox.shrink();
+    final savedSurah = l['surahNumber'] as int? ?? 0;
+    final savedAyahIdx = l['ayahIndex'] as int? ?? 0;
+    final surahName = (l['surahName'] as String? ?? '').trim();
+    if (surahName.isEmpty) return const SizedBox.shrink();
+    final sameSurah = savedSurah == widget.surah;
+    final ayahLabel = context.localText(
+        en: 'Ayah', ar: 'آية', ur: 'آیت', ru: 'Аят');
+    final lastLabel = context.localText(
+        en: 'LAST PAUSED',
+        ar: 'آخر إيقاف',
+        ur: 'آخری مقام',
+        ru: 'ОСТАНОВКА');
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(20, 4, 20, 4),
+      child: Material(
+        color: MinaretTheme.gold.withValues(alpha: 0.08),
+        borderRadius: BorderRadius.circular(8),
+        child: InkWell(
+          onTap: sameSurah ? _resumeFromLastListen : null,
+          borderRadius: BorderRadius.circular(8),
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(12, 10, 10, 10),
+            child: Row(
+              children: [
+                const Icon(Icons.headphones_rounded,
+                    size: 16, color: MinaretTheme.gold),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        lastLabel,
+                        style: GoogleFonts.montserrat(
+                          fontSize: 9,
+                          letterSpacing: 1.5,
+                          fontWeight: FontWeight.w800,
+                          color: MinaretTheme.gold,
+                        ),
+                      ),
+                      const SizedBox(height: 3),
+                      Text(
+                        '$surahName · $ayahLabel ${savedAyahIdx + 1}',
+                        style: GoogleFonts.lato(
+                          fontSize: 12.5,
+                          color: Theme.of(context).colorScheme.onSurface,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                if (sameSurah)
+                  const Icon(Icons.play_arrow_rounded,
+                      color: MinaretTheme.gold, size: 22),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _searchBar(bool isDark) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(20, 10, 20, 4),
+      child: Container(
+        decoration: BoxDecoration(
+          color: isDark ? const Color(0xFF151B24) : MinaretTheme.surface,
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: MinaretTheme.dividerColor),
+        ),
+        child: TextField(
+          controller: _searchController,
+          onChanged: _onSearchChanged,
+          style: GoogleFonts.lato(
+            fontSize: 13,
+            color: Theme.of(context).colorScheme.onSurface,
+          ),
+          cursorColor: MinaretTheme.gold,
+          cursorWidth: 1,
+          decoration: InputDecoration(
+            hintText: context.localText(
+              en: 'Search ayah by number or text...',
+              ar: 'ابحث عن آية بالرقم أو النص...',
+              ur: 'نمبر یا متن سے آیت تلاش کریں...',
+              ru: 'Поиск аята по номеру или тексту...',
+            ),
+            hintStyle: GoogleFonts.lato(
+              color: (isDark ? Colors.white70 : MinaretTheme.slate)
+                  .withValues(alpha: 0.55),
+              fontSize: 12.5,
+            ),
+            prefixIcon: Icon(
+              Icons.search_rounded,
+              color: MinaretTheme.gold.withValues(alpha: 0.55),
+              size: 17,
+            ),
+            suffixIcon: _searchController.text.isNotEmpty
+                ? IconButton(
+                    icon: Icon(
+                      Icons.clear_rounded,
+                      size: 15,
+                      color: (isDark ? Colors.white70 : MinaretTheme.slate)
+                          .withValues(alpha: 0.55),
+                    ),
+                    onPressed: () {
+                      _searchController.clear();
+                      _onSearchChanged('');
+                    },
+                  )
+                : null,
+            isDense: true,
+            contentPadding: const EdgeInsets.symmetric(vertical: 12),
+            border: InputBorder.none,
+          ),
         ),
       ),
     );
