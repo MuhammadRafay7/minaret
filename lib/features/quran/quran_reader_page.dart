@@ -9,6 +9,7 @@ import 'package:minaret/core/secure_http_client.dart';
 import 'package:minaret/core/locale_text.dart';
 import 'package:minaret/widgets/atelier_layout.dart';
 import 'package:minaret/features/quran/mushaf_view_page.dart';
+import 'package:minaret/features/quran/surah_view_page.dart';
 import 'package:minaret/widgets/offline_banner.dart';
 import 'package:minaret/widgets/app_loading_indicator.dart';
 
@@ -35,6 +36,7 @@ class _QuranReaderPageState extends State<QuranReaderPage>
   bool _isLoading = true;
   String? _loadError;
   Map<String, dynamic>? _savedPosition;
+  Map<String, dynamic>? _savedListen;
 
   final TextEditingController _searchController = TextEditingController();
 
@@ -163,72 +165,130 @@ class _QuranReaderPageState extends State<QuranReaderPage>
 
   Future<void> _loadSavedPosition() async {
     final pos = await OfflineCacheService.getMap('quran_last_position');
-    if (pos != null && mounted && pos['editionId'] == widget.editionId) {
-      setState(() => _savedPosition = pos);
-    }
+    final listen = await OfflineCacheService.getMap('quran_last_listen');
+    if (!mounted) return;
+    setState(() {
+      if (pos != null && pos['editionId'] == widget.editionId) {
+        _savedPosition = pos;
+      }
+      if (listen != null && listen['editionId'] == widget.editionId) {
+        _savedListen = listen;
+      }
+    });
   }
 
-  Widget _buildContinueReadingBanner() {
-    final pos = _savedPosition;
-    if (pos == null || _searchController.text.isNotEmpty) {
-      return const SizedBox.shrink();
-    }
+  void _resumeReading(Map<String, dynamic> pos) {
+    final mode = pos['mode'] as String?;
+    final editionId = pos['editionId'] as String? ?? widget.editionId;
     final surahName = pos['surahName'] as String? ?? '';
-    final page = (pos['page'] as int?) ?? 1;
-    return GestureDetector(
-      onTap: () => Navigator.push(
+
+    if (mode == 'surah') {
+      final surahNumber = pos['surahNumber'] as int? ?? 1;
+      final ayahIndex = pos['ayahIndex'] as int? ?? 0;
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => SurahViewPage(
+            surahNumber: surahNumber,
+            surahName: surahName,
+            editionId: editionId,
+            initialAyahNumber: ayahIndex + 1,
+          ),
+        ),
+      );
+    } else {
+      // Default to mushaf mode for backward compatibility.
+      final page = (pos['page'] as int?) ?? 1;
+      Navigator.push(
         context,
         MaterialPageRoute(
           builder: (_) => MushafViewPage(
             initialPage: page,
-            editionId: pos['editionId'] as String? ?? widget.editionId,
+            editionId: editionId,
             title: surahName,
           ),
         ),
+      );
+    }
+  }
+
+  void _resumeListening(Map<String, dynamic> listen) {
+    final surahNumber = listen['surahNumber'] as int? ?? 1;
+    final surahName = listen['surahName'] as String? ?? '';
+    final ayahIndex = listen['ayahIndex'] as int? ?? 0;
+    final editionId = listen['editionId'] as String? ?? widget.editionId;
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => SurahViewPage(
+          surahNumber: surahNumber,
+          surahName: surahName,
+          editionId: editionId,
+          initialAyahNumber: ayahIndex + 1,
+        ),
       ),
-      child: Container(
-        margin: const EdgeInsets.fromLTRB(25, 8, 25, 0),
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-        decoration: BoxDecoration(
-          color: MinaretTheme.gold.withValues(alpha: 0.07),
-          border: Border.all(color: MinaretTheme.gold.withValues(alpha: 0.3)),
-        ),
-        child: Row(
-          children: [
-            const Icon(Icons.bookmark_outline, size: 14, color: MinaretTheme.gold),
-            const SizedBox(width: 10),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    _t(
-                      en: 'CONTINUE READING',
-                      ar: 'متابعة القراءة',
-                      ur: 'پڑھنا جاری رکھیں',
-                      ru: 'ПРОДОЛЖИТЬ ЧТЕНИЕ',
-                    ),
-                    style: GoogleFonts.montserrat(
-                      fontSize: 8,
-                      letterSpacing: 1.5,
-                      color: MinaretTheme.gold,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 2),
-                  Text(
-                    '$surahName · ${_t(en: 'Page', ar: 'صفحة', ur: 'صفحہ', ru: 'Стр')} $page',
-                    style: GoogleFonts.montserrat(
-                      fontSize: 11,
-                      color: _textSecondary,
-                    ),
-                  ),
-                ],
+    );
+  }
+
+  String _readingSubtitle(Map<String, dynamic> pos) {
+    final surahName = pos['surahName'] as String? ?? '';
+    if (pos['mode'] == 'surah') {
+      final ayahIndex = pos['ayahIndex'] as int? ?? 0;
+      final ayahLabel = _t(en: 'Ayah', ar: 'آية', ur: 'آیت', ru: 'Аят');
+      return '$surahName · $ayahLabel ${ayahIndex + 1}';
+    }
+    final page = (pos['page'] as int?) ?? 1;
+    final pageLabel = _t(en: 'Page', ar: 'صفحة', ur: 'صفحہ', ru: 'Стр');
+    return '$surahName · $pageLabel $page';
+  }
+
+  Widget _buildContinueReadingBanner() {
+    if (_searchController.text.isNotEmpty) return const SizedBox.shrink();
+    final pos = _savedPosition;
+    final listen = _savedListen;
+
+    final showRead = pos != null;
+    final showListen = listen != null &&
+        !(pos != null &&
+            pos['mode'] == 'surah' &&
+            pos['surahNumber'] == listen['surahNumber'] &&
+            pos['ayahIndex'] == listen['ayahIndex']);
+
+    if (!showRead && !showListen) return const SizedBox.shrink();
+
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(25, 8, 25, 0),
+      child: Column(
+        children: [
+          if (showRead)
+            _ContinueBanner(
+              icon: Icons.bookmark_outline,
+              title: _t(
+                en: 'CONTINUE READING',
+                ar: 'متابعة القراءة',
+                ur: 'پڑھنا جاری رکھیں',
+                ru: 'ПРОДОЛЖИТЬ ЧТЕНИЕ',
               ),
+              subtitle: _readingSubtitle(pos),
+              subtitleColor: _textSecondary,
+              onTap: () => _resumeReading(pos),
             ),
-            const Icon(Icons.arrow_forward_ios, size: 12, color: MinaretTheme.gold),
-          ],
-        ),
+          if (showRead && showListen) const SizedBox(height: 8),
+          if (showListen)
+            _ContinueBanner(
+              icon: Icons.headphones_rounded,
+              title: _t(
+                en: 'CONTINUE LISTENING',
+                ar: 'متابعة الاستماع',
+                ur: 'سننا جاری رکھیں',
+                ru: 'ПРОДОЛЖИТЬ ПРОСЛУШИВАНИЕ',
+              ),
+              subtitle:
+                  '${listen['surahName'] ?? ''} · ${_t(en: 'Ayah', ar: 'آية', ur: 'آیت', ru: 'Аят')} ${(listen['ayahIndex'] as int? ?? 0) + 1}',
+              subtitleColor: _textSecondary,
+              onTap: () => _resumeListening(listen),
+            ),
+        ],
       ),
     );
   }
@@ -680,6 +740,68 @@ class _SurahListTile extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+}
+
+class _ContinueBanner extends StatelessWidget {
+  final IconData icon;
+  final String title;
+  final String subtitle;
+  final Color subtitleColor;
+  final VoidCallback onTap;
+
+  const _ContinueBanner({
+    required this.icon,
+    required this.title,
+    required this.subtitle,
+    required this.subtitleColor,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        decoration: BoxDecoration(
+          color: MinaretTheme.gold.withValues(alpha: 0.07),
+          border: Border.all(color: MinaretTheme.gold.withValues(alpha: 0.3)),
+        ),
+        child: Row(
+          children: [
+            Icon(icon, size: 14, color: MinaretTheme.gold),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: GoogleFonts.montserrat(
+                      fontSize: 8,
+                      letterSpacing: 1.5,
+                      color: MinaretTheme.gold,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    subtitle,
+                    style: GoogleFonts.montserrat(
+                      fontSize: 11,
+                      color: subtitleColor,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
+            ),
+            const Icon(Icons.arrow_forward_ios, size: 12, color: MinaretTheme.gold),
+          ],
+        ),
+      ),
     );
   }
 }

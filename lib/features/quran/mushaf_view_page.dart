@@ -174,12 +174,18 @@ class _MushafViewPageState extends State<MushafViewPage> {
     final surahName = data?.ayahs.isNotEmpty == true
         ? data!.surahs[data.ayahs.first.surah]?.englishName ?? ''
         : '';
+    final surahNumber = data?.ayahs.isNotEmpty == true
+        ? data!.ayahs.first.surah
+        : null;
     OfflineCacheService.setJson(
       'quran_last_position',
       json.encode({
+        'mode': 'mushaf',
         'editionId': widget.editionId,
         'page': _currentPage,
         'surahName': surahName,
+        if (surahNumber != null) 'surahNumber': surahNumber,
+        'updatedAt': DateTime.now().millisecondsSinceEpoch,
       }),
     );
   }
