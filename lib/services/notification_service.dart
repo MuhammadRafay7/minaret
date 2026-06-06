@@ -172,13 +172,17 @@ class NotificationService {
 
   // Loads the app's saved-locale strings for use in background notifications,
   // so Ramadan alerts are translated like the rest of the UI.
-  static AppLocalizations? _l10nCache;
-  static Future<AppLocalizations> _l10n() async {
-    if (_l10nCache != null) return _l10nCache!;
+  // A single Future is stored so concurrent callers share the same load and
+  // never trigger two parallel delegate.load() calls.
+  static Future<AppLocalizations>? _l10nFuture;
+  static Future<AppLocalizations> _l10n() {
+    return _l10nFuture ??= _loadL10n();
+  }
+
+  static Future<AppLocalizations> _loadL10n() async {
     final prefs = await SharedPreferences.getInstance();
     final code = prefs.getString('app_locale_code') ?? 'en';
-    _l10nCache = await AppLocalizations.delegate.load(Locale(code));
-    return _l10nCache!;
+    return AppLocalizations.delegate.load(Locale(code));
   }
 
   // ── Shared notification details ───────────────────────────────────────────
@@ -522,6 +526,8 @@ class NotificationService {
       'suhoor': true,
       'iftar': true,
     };
+    // Clear cached locale so the next user's locale is loaded fresh.
+    _l10nFuture = null;
   }
 
   // ══════════════════════════════════════════════════════════════════════════

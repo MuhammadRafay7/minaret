@@ -146,6 +146,7 @@ class _MainNavigationState extends State<MainNavigation>
     } else {
       await FcmTokenService.removeToken();
       await NotificationService.cancelAllListeners();
+      AdService.reset();
     }
   }
 
@@ -177,6 +178,7 @@ class _MainNavigationState extends State<MainNavigation>
     if (bannerId != null && bannerId.isNotEmpty && _currentAdMobBannerId != bannerId) {
       _currentAdMobBannerId = bannerId;
       _adMobBannerAd?.dispose();
+      _adMobBannerAd = null;
       _isAdMobLoaded = false;
       _adMobBannerAd = AdService.createBannerAd(
         adUnitId: bannerId,
@@ -263,24 +265,23 @@ class _MainNavigationState extends State<MainNavigation>
   @override
   Widget build(BuildContext context) {
     final enabledItems = _getEnabledItems(context);
-    
-    // Safety check for index out of bounds if items are removed dynamically
-    if (_currentIndex >= enabledItems.length) {
-      _currentIndex = 0;
-    }
+
+    // Clamp without mutating state during build — mutations must go via setState.
+    final currentIndex =
+        _currentIndex >= enabledItems.length ? 0 : _currentIndex;
 
     return Scaffold(
       extendBody: true,
       body: Stack(
         children: [
           IndexedStack(
-            index: _currentIndex,
+            index: currentIndex,
             children: enabledItems.map((e) => e.page).toList(),
           ),
           _buildManagedAds(),
         ],
       ),
-      bottomNavigationBar: _buildFloatingNavBar(enabledItems),
+      bottomNavigationBar: _buildFloatingNavBar(enabledItems, currentIndex),
     );
   }
 
@@ -360,7 +361,7 @@ class _MainNavigationState extends State<MainNavigation>
     );
   }
 
-  Widget _buildFloatingNavBar(List<NavigationItem> items) {
+  Widget _buildFloatingNavBar(List<NavigationItem> items, int currentIndex) {
     return FutureBuilder<DocumentSnapshot?>(
       future: _contentFuture,
       builder: (context, snapshot) {
@@ -371,7 +372,7 @@ class _MainNavigationState extends State<MainNavigation>
               position: AppAnimations.slideTween(const Offset(0, 1.0), Offset.zero).animate(CurvedAnimation(parent: _navBarAnimationController, curve: AppAnimations.easeOutCubic)),
               child: FadeTransition(
                 opacity: AppAnimations.fadeIn(_navBarAnimationController),
-                child: _NavBarContent(items: items, currentIndex: _currentIndex, onTap: _animateToPage),
+                child: _NavBarContent(items: items, currentIndex: currentIndex, onTap: _animateToPage),
               ),
             );
           },

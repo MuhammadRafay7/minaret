@@ -64,7 +64,7 @@ class UserRepository {
       _users.doc(uid).set({'fcmToken': token}, SetOptions(merge: true));
 
   Future<void> removeFcmToken(String uid) =>
-      _users.doc(uid).set({'fcmToken': null}, SetOptions(merge: true));
+      _users.doc(uid).update({'fcmToken': FieldValue.delete()});
 
   Future<void> saveVerificationResult(
           String uid, Map<String, dynamic> updates) =>

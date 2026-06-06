@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -141,14 +143,46 @@ class JanazaRepository {
   Stream<List<JanazaAnnouncement>> activeForMosques(
       List<String> mosqueIds) {
     if (mosqueIds.isEmpty) return Stream.value([]);
-    return _janazas
-        .where('mosqueId', whereIn: mosqueIds.take(10).toList())
+    final cutoff = Timestamp.fromDate(
+        DateTime.now().subtract(const Duration(hours: 24)));
+
+    // Firestore whereIn supports up to 30 values — chunk and merge streams.
+    final chunks = <List<String>>[];
+    for (var i = 0; i < mosqueIds.length; i += 30) {
+      final end = (i + 30 < mosqueIds.length) ? i + 30 : mosqueIds.length;
+      chunks.add(mosqueIds.sublist(i, end));
+    }
+
+    final streams = chunks.map((chunk) => _janazas
+        .where('mosqueId', whereIn: chunk)
         .where('isActive', isEqualTo: true)
-        .where('janazaTime',
-            isGreaterThanOrEqualTo: Timestamp.fromDate(
-                DateTime.now().subtract(const Duration(hours: 24))))
+        .where('janazaTime', isGreaterThanOrEqualTo: cutoff)
         .snapshots()
-        .map((s) => s.docs.map(JanazaAnnouncement.fromDoc).toList());
+        .map((s) => s.docs.map(JanazaAnnouncement.fromDoc).toList()));
+
+    if (streams.length == 1) return streams.first;
+    return _mergeChunkStreams(streams.toList());
+  }
+
+  Stream<List<JanazaAnnouncement>> _mergeChunkStreams(
+      List<Stream<List<JanazaAnnouncement>>> streams) {
+    final controller = StreamController<List<JanazaAnnouncement>>();
+    final results = List<List<JanazaAnnouncement>>.filled(streams.length, []);
+    var pending = streams.length;
+    for (var i = 0; i < streams.length; i++) {
+      final index = i;
+      streams[index].listen(
+        (data) {
+          results[index] = data;
+          controller.add(results.expand((r) => r).toList());
+        },
+        onError: controller.addError,
+        onDone: () {
+          if (--pending == 0) controller.close();
+        },
+      );
+    }
+    return controller.stream;
   }
 
   Stream<List<JanazaAnnouncement>> activeForCity(String city) => _janazas

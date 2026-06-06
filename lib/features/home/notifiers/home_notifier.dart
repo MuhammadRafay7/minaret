@@ -65,12 +65,6 @@ class HomeNotifier extends ChangeNotifier {
   HomeNotifier() {
     _authSub = FirebaseAuth.instance.authStateChanges().listen(_onAuthChanged);
     _initLocation();
-    _sortRefreshTimer = Timer.periodic(
-      const Duration(minutes: 5),
-      (_) {
-        if (_activeSort == SortType.time) notifyListeners();
-      },
-    );
   }
 
   // ── Getters ───────────────────────────────────────────────────────────────
@@ -334,6 +328,18 @@ class HomeNotifier extends ChangeNotifier {
     _activeSort = sort;
     _activeStreamKey = null;
     _ensureMosqueStream();
+    _updateSortTimer();
+  }
+
+  void _updateSortTimer() {
+    _sortRefreshTimer?.cancel();
+    _sortRefreshTimer = null;
+    if (_activeSort == SortType.time) {
+      _sortRefreshTimer = Timer.periodic(
+        const Duration(minutes: 5),
+        (_) => notifyListeners(),
+      );
+    }
   }
 
   void setRadiusKm(double km) {

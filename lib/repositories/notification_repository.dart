@@ -37,7 +37,7 @@ class AppNotification {
       type: data['type'] as String? ?? '',
       title: data['title'] as String? ?? '',
       message: data['message'] as String? ?? '',
-      body: data['message'] as String?,
+      body: data['body'] as String?,
       mosqueId: data['mosqueId'] as String?,
       mosqueName: data['mosqueName'] as String?,
       read: data['read'] as bool? ?? false,
@@ -70,6 +70,7 @@ class NotificationRepository {
   Stream<int> getUnreadCountStream(String uid) => _notifs
       .where('userId', isEqualTo: uid)
       .where('read', isEqualTo: false)
+      .limit(100)
       .snapshots()
       .map((s) => s.docs.length);
 
