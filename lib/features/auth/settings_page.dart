@@ -32,6 +32,8 @@ class _SettingsPageState extends State<SettingsPage> {
   bool _notifNamaz = true;
   bool _notifEid = true;
   bool _notifTaraweeh = true;
+  bool _notifSuhoor = true;
+  bool _notifIftar = true;
   bool _isLoadingPrefs = true;
   bool _isMosqueAdmin = false;
   int _unreadNotifications = 0;
@@ -90,6 +92,8 @@ class _SettingsPageState extends State<SettingsPage> {
       _notifNamaz = remotePrefs['namaz'] ?? true;
       _notifEid = remotePrefs['eid'] ?? true;
       _notifTaraweeh = remotePrefs['taraweeh'] ?? true;
+      _notifSuhoor = remotePrefs['suhoor'] ?? true;
+      _notifIftar = remotePrefs['iftar'] ?? true;
 
       _isMosqueAdmin = isMosqueAdmin;
       _unreadNotifications = unreadNotifications;
@@ -106,6 +110,8 @@ class _SettingsPageState extends State<SettingsPage> {
     final bool prevNamaz = _notifNamaz;
     final bool prevEid = _notifEid;
     final bool prevTaraweeh = _notifTaraweeh;
+    final bool prevSuhoor = _notifSuhoor;
+    final bool prevIftar = _notifIftar;
 
     setState(() {
       _savingKeys.add(key);
@@ -114,6 +120,8 @@ class _SettingsPageState extends State<SettingsPage> {
       if (key == 'namaz') _notifNamaz = value;
       if (key == 'eid') _notifEid = value;
       if (key == 'taraweeh') _notifTaraweeh = value;
+      if (key == 'suhoor') _notifSuhoor = value;
+      if (key == 'iftar') _notifIftar = value;
     });
 
     if (user != null) {
@@ -125,6 +133,8 @@ class _SettingsPageState extends State<SettingsPage> {
             'namaz': _notifNamaz,
             'eid': _notifEid,
             'taraweeh': _notifTaraweeh,
+            'suhoor': _notifSuhoor,
+            'iftar': _notifIftar,
           }
         }, SetOptions(merge: true));
       } catch (e) {
@@ -135,6 +145,8 @@ class _SettingsPageState extends State<SettingsPage> {
             _notifNamaz = prevNamaz;
             _notifEid = prevEid;
             _notifTaraweeh = prevTaraweeh;
+            _notifSuhoor = prevSuhoor;
+            _notifIftar = prevIftar;
           });
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -416,6 +428,22 @@ class _SettingsPageState extends State<SettingsPage> {
                           _notifEid,
                           (v) => _updateNotification('eid', v),
                           savingKey: 'eid',
+                        ),
+                        _buildSwitchTile(
+                          Icons.wb_twilight_outlined,
+                          'Suhoor Reminder',
+                          '45 minutes before Fajr during Ramadan',
+                          _notifSuhoor,
+                          (v) => _updateNotification('suhoor', v),
+                          savingKey: 'suhoor',
+                        ),
+                        _buildSwitchTile(
+                          Icons.set_meal_outlined,
+                          'Iftar Reminder',
+                          '15 minutes before Maghrib during Ramadan',
+                          _notifIftar,
+                          (v) => _updateNotification('iftar', v),
+                          savingKey: 'iftar',
                         ),
                         _navTile(
                           icon: Icons.notifications_active_outlined,

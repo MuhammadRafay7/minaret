@@ -78,6 +78,10 @@ class NotificationService {
   // Without persistence, the same mosque gets a different slot after restart
   // making old notifications impossible to cancel.
   static final Map<String, int> _mosqueSlots = {};
+  // Last-known schedule data per mosque — used to re-apply notifications
+  // immediately when the user changes a notification preference, without
+  // waiting for the next Firestore stream event.
+  static final Map<String, Map<String, dynamic>> _lastMosqueData = {};
   static int _nextSlot = 100;
   static const _slotsPrefKey = 'mosque_notif_slots';
   // Slot layout (120 IDs per mosque):
@@ -353,9 +357,44 @@ class NotificationService {
         description: 'Reminder to give Zakat al-Fitr before Eid',
         importance: Importance.high,
       ),
+      AndroidNotificationChannel(
+        'push_alerts',
+        'Push Notifications',
+        description: 'Remote push notifications from mosque admin',
+        importance: Importance.max,
+      ),
     ];
     for (final channel in channels) {
       await androidImpl.createNotificationChannel(channel);
+    }
+  }
+
+  /// Shows a push notification using the already-initialised plugin.
+  /// Used by the background FCM handler to avoid creating a second
+  /// uninitialized FlutterLocalNotificationsPlugin instance.
+  static Future<void> showRawPush({
+    required int id,
+    required String title,
+    required String body,
+  }) async {
+    if (!_isInitialized) await init();
+    try {
+      await _notifications.show(
+        id,
+        title,
+        body,
+        const NotificationDetails(
+          android: AndroidNotificationDetails(
+            'push_alerts',
+            'Push Notifications',
+            channelDescription: 'Remote push notifications',
+            importance: Importance.max,
+            priority: Priority.high,
+          ),
+        ),
+      );
+    } catch (e) {
+      debugPrint('🔴 showRawPush failed: $e');
     }
   }
 
@@ -431,7 +470,6 @@ class NotificationService {
     }
     if (kDebugMode) debugPrint('🟢 startForUser: authenticated');
 
-    await _rescheduleIfExpiring();
     await cancelAllListeners();
 
     await Future.wait([
@@ -440,33 +478,6 @@ class NotificationService {
       _startRealtimeLocationListener().catchError(
           (e) => debugPrint('🔴 _startRealtimeLocationListener error: $e')),
     ]);
-  }
-
-  static Future<void> _rescheduleIfExpiring() async {
-    try {
-      final prefs = await SharedPreferences.getInstance();
-      final lastScheduledStr = prefs.getString('last_notification_scheduled');
-
-      if (lastScheduledStr != null) {
-        final lastScheduled = DateTime.tryParse(lastScheduledStr);
-        if (lastScheduled != null) {
-          final daysSince = DateTime.now().difference(lastScheduled).inDays;
-          debugPrint('📅 Days since last scheduling: $daysSince');
-          if (daysSince < 5) {
-            debugPrint('✅ Notifications still fresh, skipping reschedule');
-            return;
-          }
-          debugPrint('⚠️ Notifications expiring soon — rescheduling');
-        }
-      }
-
-      await prefs.setString(
-        'last_notification_scheduled',
-        DateTime.now().toIso8601String(),
-      );
-    } catch (e) {
-      debugPrint('🔴 _rescheduleIfExpiring error: $e');
-    }
   }
 
   // ── Cancel everything ─────────────────────────────────────────────────────
@@ -497,6 +508,20 @@ class NotificationService {
     _realtimeLocationSub = null;
 
     _currentNearestId = null;
+    _lastMosqueData.clear();
+
+    // Reset per-user state so a newly signed-in user inherits safe defaults
+    // rather than the previous user's disabled/enabled flags.
+    _notificationsEnabled = true;
+    _notificationPrefs = const {
+      'janaza': true,
+      'adhan': true,
+      'namaz': true,
+      'eid': true,
+      'taraweeh': true,
+      'suhoor': true,
+      'iftar': true,
+    };
   }
 
   // ══════════════════════════════════════════════════════════════════════════
@@ -511,6 +536,11 @@ class NotificationService {
         if (userProfile == null) return;
 
         final followed = userProfile.followedMosques;
+
+        // Capture previous pref state before updating so we can detect changes.
+        final prevEnabled = _notificationsEnabled;
+        final prevPrefs = Map<String, dynamic>.from(_notificationPrefs);
+
         _notificationsEnabled = userProfile.notificationsEnabled;
         _notificationPrefs =
             userProfile.notificationPrefs.isNotEmpty
@@ -524,6 +554,7 @@ class NotificationService {
         for (final id in removed) {
           await _mosqueListeners[id]?.cancel();
           _mosqueListeners.remove(id);
+          _lastMosqueData.remove(id);
           await _cancelPrayerNotificationsFor(id);
         }
 
@@ -532,11 +563,48 @@ class NotificationService {
           _mosqueListeners[mosqueId] =
               await _watchMosque(mosqueId, isFollowing: true);
         }
+
+        // If the master switch or any individual pref changed, immediately
+        // cancel and re-apply notifications for every already-watched mosque
+        // using the last cached data — no need to wait for the next Firestore
+        // mosque stream event.
+        final prefsChanged = prevEnabled != _notificationsEnabled ||
+            !_mapsEqual(prevPrefs, _notificationPrefs);
+        if (prefsChanged && _lastMosqueData.isNotEmpty) {
+          await _applyPrefsToAllMosques();
+        }
       },
       onError: (e) => debugPrint('🔴 Following stream error: $e'),
       cancelOnError: false,
     );
     _listeners.add(sub);
+  }
+
+  /// Cancel all existing alarms and re-schedule them using the current pref
+  /// state for every mosque whose data we have already seen.
+  static Future<void> _applyPrefsToAllMosques() async {
+    for (final entry in _lastMosqueData.entries) {
+      final mosqueId = entry.key;
+      final data = entry.value;
+      await _cancelPrayerNotificationsFor(mosqueId);
+      if (_isEnabled('namaz')) await _schedulePrayersFor(data);
+      if (_isEnabled('adhan')) await _scheduleAdhanFor(data);
+      if (_isEnabled('taraweeh')) await _scheduleTaraweehFor(data);
+      if (_isEnabled('suhoor')) await _scheduleSuhoorFor(data);
+      if (_isEnabled('iftar')) await _scheduleIftarFor(data);
+      await _scheduleZakatFitrFor(data);
+      if (_isEnabled('eid')) await _scheduleEidFor(data);
+      if (_isEnabled('janaza')) await _scheduleJanazaFor(data);
+      debugPrint('🔄 Re-applied prefs for mosque $mosqueId');
+    }
+  }
+
+  static bool _mapsEqual(Map<String, dynamic> a, Map<String, dynamic> b) {
+    if (a.length != b.length) return false;
+    for (final key in a.keys) {
+      if (a[key] != b[key]) return false;
+    }
+    return true;
   }
 
   // ══════════════════════════════════════════════════════════════════════════
@@ -641,12 +709,15 @@ class NotificationService {
             'adhanAsr',
             'adhanMaghrib',
             'adhanIsha',
+            'jummah',
+            'adhanJummah',
             'taraweeh',
             'eidFitr',
             'eidAdha',
             'eidFitrDate',
             'eidAdhaDate',
             'janazaTime',
+            'janazaDate',
           ];
           final hasChanged = lastData == null ||
               prayers.any((p) => newData[p] != lastData![p]);
@@ -676,6 +747,7 @@ class NotificationService {
               await _scheduleJanazaFor(newData);
             }
             lastData = Map<String, dynamic>.from(newData);
+            _lastMosqueData[mosqueId] = lastData!;
 
             try {
               final prefs = await SharedPreferences.getInstance();
