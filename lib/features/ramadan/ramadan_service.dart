@@ -338,5 +338,6 @@ class RamadanService extends ChangeNotifier {
     return null;
   }
 
-  DateTime _dateOnly(DateTime d) => DateTime(d.year, d.month, d.day);
+  // Use UTC to avoid timezone mismatches between device and Hijri calendar output.
+  DateTime _dateOnly(DateTime d) => DateTime.utc(d.year, d.month, d.day);
 }

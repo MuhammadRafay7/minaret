@@ -28,10 +28,16 @@ class PrayerManager {
                        kDefaultMadhab;
 
     final params = _getParams(savedMethod);
-    params.madhab = savedMadhab == kMadhabShafi ? Madhab.shafi : Madhab.hanafi;
+    params.madhab =
+        savedMadhab.toLowerCase() == kMadhabShafi ? Madhab.shafi : Madhab.hanafi;
 
-    final date = DateTime.now();
-    final components = DateComponents(date.year, date.month, date.day);
+    // Estimate the local calendar date at the target longitude to avoid
+    // off-by-one errors when the device is in a different day boundary.
+    final utcOffsetHours = (lng / 15).round().clamp(-12, 14);
+    final dateAtLocation =
+        DateTime.now().toUtc().add(Duration(hours: utcOffsetHours));
+    final components = DateComponents(
+        dateAtLocation.year, dateAtLocation.month, dateAtLocation.day);
 
     return PrayerTimes(coordinates, components, params);
   }

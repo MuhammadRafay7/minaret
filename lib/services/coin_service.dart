@@ -104,14 +104,10 @@ class CoinService {
   }
 
   // Called on app launch. Returns true if coins were awarded.
+  // The check-and-award is atomic to prevent concurrent launches double-awarding.
   Future<bool> onDailyLogin() async {
     final today = _dateKey(DateTime.now());
-    final progress = await _repo.getProgress();
-    if (progress.lastLoginDate == today) return false;
-
-    await _repo.setLastLoginDate(today);
-    await _repo.awardCoins(2, type: 'login', description: 'Daily login');
-    return true;
+    return _repo.recordDailyLogin(today, 2);
   }
 
   String _dateKey(DateTime d) =>

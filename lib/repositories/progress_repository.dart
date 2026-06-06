@@ -159,7 +159,8 @@ class ProgressRepository {
     return newProgress;
   }
 
-  // Awards milestone bonus only once. Returns true if milestone was new.
+  // Awards milestone bonus only once. Coin award is inside the same transaction
+  // so concurrent callers cannot double-award the same milestone.
   Future<bool> checkAndAwardMilestone(
     String key,
     int bonusCoins,
@@ -167,25 +168,49 @@ class ProgressRepository {
   ) async {
     if (_uid.isEmpty) return false;
 
-    return _db.runTransaction<bool>((tx) async {
+    bool isNew = false;
+    await _db.runTransaction((tx) async {
       final snap = await tx.get(_doc);
       final milestones = snap.exists
           ? ((snap.data() as Map<String, dynamic>)['milestones'] as Map? ?? {})
               .cast<String, bool>()
           : <String, bool>{};
 
-      if (milestones[key] == true) return false;
+      if (milestones[key] == true) {
+        isNew = false;
+        return;
+      }
+
+      final current =
+          snap.exists ? UserProgress.fromDoc(snap) : UserProgress.empty(_uid);
+      final newTotal = current.totalCoinsEarned + bonusCoins;
+      final newCurrent = current.currentCoins + bonusCoins;
+      final newLevel = levelFromCoins(newTotal);
 
       tx.set(
         _doc,
-        {'milestones': {key: true}},
+        {
+          'milestones': {key: true},
+          'totalCoinsEarned': newTotal,
+          'currentCoins': newCurrent,
+          'level': newLevel,
+          'multiplier': multiplierForLevel(newLevel),
+          'updatedAt': FieldValue.serverTimestamp(),
+        },
         SetOptions(merge: true),
       );
-      return true;
-    }).then((isNew) async {
-      if (isNew) await awardCoins(bonusCoins, type: 'milestone', description: description);
-      return isNew;
+      isNew = true;
     });
+
+    if (isNew) {
+      _doc.collection('transactions').add({
+        'type': 'milestone',
+        'coins': bonusCoins,
+        'description': description,
+        'timestamp': FieldValue.serverTimestamp(),
+      });
+    }
+    return isNew;
   }
 
   Future<void> setLastHadithDate(String date) async {
@@ -196,6 +221,40 @@ class ProgressRepository {
   Future<void> setLastLoginDate(String date) async {
     if (_uid.isEmpty) return;
     await _doc.set({'lastLoginDate': date}, SetOptions(merge: true));
+  }
+
+  // Atomically checks + records the daily login and awards coins in one
+  // transaction so two concurrent app launches cannot both award the bonus.
+  Future<bool> recordDailyLogin(String today, int coins) async {
+    if (_uid.isEmpty) return false;
+    bool awarded = false;
+    await _db.runTransaction((tx) async {
+      final snap = await tx.get(_doc);
+      final d = snap.data() as Map<String, dynamic>? ?? {};
+      if (d['lastLoginDate'] == today) {
+        awarded = false;
+        return;
+      }
+      final current =
+          snap.exists ? UserProgress.fromDoc(snap) : UserProgress.empty(_uid);
+      final newTotal = current.totalCoinsEarned + coins;
+      final newCurrent = current.currentCoins + coins;
+      final newLevel = levelFromCoins(newTotal);
+      tx.set(
+        _doc,
+        {
+          'lastLoginDate': today,
+          'totalCoinsEarned': newTotal,
+          'currentCoins': newCurrent,
+          'level': newLevel,
+          'multiplier': multiplierForLevel(newLevel),
+          'updatedAt': FieldValue.serverTimestamp(),
+        },
+        SetOptions(merge: true),
+      );
+      awarded = true;
+    });
+    return awarded;
   }
 
   // ── Admin methods (operate on any uid) ───────────────────────────────────────

@@ -56,7 +56,10 @@ class LocationService {
       if (permission == LocationPermission.denied) return null;
     }
 
-    if (permission == LocationPermission.deniedForever) return null;
+    if (permission == LocationPermission.deniedForever) {
+      debugPrint('LocationService: permission denied permanently');
+      return null;
+    }
 
     try {
       if (kIsWeb) {
@@ -158,6 +161,13 @@ class LocationService {
   }
 
   static void clearCache() => _cachedPosition = null;
+
+  /// Returns true when the user has permanently denied location permission.
+  /// Callers should direct the user to open Settings to re-enable it.
+  static Future<bool> isPermissionPermanentlyDenied() async {
+    final permission = await Geolocator.checkPermission();
+    return permission == LocationPermission.deniedForever;
+  }
 
   static double calculateDistance(
     double startLat,

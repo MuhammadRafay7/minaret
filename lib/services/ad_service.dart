@@ -81,6 +81,13 @@ class AdService {
     }
   }
 
+  /// Clears static ad state on sign-out so the next user starts fresh.
+  static void reset() {
+    _lastInterstitialTime = null;
+    _interstitialAd?.dispose();
+    _interstitialAd = null;
+  }
+
   static Future<void> launchPersonalAdUrl(String url) async {
     if (url.isEmpty) return;
     final uri = Uri.tryParse(url);

@@ -67,6 +67,14 @@ class FcmTokenService {
   static Future<void> removeToken() async {
     final user = FirebaseAuth.instance.currentUser;
     if (user == null) return;
+
+    await _onMessageSub?.cancel();
+    _onMessageSub = null;
+    await _tokenRefreshSub?.cancel();
+    _tokenRefreshSub = null;
+    // Allow _initMessageHandlers to register fresh listeners on next sign-in.
+    _handlersReady = false;
+
     await _repo.removeFcmToken(user.uid);
   }
 

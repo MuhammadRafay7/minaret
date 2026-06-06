@@ -6,6 +6,7 @@ class ConnectivityService {
   final _connectivity = Connectivity();
   final _controller = StreamController<bool>.broadcast();
   bool _isOnline = true;
+  StreamSubscription<List<ConnectivityResult>>? _platformSub;
 
   ConnectivityService() {
     _init();
@@ -18,7 +19,7 @@ class ConnectivityService {
   Future<void> _init() async {
     final results = await _connectivity.checkConnectivity();
     _update(results);
-    _connectivity.onConnectivityChanged.listen(_update);
+    _platformSub = _connectivity.onConnectivityChanged.listen(_update);
   }
 
   void _update(List<ConnectivityResult> results) {
@@ -30,5 +31,8 @@ class ConnectivityService {
     }
   }
 
-  void dispose() => _controller.close();
+  void dispose() {
+    _platformSub?.cancel();
+    _controller.close();
+  }
 }

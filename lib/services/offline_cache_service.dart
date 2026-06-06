@@ -10,6 +10,11 @@ class OfflineCacheService {
   static const String _boxName = 'minaret_vault';
   static const String _syncBoxName = 'minaret_sync_queue';
 
+  // Bump this constant whenever the cache schema changes to trigger a
+  // controlled wipe of stale / incompatible cached data on next launch.
+  static const int _schemaVersion = 1;
+  static const String _schemaVersionKey = '_schema_version';
+
   // ── Initialization ─────────────────────────────────────────────────────────
 
   /// Initializes Hive with AES-256 encryption.  Call once in main().
@@ -38,6 +43,21 @@ class OfflineCacheService {
       _openBoxSafe(_boxName, cipher),
       _openBoxSafe(_syncBoxName, cipher),
     ]);
+
+    await _migrateSchemaIfNeeded();
+  }
+
+  /// Wipes the cache box when the stored schema version doesn't match the
+  /// current one.  Called once per cold start — cheap when versions match.
+  static Future<void> _migrateSchemaIfNeeded() async {
+    final box = Hive.box<dynamic>(_boxName);
+    final stored = box.get(_schemaVersionKey) as int?;
+    if (stored != _schemaVersion) {
+      debugPrint(
+          'OfflineCacheService: schema $stored → $_schemaVersion, clearing cache');
+      await box.clear();
+      await box.put(_schemaVersionKey, _schemaVersion);
+    }
   }
 
   /// Opens a box with encryption.  If decryption fails (key mismatch after a

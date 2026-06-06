@@ -59,14 +59,14 @@ class UserPrayerStats {
     final data = doc.data() as Map<String, dynamic>? ?? {};
     return UserPrayerStats(
       userId: doc.id,
-      totalPrayers: data['totalPrayers'] as int? ?? 0,
-      totalDaysPrayed: data['totalDaysPrayed'] as int? ?? 0,
-      currentStreak: data['currentStreak'] as int? ?? 0,
-      longestStreak: data['longestStreak'] as int? ?? 0,
+      totalPrayers: (data['totalPrayers'] as num?)?.toInt() ?? 0,
+      totalDaysPrayed: (data['totalDaysPrayed'] as num?)?.toInt() ?? 0,
+      currentStreak: (data['currentStreak'] as num?)?.toInt() ?? 0,
+      longestStreak: (data['longestStreak'] as num?)?.toInt() ?? 0,
       overallCompletionRate:
           (data['overallCompletionRate'] as num?)?.toDouble() ?? 0.0,
-      prayerCounts:
-          ((data['prayerCounts'] as Map?) ?? {}).cast<String, int>(),
+      prayerCounts: ((data['prayerCounts'] as Map?) ?? {})
+          .map((k, v) => MapEntry(k as String, (v as num).toInt())),
       prayerCompletionRates: ((data['prayerCompletionRates'] as Map?) ?? {})
           .map((k, v) => MapEntry(k as String, (v as num).toDouble())),
       lastPrayerDate: (data['lastPrayerDate'] as Timestamp?)?.toDate(),
