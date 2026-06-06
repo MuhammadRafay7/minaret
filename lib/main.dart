@@ -9,7 +9,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 // UI and Framework
 import 'package:google_fonts/google_fonts.dart';
@@ -43,23 +42,18 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
+    // init() initialises the static plugin instance used by showRawPush().
+    // Creating a second FlutterLocalNotificationsPlugin() without calling
+    // initialize() on it fails silently on some Android versions, so we
+    // always go through NotificationService which owns the single instance.
     await NotificationService.init();
 
     final notif = message.notification;
     if (notif != null) {
-      await FlutterLocalNotificationsPlugin().show(
-        DateTime.now().millisecondsSinceEpoch ~/ 1000,
-        notif.title ?? 'Minaret',
-        notif.body ?? '',
-        const NotificationDetails(
-          android: AndroidNotificationDetails(
-            'push_alerts',
-            'Push Notifications',
-            channelDescription: 'Remote push notifications',
-            importance: Importance.max,
-            priority: Priority.high,
-          ),
-        ),
+      await NotificationService.showRawPush(
+        id: DateTime.now().millisecondsSinceEpoch ~/ 1000,
+        title: notif.title ?? 'Minaret',
+        body: notif.body ?? '',
       );
       debugPrint('🔔 Background notification displayed: ${notif.title}');
     }
