@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:minaret/l10n/generated/app_localizations.dart';
 import 'package:minaret/core/theme.dart';
+import 'package:minaret/services/enhanced_prayer_tracker_service.dart';
 import 'package:minaret/services/prayer_tracker_service.dart';
 
 class PrayerTrackerCard extends StatefulWidget {
@@ -103,9 +104,11 @@ class _PrayerTrackerCardState extends State<PrayerTrackerCard>
     // Defer service write to AFTER current frame is painted
     Future(() async {
       await PrayerTrackerService.togglePrayer(DateTime.now(), key);
+      // Sync to Firestore and use the authoritative streak from returned stats.
+      final stats = await EnhancedPrayerTrackerService.togglePrayer(key);
       if (mounted) {
         setState(() {
-          _streak = PrayerTrackerService.getStreak();
+          _streak = stats?.currentStreak ?? PrayerTrackerService.getStreak();
         });
       }
     });

@@ -5,6 +5,12 @@
 -keep class io.flutter.view.** { *; }
 -keep class io.flutter.embedding.** { *; }
 -keep class io.flutter.plugins.** { *; }
+
+# flutter_local_notifications — must be kept explicitly because the package
+# lives under com.dexterous.* which the generic io.flutter.plugins rule misses.
+# Without this, R8 strips the alarm receiver and all scheduled notifications
+# silently vanish in release builds.
+-keep class com.dexterous.flutterlocalnotifications.** { *; }
 -keep class com.google.admob.** { *; }
 
 # Firebase & Firestore

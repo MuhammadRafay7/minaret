@@ -125,9 +125,13 @@ class PrayerRepository {
   int getLocalStreak() {
     int streak = 0;
     var day = DateTime.now();
+    // Skip today if not all 5 prayers are complete — mirrors Firestore streak logic.
+    if (getLocalDayStatus(day).length < 5) {
+      day = day.subtract(const Duration(days: 1));
+    }
     while (true) {
       final done = getLocalDayStatus(day);
-      if (done.isEmpty) break;
+      if (done.length < 5) break;
       streak++;
       day = day.subtract(const Duration(days: 1));
     }
@@ -195,11 +199,11 @@ class PrayerRepository {
     final cutoff = DateTime.now().subtract(const Duration(days: 365));
     final snap = await _records
         .where('userId', isEqualTo: _uid)
+        .where('date', isGreaterThan: Timestamp.fromDate(cutoff))
         .get();
 
     final records = snap.docs
         .map(PrayerRecord.fromDoc)
-        .where((r) => r.date.isAfter(cutoff))
         .toList()
       ..sort((a, b) => a.date.compareTo(b.date));
 

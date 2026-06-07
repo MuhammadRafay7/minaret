@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:ui' show Locale;
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:timezone/timezone.dart' as tz;
@@ -43,7 +44,28 @@ class NotificationService {
   // we fall back to inexact scheduling so zonedSchedule() never throws and
   // silently drops the notification.
   static bool _canScheduleExact = false;
+  // true  = app is excluded from battery optimisation (good — alarms fire on time)
+  // false = OS/manufacturer power manager may kill scheduled alarms
+  static bool _ignoringBatteryOptimizations = false;
   static bool _notificationsEnabled = true;
+
+  static const _systemChannel = MethodChannel('com.atelier.minaret/system');
+
+  /// Whether exact alarms are currently granted by the OS.
+  static bool get canScheduleExact => _canScheduleExact;
+
+  /// Whether the app is excluded from battery optimisation.
+  /// false means Doze / manufacturer power managers may suppress notifications.
+  static bool get ignoringBatteryOptimizations => _ignoringBatteryOptimizations;
+
+  /// Ask the OS to open the battery-optimisation exemption dialog for this app.
+  static Future<void> requestBatteryOptimizationExclusion() async {
+    try {
+      await _systemChannel.invokeMethod<void>('requestIgnoreBatteryOptimizations');
+    } catch (e) {
+      debugPrint('🔴 Battery optimization request failed: $e');
+    }
+  }
   static Map<String, dynamic> _notificationPrefs = const {
     'janaza': true,
     'adhan': true,
@@ -287,6 +309,17 @@ class NotificationService {
     } catch (permError) {
       debugPrint('🔴 Permission/channel setup failed: $permError');
     }
+
+    // Check battery optimisation exclusion via native channel. When false the
+    // OS (or manufacturer power manager) can delay / kill AlarmManager alarms.
+    try {
+      final bool? ignoring = await _systemChannel
+          .invokeMethod<bool>('isIgnoringBatteryOptimizations');
+      _ignoringBatteryOptimizations = ignoring ?? false;
+      debugPrint('🔋 Ignoring battery optimizations: $_ignoringBatteryOptimizations');
+    } catch (e) {
+      debugPrint('🔴 Battery optimization check failed: $e');
+    }
   }
 
   /// Picks the schedule mode based on whether the OS grants exact alarms.
@@ -440,6 +473,7 @@ class NotificationService {
           await androidImpl?.areNotificationsEnabled() ?? false,
       'canScheduleExact':
           await androidImpl?.canScheduleExactNotifications() ?? false,
+      'ignoringBatteryOptimizations': _ignoringBatteryOptimizations,
       'pendingScheduledCount': pending.length,
       'prefsMasterEnabled': _notificationsEnabled,
       'prefs': _notificationPrefs,
