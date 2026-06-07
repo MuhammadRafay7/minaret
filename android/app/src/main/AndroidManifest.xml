@@ -9,8 +9,12 @@
     
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
-    
+
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <!-- Allows the app to ask the OS to exclude it from battery optimisation.
+         Without this, Doze mode and manufacturer power managers (MIUI, One UI,
+         ColorOS) silently kill AlarmManager alarms and scheduled notifications. -->
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     
@@ -71,6 +75,10 @@
         <receiver android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationBootReceiver" android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <!-- LOCKED_BOOT_COMPLETED fires before the user unlocks after reboot
+                     (Direct Boot). Without it, AlarmManager alarms can fire and be
+                     missed because the boot receiver hasn't rescheduled them yet. -->
+                <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED"/>
                 <action android:name="android.intent.action.MY_PACKAGE_REPLACED"/>
                 <action android:name="android.intent.action.QUICKBOOT_POWERON"/>
             </intent-filter>

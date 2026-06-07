@@ -39,6 +39,10 @@ class _SettingsPageState extends State<SettingsPage> {
   int _unreadNotifications = 0;
   final Set<String> _savingKeys = {};
 
+  // Notification permission health — loaded once on page open.
+  bool _canScheduleExact = true;
+  bool _ignoringBatteryOptimizations = true;
+
   @override
   void initState() {
     super.initState();
@@ -99,6 +103,19 @@ class _SettingsPageState extends State<SettingsPage> {
       _unreadNotifications = unreadNotifications;
       _isLoadingPrefs = false;
     });
+
+    // Check notification permission health after prefs are loaded so the
+    // warning banner has accurate data when the section first renders.
+    try {
+      final status = await NotificationService.debugStatus();
+      if (!mounted) return;
+      setState(() {
+        _canScheduleExact =
+            status['canScheduleExact'] as bool? ?? true;
+        _ignoringBatteryOptimizations =
+            status['ignoringBatteryOptimizations'] as bool? ?? true;
+      });
+    } catch (_) {}
   }
 
   Future<void> _updateNotification(String key, bool value) async {
@@ -383,6 +400,30 @@ class _SettingsPageState extends State<SettingsPage> {
                     // ── NOTIFICATIONS ──
                     if (user != null) ...[
                       _sectionHeader(_displayText(context, l10n?.sectionNotifications ?? 'NOTIFICATIONS')),
+
+                      // ── Permission warning banner ──────────────────────────
+                      if (!_canScheduleExact || !_ignoringBatteryOptimizations)
+                        _NotificationWarningBanner(
+                          exactAlarmsOk: _canScheduleExact,
+                          batteryOk: _ignoringBatteryOptimizations,
+                          onFixBattery: () async {
+                            await NotificationService
+                                .requestBatteryOptimizationExclusion();
+                            // Re-check after the user returns from the dialog.
+                            final status =
+                                await NotificationService.debugStatus();
+                            if (!mounted) return;
+                            setState(() {
+                              _ignoringBatteryOptimizations =
+                                  status['ignoringBatteryOptimizations']
+                                      as bool? ??
+                                      true;
+                            });
+                          },
+                        ),
+                      if (!_canScheduleExact || !_ignoringBatteryOptimizations)
+                        const SizedBox(height: 8),
+
                       _card([
                         if (_isMosqueAdmin)
                           _navTile(
@@ -758,4 +799,129 @@ class _SettingsPageState extends State<SettingsPage> {
       ),
     );
   }
+}
+
+// ── Notification permission warning banner ────────────────────────────────────
+
+class _NotificationWarningBanner extends StatelessWidget {
+  const _NotificationWarningBanner({
+    required this.exactAlarmsOk,
+    required this.batteryOk,
+    required this.onFixBattery,
+  });
+
+  final bool exactAlarmsOk;
+  final bool batteryOk;
+  final VoidCallback onFixBattery;
+
+  @override
+  Widget build(BuildContext context) {
+    final items = <_WarningItem>[
+      if (!exactAlarmsOk)
+        const _WarningItem(
+          icon: Icons.alarm_off_outlined,
+          title: 'Exact alarms not granted',
+          subtitle:
+              'Go to Settings → Apps → Minaret → Permissions → Alarms & Reminders and turn it on.',
+        ),
+      if (!batteryOk)
+        _WarningItem(
+          icon: Icons.battery_alert_outlined,
+          title: 'Battery optimisation active',
+          subtitle:
+              'The OS may delay or skip prayer notifications. Tap "Fix" to exclude Minaret.',
+          action: TextButton(
+            onPressed: onFixBattery,
+            child: const Text(
+              'FIX',
+              style: TextStyle(
+                color: Colors.amber,
+                fontWeight: FontWeight.w700,
+                letterSpacing: 0.8,
+              ),
+            ),
+          ),
+        ),
+    ];
+
+    return Container(
+      margin: const EdgeInsets.only(bottom: 4),
+      decoration: BoxDecoration(
+        color: Colors.orange.withValues(alpha: 0.12),
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: Colors.orange.withValues(alpha: 0.35)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
+            child: Row(
+              children: [
+                const Icon(Icons.warning_amber_rounded,
+                    color: Colors.amber, size: 18),
+                const SizedBox(width: 8),
+                Text(
+                  'Notifications may be unreliable',
+                  style: GoogleFonts.montserrat(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.orange.shade200,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          for (final item in items)
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 6, 16, 10),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Icon(item.icon, size: 18, color: Colors.orange.shade300),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          item.title,
+                          style: GoogleFonts.montserrat(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.orange.shade200,
+                          ),
+                        ),
+                        const SizedBox(height: 2),
+                        Text(
+                          item.subtitle,
+                          style: GoogleFonts.lato(
+                            fontSize: 11,
+                            color: Colors.orange.shade100.withValues(alpha: 0.8),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  if (item.action != null) item.action!,
+                ],
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+}
+
+class _WarningItem {
+  const _WarningItem({
+    required this.icon,
+    required this.title,
+    required this.subtitle,
+    this.action,
+  });
+  final IconData icon;
+  final String title;
+  final String subtitle;
+  final Widget? action;
 }
