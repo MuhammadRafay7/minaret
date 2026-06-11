@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:ui' as ui;
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -153,7 +154,10 @@ class _EnhancedPrayerTrackerCardState extends State<EnhancedPrayerTrackerCard>
         });
       }
     } catch (e) {
-      if (kDebugMode) debugPrint('Prayer sync error: $e');
+      final errorStr = e.toString().toLowerCase();
+      debugPrint('Prayer sync error: $e');
+      debugPrint('User authenticated: ${FirebaseAuth.instance.currentUser != null}');
+
       if (mounted) {
         setState(() {
           _syncingKeys.remove(key);
@@ -163,12 +167,34 @@ class _EnhancedPrayerTrackerCardState extends State<EnhancedPrayerTrackerCard>
             _completed = List.from(_completed)..add(key);
           }
         });
+
+        String errorMsg = AppLocalizations.of(context)?.failedToSyncPrayer ??
+            'Failed to sync prayer. Check connection.';
+
+        // Extract meaningful error message from exception
+        if (errorStr.contains('user not authenticated') ||
+            errorStr.contains('not authenticated')) {
+          errorMsg = 'Please sign in to track prayers';
+        } else if (errorStr.contains('permission') ||
+            errorStr.contains('permission denied')) {
+          errorMsg = 'You don\'t have permission to update prayers';
+        } else if (errorStr.contains('network') ||
+            errorStr.contains('connection') ||
+            errorStr.contains('socket exception') ||
+            errorStr.contains('timeout')) {
+          errorMsg = 'Network error. Please check your connection.';
+        } else if (errorStr.contains('failed to update prayer record')) {
+          errorMsg = 'Failed to save prayer. Try again.';
+        } else if (errorStr.contains('failed to update prayer statistics')) {
+          errorMsg = 'Failed to update statistics. Prayer may be saved.';
+        }
+
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(AppLocalizations.of(context)?.failedToSyncPrayer ??
-                'Failed to sync prayer. Check connection.'),
+            content: Text(errorMsg),
             backgroundColor: Colors.redAccent,
             behavior: SnackBarBehavior.floating,
+            duration: const Duration(seconds: 3),
           ),
         );
       }
