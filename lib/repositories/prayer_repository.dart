@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../services/coin_service.dart';
 
@@ -141,7 +142,10 @@ class PrayerRepository {
   // ── Firestore ─────────────────────────────────────────────────────────────
 
   Future<UserPrayerStats?> togglePrayer(String prayerName, {bool queued = false}) async {
-    if (_uid.isEmpty) return null;
+    if (_uid.isEmpty) {
+      throw Exception('User not authenticated');
+    }
+
     final today = DateTime.now();
     final dateKey = _dayKey(today);
     final docId = '${_uid}_$dateKey';
@@ -150,44 +154,58 @@ class PrayerRepository {
     bool wasAdded = false;
     List<String> finalCompleted = [];
 
-    await _db.runTransaction((tx) async {
-      final snap = await tx.get(ref);
-      List<String> completed;
-      if (snap.exists) {
-        completed =
-            ((snap.data() as Map)['completedPrayers'] as List? ?? [])
-                .cast<String>();
-      } else {
-        completed = [];
-      }
+    try {
+      await _db.runTransaction((tx) async {
+        final snap = await tx.get(ref);
+        List<String> completed;
+        if (snap.exists) {
+          completed =
+              ((snap.data() as Map)['completedPrayers'] as List? ?? [])
+                  .cast<String>();
+        } else {
+          completed = [];
+        }
 
-      if (completed.contains(prayerName)) {
-        completed.remove(prayerName);
-        wasAdded = false;
-      } else {
-        completed.add(prayerName);
-        wasAdded = true;
-      }
-      finalCompleted = List<String>.from(completed);
+        if (completed.contains(prayerName)) {
+          completed.remove(prayerName);
+          wasAdded = false;
+        } else {
+          completed.add(prayerName);
+          wasAdded = true;
+        }
+        finalCompleted = List<String>.from(completed);
 
-      final rate = completed.length / _prayers.length;
-      tx.set(ref, {
-        'userId': _uid,
-        'date': Timestamp.fromDate(
-            DateTime(today.year, today.month, today.day)),
-        'completedPrayers': completed,
-        'completionRate': rate,
+        final rate = completed.length / _prayers.length;
+        tx.set(ref, {
+          'userId': _uid,
+          'date': Timestamp.fromDate(
+              DateTime(today.year, today.month, today.day)),
+          'completedPrayers': completed,
+          'completionRate': rate,
+        });
       });
-    });
+    } catch (e) {
+      throw Exception('Failed to update prayer record: $e');
+    }
 
-    final stats = await _updateStats();
+    UserPrayerStats? stats;
+    try {
+      stats = await _updateStats();
+    } catch (e) {
+      throw Exception('Failed to update prayer statistics: $e');
+    }
 
     if (wasAdded && stats != null) {
-      CoinService.instance.onPrayerToggled(
-        prayerName,
-        finalCompleted,
-        stats.currentStreak,
-      );
+      try {
+        await CoinService.instance.onPrayerToggled(
+          prayerName,
+          finalCompleted,
+          stats.currentStreak,
+        );
+      } catch (e) {
+        // Log coin service error but don't fail the prayer toggle
+        debugPrint('Warning: Coin service error: $e');
+      }
     }
 
     return stats;
@@ -196,105 +214,110 @@ class PrayerRepository {
   Future<UserPrayerStats?> _updateStats() async {
     if (_uid.isEmpty) return null;
 
-    final cutoff = DateTime.now().subtract(const Duration(days: 365));
-    final snap = await _records
-        .where('userId', isEqualTo: _uid)
-        .where('date', isGreaterThan: Timestamp.fromDate(cutoff))
-        .get();
+    try {
+      final cutoff = DateTime.now().subtract(const Duration(days: 365));
+      final snap = await _records
+          .where('userId', isEqualTo: _uid)
+          .where('date', isGreaterThan: Timestamp.fromDate(cutoff))
+          .get();
 
-    final records = snap.docs
-        .map(PrayerRecord.fromDoc)
-        .toList()
-      ..sort((a, b) => a.date.compareTo(b.date));
+      final records = snap.docs
+          .map(PrayerRecord.fromDoc)
+          .toList()
+        ..sort((a, b) => a.date.compareTo(b.date));
 
-    int totalPrayers = 0;
-    int totalDaysPrayed = 0;
-    final prayerCounts = <String, int>{};
-    DateTime? lastPrayerDate;
+      int totalPrayers = 0;
+      int totalDaysPrayed = 0;
+      final prayerCounts = <String, int>{};
+      DateTime? lastPrayerDate;
 
-    for (final record in records) {
-      if (record.completedPrayers.isEmpty) continue;
-      totalDaysPrayed++;
-      totalPrayers += record.completedPrayers.length;
-      lastPrayerDate = record.date;
-      for (final prayer in record.completedPrayers) {
-        prayerCounts[prayer] = (prayerCounts[prayer] ?? 0) + 1;
+      for (final record in records) {
+        if (record.completedPrayers.isEmpty) continue;
+        totalDaysPrayed++;
+        totalPrayers += record.completedPrayers.length;
+        lastPrayerDate = record.date;
+        for (final prayer in record.completedPrayers) {
+          prayerCounts[prayer] = (prayerCounts[prayer] ?? 0) + 1;
+        }
       }
-    }
 
-    final recordMap = <String, PrayerRecord>{};
-    for (final r in records) {
-      recordMap[_dayKey(r.date)] = r;
-    }
-
-    // Current streak: consecutive fully-completed days.
-    // If today is still in progress, skip it so the streak from previous days shows.
-    int currentStreak = 0;
-    var checkDay = DateTime.now();
-    final todayRecord = recordMap[_dayKey(checkDay)];
-    if (todayRecord == null || todayRecord.completedPrayers.length < _prayers.length) {
-      checkDay = checkDay.subtract(const Duration(days: 1));
-    }
-    while (true) {
-      final r = recordMap[_dayKey(checkDay)];
-      if (r == null || r.completedPrayers.length < _prayers.length) break;
-      currentStreak++;
-      checkDay = checkDay.subtract(const Duration(days: 1));
-    }
-
-    // Longest streak across all records (all 5 prayers required)
-    int longestStreak = 0;
-    int tempStreak = 0;
-    DateTime? prevDay;
-    for (final record in records) {
-      if (record.completedPrayers.length < _prayers.length) continue;
-      final d = DateTime(record.date.year, record.date.month, record.date.day);
-      if (prevDay == null || d.difference(prevDay).inDays == 1) {
-        tempStreak++;
-      } else {
-        tempStreak = 1;
+      final recordMap = <String, PrayerRecord>{};
+      for (final r in records) {
+        recordMap[_dayKey(r.date)] = r;
       }
-      if (tempStreak > longestStreak) longestStreak = tempStreak;
-      prevDay = d;
+
+      // Current streak: consecutive fully-completed days.
+      // If today is still in progress, skip it so the streak from previous days shows.
+      int currentStreak = 0;
+      var checkDay = DateTime.now();
+      final todayRecord = recordMap[_dayKey(checkDay)];
+      if (todayRecord == null || todayRecord.completedPrayers.length < _prayers.length) {
+        checkDay = checkDay.subtract(const Duration(days: 1));
+      }
+      while (true) {
+        final r = recordMap[_dayKey(checkDay)];
+        if (r == null || r.completedPrayers.length < _prayers.length) break;
+        currentStreak++;
+        checkDay = checkDay.subtract(const Duration(days: 1));
+      }
+
+      // Longest streak across all records (all 5 prayers required)
+      int longestStreak = 0;
+      int tempStreak = 0;
+      DateTime? prevDay;
+      for (final record in records) {
+        if (record.completedPrayers.length < _prayers.length) continue;
+        final d = DateTime(record.date.year, record.date.month, record.date.day);
+        if (prevDay == null || d.difference(prevDay).inDays == 1) {
+          tempStreak++;
+        } else {
+          tempStreak = 1;
+        }
+        if (tempStreak > longestStreak) longestStreak = tempStreak;
+        prevDay = d;
+      }
+      if (currentStreak > longestStreak) longestStreak = currentStreak;
+
+      final overallCompletionRate = totalDaysPrayed == 0
+          ? 0.0
+          : totalPrayers / (totalDaysPrayed * 5.0);
+
+      final prayerCompletionRates = <String, double>{
+        for (final e in prayerCounts.entries)
+          e.key: totalDaysPrayed == 0 ? 0.0 : e.value / totalDaysPrayed,
+      };
+
+      final stats = UserPrayerStats(
+        userId: _uid,
+        totalPrayers: totalPrayers,
+        totalDaysPrayed: totalDaysPrayed,
+        currentStreak: currentStreak,
+        longestStreak: longestStreak,
+        overallCompletionRate: overallCompletionRate,
+        prayerCounts: prayerCounts,
+        prayerCompletionRates: prayerCompletionRates,
+        lastPrayerDate: lastPrayerDate ?? DateTime.now(),
+      );
+
+      await _stats.doc(_uid).set({
+        'userId': _uid,
+        'totalPrayers': totalPrayers,
+        'totalDaysPrayed': totalDaysPrayed,
+        'currentStreak': currentStreak,
+        'longestStreak': longestStreak,
+        'overallCompletionRate': overallCompletionRate,
+        'prayerCounts': prayerCounts,
+        'prayerCompletionRates': prayerCompletionRates,
+        'lastPrayerDate': lastPrayerDate != null
+            ? Timestamp.fromDate(lastPrayerDate)
+            : Timestamp.fromDate(DateTime.now()),
+      });
+
+      return stats;
+    } catch (e) {
+      debugPrint('Error in _updateStats: $e');
+      rethrow;
     }
-    if (currentStreak > longestStreak) longestStreak = currentStreak;
-
-    final overallCompletionRate = totalDaysPrayed == 0
-        ? 0.0
-        : totalPrayers / (totalDaysPrayed * 5.0);
-
-    final prayerCompletionRates = <String, double>{
-      for (final e in prayerCounts.entries)
-        e.key: totalDaysPrayed == 0 ? 0.0 : e.value / totalDaysPrayed,
-    };
-
-    final stats = UserPrayerStats(
-      userId: _uid,
-      totalPrayers: totalPrayers,
-      totalDaysPrayed: totalDaysPrayed,
-      currentStreak: currentStreak,
-      longestStreak: longestStreak,
-      overallCompletionRate: overallCompletionRate,
-      prayerCounts: prayerCounts,
-      prayerCompletionRates: prayerCompletionRates,
-      lastPrayerDate: lastPrayerDate ?? DateTime.now(),
-    );
-
-    await _stats.doc(_uid).set({
-      'userId': _uid,
-      'totalPrayers': totalPrayers,
-      'totalDaysPrayed': totalDaysPrayed,
-      'currentStreak': currentStreak,
-      'longestStreak': longestStreak,
-      'overallCompletionRate': overallCompletionRate,
-      'prayerCounts': prayerCounts,
-      'prayerCompletionRates': prayerCompletionRates,
-      'lastPrayerDate': lastPrayerDate != null
-          ? Timestamp.fromDate(lastPrayerDate)
-          : Timestamp.fromDate(DateTime.now()),
-    });
-
-    return stats;
   }
 
   Future<List<String>> getTodayPrayers() async {
