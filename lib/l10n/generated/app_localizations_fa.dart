@@ -159,8 +159,7 @@ class AppLocalizationsFa extends AppLocalizations {
   String get archiveRecordTitle => 'رکورد بایگانی';
 
   @override
-  String get deleteConfirmationPrompt =>
-      'آیا مطمئن هستید که می‌خواهید این جماعت را به طور دائمی حذف کنید؟';
+  String get deleteConfirmationPrompt => 'آیا مطمئن هستید که می‌خواهید این جماعت را به طور دائمی حذف کنید؟';
 
   @override
   String get cancelAction => 'لغو';
@@ -433,12 +432,10 @@ class AppLocalizationsFa extends AppLocalizations {
   String get adminLabel => 'مدیر';
 
   @override
-  String get pendingApproval =>
-      'در انتظار تأیید — پس از تأیید مدیر فهرست خواهد شد';
+  String get pendingApproval => 'در انتظار تأیید — پس از تأیید مدیر فهرست خواهد شد';
 
   @override
-  String get rejectedStatus =>
-      'رد شده — جزئیات را ویرایش کنید و مجدداً ارسال نمایید';
+  String get rejectedStatus => 'رد شده — جزئیات را ویرایش کنید و مجدداً ارسال نمایید';
 
   @override
   String get adhanPrefix => 'ا:';
@@ -499,8 +496,7 @@ class AppLocalizationsFa extends AppLocalizations {
   String get madhabAsrLabel => 'مذهب (عصر)';
 
   @override
-  String get reAuthBeforeDelete =>
-      'لطفاً قبل از حذف حساب، مجدداً احراز هویت کنید.';
+  String get reAuthBeforeDelete => 'لطفاً قبل از حذف حساب، مجدداً احراز هویت کنید.';
 
   @override
   String get prayerStatisticsTitle => 'آمار نماز';
@@ -589,15 +585,13 @@ class AppLocalizationsFa extends AppLocalizations {
   String get unableToLoadMosque => 'امکان بارگذاری مسجد وجود ندارد';
 
   @override
-  String get failedToSyncPrayer =>
-      'همگام‌سازی نماز ناموفق بود. اتصال را بررسی کنید.';
+  String get failedToSyncPrayer => 'همگام‌سازی نماز ناموفق بود. اتصال را بررسی کنید.';
 
   @override
   String get maintenanceTitle => 'نگهداری سیستم';
 
   @override
-  String get maintenanceBody =>
-      'در حال انجام بهبودهای برنامه‌ریزی شده هستیم. لطفاً بعداً دوباره بررسی کنید.';
+  String get maintenanceBody => 'در حال انجام بهبودهای برنامه‌ریزی شده هستیم. لطفاً بعداً دوباره بررسی کنید.';
 
   @override
   String get tryAgain => 'دوباره امتحان کنید';
@@ -606,8 +600,7 @@ class AppLocalizationsFa extends AppLocalizations {
   String get retry => 'تلاش مجدد';
 
   @override
-  String get notifPrefUpdateFailed =>
-      'به‌روزرسانی تنظیمات اعلان ناموفق بود. لطفاً دوباره امتحان کنید.';
+  String get notifPrefUpdateFailed => 'به‌روزرسانی تنظیمات اعلان ناموفق بود. لطفاً دوباره امتحان کنید.';
 
   @override
   String get profileUpdatedSuccess => 'پروفایل با موفقیت به‌روزرسانی شد';
@@ -635,8 +628,7 @@ class AppLocalizationsFa extends AppLocalizations {
   String get detailsOptional => 'جزئیات (اختیاری)';
 
   @override
-  String get donationNotAvailable =>
-      'اطلاعات کمک مالی برای این مسجد موجود نیست.';
+  String get donationNotAvailable => 'اطلاعات کمک مالی برای این مسجد موجود نیست.';
 
   @override
   String get donationDetails => 'جزئیات کمک مالی';
@@ -651,8 +643,7 @@ class AppLocalizationsFa extends AppLocalizations {
   String get closeAction => 'بستن';
 
   @override
-  String get locationNotAvailable =>
-      'مختصات موقعیت مکانی برای این مسجد موجود نیست.';
+  String get locationNotAvailable => 'مختصات موقعیت مکانی برای این مسجد موجود نیست.';
 
   @override
   String get couldNotLaunchMaps => 'امکان باز کردن Google Maps وجود ندارد.';
@@ -725,12 +716,10 @@ class AppLocalizationsFa extends AppLocalizations {
   String get useCurrentLocationGps => 'استفاده از مکان فعلی (GPS)';
 
   @override
-  String get confirmWithPasswordPrompt =>
-      'رمز عبور را برای تأیید حذف وارد کنید';
+  String get confirmWithPasswordPrompt => 'رمز عبور را برای تأیید حذف وارد کنید';
 
   @override
-  String get reAuthFailedMessage =>
-      'احراز هویت مجدد ناموفق بود. لطفاً دوباره امتحان کنید.';
+  String get reAuthFailedMessage => 'احراز هویت مجدد ناموفق بود. لطفاً دوباره امتحان کنید.';
 
   @override
   String get initializationError => 'خطای راه‌اندازی';
@@ -768,24 +757,19 @@ class AppLocalizationsFa extends AppLocalizations {
   String get estimatedAbbr => 'تقریبی';
 
   @override
-  String get azanEstimateNote =>
-      'اوقات اذان تقریبی: فجر −15د · ظهر −10د · عصر −10د · مغرب −5د · عشاء −10د';
+  String get azanEstimateNote => 'اوقات اذان تقریبی: فجر −15د · ظهر −10د · عصر −10د · مغرب −5د · عشاء −10د';
 
   @override
-  String get iqamahEstimateNote =>
-      'اوقات اقامه تقریبی: فجر +20د · ظهر +15د · عصر +15د · مغرب +10د · عشاء +20د';
+  String get iqamahEstimateNote => 'اوقات اقامه تقریبی: فجر +20د · ظهر +15د · عصر +15د · مغرب +10د · عشاء +20د';
 
   @override
-  String get analogBoardError =>
-      'تابلوهای ساعت آنالوگ قابل اسکن نیستند — از صفحه نمایش دیجیتال اوقات نماز عکس بگیرید';
+  String get analogBoardError => 'تابلوهای ساعت آنالوگ قابل اسکن نیستند — از صفحه نمایش دیجیتال اوقات نماز عکس بگیرید';
 
   @override
-  String get noTimesFoundError =>
-      'اوقات نماز یافت نشد — با عکس واضح‌تری امتحان کنید';
+  String get noTimesFoundError => 'اوقات نماز یافت نشد — با عکس واضح‌تری امتحان کنید';
 
   @override
-  String get couldNotReadTimesError =>
-      'خواندن اوقات نماز ممکن نشد — با عکس واضح‌تری امتحان کنید';
+  String get couldNotReadTimesError => 'خواندن اوقات نماز ممکن نشد — با عکس واضح‌تری امتحان کنید';
 
   @override
   String get takePhoto => 'عکس بگیرید';
@@ -854,8 +838,7 @@ class AppLocalizationsFa extends AppLocalizations {
   String get registryUpdatedMessage => 'ثبت با موفقیت به‌روزرسانی شد';
 
   @override
-  String get deletePermanentDialogBody =>
-      'این عمل دائمی است و قابل بازگشت نیست. تمام اطلاعات مرتبط با این مسجد از ثبت جهانی حذف خواهد شد.';
+  String get deletePermanentDialogBody => 'این عمل دائمی است و قابل بازگشت نیست. تمام اطلاعات مرتبط با این مسجد از ثبت جهانی حذف خواهد شد.';
 
   @override
   String get mosqueNameLabel => 'نام مسجد';
@@ -900,8 +883,7 @@ class AppLocalizationsFa extends AppLocalizations {
   String get postAnnouncementAction => 'ارسال اعلان';
 
   @override
-  String get announcementWillExpire =>
-      'اعلان پس از گذشت زمان جنازه به‌طور خودکار منقضی می‌شود.';
+  String get announcementWillExpire => 'اعلان پس از گذشت زمان جنازه به‌طور خودکار منقضی می‌شود.';
 
   @override
   String get maleLabel => 'مرد';
@@ -949,8 +931,7 @@ class AppLocalizationsFa extends AppLocalizations {
   String get announcementPostedTitle => 'اعلان ارسال شد';
 
   @override
-  String get announcementPostedMessage =>
-      'خداوند آنان را مشمول رحمت خود گرداند. الفاتحة';
+  String get announcementPostedMessage => 'خداوند آنان را مشمول رحمت خود گرداند. الفاتحة';
 
   @override
   String get errorEnterDeceasedName => 'نام متوفی را وارد کنید.';
@@ -959,8 +940,7 @@ class AppLocalizationsFa extends AppLocalizations {
   String get errorNameTooLong => 'نام بسیار طولانی است. حداکثر 100 حرف.';
 
   @override
-  String get errorSelectDateAndTimeJanaza =>
-      'تاریخ و زمان جنازه را انتخاب کنید.';
+  String get errorSelectDateAndTimeJanaza => 'تاریخ و زمان جنازه را انتخاب کنید.';
 
   @override
   String get errorJanazaInPast => 'زمان جنازه نمی‌تواند در گذشته باشد.';
@@ -972,12 +952,10 @@ class AppLocalizationsFa extends AppLocalizations {
   String get errorNotAuthorizedMosque => 'شما مدیر این مسجد نیستید.';
 
   @override
-  String get errorInvalidNameLength =>
-      'نام نامعتبر است. طول را بررسی کنید (حداکثر 100).';
+  String get errorInvalidNameLength => 'نام نامعتبر است. طول را بررسی کنید (حداکثر 100).';
 
   @override
-  String get errorSomethingWentWrongTryAgain =>
-      'مشکلی پیش آمد. دوباره تلاش کنید.';
+  String get errorSomethingWentWrongTryAgain => 'مشکلی پیش آمد. دوباره تلاش کنید.';
 
   @override
   String get editJanazaTitle => 'ویرایش جنازه';
@@ -1015,8 +993,7 @@ class AppLocalizationsFa extends AppLocalizations {
   }
 
   @override
-  String get qadaInfoBanner =>
-      'تکمیل نمازهای قضا اینجا بر روند روزانه شما تأثیر نمی‌گذارد. روندها فقط نمازهای روزانه به‌موقع را حساب می‌کنند.';
+  String get qadaInfoBanner => 'تکمیل نمازهای قضا اینجا بر روند روزانه شما تأثیر نمی‌گذارد. روندها فقط نمازهای روزانه به‌موقع را حساب می‌کنند.';
 
   @override
   String get totalPendingLabel => 'مجموع معوقه';
@@ -1123,8 +1100,7 @@ class AppLocalizationsFa extends AppLocalizations {
   String get unlockProfileBadge => 'نشان در جامعه مسجد';
 
   @override
-  String get unlockQadaAnalytics =>
-      'تحلیل قضا — ببینید کدام نمازها را بیشتر از دست می‌دهید';
+  String get unlockQadaAnalytics => 'تحلیل قضا — ببینید کدام نمازها را بیشتر از دست می‌دهید';
 
   @override
   String get unlockMultiplier15 => 'ضریب امتیاز ۱.۵×';
@@ -1399,8 +1375,7 @@ class AppLocalizationsFa extends AppLocalizations {
   String get ramadanDayAdjustment => 'تنظیم روز';
 
   @override
-  String get ramadanDayAdjustmentHint =>
-      'اگر در منطقه شما هلال زودتر یا دیرتر دیده شد، یک روز جابه‌جا کنید';
+  String get ramadanDayAdjustmentHint => 'اگر در منطقه شما هلال زودتر یا دیرتر دیده شد، یک روز جابه‌جا کنید';
 
   @override
   String get ramadanImsakBuffer => 'فاصله امساک (دقیقه)';

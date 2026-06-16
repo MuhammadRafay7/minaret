@@ -757,12 +757,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String get estimatedAbbr => '估计';
 
   @override
-  String get azanEstimateNote =>
-      '阿赞时间估算：晨礼 −15分 · 晌礼 −10分 · 晡礼 −10分 · 昏礼 −5分 · 宵礼 −10分';
+  String get azanEstimateNote => '阿赞时间估算：晨礼 −15分 · 晌礼 −10分 · 晡礼 −10分 · 昏礼 −5分 · 宵礼 −10分';
 
   @override
-  String get iqamahEstimateNote =>
-      '伊卡玛时间估算：晨礼 +20分 · 晌礼 +15分 · 晡礼 +15分 · 昏礼 +10分 · 宵礼 +20分';
+  String get iqamahEstimateNote => '伊卡玛时间估算：晨礼 +20分 · 晌礼 +15分 · 晡礼 +15分 · 昏礼 +10分 · 宵礼 +20分';
 
   @override
   String get analogBoardError => '无法扫描模拟时钟板 — 请拍摄数字礼拜时间显示屏';
@@ -840,8 +838,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get registryUpdatedMessage => '注册更新成功';
 
   @override
-  String get deletePermanentDialogBody =>
-      '此操作是永久性的，无法撤销。与该清真寺相关的所有数据将从全球注册表中删除。';
+  String get deletePermanentDialogBody => '此操作是永久性的，无法撤销。与该清真寺相关的所有数据将从全球注册表中删除。';
 
   @override
   String get mosqueNameLabel => '清真寺名称';

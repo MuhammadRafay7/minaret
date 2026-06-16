@@ -159,8 +159,7 @@ class AppLocalizationsUr extends AppLocalizations {
   String get archiveRecordTitle => 'آرکائیو ریکارڈ';
 
   @override
-  String get deleteConfirmationPrompt =>
-      'کیا آپ واقعی اس جماعت کو مستقل طور پر حذف کرنا چاہتے ہیں؟';
+  String get deleteConfirmationPrompt => 'کیا آپ واقعی اس جماعت کو مستقل طور پر حذف کرنا چاہتے ہیں؟';
 
   @override
   String get cancelAction => 'منسوخ کریں';
@@ -433,8 +432,7 @@ class AppLocalizationsUr extends AppLocalizations {
   String get adminLabel => 'ایڈمن';
 
   @override
-  String get pendingApproval =>
-      'منظوری کا انتظار — ایڈمن کی منظوری کے بعد لسٹ کیا جائے گا';
+  String get pendingApproval => 'منظوری کا انتظار — ایڈمن کی منظوری کے بعد لسٹ کیا جائے گا';
 
   @override
   String get rejectedStatus => 'مسترد — معلومات درست کریں اور دوبارہ بھیجیں';
@@ -504,8 +502,7 @@ class AppLocalizationsUr extends AppLocalizations {
   String get prayerStatisticsTitle => 'نماز کے اعداد و شمار';
 
   @override
-  String get signInForPrayerStats =>
-      'نماز کی اعداد و شمار دیکھنے کے لیے سائن ان کریں';
+  String get signInForPrayerStats => 'نماز کی اعداد و شمار دیکھنے کے لیے سائن ان کریں';
 
   @override
   String get last7Days => 'آخری ٧ دن';
@@ -594,8 +591,7 @@ class AppLocalizationsUr extends AppLocalizations {
   String get maintenanceTitle => 'سسٹم کی دیکھ بھال';
 
   @override
-  String get maintenanceBody =>
-      'ہم ابھی طے شدہ بہتری کا کام کر رہے ہیں۔ جلد ہی دوبارہ آئیں۔';
+  String get maintenanceBody => 'ہم ابھی طے شدہ بہتری کا کام کر رہے ہیں۔ جلد ہی دوبارہ آئیں۔';
 
   @override
   String get tryAgain => 'دوبارہ کوشش کریں';
@@ -604,8 +600,7 @@ class AppLocalizationsUr extends AppLocalizations {
   String get retry => 'دوبارہ';
 
   @override
-  String get notifPrefUpdateFailed =>
-      'اطلاع کی ترجیح اپ ڈیٹ کرنے میں ناکامی۔ دوبارہ کوشش کریں۔';
+  String get notifPrefUpdateFailed => 'اطلاع کی ترجیح اپ ڈیٹ کرنے میں ناکامی۔ دوبارہ کوشش کریں۔';
 
   @override
   String get profileUpdatedSuccess => 'پروفائل کامیابی سے اپ ڈیٹ ہو گیا';
@@ -633,8 +628,7 @@ class AppLocalizationsUr extends AppLocalizations {
   String get detailsOptional => 'تفصیلات (اختیاری)';
 
   @override
-  String get donationNotAvailable =>
-      'اس مسجد کے لیے عطیہ کی معلومات دستیاب نہیں ہیں۔';
+  String get donationNotAvailable => 'اس مسجد کے لیے عطیہ کی معلومات دستیاب نہیں ہیں۔';
 
   @override
   String get donationDetails => 'عطیہ کی تفصیلات';
@@ -649,8 +643,7 @@ class AppLocalizationsUr extends AppLocalizations {
   String get closeAction => 'بند کریں';
 
   @override
-  String get locationNotAvailable =>
-      'اس مسجد کے لیے مقام کے نقاط دستیاب نہیں ہیں۔';
+  String get locationNotAvailable => 'اس مسجد کے لیے مقام کے نقاط دستیاب نہیں ہیں۔';
 
   @override
   String get couldNotLaunchMaps => 'گوگل میپس نہیں کھل سکا۔';
@@ -723,12 +716,10 @@ class AppLocalizationsUr extends AppLocalizations {
   String get useCurrentLocationGps => 'موجودہ مقام استعمال کریں (GPS)';
 
   @override
-  String get confirmWithPasswordPrompt =>
-      'حذف کی تصدیق کے لیے پاس ورڈ درج کریں';
+  String get confirmWithPasswordPrompt => 'حذف کی تصدیق کے لیے پاس ورڈ درج کریں';
 
   @override
-  String get reAuthFailedMessage =>
-      'دوبارہ تصدیق ناکام ہوئی۔ دوبارہ کوشش کریں۔';
+  String get reAuthFailedMessage => 'دوبارہ تصدیق ناکام ہوئی۔ دوبارہ کوشش کریں۔';
 
   @override
   String get initializationError => 'ابتداء میں خرابی';
@@ -766,24 +757,19 @@ class AppLocalizationsUr extends AppLocalizations {
   String get estimatedAbbr => 'تخمینی';
 
   @override
-  String get azanEstimateNote =>
-      'اذان کے اوقات تخمینی: فجر −15م · ظہر −10م · عصر −10م · مغرب −5م · عشاء −10م';
+  String get azanEstimateNote => 'اذان کے اوقات تخمینی: فجر −15م · ظہر −10م · عصر −10م · مغرب −5م · عشاء −10م';
 
   @override
-  String get iqamahEstimateNote =>
-      'اقامت کے اوقات تخمینی: فجر +20م · ظہر +15م · عصر +15م · مغرب +10م · عشاء +20م';
+  String get iqamahEstimateNote => 'اقامت کے اوقات تخمینی: فجر +20م · ظہر +15م · عصر +15م · مغرب +10م · عشاء +20م';
 
   @override
-  String get analogBoardError =>
-      'اینالاگ گھڑی والے بورڈ اسکین نہیں ہو سکتے — ڈیجیٹل نماز ٹائم بورڈ کی تصویر لیں';
+  String get analogBoardError => 'اینالاگ گھڑی والے بورڈ اسکین نہیں ہو سکتے — ڈیجیٹل نماز ٹائم بورڈ کی تصویر لیں';
 
   @override
-  String get noTimesFoundError =>
-      'نماز کے اوقات نہیں ملے — صاف تصویر کے ساتھ کوشش کریں';
+  String get noTimesFoundError => 'نماز کے اوقات نہیں ملے — صاف تصویر کے ساتھ کوشش کریں';
 
   @override
-  String get couldNotReadTimesError =>
-      'نماز کے اوقات پڑھنے میں ناکامی — صاف تصویر کے ساتھ کوشش کریں';
+  String get couldNotReadTimesError => 'نماز کے اوقات پڑھنے میں ناکامی — صاف تصویر کے ساتھ کوشش کریں';
 
   @override
   String get takePhoto => 'تصویر لیں';
@@ -852,8 +838,7 @@ class AppLocalizationsUr extends AppLocalizations {
   String get registryUpdatedMessage => 'رجسٹری کامیابی سے اپ ڈیٹ ہوئی';
 
   @override
-  String get deletePermanentDialogBody =>
-      'یہ عمل مستقل ہے اور واپس نہیں ہو سکتا۔ اس مسجد سے وابستہ تمام ڈیٹا عالمی رجسٹری سے ہٹا دیا جائے گا۔';
+  String get deletePermanentDialogBody => 'یہ عمل مستقل ہے اور واپس نہیں ہو سکتا۔ اس مسجد سے وابستہ تمام ڈیٹا عالمی رجسٹری سے ہٹا دیا جائے گا۔';
 
   @override
   String get mosqueNameLabel => 'مسجد کا نام';
@@ -898,8 +883,7 @@ class AppLocalizationsUr extends AppLocalizations {
   String get postAnnouncementAction => 'اعلان پوسٹ کریں';
 
   @override
-  String get announcementWillExpire =>
-      'اعلان جنازے کے وقت گزرنے کے بعد خودبخود ختم ہو جائے گا۔';
+  String get announcementWillExpire => 'اعلان جنازے کے وقت گزرنے کے بعد خودبخود ختم ہو جائے گا۔';
 
   @override
   String get maleLabel => 'مرد';
@@ -956,8 +940,7 @@ class AppLocalizationsUr extends AppLocalizations {
   String get errorNameTooLong => 'نام بہت لمبا ہے۔ زیادہ سے زیادہ 100 حروف۔';
 
   @override
-  String get errorSelectDateAndTimeJanaza =>
-      'جنازے کی تاریخ اور وقت دونوں منتخب کریں۔';
+  String get errorSelectDateAndTimeJanaza => 'جنازے کی تاریخ اور وقت دونوں منتخب کریں۔';
 
   @override
   String get errorJanazaInPast => 'جنازے کا وقت ماضی میں نہیں ہو سکتا۔';
@@ -969,12 +952,10 @@ class AppLocalizationsUr extends AppLocalizations {
   String get errorNotAuthorizedMosque => 'آپ اس مسجد کے منتظم نہیں ہیں۔';
 
   @override
-  String get errorInvalidNameLength =>
-      'نام غلط ہے۔ لمبائی چیک کریں (زیادہ سے زیادہ 100)۔';
+  String get errorInvalidNameLength => 'نام غلط ہے۔ لمبائی چیک کریں (زیادہ سے زیادہ 100)۔';
 
   @override
-  String get errorSomethingWentWrongTryAgain =>
-      'کچھ غلط ہوا۔ دوبارہ کوشش کریں۔';
+  String get errorSomethingWentWrongTryAgain => 'کچھ غلط ہوا۔ دوبارہ کوشش کریں۔';
 
   @override
   String get editJanazaTitle => 'جنازہ ترمیم کریں';
@@ -1012,8 +993,7 @@ class AppLocalizationsUr extends AppLocalizations {
   }
 
   @override
-  String get qadaInfoBanner =>
-      'یہاں قضا نمازیں ادا کرنے سے آپ کی یومیہ سیریز متاثر نہیں ہوتی۔ سیریز صرف وقت پر روزانہ کی نمازوں سے شمار ہوتی ہے۔';
+  String get qadaInfoBanner => 'یہاں قضا نمازیں ادا کرنے سے آپ کی یومیہ سیریز متاثر نہیں ہوتی۔ سیریز صرف وقت پر روزانہ کی نمازوں سے شمار ہوتی ہے۔';
 
   @override
   String get totalPendingLabel => 'کل زیر التواء';
@@ -1120,8 +1100,7 @@ class AppLocalizationsUr extends AppLocalizations {
   String get unlockProfileBadge => 'مسجد کمیونٹی میں بیج';
 
   @override
-  String get unlockQadaAnalytics =>
-      'قضا تجزیہ — دیکھیں کون سی نمازیں زیادہ چھوٹتی ہیں';
+  String get unlockQadaAnalytics => 'قضا تجزیہ — دیکھیں کون سی نمازیں زیادہ چھوٹتی ہیں';
 
   @override
   String get unlockMultiplier15 => '1.5× پوائنٹس ملٹیپلائر';
@@ -1396,8 +1375,7 @@ class AppLocalizationsUr extends AppLocalizations {
   String get ramadanDayAdjustment => 'دن کی ایڈجسٹمنٹ';
 
   @override
-  String get ramadanDayAdjustmentHint =>
-      'اگر آپ کے علاقے میں چاند پہلے یا بعد میں نظر آیا تو ایک دن آگے پیچھے کریں';
+  String get ramadanDayAdjustmentHint => 'اگر آپ کے علاقے میں چاند پہلے یا بعد میں نظر آیا تو ایک دن آگے پیچھے کریں';
 
   @override
   String get ramadanImsakBuffer => 'امساک کا دورانیہ (منٹ)';

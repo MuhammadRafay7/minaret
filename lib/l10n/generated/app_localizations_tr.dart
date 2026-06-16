@@ -159,8 +159,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get archiveRecordTitle => 'Arşiv Kaydı';
 
   @override
-  String get deleteConfirmationPrompt =>
-      'Bu cemaati kalıcı olarak silmek istediğinizden emin misiniz?';
+  String get deleteConfirmationPrompt => 'Bu cemaati kalıcı olarak silmek istediğinizden emin misiniz?';
 
   @override
   String get cancelAction => 'İptal';
@@ -271,8 +270,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get successRegistryMessage => 'Cemaat kaydı başarıyla oluşturuldu';
 
   @override
-  String get errorLocationDenied =>
-      'Konum izni reddedildi veya zaman aşımına uğradı';
+  String get errorLocationDenied => 'Konum izni reddedildi veya zaman aşımına uğradı';
 
   @override
   String get errorRequiredFields => 'Ad ve konum zorunludur';
@@ -413,8 +411,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get deleteAccountLabel => 'Hesabı Sil';
 
   @override
-  String get deleteAccountSub =>
-      'Kimliğinizi ve verilerinizi kalıcı olarak kaldırın';
+  String get deleteAccountSub => 'Kimliğinizi ve verilerinizi kalıcı olarak kaldırın';
 
   @override
   String get searchMosquesHint => 'Cami ara...';
@@ -435,12 +432,10 @@ class AppLocalizationsTr extends AppLocalizations {
   String get adminLabel => 'YÖNETİCİ';
 
   @override
-  String get pendingApproval =>
-      'ONAY BEKLENİYOR — YÖNETİCİ ONAYLADIKTAN SONRA LİSTELENECEK';
+  String get pendingApproval => 'ONAY BEKLENİYOR — YÖNETİCİ ONAYLADIKTAN SONRA LİSTELENECEK';
 
   @override
-  String get rejectedStatus =>
-      'REDDEDİLDİ — DETAYLARI GÜNCELLEYİN VE YENİDEN GÖNDERİN';
+  String get rejectedStatus => 'REDDEDİLDİ — DETAYLARI GÜNCELLEYİN VE YENİDEN GÖNDERİN';
 
   @override
   String get adhanPrefix => 'E:';
@@ -466,8 +461,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get notificationsTitle => 'BİLDİRİMLER';
 
   @override
-  String get signInToViewNotifications =>
-      'Bildirimleri görüntülemek için giriş yapın';
+  String get signInToViewNotifications => 'Bildirimleri görüntülemek için giriş yapın';
 
   @override
   String get errorLoadingNotifications => 'Bildirimler yüklenirken hata';
@@ -482,8 +476,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get mosqueNotificationsLabel => 'Cami bildirimleri';
 
   @override
-  String get mosqueNotificationsSub =>
-      'Cami uyarılarını ve raporlarını görüntüle';
+  String get mosqueNotificationsSub => 'Cami uyarılarını ve raporlarını görüntüle';
 
   @override
   String unreadAlertsLabel(int count) {
@@ -494,8 +487,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get prayerStatisticsLabel => 'Namaz İstatistikleri';
 
   @override
-  String get prayerStatisticsSub =>
-      'Namaz geçmişinizi ve analizlerinizi görüntüleyin';
+  String get prayerStatisticsSub => 'Namaz geçmişinizi ve analizlerinizi görüntüleyin';
 
   @override
   String get calculationMethodLabel => 'Yöntem';
@@ -504,15 +496,13 @@ class AppLocalizationsTr extends AppLocalizations {
   String get madhabAsrLabel => 'Mezhep (İkindi)';
 
   @override
-  String get reAuthBeforeDelete =>
-      'Hesabı silmeden önce lütfen yeniden kimlik doğrulayın.';
+  String get reAuthBeforeDelete => 'Hesabı silmeden önce lütfen yeniden kimlik doğrulayın.';
 
   @override
   String get prayerStatisticsTitle => 'NAMAZ İSTATİSTİKLERİ';
 
   @override
-  String get signInForPrayerStats =>
-      'Namaz istatistiklerini görüntülemek için giriş yapın';
+  String get signInForPrayerStats => 'Namaz istatistiklerini görüntülemek için giriş yapın';
 
   @override
   String get last7Days => 'Son 7 gün';
@@ -595,15 +585,13 @@ class AppLocalizationsTr extends AppLocalizations {
   String get unableToLoadMosque => 'CAMİ YÜKLENEMİYOR';
 
   @override
-  String get failedToSyncPrayer =>
-      'Namaz senkronize edilemedi. Bağlantıyı kontrol edin.';
+  String get failedToSyncPrayer => 'Namaz senkronize edilemedi. Bağlantıyı kontrol edin.';
 
   @override
   String get maintenanceTitle => 'SİSTEM BAKIMI';
 
   @override
-  String get maintenanceBody =>
-      'Zamanlanmış iyileştirmeler yapıyoruz. Lütfen kısa süre sonra tekrar kontrol edin.';
+  String get maintenanceBody => 'Zamanlanmış iyileştirmeler yapıyoruz. Lütfen kısa süre sonra tekrar kontrol edin.';
 
   @override
   String get tryAgain => 'Tekrar Dene';
@@ -612,8 +600,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get retry => 'Yeniden Dene';
 
   @override
-  String get notifPrefUpdateFailed =>
-      'Bildirim tercihi güncellenemedi. Lütfen tekrar deneyin.';
+  String get notifPrefUpdateFailed => 'Bildirim tercihi güncellenemedi. Lütfen tekrar deneyin.';
 
   @override
   String get profileUpdatedSuccess => 'Profil başarıyla güncellendi';
@@ -656,8 +643,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get closeAction => 'KAPAT';
 
   @override
-  String get locationNotAvailable =>
-      'Bu cami için konum koordinatları mevcut değil.';
+  String get locationNotAvailable => 'Bu cami için konum koordinatları mevcut değil.';
 
   @override
   String get couldNotLaunchMaps => 'Google Haritalar açılamadı.';
@@ -713,8 +699,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get overallLabel => 'genel';
 
   @override
-  String get trackPrayerHabits =>
-      'Namaz alışkanlıklarınızı ve serilerinizi takip edin';
+  String get trackPrayerHabits => 'Namaz alışkanlıklarınızı ve serilerinizi takip edin';
 
   @override
   String ofTotalCompleted(int completed, int total) {
@@ -731,12 +716,10 @@ class AppLocalizationsTr extends AppLocalizations {
   String get useCurrentLocationGps => 'Mevcut Konumu Kullan (GPS)';
 
   @override
-  String get confirmWithPasswordPrompt =>
-      'Silmeyi onaylamak için şifrenizi girin';
+  String get confirmWithPasswordPrompt => 'Silmeyi onaylamak için şifrenizi girin';
 
   @override
-  String get reAuthFailedMessage =>
-      'Yeniden kimlik doğrulama başarısız. Lütfen tekrar deneyin.';
+  String get reAuthFailedMessage => 'Yeniden kimlik doğrulama başarısız. Lütfen tekrar deneyin.';
 
   @override
   String get initializationError => 'Başlatma Hatası';
@@ -774,24 +757,19 @@ class AppLocalizationsTr extends AppLocalizations {
   String get estimatedAbbr => 'tahmini';
 
   @override
-  String get azanEstimateNote =>
-      'Ezan vakitleri tahmini: Sabah −15d · Öğle −10d · İkindi −10d · Akşam −5d · Yatsı −10d';
+  String get azanEstimateNote => 'Ezan vakitleri tahmini: Sabah −15d · Öğle −10d · İkindi −10d · Akşam −5d · Yatsı −10d';
 
   @override
-  String get iqamahEstimateNote =>
-      'İkamet vakitleri tahmini: Sabah +20d · Öğle +15d · İkindi +15d · Akşam +10d · Yatsı +20d';
+  String get iqamahEstimateNote => 'İkamet vakitleri tahmini: Sabah +20d · Öğle +15d · İkindi +15d · Akşam +10d · Yatsı +20d';
 
   @override
-  String get analogBoardError =>
-      'ANALOGsaati OLAN TAHTALAR TARANAMAZ — DİJİTAL NAMAZ VAKİTLERİ EKRANINI FOTOĞRAFLAYINI';
+  String get analogBoardError => 'ANALOGsaati OLAN TAHTALAR TARANAMAZ — DİJİTAL NAMAZ VAKİTLERİ EKRANINI FOTOĞRAFLAYINI';
 
   @override
-  String get noTimesFoundError =>
-      'NAMAZ VAKİTLERİ BULUNAMADI — DAHA NET BİR FOTOĞRAFLA DENEYİN';
+  String get noTimesFoundError => 'NAMAZ VAKİTLERİ BULUNAMADI — DAHA NET BİR FOTOĞRAFLA DENEYİN';
 
   @override
-  String get couldNotReadTimesError =>
-      'NAMAZ VAKİTLERİ OKUNAMADI — DAHA NET BİR FOTOĞRAFLA DENEYİN';
+  String get couldNotReadTimesError => 'NAMAZ VAKİTLERİ OKUNAMADI — DAHA NET BİR FOTOĞRAFLA DENEYİN';
 
   @override
   String get takePhoto => 'FOTOĞRAF ÇEK';
@@ -860,8 +838,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get registryUpdatedMessage => 'Kayıt başarıyla güncellendi';
 
   @override
-  String get deletePermanentDialogBody =>
-      'Bu işlem kalıcıdır ve geri alınamaz. Bu camiye ait tüm veriler küresel kayıttan kaldırılacaktır.';
+  String get deletePermanentDialogBody => 'Bu işlem kalıcıdır ve geri alınamaz. Bu camiye ait tüm veriler küresel kayıttan kaldırılacaktır.';
 
   @override
   String get mosqueNameLabel => 'CAMİ ADI';
@@ -906,8 +883,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get postAnnouncementAction => 'DUYURU YAYINLA';
 
   @override
-  String get announcementWillExpire =>
-      'DUYURU, CENAZE SAATİ GEÇTİKTEN SONRA OTOMATİK OLARAK SONA ERECEK.';
+  String get announcementWillExpire => 'DUYURU, CENAZE SAATİ GEÇTİKTEN SONRA OTOMATİK OLARAK SONA ERECEK.';
 
   @override
   String get maleLabel => 'ERKEK';
@@ -955,8 +931,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get announcementPostedTitle => 'DUYURU YAYINLANDI';
 
   @override
-  String get announcementPostedMessage =>
-      'Allah onlara Cenneti nasip etsin. الفاتحة';
+  String get announcementPostedMessage => 'Allah onlara Cenneti nasip etsin. الفاتحة';
 
   @override
   String get errorEnterDeceasedName => 'VEFAT EDENİN ADINI GİRİN.';
@@ -977,12 +952,10 @@ class AppLocalizationsTr extends AppLocalizations {
   String get errorNotAuthorizedMosque => 'BU CAMİYİ YÖNETMİYORSUNUZ.';
 
   @override
-  String get errorInvalidNameLength =>
-      'GEÇERSİZ AD. UZUNLUĞU KONTROL EDİN (MAKS 100).';
+  String get errorInvalidNameLength => 'GEÇERSİZ AD. UZUNLUĞU KONTROL EDİN (MAKS 100).';
 
   @override
-  String get errorSomethingWentWrongTryAgain =>
-      'BİR ŞEYLER TERS GİTTİ. TEKRAR DENEYİN.';
+  String get errorSomethingWentWrongTryAgain => 'BİR ŞEYLER TERS GİTTİ. TEKRAR DENEYİN.';
 
   @override
   String get editJanazaTitle => 'CENAZE DÜZENLE';
@@ -1020,8 +993,7 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String get qadaInfoBanner =>
-      'Burada kaza namazı kılmak günlük serinizi etkilemez. Seriler yalnızca günlük namazların zamanında kılınmasıyla sayılır.';
+  String get qadaInfoBanner => 'Burada kaza namazı kılmak günlük serinizi etkilemez. Seriler yalnızca günlük namazların zamanında kılınmasıyla sayılır.';
 
   @override
   String get totalPendingLabel => 'Toplam Bekleyen';
@@ -1128,8 +1100,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get unlockProfileBadge => 'Cami topluluğunda rozet';
 
   @override
-  String get unlockQadaAnalytics =>
-      'Kaza analizi — en çok kaçırdığın namazları gör';
+  String get unlockQadaAnalytics => 'Kaza analizi — en çok kaçırdığın namazları gör';
 
   @override
   String get unlockMultiplier15 => '1.5× puan çarpanı';
@@ -1404,8 +1375,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get ramadanDayAdjustment => 'Gün ayarı';
 
   @override
-  String get ramadanDayAdjustmentHint =>
-      'Bölgenizde hilal daha erken veya geç görüldüyse bir gün kaydırın';
+  String get ramadanDayAdjustmentHint => 'Bölgenizde hilal daha erken veya geç görüldüyse bir gün kaydırın';
 
   @override
   String get ramadanImsakBuffer => 'İmsak payı (dakika)';
