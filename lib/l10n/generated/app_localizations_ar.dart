@@ -159,8 +159,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get archiveRecordTitle => 'سجل الأرشيف';
 
   @override
-  String get deleteConfirmationPrompt =>
-      'هل أنت متأكد من رغبتك في حذف هذه الجماعة نهائياً من السجل؟';
+  String get deleteConfirmationPrompt => 'هل أنت متأكد من رغبتك في حذف هذه الجماعة نهائياً من السجل؟';
 
   @override
   String get cancelAction => 'إلغاء';
@@ -433,8 +432,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get adminLabel => 'مسؤول';
 
   @override
-  String get pendingApproval =>
-      'في انتظار الموافقة — سيتم الإدراج بعد موافقة المسؤول';
+  String get pendingApproval => 'في انتظار الموافقة — سيتم الإدراج بعد موافقة المسؤول';
 
   @override
   String get rejectedStatus => 'مرفوض — يرجى تحديث التفاصيل وإعادة التقديم';
@@ -593,8 +591,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get maintenanceTitle => 'صيانة النظام';
 
   @override
-  String get maintenanceBody =>
-      'نقوم حاليًا بإجراء تحسينات مجدولة. يُرجى التحقق مجددًا قريبًا.';
+  String get maintenanceBody => 'نقوم حاليًا بإجراء تحسينات مجدولة. يُرجى التحقق مجددًا قريبًا.';
 
   @override
   String get tryAgain => 'حاول مجدداً';
@@ -603,8 +600,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get retry => 'إعادة محاولة';
 
   @override
-  String get notifPrefUpdateFailed =>
-      'فشل تحديث تفضيل الإشعارات. يرجى المحاولة مجدداً.';
+  String get notifPrefUpdateFailed => 'فشل تحديث تفضيل الإشعارات. يرجى المحاولة مجدداً.';
 
   @override
   String get profileUpdatedSuccess => 'تم تحديث الملف الشخصي بنجاح';
@@ -723,8 +719,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get confirmWithPasswordPrompt => 'أدخل كلمة المرور لتأكيد الحذف';
 
   @override
-  String get reAuthFailedMessage =>
-      'فشل إعادة المصادقة. الرجاء المحاولة مرة أخرى.';
+  String get reAuthFailedMessage => 'فشل إعادة المصادقة. الرجاء المحاولة مرة أخرى.';
 
   @override
   String get initializationError => 'خطأ في التهيئة';
@@ -762,24 +757,19 @@ class AppLocalizationsAr extends AppLocalizations {
   String get estimatedAbbr => 'تقريبي';
 
   @override
-  String get azanEstimateNote =>
-      'أوقات الأذان تقريبية: فجر −15د · ظهر −10د · عصر −10د · مغرب −5د · عشاء −10د';
+  String get azanEstimateNote => 'أوقات الأذان تقريبية: فجر −15د · ظهر −10د · عصر −10د · مغرب −5د · عشاء −10د';
 
   @override
-  String get iqamahEstimateNote =>
-      'أوقات الإقامة تقريبية: فجر +20د · ظهر +15د · عصر +15د · مغرب +10د · عشاء +20د';
+  String get iqamahEstimateNote => 'أوقات الإقامة تقريبية: فجر +20د · ظهر +15د · عصر +15د · مغرب +10د · عشاء +20د';
 
   @override
-  String get analogBoardError =>
-      'لا يمكن مسح لوحات الساعة التناظرية — التقط صورة لشاشة رقمية لأوقات الصلاة';
+  String get analogBoardError => 'لا يمكن مسح لوحات الساعة التناظرية — التقط صورة لشاشة رقمية لأوقات الصلاة';
 
   @override
-  String get noTimesFoundError =>
-      'لم يتم العثور على أوقات صلاة — حاول بصورة أوضح';
+  String get noTimesFoundError => 'لم يتم العثور على أوقات صلاة — حاول بصورة أوضح';
 
   @override
-  String get couldNotReadTimesError =>
-      'تعذر قراءة أوقات الصلاة — حاول بصورة أوضح';
+  String get couldNotReadTimesError => 'تعذر قراءة أوقات الصلاة — حاول بصورة أوضح';
 
   @override
   String get takePhoto => 'التقاط صورة';
@@ -848,8 +838,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get registryUpdatedMessage => 'تم تحديث السجل بنجاح';
 
   @override
-  String get deletePermanentDialogBody =>
-      'هذا الإجراء دائم ولا يمكن التراجع عنه. سيتم حذف جميع البيانات المرتبطة بهذا المسجد من السجل العالمي.';
+  String get deletePermanentDialogBody => 'هذا الإجراء دائم ولا يمكن التراجع عنه. سيتم حذف جميع البيانات المرتبطة بهذا المسجد من السجل العالمي.';
 
   @override
   String get mosqueNameLabel => 'اسم المسجد';
@@ -894,8 +883,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get postAnnouncementAction => 'نشر الإعلان';
 
   @override
-  String get announcementWillExpire =>
-      'سينتهي الإعلان تلقائيًا بعد انتهاء وقت الجنازة.';
+  String get announcementWillExpire => 'سينتهي الإعلان تلقائيًا بعد انتهاء وقت الجنازة.';
 
   @override
   String get maleLabel => 'ذكر';
@@ -964,8 +952,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get errorNotAuthorizedMosque => 'أنت لا تدير هذا المسجد.';
 
   @override
-  String get errorInvalidNameLength =>
-      'اسم غير صالح. تحقق من الطول (الحد الأقصى 100).';
+  String get errorInvalidNameLength => 'اسم غير صالح. تحقق من الطول (الحد الأقصى 100).';
 
   @override
   String get errorSomethingWentWrongTryAgain => 'حدث خطأ ما. حاول مرة أخرى.';
@@ -1006,8 +993,7 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
-  String get qadaInfoBanner =>
-      'إتمام صلوات القضاء هنا لا يؤثر على سلسلة أيامك. السلاسل تُحتسب فقط للصلوات اليومية في وقتها.';
+  String get qadaInfoBanner => 'إتمام صلوات القضاء هنا لا يؤثر على سلسلة أيامك. السلاسل تُحتسب فقط للصلوات اليومية في وقتها.';
 
   @override
   String get totalPendingLabel => 'إجمالي المعلق';
@@ -1389,8 +1375,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get ramadanDayAdjustment => 'تعديل اليوم';
 
   @override
-  String get ramadanDayAdjustmentHint =>
-      'عدّل يومًا إذا رُئي الهلال في منطقتك مبكرًا أو متأخرًا';
+  String get ramadanDayAdjustmentHint => 'عدّل يومًا إذا رُئي الهلال في منطقتك مبكرًا أو متأخرًا';
 
   @override
   String get ramadanImsakBuffer => 'مدة الإمساك (دقائق)';
