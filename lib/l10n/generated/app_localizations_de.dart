@@ -159,7 +159,8 @@ class AppLocalizationsDe extends AppLocalizations {
   String get archiveRecordTitle => 'Archiv-Eintrag';
 
   @override
-  String get deleteConfirmationPrompt => 'Sind Sie sicher, dass Sie diese Gemeinde dauerhaft löschen möchten?';
+  String get deleteConfirmationPrompt =>
+      'Sind Sie sicher, dass Sie diese Gemeinde dauerhaft löschen möchten?';
 
   @override
   String get cancelAction => 'Abbrechen';
@@ -270,7 +271,8 @@ class AppLocalizationsDe extends AppLocalizations {
   String get successRegistryMessage => 'Gemeindeeintrag erfolgreich erstellt';
 
   @override
-  String get errorLocationDenied => 'Standortberechtigung verweigert oder abgelaufen';
+  String get errorLocationDenied =>
+      'Standortberechtigung verweigert oder abgelaufen';
 
   @override
   String get errorRequiredFields => 'Name und Standort sind erforderlich';
@@ -432,10 +434,12 @@ class AppLocalizationsDe extends AppLocalizations {
   String get adminLabel => 'ADMIN';
 
   @override
-  String get pendingApproval => 'AUSSTEHENDE GENEHMIGUNG — WIRD NACH ADMIN-FREIGABE GELISTET';
+  String get pendingApproval =>
+      'AUSSTEHENDE GENEHMIGUNG — WIRD NACH ADMIN-FREIGABE GELISTET';
 
   @override
-  String get rejectedStatus => 'ABGELEHNT — DETAILS AKTUALISIEREN UND ERNEUT EINREICHEN';
+  String get rejectedStatus =>
+      'ABGELEHNT — DETAILS AKTUALISIEREN UND ERNEUT EINREICHEN';
 
   @override
   String get adhanPrefix => 'A:';
@@ -461,10 +465,12 @@ class AppLocalizationsDe extends AppLocalizations {
   String get notificationsTitle => 'BENACHRICHTIGUNGEN';
 
   @override
-  String get signInToViewNotifications => 'Bitte anmelden, um Benachrichtigungen anzuzeigen';
+  String get signInToViewNotifications =>
+      'Bitte anmelden, um Benachrichtigungen anzuzeigen';
 
   @override
-  String get errorLoadingNotifications => 'Fehler beim Laden der Benachrichtigungen';
+  String get errorLoadingNotifications =>
+      'Fehler beim Laden der Benachrichtigungen';
 
   @override
   String get noNotificationsYet => 'Noch keine Benachrichtigungen';
@@ -476,7 +482,8 @@ class AppLocalizationsDe extends AppLocalizations {
   String get mosqueNotificationsLabel => 'Moschee-Benachrichtigungen';
 
   @override
-  String get mosqueNotificationsSub => 'Moschee-Warnungen und Berichte anzeigen';
+  String get mosqueNotificationsSub =>
+      'Moschee-Warnungen und Berichte anzeigen';
 
   @override
   String unreadAlertsLabel(int count) {
@@ -496,13 +503,15 @@ class AppLocalizationsDe extends AppLocalizations {
   String get madhabAsrLabel => 'Madhab (Asr)';
 
   @override
-  String get reAuthBeforeDelete => 'Bitte vor dem Löschen des Kontos erneut authentifizieren.';
+  String get reAuthBeforeDelete =>
+      'Bitte vor dem Löschen des Kontos erneut authentifizieren.';
 
   @override
   String get prayerStatisticsTitle => 'GEBETSSTATISTIKEN';
 
   @override
-  String get signInForPrayerStats => 'Bitte anmelden, um Gebetsstatistiken anzuzeigen';
+  String get signInForPrayerStats =>
+      'Bitte anmelden, um Gebetsstatistiken anzuzeigen';
 
   @override
   String get last7Days => 'Letzte 7 Tage';
@@ -585,13 +594,15 @@ class AppLocalizationsDe extends AppLocalizations {
   String get unableToLoadMosque => 'MOSCHEE KANN NICHT GELADEN WERDEN';
 
   @override
-  String get failedToSyncPrayer => 'Gebet konnte nicht synchronisiert werden. Verbindung prüfen.';
+  String get failedToSyncPrayer =>
+      'Gebet konnte nicht synchronisiert werden. Verbindung prüfen.';
 
   @override
   String get maintenanceTitle => 'SYSTEMWARTUNG';
 
   @override
-  String get maintenanceBody => 'Wir führen derzeit geplante Verbesserungen durch. Bitte schauen Sie bald wieder vorbei.';
+  String get maintenanceBody =>
+      'Wir führen derzeit geplante Verbesserungen durch. Bitte schauen Sie bald wieder vorbei.';
 
   @override
   String get tryAgain => 'Erneut versuchen';
@@ -600,7 +611,8 @@ class AppLocalizationsDe extends AppLocalizations {
   String get retry => 'Wiederholen';
 
   @override
-  String get notifPrefUpdateFailed => 'Benachrichtigungseinstellung konnte nicht aktualisiert werden. Bitte erneut versuchen.';
+  String get notifPrefUpdateFailed =>
+      'Benachrichtigungseinstellung konnte nicht aktualisiert werden. Bitte erneut versuchen.';
 
   @override
   String get profileUpdatedSuccess => 'Profil erfolgreich aktualisiert';
@@ -628,7 +640,8 @@ class AppLocalizationsDe extends AppLocalizations {
   String get detailsOptional => 'DETAILS (OPTIONAL)';
 
   @override
-  String get donationNotAvailable => 'Spendeninformationen für diese Moschee nicht verfügbar.';
+  String get donationNotAvailable =>
+      'Spendeninformationen für diese Moschee nicht verfügbar.';
 
   @override
   String get donationDetails => 'SPENDENDETAILS';
@@ -643,7 +656,8 @@ class AppLocalizationsDe extends AppLocalizations {
   String get closeAction => 'SCHLIESSEN';
 
   @override
-  String get locationNotAvailable => 'Standortkoordinaten für diese Moschee nicht verfügbar.';
+  String get locationNotAvailable =>
+      'Standortkoordinaten für diese Moschee nicht verfügbar.';
 
   @override
   String get couldNotLaunchMaps => 'Google Maps konnte nicht geöffnet werden.';
@@ -690,7 +704,8 @@ class AppLocalizationsDe extends AppLocalizations {
   String get savedToGallery => 'In Galerie gespeichert!';
 
   @override
-  String get couldNotSaveToGallery => 'Konnte nicht in Galerie gespeichert werden.';
+  String get couldNotSaveToGallery =>
+      'Konnte nicht in Galerie gespeichert werden.';
 
   @override
   String get dayStreakLabel => 'TAGE-SERIE';
@@ -699,7 +714,8 @@ class AppLocalizationsDe extends AppLocalizations {
   String get overallLabel => 'gesamt';
 
   @override
-  String get trackPrayerHabits => 'Verfolgen Sie Ihre Gebetsgewohnheiten und Serien';
+  String get trackPrayerHabits =>
+      'Verfolgen Sie Ihre Gebetsgewohnheiten und Serien';
 
   @override
   String ofTotalCompleted(int completed, int total) {
@@ -716,10 +732,12 @@ class AppLocalizationsDe extends AppLocalizations {
   String get useCurrentLocationGps => 'Aktuellen Standort verwenden (GPS)';
 
   @override
-  String get confirmWithPasswordPrompt => 'Passwort eingeben, um das Löschen zu bestätigen';
+  String get confirmWithPasswordPrompt =>
+      'Passwort eingeben, um das Löschen zu bestätigen';
 
   @override
-  String get reAuthFailedMessage => 'Erneute Authentifizierung fehlgeschlagen. Bitte erneut versuchen.';
+  String get reAuthFailedMessage =>
+      'Erneute Authentifizierung fehlgeschlagen. Bitte erneut versuchen.';
 
   @override
   String get initializationError => 'Initialisierungsfehler';
@@ -757,19 +775,24 @@ class AppLocalizationsDe extends AppLocalizations {
   String get estimatedAbbr => 'gesch.';
 
   @override
-  String get azanEstimateNote => 'Adhan-Zeiten geschätzt: Fajr −15m · Dhuhr −10m · Asr −10m · Maghrib −5m · Isha −10m';
+  String get azanEstimateNote =>
+      'Adhan-Zeiten geschätzt: Fajr −15m · Dhuhr −10m · Asr −10m · Maghrib −5m · Isha −10m';
 
   @override
-  String get iqamahEstimateNote => 'Iqama-Zeiten geschätzt: Fajr +20m · Dhuhr +15m · Asr +15m · Maghrib +10m · Isha +20m';
+  String get iqamahEstimateNote =>
+      'Iqama-Zeiten geschätzt: Fajr +20m · Dhuhr +15m · Asr +15m · Maghrib +10m · Isha +20m';
 
   @override
-  String get analogBoardError => 'ANALOGUHREN-TAFELN KÖNNEN NICHT GESCANNT WERDEN — FOTOGRAFIEREN SIE EIN DIGITALES GEBETSZEITEN-DISPLAY';
+  String get analogBoardError =>
+      'ANALOGUHREN-TAFELN KÖNNEN NICHT GESCANNT WERDEN — FOTOGRAFIEREN SIE EIN DIGITALES GEBETSZEITEN-DISPLAY';
 
   @override
-  String get noTimesFoundError => 'KEINE GEBETSZEITEN GEFUNDEN — VERSUCHEN SIE EIN KLARERES FOTO';
+  String get noTimesFoundError =>
+      'KEINE GEBETSZEITEN GEFUNDEN — VERSUCHEN SIE EIN KLARERES FOTO';
 
   @override
-  String get couldNotReadTimesError => 'GEBETSZEITEN KONNTEN NICHT GELESEN WERDEN — VERSUCHEN SIE EIN KLARERES FOTO';
+  String get couldNotReadTimesError =>
+      'GEBETSZEITEN KONNTEN NICHT GELESEN WERDEN — VERSUCHEN SIE EIN KLARERES FOTO';
 
   @override
   String get takePhoto => 'FOTO AUFNEHMEN';
@@ -838,7 +861,8 @@ class AppLocalizationsDe extends AppLocalizations {
   String get registryUpdatedMessage => 'Register erfolgreich aktualisiert';
 
   @override
-  String get deletePermanentDialogBody => 'Diese Aktion ist dauerhaft und kann nicht rückgängig gemacht werden. Alle mit dieser Moschee verbundenen Daten werden aus dem globalen Register entfernt.';
+  String get deletePermanentDialogBody =>
+      'Diese Aktion ist dauerhaft und kann nicht rückgängig gemacht werden. Alle mit dieser Moschee verbundenen Daten werden aus dem globalen Register entfernt.';
 
   @override
   String get mosqueNameLabel => 'MOSCHEENAME';
@@ -883,7 +907,8 @@ class AppLocalizationsDe extends AppLocalizations {
   String get postAnnouncementAction => 'ANKÜNDIGUNG VERÖFFENTLICHEN';
 
   @override
-  String get announcementWillExpire => 'DIE ANKÜNDIGUNG LÄUFT NACH DER JANAZA-UHRZEIT AUTOMATISCH AB.';
+  String get announcementWillExpire =>
+      'DIE ANKÜNDIGUNG LÄUFT NACH DER JANAZA-UHRZEIT AUTOMATISCH AB.';
 
   @override
   String get maleLabel => 'MÄNNLICH';
@@ -931,19 +956,23 @@ class AppLocalizationsDe extends AppLocalizations {
   String get announcementPostedTitle => 'ANKÜNDIGUNG VERÖFFENTLICHT';
 
   @override
-  String get announcementPostedMessage => 'Möge Allah ihnen das Paradies schenken. الفاتحة';
+  String get announcementPostedMessage =>
+      'Möge Allah ihnen das Paradies schenken. الفاتحة';
 
   @override
-  String get errorEnterDeceasedName => 'GEBEN SIE DEN NAMEN DES VERSTORBENEN EIN.';
+  String get errorEnterDeceasedName =>
+      'GEBEN SIE DEN NAMEN DES VERSTORBENEN EIN.';
 
   @override
   String get errorNameTooLong => 'NAME ZU LANG. MAX 100 ZEICHEN.';
 
   @override
-  String get errorSelectDateAndTimeJanaza => 'WÄHLEN SIE DATUM UND UHRZEIT FÜR DIE JANAZA.';
+  String get errorSelectDateAndTimeJanaza =>
+      'WÄHLEN SIE DATUM UND UHRZEIT FÜR DIE JANAZA.';
 
   @override
-  String get errorJanazaInPast => 'DIE JANAZA-UHRZEIT KANN NICHT IN DER VERGANGENHEIT LIEGEN.';
+  String get errorJanazaInPast =>
+      'DIE JANAZA-UHRZEIT KANN NICHT IN DER VERGANGENHEIT LIEGEN.';
 
   @override
   String get errorMustBeSignedIn => 'SIE MÜSSEN ANGEMELDET SEIN.';
@@ -952,10 +981,12 @@ class AppLocalizationsDe extends AppLocalizations {
   String get errorNotAuthorizedMosque => 'SIE VERWALTEN DIESE MOSCHEE NICHT.';
 
   @override
-  String get errorInvalidNameLength => 'UNGÜLTIGER NAME. LÄNGE PRÜFEN (MAX 100).';
+  String get errorInvalidNameLength =>
+      'UNGÜLTIGER NAME. LÄNGE PRÜFEN (MAX 100).';
 
   @override
-  String get errorSomethingWentWrongTryAgain => 'ETWAS IST SCHIEFGELAUFEN. ERNEUT VERSUCHEN.';
+  String get errorSomethingWentWrongTryAgain =>
+      'ETWAS IST SCHIEFGELAUFEN. ERNEUT VERSUCHEN.';
 
   @override
   String get editJanazaTitle => 'JANAZA BEARBEITEN';
@@ -970,7 +1001,8 @@ class AppLocalizationsDe extends AppLocalizations {
   String get changesSavedMessage => 'Änderungen erfolgreich gespeichert.';
 
   @override
-  String get couldNotUpdateError => 'AKTUALISIERUNG FEHLGESCHLAGEN. ERNEUT VERSUCHEN.';
+  String get couldNotUpdateError =>
+      'AKTUALISIERUNG FEHLGESCHLAGEN. ERNEUT VERSUCHEN.';
 
   @override
   String get selectBothDateTime => 'DATUM UND UHRZEIT AUSWÄHLEN.';
@@ -993,7 +1025,8 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
-  String get qadaInfoBanner => 'Das Nachholen von Kada-Gebeten hier beeinflusst Ihre tägliche Serie nicht. Serien zählen nur für pünktliche tägliche Gebete.';
+  String get qadaInfoBanner =>
+      'Das Nachholen von Kada-Gebeten hier beeinflusst Ihre tägliche Serie nicht. Serien zählen nur für pünktliche tägliche Gebete.';
 
   @override
   String get totalPendingLabel => 'Gesamt ausstehend';
@@ -1100,7 +1133,8 @@ class AppLocalizationsDe extends AppLocalizations {
   String get unlockProfileBadge => 'Abzeichen in der Moscheegemeinschaft';
 
   @override
-  String get unlockQadaAnalytics => 'Qada-Analyse — meist verpasste Gebete sehen';
+  String get unlockQadaAnalytics =>
+      'Qada-Analyse — meist verpasste Gebete sehen';
 
   @override
   String get unlockMultiplier15 => '1,5× Punkte-Multiplikator';
@@ -1375,7 +1409,8 @@ class AppLocalizationsDe extends AppLocalizations {
   String get ramadanDayAdjustment => 'Tagesanpassung';
 
   @override
-  String get ramadanDayAdjustmentHint => 'Um einen Tag verschieben, falls in deiner Region die Mondsichel früher oder später gesichtet wurde';
+  String get ramadanDayAdjustmentHint =>
+      'Um einen Tag verschieben, falls in deiner Region die Mondsichel früher oder später gesichtet wurde';
 
   @override
   String get ramadanImsakBuffer => 'Imsak-Puffer (Minuten)';

@@ -159,7 +159,8 @@ class AppLocalizationsRu extends AppLocalizations {
   String get archiveRecordTitle => 'Архивная Запись';
 
   @override
-  String get deleteConfirmationPrompt => 'Вы уверены, что хотите навсегда удалить эту общину?';
+  String get deleteConfirmationPrompt =>
+      'Вы уверены, что хотите навсегда удалить эту общину?';
 
   @override
   String get cancelAction => 'Отмена';
@@ -432,10 +433,12 @@ class AppLocalizationsRu extends AppLocalizations {
   String get adminLabel => 'АДМИНИСТРАТОР';
 
   @override
-  String get pendingApproval => 'НА РАССМОТРЕНИИ — БУДЕТ ВКЛЮЧЁН ПОСЛЕ ОДОБРЕНИЯ АДМИНИСТРАТОРА';
+  String get pendingApproval =>
+      'НА РАССМОТРЕНИИ — БУДЕТ ВКЛЮЧЁН ПОСЛЕ ОДОБРЕНИЯ АДМИНИСТРАТОРА';
 
   @override
-  String get rejectedStatus => 'ОТКЛОНЕНО — ОБНОВИТЕ ДАННЫЕ И ОТПРАВЬТЕ ПОВТОРНО';
+  String get rejectedStatus =>
+      'ОТКЛОНЕНО — ОБНОВИТЕ ДАННЫЕ И ОТПРАВЬТЕ ПОВТОРНО';
 
   @override
   String get adhanPrefix => 'А:';
@@ -461,7 +464,8 @@ class AppLocalizationsRu extends AppLocalizations {
   String get notificationsTitle => 'УВЕДОМЛЕНИЯ';
 
   @override
-  String get signInToViewNotifications => 'Войдите, чтобы просматривать уведомления';
+  String get signInToViewNotifications =>
+      'Войдите, чтобы просматривать уведомления';
 
   @override
   String get errorLoadingNotifications => 'Ошибка загрузки уведомлений';
@@ -476,7 +480,8 @@ class AppLocalizationsRu extends AppLocalizations {
   String get mosqueNotificationsLabel => 'Уведомления мечети';
 
   @override
-  String get mosqueNotificationsSub => 'Просматривать оповещения и отчёты мечети';
+  String get mosqueNotificationsSub =>
+      'Просматривать оповещения и отчёты мечети';
 
   @override
   String unreadAlertsLabel(int count) {
@@ -496,13 +501,15 @@ class AppLocalizationsRu extends AppLocalizations {
   String get madhabAsrLabel => 'Мазхаб (Аср)';
 
   @override
-  String get reAuthBeforeDelete => 'Повторно аутентифицируйтесь перед удалением аккаунта.';
+  String get reAuthBeforeDelete =>
+      'Повторно аутентифицируйтесь перед удалением аккаунта.';
 
   @override
   String get prayerStatisticsTitle => 'СТАТИСТИКА МОЛИТВ';
 
   @override
-  String get signInForPrayerStats => 'Войдите, чтобы просмотреть статистику молитв';
+  String get signInForPrayerStats =>
+      'Войдите, чтобы просмотреть статистику молитв';
 
   @override
   String get last7Days => 'Последние 7 дней';
@@ -585,13 +592,15 @@ class AppLocalizationsRu extends AppLocalizations {
   String get unableToLoadMosque => 'НЕ УДАЛОСЬ ЗАГРУЗИТЬ МЕЧЕТЬ';
 
   @override
-  String get failedToSyncPrayer => 'Не удалось синхронизировать молитву. Проверьте подключение.';
+  String get failedToSyncPrayer =>
+      'Не удалось синхронизировать молитву. Проверьте подключение.';
 
   @override
   String get maintenanceTitle => 'ТЕХНИЧЕСКОЕ ОБСЛУЖИВАНИЕ';
 
   @override
-  String get maintenanceBody => 'В настоящее время выполняются плановые улучшения. Пожалуйста, зайдите позже.';
+  String get maintenanceBody =>
+      'В настоящее время выполняются плановые улучшения. Пожалуйста, зайдите позже.';
 
   @override
   String get tryAgain => 'Попробовать снова';
@@ -600,7 +609,8 @@ class AppLocalizationsRu extends AppLocalizations {
   String get retry => 'Повторить';
 
   @override
-  String get notifPrefUpdateFailed => 'Не удалось обновить настройку уведомления. Попробуйте снова.';
+  String get notifPrefUpdateFailed =>
+      'Не удалось обновить настройку уведомления. Попробуйте снова.';
 
   @override
   String get profileUpdatedSuccess => 'Профиль успешно обновлён';
@@ -628,13 +638,15 @@ class AppLocalizationsRu extends AppLocalizations {
   String get detailsOptional => 'ПОДРОБНОСТИ (НЕОБЯЗАТЕЛЬНО)';
 
   @override
-  String get donationNotAvailable => 'Информация о пожертвовании недоступна для этой мечети.';
+  String get donationNotAvailable =>
+      'Информация о пожертвовании недоступна для этой мечети.';
 
   @override
   String get donationDetails => 'ДЕТАЛИ ПОЖЕРТВОВАНИЯ';
 
   @override
-  String get accountDetailsCopied => 'Реквизиты счёта скопированы в буфер обмена';
+  String get accountDetailsCopied =>
+      'Реквизиты счёта скопированы в буфер обмена';
 
   @override
   String get copyDetails => 'КОПИРОВАТЬ РЕКВИЗИТЫ';
@@ -643,7 +655,8 @@ class AppLocalizationsRu extends AppLocalizations {
   String get closeAction => 'ЗАКРЫТЬ';
 
   @override
-  String get locationNotAvailable => 'Координаты местоположения недоступны для этой мечети.';
+  String get locationNotAvailable =>
+      'Координаты местоположения недоступны для этой мечети.';
 
   @override
   String get couldNotLaunchMaps => 'Не удалось открыть Google Maps.';
@@ -713,13 +726,16 @@ class AppLocalizationsRu extends AppLocalizations {
   String get searchCityHint => 'Поиск города (например, Москва, Россия)';
 
   @override
-  String get useCurrentLocationGps => 'Использовать текущее местоположение (GPS)';
+  String get useCurrentLocationGps =>
+      'Использовать текущее местоположение (GPS)';
 
   @override
-  String get confirmWithPasswordPrompt => 'Введите пароль для подтверждения удаления';
+  String get confirmWithPasswordPrompt =>
+      'Введите пароль для подтверждения удаления';
 
   @override
-  String get reAuthFailedMessage => 'Повторная аутентификация не удалась. Попробуйте ещё раз.';
+  String get reAuthFailedMessage =>
+      'Повторная аутентификация не удалась. Попробуйте ещё раз.';
 
   @override
   String get initializationError => 'Ошибка инициализации';
@@ -757,19 +773,24 @@ class AppLocalizationsRu extends AppLocalizations {
   String get estimatedAbbr => 'ор.';
 
   @override
-  String get azanEstimateNote => 'Время азана ориентировочное: Фаджр −15м · Зухр −10м · Аср −10м · Магриб −5м · Иша −10м';
+  String get azanEstimateNote =>
+      'Время азана ориентировочное: Фаджр −15м · Зухр −10м · Аср −10м · Магриб −5м · Иша −10м';
 
   @override
-  String get iqamahEstimateNote => 'Время икамы ориентировочное: Фаджр +20м · Зухр +15м · Аср +15м · Магриб +10м · Иша +20м';
+  String get iqamahEstimateNote =>
+      'Время икамы ориентировочное: Фаджр +20м · Зухр +15м · Аср +15м · Магриб +10м · Иша +20м';
 
   @override
-  String get analogBoardError => 'АНАЛОГОВЫЕ ЧАСЫ НЕ СКАНИРУЮТСЯ — СФОТОГРАФИРУЙТЕ ЦИФРОВОЙ ДИСПЛЕЙ ВРЕМЕНИ МОЛИТВЫ';
+  String get analogBoardError =>
+      'АНАЛОГОВЫЕ ЧАСЫ НЕ СКАНИРУЮТСЯ — СФОТОГРАФИРУЙТЕ ЦИФРОВОЙ ДИСПЛЕЙ ВРЕМЕНИ МОЛИТВЫ';
 
   @override
-  String get noTimesFoundError => 'ВРЕМЯ МОЛИТВЫ НЕ НАЙДЕНО — ПОПРОБУЙТЕ БОЛЕЕ ЧЁТКОЕ ФОТО';
+  String get noTimesFoundError =>
+      'ВРЕМЯ МОЛИТВЫ НЕ НАЙДЕНО — ПОПРОБУЙТЕ БОЛЕЕ ЧЁТКОЕ ФОТО';
 
   @override
-  String get couldNotReadTimesError => 'НЕ УДАЛОСЬ ПРОЧИТАТЬ ВРЕМЯ МОЛИТВЫ — ПОПРОБУЙТЕ БОЛЕЕ ЧЁТКОЕ ФОТО';
+  String get couldNotReadTimesError =>
+      'НЕ УДАЛОСЬ ПРОЧИТАТЬ ВРЕМЯ МОЛИТВЫ — ПОПРОБУЙТЕ БОЛЕЕ ЧЁТКОЕ ФОТО';
 
   @override
   String get takePhoto => 'СДЕЛАТЬ ФОТО';
@@ -787,7 +808,8 @@ class AppLocalizationsRu extends AppLocalizations {
   String get donationSettingsHeader => 'НАСТРОЙКИ ПОЖЕРТВОВАНИЙ';
 
   @override
-  String get donationBankDetailsHeader => 'БАНКОВСКИЕ РЕКВИЗИТЫ ДЛЯ ПОЖЕРТВОВАНИЙ';
+  String get donationBankDetailsHeader =>
+      'БАНКОВСКИЕ РЕКВИЗИТЫ ДЛЯ ПОЖЕРТВОВАНИЙ';
 
   @override
   String get bankNameLabel => 'НАЗВАНИЕ БАНКА';
@@ -838,7 +860,8 @@ class AppLocalizationsRu extends AppLocalizations {
   String get registryUpdatedMessage => 'Реестр успешно обновлён';
 
   @override
-  String get deletePermanentDialogBody => 'Это действие необратимо. Все данные, связанные с этой мечетью, будут удалены из глобального реестра.';
+  String get deletePermanentDialogBody =>
+      'Это действие необратимо. Все данные, связанные с этой мечетью, будут удалены из глобального реестра.';
 
   @override
   String get mosqueNameLabel => 'НАЗВАНИЕ МЕЧЕТИ';
@@ -883,7 +906,8 @@ class AppLocalizationsRu extends AppLocalizations {
   String get postAnnouncementAction => 'ОПУБЛИКОВАТЬ ОБЪЯВЛЕНИЕ';
 
   @override
-  String get announcementWillExpire => 'ОБЪЯВЛЕНИЕ АВТОМАТИЧЕСКИ ИСТЕЧЁТ ПОСЛЕ ВРЕМЕНИ ДЖАНАЗЫ.';
+  String get announcementWillExpire =>
+      'ОБЪЯВЛЕНИЕ АВТОМАТИЧЕСКИ ИСТЕЧЁТ ПОСЛЕ ВРЕМЕНИ ДЖАНАЗЫ.';
 
   @override
   String get maleLabel => 'МУЖСКОЙ';
@@ -952,10 +976,12 @@ class AppLocalizationsRu extends AppLocalizations {
   String get errorNotAuthorizedMosque => 'ВЫ НЕ УПРАВЛЯЕТЕ ЭТОЙ МЕЧЕТЬЮ.';
 
   @override
-  String get errorInvalidNameLength => 'НЕДОПУСТИМОЕ ИМЯ. ПРОВЕРЬТЕ ДЛИНУ (МАКСИМУМ 100).';
+  String get errorInvalidNameLength =>
+      'НЕДОПУСТИМОЕ ИМЯ. ПРОВЕРЬТЕ ДЛИНУ (МАКСИМУМ 100).';
 
   @override
-  String get errorSomethingWentWrongTryAgain => 'ЧТО-ТО ПОШЛО НЕ ТАК. ПОПРОБУЙТЕ СНОВА.';
+  String get errorSomethingWentWrongTryAgain =>
+      'ЧТО-ТО ПОШЛО НЕ ТАК. ПОПРОБУЙТЕ СНОВА.';
 
   @override
   String get editJanazaTitle => 'РЕДАКТИРОВАТЬ ДЖАНАЗУ';
@@ -993,7 +1019,8 @@ class AppLocalizationsRu extends AppLocalizations {
   }
 
   @override
-  String get qadaInfoBanner => 'Завершение молитв када здесь не влияет на вашу ежедневную серию. Серии считаются только за своевременные ежедневные молитвы.';
+  String get qadaInfoBanner =>
+      'Завершение молитв када здесь не влияет на вашу ежедневную серию. Серии считаются только за своевременные ежедневные молитвы.';
 
   @override
   String get totalPendingLabel => 'Всего ожидающих';
@@ -1100,7 +1127,8 @@ class AppLocalizationsRu extends AppLocalizations {
   String get unlockProfileBadge => 'Значок в сообществе мечети';
 
   @override
-  String get unlockQadaAnalytics => 'Аналитика када — какие молитвы вы пропускаете чаще';
+  String get unlockQadaAnalytics =>
+      'Аналитика када — какие молитвы вы пропускаете чаще';
 
   @override
   String get unlockMultiplier15 => 'Множитель очков 1.5×';
@@ -1375,7 +1403,8 @@ class AppLocalizationsRu extends AppLocalizations {
   String get ramadanDayAdjustment => 'Корректировка дня';
 
   @override
-  String get ramadanDayAdjustmentHint => 'Сдвиньте на день, если в вашем регионе месяц увидели раньше или позже';
+  String get ramadanDayAdjustmentHint =>
+      'Сдвиньте на день, если в вашем регионе месяц увидели раньше или позже';
 
   @override
   String get ramadanImsakBuffer => 'Запас имсак (минуты)';
@@ -1384,7 +1413,8 @@ class AppLocalizationsRu extends AppLocalizations {
   String get ramadanThemeLabel => 'Тема Рамадана';
 
   @override
-  String get ramadanZakatReminder => 'Раздайте закят аль-фитр до праздничной молитвы';
+  String get ramadanZakatReminder =>
+      'Раздайте закят аль-фитр до праздничной молитвы';
 
   @override
   String ramadanSuhoorNotif(int minutes) {

@@ -159,7 +159,8 @@ class AppLocalizationsId extends AppLocalizations {
   String get archiveRecordTitle => 'Catatan Arsip';
 
   @override
-  String get deleteConfirmationPrompt => 'Apakah Anda yakin ingin menghapus jamaah ini secara permanen?';
+  String get deleteConfirmationPrompt =>
+      'Apakah Anda yakin ingin menghapus jamaah ini secara permanen?';
 
   @override
   String get cancelAction => 'Batal';
@@ -411,7 +412,8 @@ class AppLocalizationsId extends AppLocalizations {
   String get deleteAccountLabel => 'Hapus Akun';
 
   @override
-  String get deleteAccountSub => 'Hapus identitas dan data Anda secara permanen';
+  String get deleteAccountSub =>
+      'Hapus identitas dan data Anda secara permanen';
 
   @override
   String get searchMosquesHint => 'Cari masjid...';
@@ -432,7 +434,8 @@ class AppLocalizationsId extends AppLocalizations {
   String get adminLabel => 'ADMIN';
 
   @override
-  String get pendingApproval => 'MENUNGGU PERSETUJUAN — AKAN TERDAFTAR SETELAH ADMIN MENYETUJUI';
+  String get pendingApproval =>
+      'MENUNGGU PERSETUJUAN — AKAN TERDAFTAR SETELAH ADMIN MENYETUJUI';
 
   @override
   String get rejectedStatus => 'DITOLAK — PERBARUI DETAIL DAN KIRIM ULANG';
@@ -461,7 +464,8 @@ class AppLocalizationsId extends AppLocalizations {
   String get notificationsTitle => 'NOTIFIKASI';
 
   @override
-  String get signInToViewNotifications => 'Silakan masuk untuk melihat notifikasi';
+  String get signInToViewNotifications =>
+      'Silakan masuk untuk melihat notifikasi';
 
   @override
   String get errorLoadingNotifications => 'Kesalahan memuat notifikasi';
@@ -496,13 +500,15 @@ class AppLocalizationsId extends AppLocalizations {
   String get madhabAsrLabel => 'Mazhab (Ashar)';
 
   @override
-  String get reAuthBeforeDelete => 'Harap autentikasi ulang sebelum menghapus akun.';
+  String get reAuthBeforeDelete =>
+      'Harap autentikasi ulang sebelum menghapus akun.';
 
   @override
   String get prayerStatisticsTitle => 'STATISTIK SHALAT';
 
   @override
-  String get signInForPrayerStats => 'Silakan masuk untuk melihat statistik shalat';
+  String get signInForPrayerStats =>
+      'Silakan masuk untuk melihat statistik shalat';
 
   @override
   String get last7Days => '7 hari terakhir';
@@ -585,13 +591,15 @@ class AppLocalizationsId extends AppLocalizations {
   String get unableToLoadMosque => 'TIDAK DAPAT MEMUAT MASJID';
 
   @override
-  String get failedToSyncPrayer => 'Gagal menyinkronkan shalat. Periksa koneksi.';
+  String get failedToSyncPrayer =>
+      'Gagal menyinkronkan shalat. Periksa koneksi.';
 
   @override
   String get maintenanceTitle => 'PEMELIHARAAN SISTEM';
 
   @override
-  String get maintenanceBody => 'Kami sedang melakukan perbaikan terjadwal. Silakan periksa kembali sebentar lagi.';
+  String get maintenanceBody =>
+      'Kami sedang melakukan perbaikan terjadwal. Silakan periksa kembali sebentar lagi.';
 
   @override
   String get tryAgain => 'Coba lagi';
@@ -600,7 +608,8 @@ class AppLocalizationsId extends AppLocalizations {
   String get retry => 'Coba ulang';
 
   @override
-  String get notifPrefUpdateFailed => 'Gagal memperbarui preferensi notifikasi. Silakan coba lagi.';
+  String get notifPrefUpdateFailed =>
+      'Gagal memperbarui preferensi notifikasi. Silakan coba lagi.';
 
   @override
   String get profileUpdatedSuccess => 'Profil berhasil diperbarui';
@@ -628,7 +637,8 @@ class AppLocalizationsId extends AppLocalizations {
   String get detailsOptional => 'DETAIL (OPSIONAL)';
 
   @override
-  String get donationNotAvailable => 'Informasi donasi tidak tersedia untuk masjid ini.';
+  String get donationNotAvailable =>
+      'Informasi donasi tidak tersedia untuk masjid ini.';
 
   @override
   String get donationDetails => 'DETAIL DONASI';
@@ -643,7 +653,8 @@ class AppLocalizationsId extends AppLocalizations {
   String get closeAction => 'TUTUP';
 
   @override
-  String get locationNotAvailable => 'Koordinat lokasi tidak tersedia untuk masjid ini.';
+  String get locationNotAvailable =>
+      'Koordinat lokasi tidak tersedia untuk masjid ini.';
 
   @override
   String get couldNotLaunchMaps => 'Tidak dapat membuka Google Maps.';
@@ -716,10 +727,12 @@ class AppLocalizationsId extends AppLocalizations {
   String get useCurrentLocationGps => 'Gunakan Lokasi Saat Ini (GPS)';
 
   @override
-  String get confirmWithPasswordPrompt => 'Masukkan kata sandi Anda untuk mengkonfirmasi penghapusan';
+  String get confirmWithPasswordPrompt =>
+      'Masukkan kata sandi Anda untuk mengkonfirmasi penghapusan';
 
   @override
-  String get reAuthFailedMessage => 'Autentikasi ulang gagal. Silakan coba lagi.';
+  String get reAuthFailedMessage =>
+      'Autentikasi ulang gagal. Silakan coba lagi.';
 
   @override
   String get initializationError => 'Kesalahan Inisialisasi';
@@ -757,19 +770,24 @@ class AppLocalizationsId extends AppLocalizations {
   String get estimatedAbbr => 'perkiraan';
 
   @override
-  String get azanEstimateNote => 'Waktu azan perkiraan: Subuh −15m · Dzuhur −10m · Ashar −10m · Maghrib −5m · Isya −10m';
+  String get azanEstimateNote =>
+      'Waktu azan perkiraan: Subuh −15m · Dzuhur −10m · Ashar −10m · Maghrib −5m · Isya −10m';
 
   @override
-  String get iqamahEstimateNote => 'Waktu iqamah perkiraan: Subuh +20m · Dzuhur +15m · Ashar +15m · Maghrib +10m · Isya +20m';
+  String get iqamahEstimateNote =>
+      'Waktu iqamah perkiraan: Subuh +20m · Dzuhur +15m · Ashar +15m · Maghrib +10m · Isya +20m';
 
   @override
-  String get analogBoardError => 'PAPAN JAM ANALOG TIDAK BISA DIPINDAI — FOTO LAYAR DIGITAL WAKTU SHALAT';
+  String get analogBoardError =>
+      'PAPAN JAM ANALOG TIDAK BISA DIPINDAI — FOTO LAYAR DIGITAL WAKTU SHALAT';
 
   @override
-  String get noTimesFoundError => 'WAKTU SHALAT TIDAK DITEMUKAN — COBA FOTO YANG LEBIH JELAS';
+  String get noTimesFoundError =>
+      'WAKTU SHALAT TIDAK DITEMUKAN — COBA FOTO YANG LEBIH JELAS';
 
   @override
-  String get couldNotReadTimesError => 'TIDAK DAPAT MEMBACA WAKTU SHALAT — COBA FOTO YANG LEBIH JELAS';
+  String get couldNotReadTimesError =>
+      'TIDAK DAPAT MEMBACA WAKTU SHALAT — COBA FOTO YANG LEBIH JELAS';
 
   @override
   String get takePhoto => 'AMBIL FOTO';
@@ -838,7 +856,8 @@ class AppLocalizationsId extends AppLocalizations {
   String get registryUpdatedMessage => 'Registri berhasil diperbarui';
 
   @override
-  String get deletePermanentDialogBody => 'Tindakan ini permanen dan tidak dapat dibatalkan. Semua data yang terkait dengan masjid ini akan dihapus dari registri global.';
+  String get deletePermanentDialogBody =>
+      'Tindakan ini permanen dan tidak dapat dibatalkan. Semua data yang terkait dengan masjid ini akan dihapus dari registri global.';
 
   @override
   String get mosqueNameLabel => 'NAMA MASJID';
@@ -883,7 +902,8 @@ class AppLocalizationsId extends AppLocalizations {
   String get postAnnouncementAction => 'POSTING PENGUMUMAN';
 
   @override
-  String get announcementWillExpire => 'PENGUMUMAN AKAN OTOMATIS BERAKHIR SETELAH WAKTU JENAZAH BERLALU.';
+  String get announcementWillExpire =>
+      'PENGUMUMAN AKAN OTOMATIS BERAKHIR SETELAH WAKTU JENAZAH BERLALU.';
 
   @override
   String get maleLabel => 'LAKI-LAKI';
@@ -931,7 +951,8 @@ class AppLocalizationsId extends AppLocalizations {
   String get announcementPostedTitle => 'PENGUMUMAN DIPOSTING';
 
   @override
-  String get announcementPostedMessage => 'Semoga Allah menganugerahkan mereka Surga. الفاتحة';
+  String get announcementPostedMessage =>
+      'Semoga Allah menganugerahkan mereka Surga. الفاتحة';
 
   @override
   String get errorEnterDeceasedName => 'MASUKKAN NAMA ALMARHUM/ALMARHUMAH.';
@@ -940,7 +961,8 @@ class AppLocalizationsId extends AppLocalizations {
   String get errorNameTooLong => 'NAMA TERLALU PANJANG. MAKS 100 KARAKTER.';
 
   @override
-  String get errorSelectDateAndTimeJanaza => 'PILIH TANGGAL DAN WAKTU UNTUK JENAZAH.';
+  String get errorSelectDateAndTimeJanaza =>
+      'PILIH TANGGAL DAN WAKTU UNTUK JENAZAH.';
 
   @override
   String get errorJanazaInPast => 'WAKTU JENAZAH TIDAK BOLEH DI MASA LALU.';
@@ -952,7 +974,8 @@ class AppLocalizationsId extends AppLocalizations {
   String get errorNotAuthorizedMosque => 'ANDA TIDAK MENGELOLA MASJID INI.';
 
   @override
-  String get errorInvalidNameLength => 'NAMA TIDAK VALID. PERIKSA PANJANG (MAKS 100).';
+  String get errorInvalidNameLength =>
+      'NAMA TIDAK VALID. PERIKSA PANJANG (MAKS 100).';
 
   @override
   String get errorSomethingWentWrongTryAgain => 'TERJADI KESALAHAN. COBA LAGI.';
@@ -993,7 +1016,8 @@ class AppLocalizationsId extends AppLocalizations {
   }
 
   @override
-  String get qadaInfoBanner => 'Menyelesaikan shalat qadha di sini tidak mempengaruhi streak harian Anda. Streak hanya dihitung untuk shalat harian tepat waktu.';
+  String get qadaInfoBanner =>
+      'Menyelesaikan shalat qadha di sini tidak mempengaruhi streak harian Anda. Streak hanya dihitung untuk shalat harian tepat waktu.';
 
   @override
   String get totalPendingLabel => 'Total Tertunda';
@@ -1100,7 +1124,8 @@ class AppLocalizationsId extends AppLocalizations {
   String get unlockProfileBadge => 'Lencana di komunitas masjid';
 
   @override
-  String get unlockQadaAnalytics => 'Analitik Qada — lihat salat yang paling sering terlewat';
+  String get unlockQadaAnalytics =>
+      'Analitik Qada — lihat salat yang paling sering terlewat';
 
   @override
   String get unlockMultiplier15 => 'Pengali poin 1,5×';
@@ -1375,7 +1400,8 @@ class AppLocalizationsId extends AppLocalizations {
   String get ramadanDayAdjustment => 'Penyesuaian hari';
 
   @override
-  String get ramadanDayAdjustmentHint => 'Geser satu hari jika daerah Anda melihat hilal lebih awal atau lebih lambat';
+  String get ramadanDayAdjustmentHint =>
+      'Geser satu hari jika daerah Anda melihat hilal lebih awal atau lebih lambat';
 
   @override
   String get ramadanImsakBuffer => 'Jeda imsak (menit)';
