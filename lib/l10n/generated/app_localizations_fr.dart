@@ -39,7 +39,8 @@ class AppLocalizationsFr extends AppLocalizations {
   String get archiveVacant => 'Archive Vide';
 
   @override
-  String get noRegistriesNearby => 'Aucun registre trouvé dans un rayon de 20km';
+  String get noRegistriesNearby =>
+      'Aucun registre trouvé dans un rayon de 20km';
 
   @override
   String get establishNew => '+ CRÉER NOUVEAU';
@@ -159,7 +160,8 @@ class AppLocalizationsFr extends AppLocalizations {
   String get archiveRecordTitle => 'Enregistrement d\'Archive';
 
   @override
-  String get deleteConfirmationPrompt => 'Êtes-vous sûr de vouloir supprimer définitivement cette congrégation ?';
+  String get deleteConfirmationPrompt =>
+      'Êtes-vous sûr de vouloir supprimer définitivement cette congrégation ?';
 
   @override
   String get cancelAction => 'Annuler';
@@ -231,7 +233,8 @@ class AppLocalizationsFr extends AppLocalizations {
   String get registrationTitle => 'Inscription';
 
   @override
-  String get registrationSubtitle => 'Créer un nouvel enregistrement de congrégation';
+  String get registrationSubtitle =>
+      'Créer un nouvel enregistrement de congrégation';
 
   @override
   String get fieldName => 'Nom Officiel';
@@ -267,16 +270,20 @@ class AppLocalizationsFr extends AppLocalizations {
   String get successRegistryTitle => 'Registre Complété';
 
   @override
-  String get successRegistryMessage => 'Enregistrement de congrégation créé avec succès';
+  String get successRegistryMessage =>
+      'Enregistrement de congrégation créé avec succès';
 
   @override
-  String get errorLocationDenied => 'Permission de localisation refusée ou expirée';
+  String get errorLocationDenied =>
+      'Permission de localisation refusée ou expirée';
 
   @override
-  String get errorRequiredFields => 'Le nom et la localisation sont obligatoires';
+  String get errorRequiredFields =>
+      'Le nom et la localisation sont obligatoires';
 
   @override
-  String get errorDatabaseSync => 'Échec de la synchronisation de la base de données';
+  String get errorDatabaseSync =>
+      'Échec de la synchronisation de la base de données';
 
   @override
   String get authLoginGreeting => 'Bismillah';
@@ -411,7 +418,8 @@ class AppLocalizationsFr extends AppLocalizations {
   String get deleteAccountLabel => 'Supprimer le Compte';
 
   @override
-  String get deleteAccountSub => 'Supprimer définitivement votre identité et vos données';
+  String get deleteAccountSub =>
+      'Supprimer définitivement votre identité et vos données';
 
   @override
   String get searchMosquesHint => 'Rechercher des mosquées...';
@@ -426,16 +434,19 @@ class AppLocalizationsFr extends AppLocalizations {
   String get schoolOfThoughtLabel => 'ÉCOLE DE PENSÉE';
 
   @override
-  String get offlineMode => 'MODE HORS LIGNE — CERTAINES FONCTIONNALITÉS INDISPONIBLES';
+  String get offlineMode =>
+      'MODE HORS LIGNE — CERTAINES FONCTIONNALITÉS INDISPONIBLES';
 
   @override
   String get adminLabel => 'ADMIN';
 
   @override
-  String get pendingApproval => 'EN ATTENTE D\'APPROBATION — SERA LISTÉ APRÈS VALIDATION DE L\'ADMIN';
+  String get pendingApproval =>
+      'EN ATTENTE D\'APPROBATION — SERA LISTÉ APRÈS VALIDATION DE L\'ADMIN';
 
   @override
-  String get rejectedStatus => 'REJETÉ — METTEZ À JOUR LES DÉTAILS ET SOUMETTEZ À NOUVEAU';
+  String get rejectedStatus =>
+      'REJETÉ — METTEZ À JOUR LES DÉTAILS ET SOUMETTEZ À NOUVEAU';
 
   @override
   String get adhanPrefix => 'A:';
@@ -461,10 +472,12 @@ class AppLocalizationsFr extends AppLocalizations {
   String get notificationsTitle => 'NOTIFICATIONS';
 
   @override
-  String get signInToViewNotifications => 'Veuillez vous connecter pour voir les notifications';
+  String get signInToViewNotifications =>
+      'Veuillez vous connecter pour voir les notifications';
 
   @override
-  String get errorLoadingNotifications => 'Erreur lors du chargement des notifications';
+  String get errorLoadingNotifications =>
+      'Erreur lors du chargement des notifications';
 
   @override
   String get noNotificationsYet => 'Aucune notification pour l\'instant';
@@ -476,7 +489,8 @@ class AppLocalizationsFr extends AppLocalizations {
   String get mosqueNotificationsLabel => 'Notifications de la mosquée';
 
   @override
-  String get mosqueNotificationsSub => 'Voir les alertes et rapports de mosquée';
+  String get mosqueNotificationsSub =>
+      'Voir les alertes et rapports de mosquée';
 
   @override
   String unreadAlertsLabel(int count) {
@@ -487,7 +501,8 @@ class AppLocalizationsFr extends AppLocalizations {
   String get prayerStatisticsLabel => 'Statistiques de Prière';
 
   @override
-  String get prayerStatisticsSub => 'Voir votre historique de prière et vos analyses';
+  String get prayerStatisticsSub =>
+      'Voir votre historique de prière et vos analyses';
 
   @override
   String get calculationMethodLabel => 'Méthode';
@@ -496,13 +511,15 @@ class AppLocalizationsFr extends AppLocalizations {
   String get madhabAsrLabel => 'Madhab (Asr)';
 
   @override
-  String get reAuthBeforeDelete => 'Veuillez vous ré-authentifier avant de supprimer le compte.';
+  String get reAuthBeforeDelete =>
+      'Veuillez vous ré-authentifier avant de supprimer le compte.';
 
   @override
   String get prayerStatisticsTitle => 'STATISTIQUES DE PRIÈRE';
 
   @override
-  String get signInForPrayerStats => 'Veuillez vous connecter pour voir les statistiques de prière';
+  String get signInForPrayerStats =>
+      'Veuillez vous connecter pour voir les statistiques de prière';
 
   @override
   String get last7Days => '7 derniers jours';
@@ -514,7 +531,8 @@ class AppLocalizationsFr extends AppLocalizations {
   String get last90Days => '90 derniers jours';
 
   @override
-  String get noPrayerDataYet => 'Aucune donnée de prière disponible pour l\'instant';
+  String get noPrayerDataYet =>
+      'Aucune donnée de prière disponible pour l\'instant';
 
   @override
   String get overviewSection => 'APERÇU';
@@ -585,13 +603,15 @@ class AppLocalizationsFr extends AppLocalizations {
   String get unableToLoadMosque => 'IMPOSSIBLE DE CHARGER LA MOSQUÉE';
 
   @override
-  String get failedToSyncPrayer => 'Échec de la synchronisation de la prière. Vérifiez la connexion.';
+  String get failedToSyncPrayer =>
+      'Échec de la synchronisation de la prière. Vérifiez la connexion.';
 
   @override
   String get maintenanceTitle => 'MAINTENANCE DU SYSTÈME';
 
   @override
-  String get maintenanceBody => 'Nous effectuons actuellement des améliorations planifiées. Veuillez revenir dans quelques instants.';
+  String get maintenanceBody =>
+      'Nous effectuons actuellement des améliorations planifiées. Veuillez revenir dans quelques instants.';
 
   @override
   String get tryAgain => 'Réessayer';
@@ -600,7 +620,8 @@ class AppLocalizationsFr extends AppLocalizations {
   String get retry => 'Réessayer';
 
   @override
-  String get notifPrefUpdateFailed => 'Échec de la mise à jour des préférences de notification. Veuillez réessayer.';
+  String get notifPrefUpdateFailed =>
+      'Échec de la mise à jour des préférences de notification. Veuillez réessayer.';
 
   @override
   String get profileUpdatedSuccess => 'Profil mis à jour avec succès';
@@ -628,13 +649,15 @@ class AppLocalizationsFr extends AppLocalizations {
   String get detailsOptional => 'DÉTAILS (OPTIONNEL)';
 
   @override
-  String get donationNotAvailable => 'Les informations de don ne sont pas disponibles pour cette mosquée.';
+  String get donationNotAvailable =>
+      'Les informations de don ne sont pas disponibles pour cette mosquée.';
 
   @override
   String get donationDetails => 'DÉTAILS DU DON';
 
   @override
-  String get accountDetailsCopied => 'Détails du compte copiés dans le presse-papiers';
+  String get accountDetailsCopied =>
+      'Détails du compte copiés dans le presse-papiers';
 
   @override
   String get copyDetails => 'COPIER LES DÉTAILS';
@@ -643,7 +666,8 @@ class AppLocalizationsFr extends AppLocalizations {
   String get closeAction => 'FERMER';
 
   @override
-  String get locationNotAvailable => 'Les coordonnées de localisation ne sont pas disponibles pour cette mosquée.';
+  String get locationNotAvailable =>
+      'Les coordonnées de localisation ne sont pas disponibles pour cette mosquée.';
 
   @override
   String get couldNotLaunchMaps => 'Impossible d\'ouvrir Google Maps.';
@@ -690,7 +714,8 @@ class AppLocalizationsFr extends AppLocalizations {
   String get savedToGallery => 'Enregistré dans la galerie !';
 
   @override
-  String get couldNotSaveToGallery => 'Impossible d\'enregistrer dans la galerie.';
+  String get couldNotSaveToGallery =>
+      'Impossible d\'enregistrer dans la galerie.';
 
   @override
   String get dayStreakLabel => 'SÉRIE DE JOURS';
@@ -699,7 +724,8 @@ class AppLocalizationsFr extends AppLocalizations {
   String get overallLabel => 'global';
 
   @override
-  String get trackPrayerHabits => 'Suivez vos habitudes de prière et vos séries';
+  String get trackPrayerHabits =>
+      'Suivez vos habitudes de prière et vos séries';
 
   @override
   String ofTotalCompleted(int completed, int total) {
@@ -716,10 +742,12 @@ class AppLocalizationsFr extends AppLocalizations {
   String get useCurrentLocationGps => 'Utiliser la Position Actuelle (GPS)';
 
   @override
-  String get confirmWithPasswordPrompt => 'Entrez votre mot de passe pour confirmer la suppression';
+  String get confirmWithPasswordPrompt =>
+      'Entrez votre mot de passe pour confirmer la suppression';
 
   @override
-  String get reAuthFailedMessage => 'La ré-authentification a échoué. Veuillez réessayer.';
+  String get reAuthFailedMessage =>
+      'La ré-authentification a échoué. Veuillez réessayer.';
 
   @override
   String get initializationError => 'Erreur d\'initialisation';
@@ -757,19 +785,24 @@ class AppLocalizationsFr extends AppLocalizations {
   String get estimatedAbbr => 'est.';
 
   @override
-  String get azanEstimateNote => 'Heures d\'adhan estimées : Fajr −15m · Dhuhr −10m · Asr −10m · Maghrib −5m · Isha −10m';
+  String get azanEstimateNote =>
+      'Heures d\'adhan estimées : Fajr −15m · Dhuhr −10m · Asr −10m · Maghrib −5m · Isha −10m';
 
   @override
-  String get iqamahEstimateNote => 'Heures d\'iqama estimées : Fajr +20m · Dhuhr +15m · Asr +15m · Maghrib +10m · Isha +20m';
+  String get iqamahEstimateNote =>
+      'Heures d\'iqama estimées : Fajr +20m · Dhuhr +15m · Asr +15m · Maghrib +10m · Isha +20m';
 
   @override
-  String get analogBoardError => 'LES TABLEAUX À HORLOGE ANALOGIQUE NE PEUVENT PAS ÊTRE SCANNÉS — PHOTOGRAPHIEZ UN AFFICHAGE NUMÉRIQUE DES HORAIRES DE PRIÈRE';
+  String get analogBoardError =>
+      'LES TABLEAUX À HORLOGE ANALOGIQUE NE PEUVENT PAS ÊTRE SCANNÉS — PHOTOGRAPHIEZ UN AFFICHAGE NUMÉRIQUE DES HORAIRES DE PRIÈRE';
 
   @override
-  String get noTimesFoundError => 'AUCUN HORAIRE DE PRIÈRE TROUVÉ — ESSAYEZ UNE PHOTO PLUS NETTE';
+  String get noTimesFoundError =>
+      'AUCUN HORAIRE DE PRIÈRE TROUVÉ — ESSAYEZ UNE PHOTO PLUS NETTE';
 
   @override
-  String get couldNotReadTimesError => 'IMPOSSIBLE DE LIRE LES HORAIRES DE PRIÈRE — ESSAYEZ UNE PHOTO PLUS NETTE';
+  String get couldNotReadTimesError =>
+      'IMPOSSIBLE DE LIRE LES HORAIRES DE PRIÈRE — ESSAYEZ UNE PHOTO PLUS NETTE';
 
   @override
   String get takePhoto => 'PRENDRE UNE PHOTO';
@@ -838,7 +871,8 @@ class AppLocalizationsFr extends AppLocalizations {
   String get registryUpdatedMessage => 'Registre mis à jour avec succès';
 
   @override
-  String get deletePermanentDialogBody => 'Cette action est permanente et ne peut pas être annulée. Toutes les données associées à ce sanctuaire seront supprimées du registre mondial.';
+  String get deletePermanentDialogBody =>
+      'Cette action est permanente et ne peut pas être annulée. Toutes les données associées à ce sanctuaire seront supprimées du registre mondial.';
 
   @override
   String get mosqueNameLabel => 'NOM DE LA MOSQUÉE';
@@ -883,7 +917,8 @@ class AppLocalizationsFr extends AppLocalizations {
   String get postAnnouncementAction => 'PUBLIER L\'ANNONCE';
 
   @override
-  String get announcementWillExpire => 'L\'ANNONCE EXPIRERA AUTOMATIQUEMENT APRÈS L\'HEURE DE LA JANAZA.';
+  String get announcementWillExpire =>
+      'L\'ANNONCE EXPIRERA AUTOMATIQUEMENT APRÈS L\'HEURE DE LA JANAZA.';
 
   @override
   String get maleLabel => 'MASCULIN';
@@ -931,7 +966,8 @@ class AppLocalizationsFr extends AppLocalizations {
   String get announcementPostedTitle => 'ANNONCE PUBLIÉE';
 
   @override
-  String get announcementPostedMessage => 'Qu\'Allah leur accorde le Paradis. الفاتحة';
+  String get announcementPostedMessage =>
+      'Qu\'Allah leur accorde le Paradis. الفاتحة';
 
   @override
   String get errorEnterDeceasedName => 'ENTREZ LE NOM DU DÉFUNT.';
@@ -940,10 +976,12 @@ class AppLocalizationsFr extends AppLocalizations {
   String get errorNameTooLong => 'NOM TROP LONG. MAX 100 CARACTÈRES.';
 
   @override
-  String get errorSelectDateAndTimeJanaza => 'SÉLECTIONNEZ LA DATE ET L\'HEURE POUR LA JANAZA.';
+  String get errorSelectDateAndTimeJanaza =>
+      'SÉLECTIONNEZ LA DATE ET L\'HEURE POUR LA JANAZA.';
 
   @override
-  String get errorJanazaInPast => 'L\'HEURE DE LA JANAZA NE PEUT PAS ÊTRE DANS LE PASSÉ.';
+  String get errorJanazaInPast =>
+      'L\'HEURE DE LA JANAZA NE PEUT PAS ÊTRE DANS LE PASSÉ.';
 
   @override
   String get errorMustBeSignedIn => 'VOUS DEVEZ ÊTRE CONNECTÉ.';
@@ -952,16 +990,19 @@ class AppLocalizationsFr extends AppLocalizations {
   String get errorNotAuthorizedMosque => 'VOUS NE GÉREZ PAS CETTE MOSQUÉE.';
 
   @override
-  String get errorInvalidNameLength => 'NOM INVALIDE. VÉRIFIEZ LA LONGUEUR (MAX 100).';
+  String get errorInvalidNameLength =>
+      'NOM INVALIDE. VÉRIFIEZ LA LONGUEUR (MAX 100).';
 
   @override
-  String get errorSomethingWentWrongTryAgain => 'QUELQUE CHOSE S\'EST MAL PASSÉ. RÉESSAYEZ.';
+  String get errorSomethingWentWrongTryAgain =>
+      'QUELQUE CHOSE S\'EST MAL PASSÉ. RÉESSAYEZ.';
 
   @override
   String get editJanazaTitle => 'MODIFIER LA JANAZA';
 
   @override
-  String get updateAnnouncementDetails => 'METTRE À JOUR LES DÉTAILS DE L\'ANNONCE';
+  String get updateAnnouncementDetails =>
+      'METTRE À JOUR LES DÉTAILS DE L\'ANNONCE';
 
   @override
   String get announcementUpdatedTitle => 'ANNONCE MISE À JOUR';
@@ -993,7 +1034,8 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
-  String get qadaInfoBanner => 'Effectuer des prières qada ici n\'affecte pas votre série quotidienne. Les séries comptent uniquement pour les prières quotidiennes à l\'heure.';
+  String get qadaInfoBanner =>
+      'Effectuer des prières qada ici n\'affecte pas votre série quotidienne. Les séries comptent uniquement pour les prières quotidiennes à l\'heure.';
 
   @override
   String get totalPendingLabel => 'Total en attente';
@@ -1100,7 +1142,8 @@ class AppLocalizationsFr extends AppLocalizations {
   String get unlockProfileBadge => 'Badge dans la communauté de la mosquée';
 
   @override
-  String get unlockQadaAnalytics => 'Analyse Qada — voyez les prières les plus manquées';
+  String get unlockQadaAnalytics =>
+      'Analyse Qada — voyez les prières les plus manquées';
 
   @override
   String get unlockMultiplier15 => 'Multiplicateur de points 1,5×';
@@ -1375,7 +1418,8 @@ class AppLocalizationsFr extends AppLocalizations {
   String get ramadanDayAdjustment => 'Ajustement du jour';
 
   @override
-  String get ramadanDayAdjustmentHint => 'Décalez d\'un jour si votre région a vu le croissant plus tôt ou plus tard';
+  String get ramadanDayAdjustmentHint =>
+      'Décalez d\'un jour si votre région a vu le croissant plus tôt ou plus tard';
 
   @override
   String get ramadanImsakBuffer => 'Marge d\'imsak (minutes)';
@@ -1384,7 +1428,8 @@ class AppLocalizationsFr extends AppLocalizations {
   String get ramadanThemeLabel => 'Thème Ramadan';
 
   @override
-  String get ramadanZakatReminder => 'Donnez la Zakat al-Fitr avant la prière de l\'Aïd';
+  String get ramadanZakatReminder =>
+      'Donnez la Zakat al-Fitr avant la prière de l\'Aïd';
 
   @override
   String ramadanSuhoorNotif(int minutes) {
