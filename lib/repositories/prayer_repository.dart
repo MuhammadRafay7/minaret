@@ -215,16 +215,19 @@ class PrayerRepository {
     if (_uid.isEmpty) return null;
 
     try {
-      final cutoff = DateTime.now().subtract(const Duration(days: 365));
+      // Fetch records needed for streak calculation. Limit to 21 days for performance.
+      final now = DateTime.now();
+      final cutoff = DateTime(now.year, now.month, now.day).subtract(const Duration(days: 21));
       final snap = await _records
           .where('userId', isEqualTo: _uid)
           .where('date', isGreaterThan: Timestamp.fromDate(cutoff))
+          .orderBy('date', descending: true)
+          .limit(100)
           .get();
 
       final records = snap.docs
           .map(PrayerRecord.fromDoc)
-          .toList()
-        ..sort((a, b) => a.date.compareTo(b.date));
+          .toList();
 
       int totalPrayers = 0;
       int totalDaysPrayed = 0;
@@ -246,14 +249,17 @@ class PrayerRepository {
         recordMap[_dayKey(r.date)] = r;
       }
 
-      // Current streak: consecutive fully-completed days.
-      // If today is still in progress, skip it so the streak from previous days shows.
+      // Current streak: consecutive fully-completed days (going backward from today).
       int currentStreak = 0;
       var checkDay = DateTime.now();
       final todayRecord = recordMap[_dayKey(checkDay)];
+
+      // If today is incomplete, start checking from yesterday
       if (todayRecord == null || todayRecord.completedPrayers.length < _prayers.length) {
         checkDay = checkDay.subtract(const Duration(days: 1));
       }
+
+      // Walk backward counting consecutive full days
       while (true) {
         final r = recordMap[_dayKey(checkDay)];
         if (r == null || r.completedPrayers.length < _prayers.length) break;
@@ -261,22 +267,21 @@ class PrayerRepository {
         checkDay = checkDay.subtract(const Duration(days: 1));
       }
 
-      // Longest streak across all records (all 5 prayers required)
-      int longestStreak = 0;
+      // Longest streak: iterate in chronological order (oldest first) via reversed descending list
+      int longestStreak = currentStreak; // Start with current streak as minimum
       int tempStreak = 0;
-      DateTime? prevDay;
-      for (final record in records) {
+      DateTime? prevFullDay;
+      for (final record in records.reversed) {
         if (record.completedPrayers.length < _prayers.length) continue;
         final d = DateTime(record.date.year, record.date.month, record.date.day);
-        if (prevDay == null || d.difference(prevDay).inDays == 1) {
+        if (prevFullDay == null || d.difference(prevFullDay).inDays == 1) {
           tempStreak++;
         } else {
           tempStreak = 1;
         }
         if (tempStreak > longestStreak) longestStreak = tempStreak;
-        prevDay = d;
+        prevFullDay = d;
       }
-      if (currentStreak > longestStreak) longestStreak = currentStreak;
 
       final overallCompletionRate = totalDaysPrayed == 0
           ? 0.0
