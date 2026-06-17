@@ -10,7 +10,7 @@
         },
         {
           "fieldPath": "date",
-          "order": "DESCENDING"
+          "order": "ASCENDING"
         }
       ]
     },
@@ -24,7 +24,7 @@
         },
         {
           "fieldPath": "date",
-          "order": "ASCENDING"
+          "order": "DESCENDING"
         }
       ]
     },
