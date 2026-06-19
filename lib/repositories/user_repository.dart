@@ -55,6 +55,20 @@ class UserRepository {
       .snapshots()
       .map((doc) => doc.exists ? UserProfile.fromDoc(doc) : null);
 
+  Future<UserProfile?> getUser(String uid) async {
+    try {
+      final doc = await _users.doc(uid).get();
+      return doc.exists ? UserProfile.fromDoc(doc) : null;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  Future<void> setUser(String uid, Map<String, dynamic> data) =>
+      _users.doc(uid).set(
+          {'createdAt': FieldValue.serverTimestamp(), ...data},
+          SetOptions(merge: true));
+
   Future<void> ensureExists(String uid, Map<String, dynamic> data) =>
       _users.doc(uid).set(
           {'createdAt': FieldValue.serverTimestamp(), ...data},
