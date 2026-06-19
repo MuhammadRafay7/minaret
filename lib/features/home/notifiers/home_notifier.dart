@@ -44,7 +44,7 @@ class HomeNotifier extends ChangeNotifier {
 
   // ── Filters ───────────────────────────────────────────────────────────────
   SortType _activeSort = SortType.proximity;
-  double _selectedRadiusKm = 3.0;
+  double _selectedRadiusKm = 1.0;
   String? _selectedFiqh;
   String _searchQuery = '';
 

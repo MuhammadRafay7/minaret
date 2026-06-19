@@ -9,6 +9,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import 'package:minaret/core/constants/app_defaults.dart';
 import 'package:minaret/l10n/generated/app_localizations.dart';
@@ -82,6 +83,7 @@ class _AuthPageState extends State<AuthPage> {
   bool _isLoading = false;
   bool _isCheckingVerification = false;
   bool _passwordVisible = false;
+  bool _rememberMe = false;
   AuthStep _regStep = AuthStep.phone;
   String _selectedRole = kDefaultRole;
   String _selectedGender = 'male';
@@ -94,6 +96,39 @@ class _AuthPageState extends State<AuthPage> {
   void initState() {
     super.initState();
     _authStream = FirebaseAuth.instance.authStateChanges();
+    _loadSavedCredentials();
+  }
+
+  Future<void> _loadSavedCredentials() async {
+    const storage = FlutterSecureStorage();
+    try {
+      final savedEmail = await storage.read(key: 'auth_email');
+      final savedPassword = await storage.read(key: 'auth_password');
+      if (savedEmail != null && savedPassword != null) {
+        setState(() {
+          _emailController.text = savedEmail;
+          _passwordController.text = savedPassword;
+          _rememberMe = true;
+        });
+      }
+    } catch (_) {}
+  }
+
+  Future<void> _saveCredentials() async {
+    if (!_rememberMe) return;
+    const storage = FlutterSecureStorage();
+    try {
+      await storage.write(key: 'auth_email', value: _emailController.text.trim());
+      await storage.write(key: 'auth_password', value: _passwordController.text.trim());
+    } catch (_) {}
+  }
+
+  Future<void> _clearSavedCredentials() async {
+    const storage = FlutterSecureStorage();
+    try {
+      await storage.delete(key: 'auth_email');
+      await storage.delete(key: 'auth_password');
+    } catch (_) {}
   }
 
   @override
@@ -262,6 +297,11 @@ class _AuthPageState extends State<AuthPage> {
             .doc(cred.user!.uid)
             .get();
         final role = userDoc.data()?['role'] ?? kDefaultRole;
+        if (_rememberMe) {
+          await _saveCredentials();
+        } else {
+          await _clearSavedCredentials();
+        }
         if (!mounted) return;
         await _routeAfterLogin(cred.user!.uid, role);
       } else {
@@ -632,8 +672,7 @@ class _AuthPageState extends State<AuthPage> {
       stream: _authStream,
       builder: (context, snapshot) {
         final user = snapshot.data;
-        final showProfile =
-            user != null && (_isLogin || _regStep == AuthStep.phone);
+        final showProfile = user != null;
         return Scaffold(
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           body: AtelierLayout(
@@ -876,13 +915,17 @@ class _AuthPageState extends State<AuthPage> {
                   ],
                 ),
               ),
-              IconButton(
-                onPressed: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => const SettingsPage()),
+              SizedBox(
+                width: 56,
+                height: 56,
+                child: IconButton(
+                  onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const SettingsPage()),
+                  ),
+                  icon: Icon(Icons.settings_outlined, color: MinaretTheme.gold),
+                  tooltip: 'Settings',
                 ),
-                icon: Icon(Icons.settings_outlined, color: MinaretTheme.gold),
-                tooltip: 'Settings',
               ),
             ],
           ),
@@ -952,7 +995,7 @@ class _AuthPageState extends State<AuthPage> {
               }),
             ),
           ),
-          const SizedBox(height: 40),
+          const SizedBox(height: 120),
         ],
       ),
     );
@@ -969,6 +1012,8 @@ class _AuthPageState extends State<AuthPage> {
         ),
         const SizedBox(height: 14),
         _buildModernField(l10n.fieldPassword, _passwordController, true),
+        const SizedBox(height: 16),
+        _buildRememberMeCheckbox(),
       ];
     }
     if (_regStep == AuthStep.phone) {
@@ -1780,7 +1825,7 @@ class _AuthPageState extends State<AuthPage> {
         borderRadius: BorderRadius.circular(14),
         boxShadow: MinaretTheme.cardShadow,
       ),
-      padding: const EdgeInsets.fromLTRB(16, 12, 12, 12),
+      padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
       child: Row(
         children: [
           Icon(_fieldIcon(label, isObscure, keyboardType),
@@ -1832,18 +1877,50 @@ class _AuthPageState extends State<AuthPage> {
               onTap: () => setState(() => _passwordVisible = !_passwordVisible),
               behavior: HitTestBehavior.opaque,
               child: Padding(
-                padding: const EdgeInsets.all(4),
+                padding: const EdgeInsets.all(8),
                 child: Icon(
                   _passwordVisible
-                      ? Icons.visibility_off_outlined
-                      : Icons.visibility_outlined,
-                  size: 20,
-                  color: _textSecondary,
+                      ? Icons.visibility_off_rounded
+                      : Icons.visibility_rounded,
+                  size: 22,
+                  color: MinaretTheme.gold,
                 ),
               ),
             ),
         ],
       ),
+    );
+  }
+
+  Widget _buildRememberMeCheckbox() {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Checkbox(
+          value: _rememberMe,
+          onChanged: (value) => setState(() => _rememberMe = value ?? false),
+          fillColor: WidgetStateProperty.all(MinaretTheme.gold),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        ),
+        Expanded(
+          child: Text(
+            _displayText(_t(
+              en: 'Remember me',
+              ar: 'تذكرني',
+              ur: 'مجھے یاد رکھیں',
+              ru: 'Помните меня',
+            )),
+            style: GoogleFonts.lato(
+              fontSize: 13,
+              color: _textSecondary,
+              fontWeight: FontWeight.w500,
+            ),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+      ],
     );
   }
 
@@ -2054,7 +2131,6 @@ class _AuthPageState extends State<AuthPage> {
       final googleClientId = dotenv.env['GOOGLE_CLIENT_ID'] ?? '';
       final googleUser = await GoogleSignIn(
         clientId: kIsWeb ? googleClientId : null,
-        serverClientId: kIsWeb ? null : googleClientId,
       ).signIn();
       if (googleUser == null) {
         setState(() => _isLoading = false);
@@ -2405,46 +2481,46 @@ class _SocialProfileViewState extends State<_SocialProfileView> {
           const SizedBox(height: 28),
 
           // ── Stats card ─────────────────────────────────────────────────
-          Container(
-            decoration: BoxDecoration(
-              color: cardColor,
-              borderRadius: BorderRadius.circular(18),
-              boxShadow: MinaretTheme.cardShadow,
-            ),
-            padding: const EdgeInsets.symmetric(vertical: 18),
-            child: Row(
-              children: [
-                Expanded(
-                  child: _StatColumn(
-                    value: _stats != null ? '${_stats!.totalPrayers}' : '—',
-                    label: l10n.statPrayers,
-                    textPrimary: textPrimary,
-                    textSecondary: textSecondary,
+          _stats == null
+              ? _buildStatsLoadingSkeleton(cardColor, isDark)
+              : Container(
+                  decoration: BoxDecoration(
+                    color: cardColor,
+                    borderRadius: BorderRadius.circular(18),
+                    boxShadow: MinaretTheme.cardShadow,
+                  ),
+                  padding: const EdgeInsets.symmetric(vertical: 18),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: _StatColumn(
+                          value: '${_stats!.totalPrayers}',
+                          label: l10n.statPrayers,
+                          textPrimary: textPrimary,
+                          textSecondary: textSecondary,
+                        ),
+                      ),
+                      _statDivider(isDark),
+                      Expanded(
+                        child: _StatColumn(
+                          value: '${_stats!.currentStreak}',
+                          label: l10n.statStreak,
+                          textPrimary: textPrimary,
+                          textSecondary: textSecondary,
+                        ),
+                      ),
+                      _statDivider(isDark),
+                      Expanded(
+                        child: _StatColumn(
+                          value: '${(_stats!.overallCompletionRate * 100).round()}%',
+                          label: l10n.statRate,
+                          textPrimary: textPrimary,
+                          textSecondary: textSecondary,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                _statDivider(isDark),
-                Expanded(
-                  child: _StatColumn(
-                    value: _stats != null ? '${_stats!.currentStreak}' : '—',
-                    label: l10n.statStreak,
-                    textPrimary: textPrimary,
-                    textSecondary: textSecondary,
-                  ),
-                ),
-                _statDivider(isDark),
-                Expanded(
-                  child: _StatColumn(
-                    value: _stats != null
-                        ? '${(_stats!.overallCompletionRate * 100).round()}%'
-                        : '—',
-                    label: l10n.statRate,
-                    textPrimary: textPrimary,
-                    textSecondary: textSecondary,
-                  ),
-                ),
-              ],
-            ),
-          ),
 
           const SizedBox(height: 14),
 
@@ -2486,6 +2562,92 @@ class _SocialProfileViewState extends State<_SocialProfileView> {
           ),
 
           const SizedBox(height: 40),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildStatsLoadingSkeleton(Color cardColor, bool isDark) {
+    return Container(
+      decoration: BoxDecoration(
+        color: cardColor,
+        borderRadius: BorderRadius.circular(18),
+        boxShadow: MinaretTheme.cardShadow,
+      ),
+      padding: const EdgeInsets.symmetric(vertical: 18),
+      child: Row(
+        children: [
+          Expanded(
+            child: Column(
+              children: [
+                Container(
+                  width: 40,
+                  height: 24,
+                  decoration: BoxDecoration(
+                    color: isDark ? Colors.white12 : Colors.grey[300],
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Container(
+                  width: 60,
+                  height: 12,
+                  decoration: BoxDecoration(
+                    color: isDark ? Colors.white10 : Colors.grey[200],
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          _statDivider(isDark),
+          Expanded(
+            child: Column(
+              children: [
+                Container(
+                  width: 40,
+                  height: 24,
+                  decoration: BoxDecoration(
+                    color: isDark ? Colors.white12 : Colors.grey[300],
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Container(
+                  width: 60,
+                  height: 12,
+                  decoration: BoxDecoration(
+                    color: isDark ? Colors.white10 : Colors.grey[200],
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          _statDivider(isDark),
+          Expanded(
+            child: Column(
+              children: [
+                Container(
+                  width: 40,
+                  height: 24,
+                  decoration: BoxDecoration(
+                    color: isDark ? Colors.white12 : Colors.grey[300],
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Container(
+                  width: 60,
+                  height: 12,
+                  decoration: BoxDecoration(
+                    color: isDark ? Colors.white10 : Colors.grey[200],
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );

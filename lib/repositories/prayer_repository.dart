@@ -215,19 +215,19 @@ class PrayerRepository {
     if (_uid.isEmpty) return null;
 
     try {
-      // Fetch records needed for streak calculation. Limit to 21 days for performance.
+      // Fetch records needed for streak calculation.
+      // Note: Uses ASCENDING index (userId ASC, date ASC) - sorting done client-side.
       final now = DateTime.now();
       final cutoff = DateTime(now.year, now.month, now.day).subtract(const Duration(days: 21));
       final snap = await _records
           .where('userId', isEqualTo: _uid)
           .where('date', isGreaterThan: Timestamp.fromDate(cutoff))
-          .orderBy('date', descending: true)
-          .limit(100)
           .get();
 
       final records = snap.docs
           .map(PrayerRecord.fromDoc)
-          .toList();
+          .toList()
+        ..sort((a, b) => a.date.compareTo(b.date)); // Sort ascending for streak calculation
 
       int totalPrayers = 0;
       int totalDaysPrayed = 0;
@@ -267,11 +267,11 @@ class PrayerRepository {
         checkDay = checkDay.subtract(const Duration(days: 1));
       }
 
-      // Longest streak: iterate in chronological order (oldest first) via reversed descending list
+      // Longest streak: iterate in chronological order (oldest first)
       int longestStreak = currentStreak; // Start with current streak as minimum
       int tempStreak = 0;
       DateTime? prevFullDay;
-      for (final record in records.reversed) {
+      for (final record in records) { // Already sorted ascending
         if (record.completedPrayers.length < _prayers.length) continue;
         final d = DateTime(record.date.year, record.date.month, record.date.day);
         if (prevFullDay == null || d.difference(prevFullDay).inDays == 1) {
