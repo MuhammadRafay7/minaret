@@ -1,7 +1,7 @@
 name: minaret
 description: "Minaret | A high-end digital atelier for professional prayer management."
 publish_to: "none"
-version: 1.0.1+17
+version: 1.0.2+18
 
 environment:
   sdk: ">=3.3.0 <4.0.0"

@@ -958,27 +958,27 @@ class _AuthPageState extends State<AuthPage> {
                 accent: true,
               ),
             ),
-            const SizedBox(height: 28),
-            Row(
-              children: [
-                Expanded(child: Divider(color: _lineColor)),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
-                  child: Text(
-                    _displayText(_t(en: 'OR', ar: 'أو', ur: 'یا', ru: 'ИЛИ')),
-                    style: GoogleFonts.montserrat(
-                      fontSize: 9,
-                      letterSpacing: 2,
-                      fontWeight: FontWeight.w700,
-                      color: _textSecondary.withValues(alpha: 0.5),
-                    ),
-                  ),
-                ),
-                Expanded(child: Divider(color: _lineColor)),
-              ],
-            ),
-            const SizedBox(height: 20),
-            _buildGoogleSignInButton(),
+            // const SizedBox(height: 28),
+            // Row(
+            //   children: [
+            //     Expanded(child: Divider(color: _lineColor)),
+            //     Padding(
+            //       padding: const EdgeInsets.symmetric(horizontal: 12),
+            //       child: Text(
+            //         _displayText(_t(en: 'OR', ar: 'أو', ur: 'یا', ru: 'ИЛИ')),
+            //         style: GoogleFonts.montserrat(
+            //           fontSize: 9,
+            //           letterSpacing: 2,
+            //           fontWeight: FontWeight.w700,
+            //           color: _textSecondary.withValues(alpha: 0.5),
+            //         ),
+            //       ),
+            //     ),
+            //     Expanded(child: Divider(color: _lineColor)),
+            //   ],
+            // ),
+            // const SizedBox(height: 20),
+            // _buildGoogleSignInButton(),
           ],
           const SizedBox(height: 16),
           Center(
@@ -2129,9 +2129,11 @@ class _AuthPageState extends State<AuthPage> {
     setState(() => _isLoading = true);
     try {
       final googleClientId = dotenv.env['GOOGLE_CLIENT_ID'] ?? '';
+      debugPrint('🔵 Google Sign-In: clientId loaded = ${googleClientId.isNotEmpty}, isWeb = $kIsWeb');
       final googleUser = await GoogleSignIn(
         clientId: kIsWeb ? googleClientId : null,
       ).signIn();
+      debugPrint('🟢 Google Sign-In: user signed in = ${googleUser?.email}');
       if (googleUser == null) {
         setState(() => _isLoading = false);
         return;
@@ -2224,7 +2226,8 @@ class _AuthPageState extends State<AuthPage> {
           ru: 'Ошибка входа через Google.',
         ));
       }
-    } catch (e) {
+    } catch (e, st) {
+      debugPrint('🔴 Google Sign-In Error: $e\n$st');
       if (mounted) _showStatus(_t(
         en: 'Google sign-in failed. Please try again.',
         ar: 'فشل تسجيل الدخول بجوجل.',
