@@ -1,7 +1,33 @@
 {
   "permissions": {
     "allow": [
-      "Bash(flutter analyze *)"
+      "Bash(flutter analyze *)",
+      "Bash(git stash *)",
+      "Bash(git restore *)",
+      "Bash(gh auth *)",
+      "Bash(git fetch *)",
+      "Bash(grep -v '^ *[0-9]* *$')",
+      "Bash(FILTER_BRANCH_SQUELCH_WARNING=1 git filter-branch -f --msg-filter \"sed -E '/^Co-Authored-By:.*noreply@anthropic.com/Id'\" -- main)",
+      "Bash(git -C \"/mnt/newvolume/Programing/flutter/Minaret app+admin/minaret/.kilo/worktrees/incandescent-kettledrum\" status --short)",
+      "Bash(git -C \"/mnt/newvolume/Programing/flutter/Minaret app+admin/minaret/.kilo/worktrees/incandescent-kettledrum\" reset --soft 618dbd2)",
+      "Bash(git -C \"/mnt/newvolume/Programing/flutter/Minaret app+admin/minaret/.kilo/worktrees/incandescent-kettledrum\" rev-parse --git-common-dir --abbrev-ref HEAD)",
+      "Bash(git rev-parse *)",
+      "Read(//home/personal/Programing/**)",
+      "Bash(git -C \"/mnt/newvolume/Programing/flutter/Minaret app+admin/minaret\" log --oneline -3)",
+      "Bash(git -C \"/mnt/newvolume/Programing/flutter/Minaret app+admin/minaret\" remote -v)",
+      "Bash(git -C \"/mnt/newvolume/Programing/flutter/Minaret app+admin/minaret\" status --short)",
+      "Bash(git -C \"/mnt/newvolume/Programing/flutter/Minaret app+admin/minaret\" fetch origin)",
+      "Bash(git -C \"/mnt/newvolume/Programing/flutter/Minaret app+admin/minaret\" reset --hard origin/main)",
+      "Bash(git -C \"/mnt/newvolume/Programing/flutter/Minaret app+admin/minaret\" log --format='%an' --all)",
+      "Bash(git worktree *)",
+      "Bash(git branch *)",
+      "Bash(git log *)",
+      "Read(//mnt/newvolume/Programing/flutter/Minaret app+admin/minaret/.git/**)",
+      "Bash(findmnt -n -o SOURCE,TARGET --target /home/personal/Programing)",
+      "Bash(ls \"/home/personal/Programing/personal/flutter/Minaret app+admin/minaret/.git/worktrees/\" && cat \"/home/personal/Programing/personal/flutter/Minaret app+admin/minaret/.git/worktrees/\"*/gitdir && cat \"/mnt/newvolume/Programing/flutter/Minaret app+admin/minaret/.kilo/worktrees/incandescent-kettledrum/.git\")",
+      "Read(//mnt/newvolume/Programing/flutter/Minaret app+admin/minaret/.kilo/worktrees/incandescent-kettledrum/**)",
+      "Bash(rm -rf \"/home/personal/Programing/personal/flutter/Minaret app+admin/minaret/.git/worktrees/incandescent-kettledrum\")",
+      "Bash(git update-ref *)"
     ]
   }
 }
